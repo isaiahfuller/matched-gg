@@ -6,9 +6,9 @@ import {
 } from './interfaces';
 import { TwitchTokenRequestDTO } from './DTO/TwitchTokenRequestDTO';
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
+import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
 import buildTwitchUrl from '../util/buildTwitchUrl';
 import { logger } from 'src/util/logger';
-import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
 
 export default class TwitchHandler implements TwitchHandlerInterface {
   private clientId: string;
