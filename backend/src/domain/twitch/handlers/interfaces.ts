@@ -1,20 +1,5 @@
-/**
- * Represents the response body returned by Twitch API.
- */
-export interface TwitchResponseBody {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-}
-
-/**
- * Represents the request body for obtaining a Twitch token.
- */
-export interface TwitchTokenRequestBody {
-  client_id: string;
-  client_secret: string;
-  grant_type: string;
-}
+import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
+import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
 
 /**
  * Represents the interface for a Twitch handler.
@@ -26,13 +11,19 @@ export interface TwitchHandlerInterface {
    * Connects to Twitch and returns a promise that resolves to the Twitch response body.
    * @returns A promise that resolves to the Twitch response body.
    */
-  connect(): Promise<TwitchResponseBody>;
+  connect(): Promise<TwitchTokenResponseDTO>;
 
   /**
    * Validates the Twitch token and returns a promise that resolves to the Twitch response body.
    * @returns A promise that resolves to the Twitch response body.
    */
-  validateToken(): Promise<TwitchResponseBody>;
+  validateToken(): Promise<TwitchValidateResponseDTO>;
+
+  /**
+   * Returns the remaining time in seconds until the token expires.
+   * @returns The remaining time in seconds until the token expires.
+   */
+  getTokenTimeRemaining(): Promise<number>;
 
   /**
    * Starts the token validation interval.
@@ -46,6 +37,12 @@ export interface TwitchHandlerInterface {
    * Reserved for cleanup or destruction of the handler.
    */
   stopTokenValidationInterval(): void;
+
+  /**
+   * Clears the token validation interval.
+   * Reserved for cleanup or destruction of the handler.
+   */
+  clearTokenValidationInterval(): void;
 }
 
 /**
