@@ -12,4 +12,9 @@ export interface Config {
     clientId: string;
     clientSecret: string;
   };
+  pinoOptions: {
+    level: string;
+    name: string;
+    enabled: boolean;
+  };
 }

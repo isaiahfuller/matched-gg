@@ -24,7 +24,7 @@ const requiredVars: string[] = [
   "TWITCH_CLIENT_SECRET",
 ];
 
-const optionalVars: string[] = [];
+const optionalVars: string[] = ["PINO_LEVEL", "PINO_NAME", "PINO_ENABLED"];
 
 validateEnvVars(requiredVars, optionalVars);
 
@@ -41,6 +41,11 @@ export const config: Config = {
     apiUrl: process.env.TWITCH_API_URL || "https://id.twitch.tv/",
     clientId: process.env.TWITCH_CLIENT_ID || "",
     clientSecret: process.env.TWITCH_CLIENT_SECRET || "",
+  },
+  pinoOptions: {
+    level: process.env.PINO_LEVEL || "info",
+    name: process.env.PINO_NAME || "logger",
+    enabled: process.env.PINO_ENABLED === "true",
   },
 };
 
