@@ -1,5 +1,6 @@
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
+import { TwitchConfig } from '@config/interfaces';
 
 /**
  * Represents the interface for a Twitch handler.
@@ -50,6 +51,7 @@ export interface TwitchHandlerInterface {
  */
 export interface TwitchHandlerConstructor {
   accessToken: string;
+  config: TwitchConfig;
 }
 
 /**
