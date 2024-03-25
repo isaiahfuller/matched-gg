@@ -7,6 +7,7 @@
   "workspaces": [
     "frontend",
     "backend",
+    "landing",
     "packages/*"
   ],
   "scripts": {
