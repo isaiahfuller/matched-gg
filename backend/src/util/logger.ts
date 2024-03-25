@@ -1,5 +1,5 @@
 import { pino, LoggerOptions } from 'pino';
-import { config } from '@g4mr/config';
+import { config } from '@config/config';
 
 const pinoOptions: LoggerOptions = {
   level: config.pinoOptions?.level || 'info',
