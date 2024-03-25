@@ -1,12 +1,13 @@
-import { config } from '@g4mr/config';
 import {
   TwitchHandlerInterface,
   TwitchHandlerConstructor,
   TwitchEndpoints,
 } from './interfaces';
+
 import { TwitchTokenRequestDTO } from './DTO/TwitchTokenRequestDTO';
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
+
 import buildTwitchUrl from '../util/buildTwitchUrl';
 import { logger } from 'src/util/logger';
 
@@ -15,13 +16,14 @@ export default class TwitchHandler implements TwitchHandlerInterface {
   private grantType: string;
   private apiUrl: string;
   private clientSecret: string;
-  private tokenValidationInterval: NodeJS.Timeout | null = null;
+  private tokenValidationInterval: NodeJS.Timeout | undefined = undefined;
   constructor(
+    protected config: TwitchHandlerConstructor['config'],
     public accessToken: TwitchHandlerConstructor['accessToken'] = '',
   ) {
-    this.clientId = config.twitch.clientId;
-    this.clientSecret = config.twitch.clientSecret;
-    this.apiUrl = config.twitch.apiUrl;
+    this.clientId = config.clientId;
+    this.clientSecret = config.clientSecret;
+    this.apiUrl = config.apiUrl;
     this.grantType = 'client_credentials';
   }
 
@@ -112,6 +114,6 @@ export default class TwitchHandler implements TwitchHandlerInterface {
   clearTokenValidationInterval(): void {
     logger.info('Clearing interval...');
     clearInterval(this.tokenValidationInterval);
-    this.tokenValidationInterval = null;
+    this.tokenValidationInterval = undefined;
   }
 }
