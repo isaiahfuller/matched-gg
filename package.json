@@ -11,6 +11,8 @@
   ],
   "scripts": {
     "dev": "concurrently \"yarn --cwd backend dev\" \"yarn --cwd frontend dev\"",
+    "lint": "concurrently \"yarn --cwd backend lint\" \"yarn --cwd frontend lint\" \"yarn --cwd landing lint\"",
+    "test": "concurrently \"yarn --cwd backend test\"",
     "start": "yarn --cwd backend start",
     "build": "yarn --cwd frontend build"
   },
