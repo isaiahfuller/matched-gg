@@ -13,16 +13,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 21
+          node-version: 20
 
       - name: Enable yarn
         run: corepack enable
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Add astro eslint plugin (again)
-        run: yarn --cwd landing add eslint-plugin-astro -D
 
       - name: Run lint
         run: yarn lint
