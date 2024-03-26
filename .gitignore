@@ -61,9 +61,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .vscode
 
 # Yarn
-.yarn/*
-!.yarn/releases
-!.yarn/patches
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
+**/.yarn/*
+!**/.yarn/releases
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/sdks
+!**/.yarn/versions
