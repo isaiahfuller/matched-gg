@@ -1,3 +1,4 @@
+import { Logger } from 'pino';
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
 import { TwitchConfig } from '@config/interfaces';
@@ -52,6 +53,7 @@ export interface TwitchHandlerInterface {
 export interface TwitchHandlerConstructor {
   accessToken: string;
   config: TwitchConfig;
+  logger: Logger; // TODO: Create logger abstraction that can take any logger and return a logger with the same interface.
 }
 
 /**

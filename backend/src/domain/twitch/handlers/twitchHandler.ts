@@ -9,7 +9,6 @@ import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
 
 import buildTwitchUrl from '../util/buildTwitchUrl';
-import { logger } from 'src/util/logger';
 
 export default class TwitchHandler implements TwitchHandlerInterface {
   private clientId: string;
@@ -19,12 +18,14 @@ export default class TwitchHandler implements TwitchHandlerInterface {
   private tokenValidationInterval: NodeJS.Timeout | undefined = undefined;
   constructor(
     protected config: TwitchHandlerConstructor['config'],
+    protected logger: TwitchHandlerConstructor['logger'],
     public accessToken: TwitchHandlerConstructor['accessToken'] = '',
   ) {
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
     this.apiUrl = config.apiUrl;
     this.grantType = 'client_credentials';
+    this.logger = logger;
   }
 
   async connect(): Promise<TwitchTokenResponseDTO> {
@@ -46,14 +47,14 @@ export default class TwitchHandler implements TwitchHandlerInterface {
     );
 
     if (!response.ok) {
-      logger.error('Failed to connect to Twitch API');
+      this.logger.error('Failed to connect to Twitch API');
       throw new Error('Failed to connect to Twitch API');
     }
 
     const resJson: TwitchTokenResponseDTO = await response.json();
 
     if (!resJson.access_token) {
-      logger.error(resJson, 'Failed to get access token');
+      this.logger.error(resJson, 'Failed to get access token');
       throw new Error('Failed to get access token');
     }
 
@@ -62,7 +63,8 @@ export default class TwitchHandler implements TwitchHandlerInterface {
     this.stopTokenValidationInterval();
     this.startTokenValidationInterval();
 
-    logger.info(resJson, 'Connected to Twitch API');
+    this.logger.info(resJson, 'Connected to Twitch API');
+
     return resJson;
   }
 
@@ -77,11 +79,13 @@ export default class TwitchHandler implements TwitchHandlerInterface {
     );
 
     if (!response.ok) {
-      logger.warn('Access token is invalid. Refreshing token...');
+      this.logger.warn('Access token is invalid. Refreshing token...');
       this.connect();
     }
 
-    return await response.json();
+    const resJson: TwitchValidateResponseDTO = await response.json();
+
+    return resJson;
   }
 
   async getTokenTimeRemaining(): Promise<number> {
@@ -92,13 +96,13 @@ export default class TwitchHandler implements TwitchHandlerInterface {
   startTokenValidationInterval(): void {
     this.tokenValidationInterval = setInterval(
       async () => {
-        logger.info('Validating Twitch token...');
+        this.logger.info('Validating Twitch token...');
         const validateTokenResponse = await this.validateToken();
         if (validateTokenResponse.expires_in < 300) {
-          logger.warn('Token is about to expire. Refreshing token...');
+          this.logger.warn('Token is about to expire. Refreshing token...');
           this.connect();
         }
-        logger.info(validateTokenResponse, 'Twitch token validated');
+        this.logger.info(validateTokenResponse, 'Twitch token validated');
       },
       59 * 60 * 1000,
     ); // Run every 59 minutes
@@ -106,13 +110,13 @@ export default class TwitchHandler implements TwitchHandlerInterface {
 
   stopTokenValidationInterval(): void {
     if (this.tokenValidationInterval) {
-      logger.info('Found interval.');
+      this.logger.info('Found interval.');
       this.clearTokenValidationInterval();
     }
   }
 
   clearTokenValidationInterval(): void {
-    logger.info('Clearing interval...');
+    this.logger.info('Clearing interval...');
     clearInterval(this.tokenValidationInterval);
     this.tokenValidationInterval = undefined;
   }
