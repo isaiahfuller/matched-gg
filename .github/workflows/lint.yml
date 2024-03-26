@@ -5,6 +5,9 @@ on:
       - main
 jobs:
   lint:
+    strategy:
+      matrix:
+        dir: [frontend, backend, landing]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,4 +25,6 @@ jobs:
         run: yarn install
 
       - name: Run lint
-        run: yarn lint
+        run: |
+          cd ${{matrix.dir}}
+          yarn lint
