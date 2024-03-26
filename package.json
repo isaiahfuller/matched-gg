@@ -11,13 +11,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently \"yarn --cwd backend dev\" \"yarn --cwd frontend dev\"",
-    "lint": "concurrently \"yarn --cwd backend lint\" \"yarn --cwd frontend lint\" \"yarn --cwd landing lint\"",
-    "test": "concurrently \"yarn --cwd backend test\"",
+    "dev": "yarn workspaces foreach -Api run dev",
+    "lint": "yarn workspaces foreach -Api run lint",
+    "test": "yarn workspaces foreach -Api run test",
     "start": "yarn --cwd backend start",
     "build": "yarn --cwd frontend build"
   },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "packageManager": "yarn@4.1.1"
 }
