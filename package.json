@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "yarn workspaces foreach -Api run dev",
     "lint": "yarn workspaces foreach -Api run lint",
-    "test": "yarn workspaces foreach -Api run test", 
+    "test": "yarn workspaces foreach -Api run test",
     "start": "yarn --cwd backend start",
     "build": "yarn --cwd frontend build"
   },
