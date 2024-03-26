@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Update all package ecosystems
+  # We may want to add additional ecosystems and probably test running this on root since we have workspaces enabled
+  - package-ecosystem: "yarn"
+    directory: "landing/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "yarn"
+    directory: "frontend/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "yarn"
+    directory: "backend/"
+    schedule:
+      interval: "weekly"
