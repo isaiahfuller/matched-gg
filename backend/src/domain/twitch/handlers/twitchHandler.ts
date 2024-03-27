@@ -3,6 +3,7 @@ import {
   TwitchHandlerConstructor,
   TwitchEndpoints,
 } from './interfaces';
+import { ApiUrl, ClientId, ClientSecret, GrantType } from './types';
 
 import { TwitchTokenRequestDTO } from './DTO/TwitchTokenRequestDTO';
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
@@ -10,12 +11,17 @@ import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
 
 import buildTwitchUrl from '../util/buildTwitchUrl';
 
-export default class TwitchHandler implements TwitchHandlerInterface {
-  private clientId: string;
-  private grantType: string;
-  private apiUrl: string;
-  private clientSecret: string;
+import axios, { AxiosResponse } from 'axios';
+
+class TwitchHandler implements TwitchHandlerInterface {
+  private clientId: ClientId;
+  private grantType: GrantType;
+  private apiUrl: ApiUrl;
+  private clientSecret: ClientSecret;
   private tokenValidationInterval: NodeJS.Timeout | undefined = undefined;
+
+  public connected = false;
+  public connectionEndpoint: ApiUrl = '';
   constructor(
     protected config: TwitchHandlerConstructor['config'],
     protected logger: TwitchHandlerConstructor['logger'],
@@ -35,42 +41,64 @@ export default class TwitchHandler implements TwitchHandlerInterface {
       grant_type: this.grantType,
     };
 
-    const response = await fetch(
-      buildTwitchUrl(this.apiUrl, TwitchEndpoints.OAUTH2_TOKEN),
+    const endpoint: ApiUrl = buildTwitchUrl(
+      this.apiUrl,
+      TwitchEndpoints.OAUTH2_TOKEN,
+    );
+
+    const response: AxiosResponse<TwitchTokenResponseDTO> = await axios.post(
+      endpoint,
+      tokenRequestBody,
       {
-        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(tokenRequestBody),
       },
     );
 
-    if (!response.ok) {
-      this.logger.error('Failed to connect to Twitch API');
+    if (response.statusText !== 'OK' || response.status !== 200) {
+      this.logger.error(
+        {
+          statusText: response.statusText,
+          status: response.status,
+        },
+        'Failed to connect to Twitch API',
+      );
       throw new Error('Failed to connect to Twitch API');
     }
 
-    const resJson: TwitchTokenResponseDTO = await response.json();
-
-    if (!resJson.access_token) {
-      this.logger.error(resJson, 'Failed to get access token');
+    if (!response.data.access_token) {
+      this.logger.error(response.data, 'Failed to get access token');
+      this.connected = false;
       throw new Error('Failed to get access token');
     }
 
-    this.accessToken = resJson.access_token;
+    this.accessToken = response.data.access_token;
 
     this.stopTokenValidationInterval();
     this.startTokenValidationInterval();
 
-    this.logger.info(resJson, 'Connected to Twitch API');
+    this.logger.info('Connected to Twitch API');
+    this.connected = true;
 
-    return resJson;
+    return response.data;
   }
 
   async validateToken(): Promise<TwitchValidateResponseDTO> {
-    const response = await fetch(
-      buildTwitchUrl(this.apiUrl, TwitchEndpoints.OAUTH2_VALIDATE),
+    if (!this.accessToken) {
+      this.logger.error(
+        { accessToken: this.accessToken },
+        "There's no token to validate! Try calling connect() first.",
+      );
+    }
+
+    const endpoint: ApiUrl = buildTwitchUrl(
+      this.apiUrl,
+      TwitchEndpoints.OAUTH2_VALIDATE,
+    );
+
+    const response: AxiosResponse<TwitchValidateResponseDTO> = await axios.get(
+      endpoint,
       {
         headers: {
           Authorization: `Bearer ${this.accessToken}`,
@@ -78,14 +106,24 @@ export default class TwitchHandler implements TwitchHandlerInterface {
       },
     );
 
-    if (!response.ok) {
+    if (response.statusText !== 'OK' || response.status !== 200) {
       this.logger.warn('Access token is invalid. Refreshing token...');
       this.connect();
     }
 
-    const resJson: TwitchValidateResponseDTO = await response.json();
+    return response.data;
+  }
 
-    return resJson;
+  // TODO: Create a type for the return value
+  /**
+   * Retrieves the connection status and endpoint of the Twitch handler.
+   * @returns {object} The connection status and endpoint.
+   */
+  getConnectionStatus(): object {
+    return {
+      connected: this.connected,
+      endpoint: this.apiUrl,
+    };
   }
 
   async getTokenTimeRemaining(): Promise<number> {
@@ -121,3 +159,5 @@ export default class TwitchHandler implements TwitchHandlerInterface {
     this.tokenValidationInterval = undefined;
   }
 }
+
+export default TwitchHandler;
