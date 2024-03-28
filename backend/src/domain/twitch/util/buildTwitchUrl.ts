@@ -1,6 +1,7 @@
 import { TwitchEndpoints } from '../handlers/interfaces';
 import validateUrl from './validateUrl';
 import { ApiUrl } from '../handlers/types';
+import { logger } from 'src/util/logger';
 
 /**
  * Builds a Twitch API URL by combining the base API URL and the specified endpoint.
@@ -12,6 +13,12 @@ export default function buildTwitchUrl(
   apiUrl: ApiUrl,
   endpoint: TwitchEndpoints,
 ): ApiUrl {
-  const validatedUrl: ApiUrl = validateUrl(`${apiUrl}${endpoint}`);
-  return validatedUrl;
+  try {
+    apiUrl = apiUrl.endsWith('/') ? apiUrl : `${apiUrl}/`;
+    const validatedUrl: ApiUrl = validateUrl(`${apiUrl}${endpoint}`);
+    return validatedUrl;
+  } catch (error) {
+    error instanceof Error && logger.error(error);
+    throw new Error('Failed to build Twitch URL');
+  }
 }

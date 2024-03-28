@@ -1,4 +1,10 @@
-import { z, ZodString } from 'zod';
+import { z, ZodString, ZodError, ZodUnion } from 'zod';
+import { logger } from 'src/util/logger';
+
+export enum UrlProtocol {
+  HTTPS = 'https://',
+  HTTP = 'http://',
+}
 
 /**
  * Validates a URL using the Zod library.
@@ -8,8 +14,22 @@ import { z, ZodString } from 'zod';
  * @example validateUrl('https://www.example.com')
  */
 export default function validateUrl(url: string): string {
-  const urlSchema: ZodString = z.string().url();
-  const validUrl: string = urlSchema.parse(url);
+  try {
+    const urlHttpErrorMessage = {
+      message: 'URL must start with https:// or http://',
+    };
 
-  return validUrl;
+    const urlSchema: ZodUnion<[ZodString, ZodString]> = z
+      .string()
+      .url()
+      .includes(UrlProtocol.HTTPS, urlHttpErrorMessage)
+      .or(z.string().url().includes(UrlProtocol.HTTP, urlHttpErrorMessage));
+    const validUrl: string = urlSchema.parse(url);
+
+    return validUrl;
+  } catch (error) {
+    error instanceof ZodError &&
+      error.errors.forEach((err) => logger.error(err));
+    throw new Error('Failed to validate URL');
+  }
 }
