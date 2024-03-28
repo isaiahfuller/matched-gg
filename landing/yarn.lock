@@ -144,11 +144,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^2.0.2":
-  version: 2.2.1
-  resolution: "@astrojs/mdx@npm:2.2.1"
+"@astrojs/markdown-remark@npm:4.3.2":
+  version: 4.3.2
+  resolution: "@astrojs/markdown-remark@npm:4.3.2"
   dependencies:
-    "@astrojs/markdown-remark": "npm:4.3.1"
+    "@astrojs/prism": "npm:^3.0.0"
+    github-slugger: "npm:^2.0.0"
+    hast-util-from-html: "npm:^2.0.0"
+    hast-util-to-text: "npm:^4.0.0"
+    import-meta-resolve: "npm:^4.0.0"
+    mdast-util-definitions: "npm:^6.0.0"
+    rehype-raw: "npm:^7.0.0"
+    rehype-stringify: "npm:^10.0.0"
+    remark-gfm: "npm:^4.0.0"
+    remark-parse: "npm:^11.0.0"
+    remark-rehype: "npm:^11.0.0"
+    remark-smartypants: "npm:^2.0.0"
+    shiki: "npm:^1.1.2"
+    unified: "npm:^11.0.4"
+    unist-util-remove-position: "npm:^5.0.0"
+    unist-util-visit: "npm:^5.0.0"
+    unist-util-visit-parents: "npm:^6.0.0"
+    vfile: "npm:^6.0.1"
+  checksum: 10c0/39a3add360fec697a46e05f23b11752b26188b1ce034399de52c87157e970f145a573f795337eef1508f3e5b749de489c1efdc2dd8653ccbf5da3f312bf35cae
+  languageName: node
+  linkType: hard
+
+"@astrojs/mdx@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "@astrojs/mdx@npm:2.2.2"
+  dependencies:
+    "@astrojs/markdown-remark": "npm:4.3.2"
     "@mdx-js/mdx": "npm:^3.0.0"
     acorn: "npm:^8.11.2"
     es-module-lexer: "npm:^1.4.1"
@@ -165,7 +191,7 @@ __metadata:
     vfile: "npm:^6.0.1"
   peerDependencies:
     astro: ^4.0.0
-  checksum: 10c0/a2c915e9352ae79ebf10ba460337f6027ffdf2ee79ac68093e5d7498bc5c6704cabc33d87518041d9b6cca63b6920a8e6c66bcb87b7abec516b919ddd225d3d1
+  checksum: 10c0/f6ae60c9fdb908ba396ecfa6edafe78e9b9d788e093dfdc3b89fef2fdc800c09b45de49dfbf1ac8bae3d3169852ba5517d493e721ccfa4e77cb93a857c4c9bcb
   languageName: node
   linkType: hard
 
@@ -5621,7 +5647,7 @@ __metadata:
   resolution: "landing@workspace:."
   dependencies:
     "@astrojs/check": "npm:^0.5.10"
-    "@astrojs/mdx": "npm:^2.0.2"
+    "@astrojs/mdx": "npm:^2.2.2"
     "@astrojs/partytown": "npm:^2.0.2"
     "@astrojs/tailwind": "npm:^5.0.4"
     "@iconify-json/ion": "npm:^1.1.15"
