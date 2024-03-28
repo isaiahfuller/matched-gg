@@ -45,7 +45,7 @@
     "@types/node": "^20.3.1",
     "@types/pg": "^8.11.4",
     "@types/supertest": "^6.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
     "drizzle-kit": "^0.20.14",
     "eslint": "^8.42.0",
