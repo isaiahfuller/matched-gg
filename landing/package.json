@@ -18,7 +18,7 @@
     "@iconify-json/ion": "^1.1.15",
     "@iconify-json/mdi": "^1.1.64",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "accessible-astro-components": "^2.3.5",
     "astro": "^4.0.7",
     "astro-compress": "^2.0.6",
