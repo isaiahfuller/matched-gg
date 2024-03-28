@@ -935,12 +935,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify-json/ion@npm:^1.1.15":
-  version: 1.1.16
-  resolution: "@iconify-json/ion@npm:1.1.16"
+"@iconify-json/ion@npm:^1.1.17":
+  version: 1.1.17
+  resolution: "@iconify-json/ion@npm:1.1.17"
   dependencies:
     "@iconify/types": "npm:*"
-  checksum: 10c0/c2536c45acefae2bb8464a0feb571410831b67e67770e26d8f210202edd6b15fb70b6370df114ba2a760326cae16eb60d8388c2de36872158f0b56c641b436db
+  checksum: 10c0/5ceeb183bca0f9a34871caabe5dea463dae4848ba996b876280d9fb2838f79d8b0bcd0733e994e521daeb8997ef3d78ae1831cba9db2bb2b1b080f0a31949460
   languageName: node
   linkType: hard
 
@@ -5624,7 +5624,7 @@ __metadata:
     "@astrojs/mdx": "npm:^2.0.2"
     "@astrojs/partytown": "npm:^2.0.2"
     "@astrojs/tailwind": "npm:^5.0.4"
-    "@iconify-json/ion": "npm:^1.1.15"
+    "@iconify-json/ion": "npm:^1.1.17"
     "@iconify-json/mdi": "npm:^1.1.64"
     "@typescript-eslint/eslint-plugin": "npm:^5.50.0"
     "@typescript-eslint/parser": "npm:^5.50.0"
