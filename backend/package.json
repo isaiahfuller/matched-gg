@@ -76,6 +76,12 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "modulePaths": [
+      "<rootDir>/../"
+    ],
+    "moduleNameMapper": {
+      "^@config/(.*)$": "<rootDir>/../src/config/__mocks__/$1"
+    }
   }
 }

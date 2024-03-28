@@ -1,6 +1,6 @@
 import { Logger } from 'pino';
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
-import { TwitchValidateResponseDTO } from './DTO/TwitchValidateResponseDTO';
+import { TwitchValidTokenResponseDTO } from './DTO/TwitchValidateResponseDTO';
 import { TwitchConfig } from '@config/interfaces';
 
 /**
@@ -19,7 +19,9 @@ export interface TwitchHandlerInterface {
    * Validates the Twitch token and returns a promise that resolves to the Twitch response body.
    * @returns A promise that resolves to the Twitch response body.
    */
-  validateToken(): Promise<TwitchValidateResponseDTO>;
+  validateToken(
+    _accessToken: TwitchHandlerConstructor['accessToken'],
+  ): Promise<TwitchValidTokenResponseDTO | TwitchTokenResponseDTO>;
 
   /**
    * Returns the remaining time in seconds until the token expires.
