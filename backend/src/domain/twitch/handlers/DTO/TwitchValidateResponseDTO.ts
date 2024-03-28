@@ -1,9 +1,9 @@
 /**
  * Represents the response from the Twitch API when validating a token.
- *
+ * This response is returned when the token is valid.
  * @link https://dev.twitch.tv/docs/authentication/validate-tokens/
  */
-export interface TwitchValidateResponseDTO {
+export interface TwitchValidTokenResponseDTO {
   /**
    * The client ID of the application that requested the token.
    */
@@ -31,4 +31,27 @@ export interface TwitchValidateResponseDTO {
    * The number of seconds until the token expires.
    */
   expires_in: number;
+}
+
+/**
+ * Represents the response from the Twitch API when validating a token.
+ * This response is returned when the token is invalid.
+ *
+ * @link https://dev.twitch.tv/docs/authentication/validate-tokens/
+ */
+export interface TwitchInvalidTokenResponseDTO {
+  /**
+   * The status code of the response.
+   * Only present when the token is invalid.
+   *
+   * @example 401
+   */
+  status: number;
+  /**
+   * The message of the response.
+   * Only present when the token is invalid.
+   *
+   * @example 'invalid access token'
+   */
+  message: 'invalid access token';
 }
