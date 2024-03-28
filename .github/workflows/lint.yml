@@ -8,15 +8,18 @@ jobs:
     strategy:
       matrix:
         dir: [frontend, backend, landing]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.1
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4.0.2
         with:
-          node-version: 20
+          node-version: 21
 
       - name: Enable yarn
         run: corepack enable
@@ -25,6 +28,4 @@ jobs:
         run: yarn install
 
       - name: Run lint
-        run: |
-          cd ${{matrix.dir}}
-          yarn lint
+        run: yarn lint
