@@ -1,9 +1,9 @@
 {
-  "name": "landing",
-  "description": "An Accessible Starter Theme for Astro including several accessibility features and tools to help you build faster.",
-  "version": "3.1.2",
-  "author": "Mark Teekman",
-  "homepage": "https://accessible-astro.netlify.app/",
+  "name": "@g4mr/landing",
+  "description": "The g4mr landing and marketing landing page built with Astro",
+  "version": "0.1.0",
+  "author": "G4MR Team",
+  "homepage": "https://test.com",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
