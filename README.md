@@ -2,12 +2,19 @@
 
 **G4MR** is a powerful, proprietary recommendation engine designed to help gamers discover their next favorite title.
 
-This repository is a monorepo containing both the frontend and backend components of the web application. The frontend is built with React and Vite, while the backend is built with NestJS.
+This repository is a monorepo containing both the frontend and backend components of the web application. The frontend is built with React and Vite, while the backend is built with NestJS. The landing page is a static site running on Astro.
 
-### Prerequisites
+### Stack
 
-- Yarn
+Frontend - React, Vite, TailwindCSS, Mantine
+Backend - NestJS, Drizzle, PostgreSQL, Powered by IGDB
+Landing - Astro, TailwindCSS
+
+![G4MR Marquee](README/images/g4mr_marquee.png)
+
+- Yarn Berry (v4)
 - Node.js
+- nvm (optional)
 
 ### Getting Started
 
@@ -20,68 +27,58 @@ This repository is a monorepo containing both the frontend and backend component
 2. Install dependencies within the project's root directory:
 
    ```bash
+   corepack enable
+   yarn set version stable
    yarn
    ```
 
-**Running both the Frontend and Backend in dev mode**
+### Running the application:
 
 1. From the root directory:
 
    ```bash
-   docker compose up -d
-   yarn run dev
+   yarn dev
    ```
 
-   This will start both the frontend and backend services in dev mode, along with a PostgreSQL database container.
+### Running individual components:
 
-**Running only the frontend (React with Vite):**
+If you'd like to install **only** the depedencies for a specific component and then run it, you can do so by navigating to the component's directory and running the following commands:
 
-1. Navigate to the frontend directory:
+1. To run the frontend:
 
    ```bash
-   cd frontend
+   yarn workspaces focus @g4mr/frontend
+   yarn dev:frontend
    ```
 
-2. Start the development server:
+2. To run the backend:
 
    ```bash
-   yarn run dev
+   yarn workspaces focus @g4mr/backend
+   yarn dev:backend
    ```
 
-   This will typically start the frontend server on `http://localhost:3000` by default.
-
-**Running only the backend (NestJS):**
-
-1. Run the PostgreSQL database container:
+3. To run the landing page:
 
    ```bash
-   docker compose up -d
+   yarn workspaces focus @g4mr/landing
+   yarn dev:landing
    ```
 
-   This will start a PostgreSQL database container in the background.
-
-2. Navigate to the backend directory:
-
-   ```bash
-   cd backend
-   ```
-
-3. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-   This will typically start the backend server on a designated port (as configured in NestJS). You can check the specific port number in the console output.
-
-**Building the application:**
+### Building the application:
 
 1. From the root directory:
 
    ```bash
-   yarn run build
+   yarn run build:frontend
    ```
 
    This will build the frontend of the application and output the build files to the `frontend/dist` directory.
 
-2. The backend runs on node and does not require a build step.
+2. From the root directory:
+
+   ```bash
+   yarn run build:landing
+   ```
+
+3. The backend runs on node and does not require a build step.
