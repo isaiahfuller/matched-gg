@@ -44,26 +44,15 @@ Landing - Astro, TailwindCSS
 
 If you'd like to install **only** the depedencies for a specific component and then run it, you can do so by navigating to the component's directory and running the following commands:
 
-1. To run the frontend:
+1. To run any of the components, you can use the `yarn workspaces focus` command to install the dependencies for that component and then run the component:
 
    ```bash
-   yarn workspaces focus @g4mr/frontend
-   yarn dev:frontend
+   yarn workspaces focus @g4mr/<WORKSPACE_NAME>
+   cd <WORKSPACE_NAME>
+   yarn run dev
    ```
 
-2. To run the backend:
-
-   ```bash
-   yarn workspaces focus @g4mr/backend
-   yarn dev:backend
-   ```
-
-3. To run the landing page:
-
-   ```bash
-   yarn workspaces focus @g4mr/landing
-   yarn dev:landing
-   ```
+   Replace `<WORKSPACE_NAME>` with the workspace you want to build i.e. `frontend`, `backend`, or `landing`.
 
 ### Building the application:
 
