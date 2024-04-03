@@ -4,22 +4,22 @@ import TwitchHandler from '../infrastructure/twitch/handlers/twitchHandler';
 import { config } from '@config/config';
 import { logger } from 'src/util/logger';
 import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+// import { drizzle } from 'drizzle-orm/node-postgres';
+// import { Client } from 'pg';
 
-const client = new Client({
-  user: config.db.user,
-  host: config.db.host,
-  database: config.db.database,
-  password: config.db.password,
-  port: config.db.port,
-});
+// const client = new Client({
+//   user: config.db.user,
+//   host: config.db.host,
+//   database: config.db.database,
+//   password: config.db.password,
+//   port: config.db.port,
+// });
 
-const initDrizzle = async () => {
-  await client.connect();
-  const db = drizzle(client);
-  return db;
-};
+// const initDrizzle = async () => {
+//   await client.connect();
+//   const db = drizzle(client);
+//   return db;
+// };
 
 const connectToTwitch = async () => {
   const twitchHandler = new TwitchHandler(
