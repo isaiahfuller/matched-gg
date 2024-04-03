@@ -4,6 +4,11 @@ export interface TwitchConfig {
   clientSecret: string;
 }
 
+export interface IgdbConfig {
+  clientId: string;
+  accessToken: string;
+}
+
 export interface DbConfig {
   host: string;
   port: number;
