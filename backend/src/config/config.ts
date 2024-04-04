@@ -1,4 +1,5 @@
 import { Config } from './interfaces';
+import 'dotenv/config';
 
 const validateEnvVars = (requiredVars: string[], optionalVars: string[]) => {
   requiredVars.forEach((key) => {
@@ -22,6 +23,7 @@ const requiredVars: string[] = [
   'TWITCH_API_URL',
   'TWITCH_CLIENT_ID',
   'TWITCH_CLIENT_SECRET',
+  'STEAM_API_KEY',
 ];
 
 const optionalVars: string[] = ['PINO_LEVEL', 'PINO_NAME', 'PINO_ENABLED'];
@@ -41,6 +43,9 @@ export const config: Config = {
     apiUrl: process.env.TWITCH_API_URL || 'https://id.twitch.tv/',
     clientId: process.env.TWITCH_CLIENT_ID || '',
     clientSecret: process.env.TWITCH_CLIENT_SECRET || '',
+  },
+  steam: {
+    apiKey: process.env.STEAM_API_KEY || '',
   },
   pinoOptions: {
     level: process.env.PINO_LEVEL || 'info',

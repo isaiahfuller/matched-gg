@@ -23,9 +23,14 @@ export interface PinoOptions {
   enabled: boolean;
 }
 
+export interface SteamConfig {
+  apiKey: string;
+}
+
 export interface Config {
   port: number;
   db: DbConfig;
   twitch: TwitchConfig;
+  steam: SteamConfig;
   pinoOptions: PinoOptions;
 }
