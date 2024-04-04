@@ -1,8 +1,8 @@
 import { Strategy } from 'passport-steam';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { Options, ValidateFn } from './types';
+import { AuthService } from '../auth.service';
+import { Options, ValidateFn } from '../types';
 import { config } from '@config/config';
 
 @Injectable()

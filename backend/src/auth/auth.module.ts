@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SteamStrategy } from './steam.strategy';
+import { SteamStrategy } from './strategies/steam.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 @Module({
