@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
+import GamePage from "./components/GamePage/GamePage";
+import { persona4 } from "./mockGames";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -13,7 +15,7 @@ function App() {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        if(res.profile){
+        if(res.profileurl){
           setProfile(res)
           localStorage.setItem("steam-profile", JSON.stringify(res))
           setIsLoggedIn(true)
@@ -24,6 +26,7 @@ function App() {
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} />
+      <GamePage game={persona4} />
     </>
   );
 }
