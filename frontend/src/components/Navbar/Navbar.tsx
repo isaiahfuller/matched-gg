@@ -6,7 +6,7 @@ interface NavbarProps {
 
 export default function Navbar({ isLoggedIn }: NavbarProps) {
   return (
-    <Flex justify="space-around">
+    <Flex justify="space-around" p={8}>
       <Box>G4MR</Box>
       <Box></Box>
       <Box>

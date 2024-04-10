@@ -93,7 +93,7 @@ interface IGDBCompany extends IGDBGeneric {
   websites: IGDBWebsite[] | number[];
 }
 
-interface IGDBInvolvedCompany extends IGDBGeneric {
+export interface IGDBInvolvedCompany extends IGDBGeneric {
   id: number;
   company: IGDBCompany;
   developer: boolean;
@@ -115,7 +115,7 @@ interface IGDBPlatform extends IGDBGeneric {
   websites: IGDBWebsite[] | number[];
 }
 
-interface IGDBDate extends IGDBGeneric {
+export interface IGDBDate extends IGDBGeneric {
   category?: number;
   date: Date | number;
   game: IGDBGame | number;
@@ -126,7 +126,7 @@ interface IGDBDate extends IGDBGeneric {
   y: number;
 }
 
-interface IGDBVideo extends IGDBGeneric {
+export interface IGDBVideo extends IGDBGeneric {
   game: IGDBGame | number;
   video_id: string;
 }

@@ -1,23 +1,18 @@
-import { Box, Container, Flex, Image, Text, Title } from "@mantine/core";
-import { IGDBGame, IGDBGameArt } from "../../interfaces";
+import { Container, Grid } from "@mantine/core";
+import GamePageHeader from "./GamePageHeader";
+import { GamePageGeneric } from "./interfaces";
+import GamePageBox from "./GamePageBox";
 
-interface GamePageProps {
-  game: IGDBGame;
-}
+interface GamePageProps extends GamePageGeneric {}
 export default function GamePage({ game }: GamePageProps) {
   console.log(game);
   return (
     <Container>
-      <Box bg={"red"}>
-        <Flex align="flex-end">
-          <Image
-            w="auto"
-            fit="contain"
-            src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${(game.cover as IGDBGameArt)!.image_id}.jpg`}
-          />
-          <Title>{game.name}</Title>
-        </Flex>
-      </Box>
+      <GamePageHeader game={game} />
+      <Grid p={8}>
+      <GamePageBox game={game} type={"genre"} size={4} />
+      <GamePageBox game={game} type={"player-perspective"} size={8} />
+      </Grid>
     </Container>
   );
 }
