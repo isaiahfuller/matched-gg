@@ -19,13 +19,12 @@ const IGDBImageUrlBase = "https://images.igdb.com/igdb/image/upload";
 
 interface GamePageHeaderProps extends GamePageGeneric {}
 export default function GamePageHeader({ game }: GamePageHeaderProps) {
-  const companies = useMemo(() => {
+  const developers = useMemo(() => {
     if (!game.involved_companies) return null;
     const res = new Array<string>();
     game.involved_companies?.forEach((e) => {
       if (
-        (e as IGDBInvolvedCompany).developer ||
-        (e as IGDBInvolvedCompany).publisher
+        (e as IGDBInvolvedCompany).developer
       )
         res.push((e as IGDBInvolvedCompany).company.name!);
     });
@@ -55,7 +54,7 @@ export default function GamePageHeader({ game }: GamePageHeaderProps) {
           <Stack p={8}>
             <Title>{game.name}</Title>
             <Title order={2}>
-              {years.join(", ")} - {companies?.join(", ")}
+              {years.join(", ")} - {developers?.join(", ")}
             </Title>
           </Stack>
         </Flex>
