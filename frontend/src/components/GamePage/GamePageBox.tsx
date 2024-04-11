@@ -15,7 +15,6 @@ interface GamePageBoxProps extends GamePageGeneric {
   setter: ((value: string[]) => void) | undefined;
 }
 export default function GamePageBox({ game, type, size, list, setter }: GamePageBoxProps) {
-  console.log(type, game[type]);
   if(!game[type]) return null
   return (
     <Grid.Col span={size}>
