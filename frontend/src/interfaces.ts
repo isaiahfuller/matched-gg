@@ -1,7 +1,7 @@
 export interface IGDBGame extends IGDBGeneric {
   alternative_names?: unknown | number[];
-  aggregated_rating: number;
-  aggregated_rating_count: number;
+  aggregated_rating?: number;
+  aggregated_rating_count?: number;
   age_ratings?: unknown | number[];
   bundles?: unknown | number[];
   category: number;
@@ -18,8 +18,8 @@ export interface IGDBGame extends IGDBGeneric {
   franchise?: IGDBGameCollection[] | number[];
   franchises?: IGDBGameCollection[] | number[];
   game?: IGDBGame | number;
-  game_engines?: number[];
-  game_localizations: unknown | number[];
+  game_engines?: unknown[] | number[];
+  game_localizations?: unknown | number[];
   game_modes?: IGDBGeneric[] | number[];
   genres?: IGDBGeneric[] | number[];
   hypes?: number;
@@ -30,8 +30,8 @@ export interface IGDBGame extends IGDBGeneric {
   platforms?: IGDBPlatform[] | number[];
   player_perspectives?: IGDBGeneric[] | number[];
   ports?: IGDBGame[] | number[];
-  rating: number;
-  rating_count: number;
+  rating?: number;
+  rating_count?: number;
   release_dates: IGDBDate[] | number[];
   remakes?: IGDBGame[] | number[];
   remasters?: IGDBGame[] | number[];
@@ -51,7 +51,7 @@ export interface IGDBGame extends IGDBGeneric {
   year?: number
 }
 
-interface IGDBGeneric {
+export interface IGDBGeneric {
   id?: number;
   name?: string;
   url?: string;
@@ -123,6 +123,7 @@ export interface IGDBDate extends IGDBGeneric {
   m: number;
   platform: IGDBPlatform | number;
   region: number;
+  status?: number;
   y: number;
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Grid } from "@mantine/core";
 import GamePageBox from "./GamePageBox";
 import { GamePageGeneric } from "./interfaces";
+import GamePageKeywordSelect from "./GamePageKeywordSelect";
 
 interface GamePageBoxListProps extends GamePageGeneric {}
 export default function GamePageBoxList({ game }: GamePageBoxListProps) {
@@ -30,42 +31,42 @@ export default function GamePageBoxList({ game }: GamePageBoxListProps) {
   ]);
 
   return (
-    <Grid py={8} align="stretch">
-      <GamePageBox
-        game={game}
-        type={"game_modes"}
-        size={3}
-        list={selectedModes}
-        setter={setSelectedModes}
-      />
-      <GamePageBox
-        game={game}
-        type={"genres"}
-        size={4}
-        list={selectedGenres}
-        setter={setSelectedGenres}
-      />
-      <GamePageBox
-        game={game}
-        type={"player_perspectives"}
-        size={5}
-        list={selectedPerspectives}
-        setter={setSelectedPerspectives}
-      />
-      <GamePageBox
-        game={game}
-        type={"themes"}
-        size={6}
-        list={selectedThemes}
-        setter={setSelectedThemes}
-      />
-      <GamePageBox
-        game={game}
-        type={"keywords"}
-        size={12}
-        list={selectedKeywords}
-        setter={setSelectedKeywords}
-      />
-    </Grid>
+    <form>
+      <Grid py={8} align="stretch">
+        <GamePageKeywordSelect
+          game={game}
+          size={12}
+          setter={setSelectedKeywords}
+        />
+        <GamePageBox
+          game={game}
+          type={"game_modes"}
+          size={3}
+          list={selectedModes}
+          setter={setSelectedModes}
+        />
+        <GamePageBox
+          game={game}
+          type={"genres"}
+          size={4}
+          list={selectedGenres}
+          setter={setSelectedGenres}
+        />
+        <GamePageBox
+          game={game}
+          type={"player_perspectives"}
+          size={5}
+          list={selectedPerspectives}
+          setter={setSelectedPerspectives}
+        />
+        <GamePageBox
+          game={game}
+          type={"themes"}
+          size={6}
+          list={selectedThemes}
+          setter={setSelectedThemes}
+        />
+      </Grid>
+    </form>
   );
 }

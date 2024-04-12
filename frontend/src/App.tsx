@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import GamePage from "./components/GamePage/GamePage";
-import { persona4 } from "./mockGames";
+import { persona3reload, persona4 } from "./mockGames";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -26,6 +26,7 @@ function App() {
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} />
+      <GamePage game={persona3reload} />
       <GamePage game={persona4} />
     </>
   );

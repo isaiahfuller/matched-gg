@@ -12,7 +12,7 @@ import {
 import { IGDBDate, IGDBGameArt, IGDBInvolvedCompany } from "../../interfaces";
 import { useMemo } from "react";
 import { GamePageGeneric } from "./interfaces";
-import scoreColor from "../../util/scoreColors";
+import scoreColor from "../../util/scoreColor";
 
 const IGDBImageUrlBase = "https://images.igdb.com/igdb/image/upload";
 
@@ -64,7 +64,7 @@ export default function GamePageHeader({ game }: GamePageHeaderProps) {
                 </Title>
               }
               sections={[
-                { value: game.rating, color: scoreColor(game.rating) },
+                { value: game.rating || 0, color: scoreColor(game.rating || 0) },
               ]}
             />
           </Flex>

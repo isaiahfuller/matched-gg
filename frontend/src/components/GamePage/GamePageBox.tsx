@@ -19,7 +19,6 @@ export default function GamePageBox({ game, type, size, list, setter }: GamePage
   return (
     <Grid.Col span={size}>
       <Paper shadow="xs" p={8} h="100%" withBorder>
-        <form>
           <Checkbox.Group
             defaultValue={[]}
             value={list}
@@ -36,7 +35,6 @@ export default function GamePageBox({ game, type, size, list, setter }: GamePage
               );
             })}
           </Checkbox.Group>
-        </form>
       </Paper>
     </Grid.Col>
   );
