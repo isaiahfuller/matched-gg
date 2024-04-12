@@ -8,6 +8,7 @@ import {
   Paper,
   RingProgress,
   Box,
+  useMantineColorScheme
 } from "@mantine/core";
 import { IGDBDate, IGDBGameArt, IGDBInvolvedCompany } from "../../interfaces";
 import { useMemo } from "react";
@@ -18,6 +19,7 @@ const IGDBImageUrlBase = "https://images.igdb.com/igdb/image/upload";
 
 interface GamePageHeaderProps extends GamePageGeneric {}
 export default function GamePageHeader({ game }: GamePageHeaderProps) {
+  const {colorScheme} = useMantineColorScheme();
   const developers = useMemo(() => {
     if (!game.involved_companies) return null;
     const res = new Array<string>();
@@ -40,7 +42,7 @@ export default function GamePageHeader({ game }: GamePageHeaderProps) {
         src={`${IGDBImageUrlBase}/t_screenshot_big/${(game.artworks as IGDBGameArt[])[0].image_id}.jpg`}
         radius="sm"
       >
-        <Paper bg={rgba("#ffffff", 0.6)} shadow="xs" withBorder>
+        <Paper bg={rgba(colorScheme === "light" ? "#ffffff" : "#000000", 0.6)} shadow="xs" withBorder>
           <Flex align="flex-end" justify="space-between">
             <Image
               p={8}
