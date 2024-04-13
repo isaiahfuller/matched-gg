@@ -14,10 +14,7 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
     super(
       {
         returnURL: 'http://localhost:3000/auth/steam/return',
-        // returnURL: 'http://localhost:5173/',
         realm: 'http://localhost:3000/',
-        // returnURL: 'http://localhost:5173/',
-        // realm: 'http://localhost:5173/',
         apiKey: config.steam.apiKey,
         passReqToCallback: true,
       } satisfies Options,
