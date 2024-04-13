@@ -1,4 +1,5 @@
 import { Config } from './interfaces';
+import 'dotenv/config';
 
 const validateEnvVars = (requiredVars: string[], optionalVars: string[]) => {
   requiredVars.forEach((key) => {
