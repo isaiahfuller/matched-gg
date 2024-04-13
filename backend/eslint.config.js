@@ -9,6 +9,9 @@ module.exports = tseslint.config({
   languageOptions: {
     sourceType: 'module',
     parser: tseslint.parser,
+    parserOptions: {
+      project: 'tsconfig.json',
+    },
     globals: {
       node: true,
       jest: true,
