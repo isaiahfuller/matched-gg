@@ -9,7 +9,7 @@ export type NRGameDTO = Pick<
   | 'checksum'
   | 'created_at'
   | 'first_release_date'
-  | 'follows'
+  | 'hypes'
   | 'id'
   | 'name'
   | 'rating'
@@ -38,13 +38,12 @@ export interface GameDTO {
   collection?: number;
   collections?: number[];
   cover?: number;
-  created_at?: string;
+  created_at?: number;
   dlcs?: number[];
   expanded_games?: number[];
   expansions?: number[];
   external_games?: number[];
-  first_release_date?: string; // date
-  follows?: number; // DEPRECATED
+  first_release_date?: number;
   franchise?: number;
   franchises?: number[];
   game_engines?: number[];
@@ -78,7 +77,7 @@ export interface GameDTO {
   themes?: number[];
   total_rating?: number;
   total_rating_count?: number;
-  updated_at?: string; // date
+  updated_at?: number;
   url?: string; // url
   version_parent?: number;
   version_title?: string;

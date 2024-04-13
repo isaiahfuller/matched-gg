@@ -32,6 +32,18 @@ Landing - Astro, TailwindCSS
    yarn
    ```
 
+### Preparing the database:
+
+1. From the root directory:
+
+   ```bash
+   docker-compose up -d
+   yarn backend:migrate
+   yarn backend:seed
+   ```
+
+   This will create the database, run migrations, and seed the database with initial data.
+
 ### Running the application:
 
 1. From the root directory:
