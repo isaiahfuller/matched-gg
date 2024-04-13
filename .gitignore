@@ -73,3 +73,6 @@ backend/coverage/*
 
 # Astro
 **/.astro
+
+# Postgres
+**/data
