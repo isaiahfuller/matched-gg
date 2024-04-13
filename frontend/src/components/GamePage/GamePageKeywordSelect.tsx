@@ -34,6 +34,7 @@ export default function GamePageKeywordSelect({
           data={titles as string[]}
           onChange={setter}
           clearable
+          searchable
         />
       </Paper>
     </Grid.Col>
