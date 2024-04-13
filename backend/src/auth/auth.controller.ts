@@ -1,10 +1,14 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   Logger,
+  Post,
   Req,
+  Res,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -26,7 +30,15 @@ export class AuthController {
 
   @Get('steam/return')
   @UseGuards(AuthGuard('steam'))
-  async return(@Req() req: SteamAuthResponse) {
-    return req.user;
+  async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
+    session.profile = req.user._json;
+    res.redirect('http://localhost:5173/');
+    return session;
+  }
+
+  @Post('steam/valid')
+  async validate(@Session() session, @Req() req, @Body() body, @Res() res) {
+    res.send(session.profile);
+    return session;
   }
 }
