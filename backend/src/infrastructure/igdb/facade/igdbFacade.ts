@@ -47,6 +47,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
     limit,
     concurrency,
     delay,
+    expanded,
   }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<GameDTO[]> {
     this.logger.info('Starting to seed games...');
     const totalGamesCount = await this.getTotalGameCount.execute();
@@ -59,7 +60,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
         delay: delay,
       },
       limit || 500,
-      true,
+      expanded,
       totalGamesCount,
     );
     this.logger.info('Games seeded');

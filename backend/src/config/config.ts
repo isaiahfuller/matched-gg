@@ -32,6 +32,7 @@ validateEnvVars(requiredVars, optionalVars);
 
 export const config: Config = {
   port: Number(process.env.PORT) || 3000,
+  sessionSecret: process.env.SESSION_SECRET || 'uV2GckuLeRSeLGH9vtx4',
   db: {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'postgres',

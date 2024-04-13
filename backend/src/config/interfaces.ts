@@ -29,6 +29,7 @@ export interface SteamConfig {
 
 export interface Config {
   port: number;
+  sessionSecret: string;
   db: DbConfig;
   twitch: TwitchConfig;
   steam: SteamConfig;
