@@ -65,6 +65,11 @@ export interface SeedGamesOptions {
    * @default 500
    */
   limit?: number | 500;
+  /**
+   * Whether to expand the game fields.
+   * @default true
+   */
+  expanded?: boolean | true;
 }
 
 /**
