@@ -16,9 +16,7 @@ updates:
         update-types:
           - minor
           - patch
-      major:
-        update-types:
-          - major
+
   - package-ecosystem: "npm"
     directory: "frontend/"
     schedule:
@@ -35,9 +33,7 @@ updates:
         update-types:
           - minor
           - patch
-      major:
-        update-types:
-          - major
+
   - package-ecosystem: "npm"
     directory: "backend/"
     schedule:
@@ -54,6 +50,3 @@ updates:
         update-types:
           - minor
           - patch
-      major:
-        update-types:
-          - major
