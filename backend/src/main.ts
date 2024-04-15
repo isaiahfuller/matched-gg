@@ -1,14 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ConfigModule } from '@nestjs/config';
-import session from 'express-session';
-
-ConfigModule.forRoot({
-  envFilePath: '../.env',
-});
-
 import { config } from '@config/config';
+import { NestFactory } from '@nestjs/core';
+import session from 'express-session';
 import passport from 'passport';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
