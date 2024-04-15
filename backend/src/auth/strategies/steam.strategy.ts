@@ -13,6 +13,7 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
   ) {
     super(
       {
+        // TODO: Stop hardcoding the return & realm URLs
         returnURL: 'http://localhost:3000/auth/steam/return',
         realm: 'http://localhost:3000/',
         apiKey: config.steam.apiKey,
