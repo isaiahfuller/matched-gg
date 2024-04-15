@@ -36,6 +36,6 @@
   "dependencies": {
     "@astrojs/check": "^0.5.10",
     "sharp": "^0.33.3",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   }
 }
