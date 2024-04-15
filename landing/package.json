@@ -16,7 +16,7 @@
     "@astrojs/partytown": "^2.0.4",
     "@astrojs/tailwind": "^5.1.0",
     "@iconify-json/ion": "^1.1.17",
-    "@iconify-json/mdi": "^1.1.64",
+    "@iconify-json/mdi": "^1.1.66",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
     "accessible-astro-components": "^2.3.5",
