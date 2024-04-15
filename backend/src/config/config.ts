@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
 import { Config } from './interfaces';
-import 'dotenv/config';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 const validateEnvVars = (requiredVars: string[], optionalVars: string[]) => {
   requiredVars.forEach((key) => {

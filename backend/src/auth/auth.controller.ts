@@ -32,6 +32,7 @@ export class AuthController {
   @UseGuards(AuthGuard('steam'))
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
     session.profile = req.user._json;
+    // TODO: Stop hardcoding the redirect URL
     res.redirect('http://localhost:5173/');
     return session;
   }
