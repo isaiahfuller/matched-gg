@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1712194265542,
-      "tag": "0000_ambiguous_vertigo",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1712370506530,
-      "tag": "0001_grey_lord_hawal",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1712384721876,
-      "tag": "0002_stiff_beast",
+      "when": 1713201480423,
+      "tag": "0000_chubby_red_hulk",
       "breakpoints": true
     }
   ]

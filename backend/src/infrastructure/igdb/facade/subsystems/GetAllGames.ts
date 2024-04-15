@@ -1,14 +1,12 @@
 import { IGetAllGames } from './interfaces';
 import { GameDTO } from './DTO/GameDTO';
-import { GameFields, ExpandedGameFields } from './enums/fields/GameFields';
-import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
-import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
+import { ExpandedGameFields, GameFields } from './enums/fields/GameFields';
 import { ClientId, AccessToken } from 'src/infrastructure/types';
-import { Apicalypse, RequestAllConfig } from 'apicalypse';
-import igdb from 'igdb-api-node';
+import { RequestAllConfig } from 'apicalypse';
+import { GetAll } from './GetAll';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
-export class GetAllGames implements IGetAllGames {
+export class GetAllGames extends GetAll implements IGetAllGames {
   /**
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
@@ -18,20 +16,12 @@ export class GetAllGames implements IGetAllGames {
     | GameFields[]
     | ExpandedGameFields
     | ExpandedGameFields[] = Object.values(GameFields);
-  client: Apicalypse;
   protected totalGameCount: number | undefined = undefined;
 
   constructor(clientId: ClientId, accessToken: AccessToken) {
-    this.client = igdb(clientId, accessToken, {
-      timeout: 120000,
-      transformRequest: (data) =>
-        requestFieldsInterceptor(data, this.gameFields, this.totalGameCount),
-      transformResponse: (response) =>
-        responseFieldsInterceptor(response, this.gameFields),
-    });
+    const fields = Object.values(GameFields);
+    super('games', clientId, accessToken, fields);
   }
-
-  public async prepare(): Promise<void> {}
 
   public async execute(
     options: RequestAllConfig,
@@ -39,12 +29,6 @@ export class GetAllGames implements IGetAllGames {
     expanded: boolean = true,
     totalGameCount?: number,
   ): Promise<GameDTO[]> {
-    this.gameFields = Object.values(expanded ? ExpandedGameFields : GameFields);
-    this.totalGameCount = totalGameCount ? totalGameCount : undefined;
-    const games: GameDTO[] = await this.client
-      .limit(limit)
-      .fields(this.gameFields)
-      .requestAll('/games', options);
-    return games;
+    return super.execute(options, limit, expanded, totalGameCount);
   }
 }

@@ -13,6 +13,13 @@ export interface IGetGame {
   ): Promise<GameDTO>;
 }
 
+export interface IGetTotalCount {
+  client: Apicalypse;
+
+  prepare(): Promise<void>;
+  execute(resource: string): Promise<number>;
+}
+
 export interface IGetTotalGameCount {
   client: Apicalypse;
 
@@ -32,7 +39,11 @@ export interface IGetManyGames {
   ): Promise<AxiosResponse<GameDTO[]>>;
 }
 
-export interface IGetAllGames {
+export interface IGetAll {
+  prepare(): Promise<void>;
+}
+
+export interface IGetAllGames extends IGetAll {
   client: Apicalypse;
 
   prepare(): Promise<void>;

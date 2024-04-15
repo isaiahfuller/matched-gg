@@ -1,5 +1,5 @@
-import { GameFields, ExpandedGameFields } from '../enums/fields/GameFields';
 import { logger } from 'src/util/logger';
+import { AllFields } from '../types';
 
 const log = logger.child({ module: 'ResponseFieldsInterceptor' });
 
@@ -13,7 +13,7 @@ const log = logger.child({ module: 'ResponseFieldsInterceptor' });
  */
 export const responseFieldsInterceptor: any = (
   data: any,
-  fields: GameFields | GameFields[] | ExpandedGameFields | ExpandedGameFields[],
+  fields: AllFields,
 ) => {
   try {
     const resJson = JSON.parse(data);
