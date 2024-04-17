@@ -73,7 +73,6 @@ export const gamesTable = pgTable(
       uniqueIgdbIdIdx: uniqueIndex('igdb_id_idx').on(table.igdbId),
       slugIdx: index('slug_idx').on(table.slug),
       nameIdx: index('name_idx').on(table.name),
-      // summaryIdx: index('summary_idx').on(table.summary),
     };
   },
 );

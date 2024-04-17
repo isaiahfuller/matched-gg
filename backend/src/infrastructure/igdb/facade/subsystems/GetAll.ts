@@ -47,7 +47,6 @@ export abstract class GetAll implements IGetAll {
     expanded: boolean,
     totalCount?: number,
   ) {
-    // this.fields = Object.values(expanded ? ExpandedGameFields : GameFields);
     this.totalCount = totalCount ? totalCount : undefined;
     switch (this.resource) {
       case 'games':
