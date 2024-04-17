@@ -11,7 +11,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "WebsiteCategoryEnum" AS ENUM('official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'itch', 'epicgames', 'gog', 'discord');
+ CREATE TYPE "WebsiteCategoryEnum" AS ENUM('', 'official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'itch', 'epicgames', 'gog', 'discord');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS "games" (
 CREATE TABLE IF NOT EXISTS "websites" (
 	"category" "WebsiteCategoryEnum",
 	"checksum" text,
+	"game" bigint,
 	"igdb_id" bigint NOT NULL,
 	"trusted" boolean,
 	"url" text,
@@ -55,4 +56,8 @@ CREATE TABLE IF NOT EXISTS "websites" (
 CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" ("igdb_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "name_idx" ON "games" ("name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "summary_idx" ON "games" ("summary");
+DO $$ BEGIN
+ ALTER TABLE "websites" ADD CONSTRAINT "websites_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;

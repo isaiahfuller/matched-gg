@@ -1,5 +1,5 @@
 {
-  "id": "11c3c1ff-275f-400f-a1d5-16dfdbcf1c0b",
+  "id": "cde7816b-973a-4063-ad54-0054909936f1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -170,13 +170,6 @@
             "name"
           ],
           "isUnique": false
-        },
-        "summary_idx": {
-          "name": "summary_idx",
-          "columns": [
-            "summary"
-          ],
-          "isUnique": false
         }
       },
       "foreignKeys": {},
@@ -207,6 +200,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
         "igdb_id": {
           "name": "igdb_id",
           "type": "bigint",
@@ -227,7 +226,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "websites_game_games_igdb_id_fk": {
+          "name": "websites_game_games_igdb_id_fk",
+          "tableFrom": "websites",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "websites_igdb_id_unique": {
@@ -277,6 +290,7 @@
     "WebsiteCategoryEnum": {
       "name": "WebsiteCategoryEnum",
       "values": {
+        "": "",
         "official": "official",
         "wikia": "wikia",
         "wikipedia": "wikipedia",
