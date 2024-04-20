@@ -1,25 +1,21 @@
-import { IGetTotalGameCount } from './interfaces';
+import { GetTotalCount } from './GetTotalCount';
 import { Apicalypse } from 'apicalypse';
+import { IGetTotalGameCount } from './interfaces';
 
 /**
  * Represents a class that retrieves the total count of games.
  */
-export class GetTotalGameCount implements IGetTotalGameCount {
-  client: Apicalypse;
-
+export class GetTotalGameCount
+  extends GetTotalCount
+  implements IGetTotalGameCount
+{
   /**
    * Creates an instance of GetTotalGameCount.
    * @param client - The Apicalypse client used to make API requests.
    */
   constructor(client: Apicalypse) {
-    this.client = client;
+    super(client);
   }
-
-  /**
-   * Prepares the GetTotalGameCount instance for execution.
-   * @returns A promise that resolves when the preparation is complete.
-   */
-  public async prepare(): Promise<void> {}
 
   /**
    * Executes the request to retrieve the total count of games.
@@ -27,11 +23,6 @@ export class GetTotalGameCount implements IGetTotalGameCount {
    * @throws An error if the request fails.
    */
   public async execute(): Promise<number> {
-    const countRes = await this.client.request('/games/count');
-    if (countRes.status === 200) {
-      return countRes.data?.count;
-    } else {
-      throw new Error('Failed to get total game count');
-    }
+    return super.execute('games');
   }
 }

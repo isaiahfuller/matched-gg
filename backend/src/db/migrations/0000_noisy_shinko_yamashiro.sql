@@ -10,17 +10,23 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "WebsiteCategoryEnum" AS ENUM('', 'official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'itch', 'epicgames', 'gog', 'discord');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "games" (
 	"aggregated_rating" double precision,
 	"aggregated_rating_count" integer,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"first_release_date" timestamp,
-	"game_category" "GameCategoryEnum" NOT NULL,
+	"game_category" "GameCategoryEnum",
 	"hypes" integer,
-	"game_id" serial PRIMARY KEY NOT NULL,
+	"game_id" serial NOT NULL,
 	"igdb_created_at" timestamp,
-	"igdb_id" bigint NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"igdb_updated_at" timestamp,
 	"name" text NOT NULL,
 	"rating" double precision,
@@ -34,10 +40,24 @@ CREATE TABLE IF NOT EXISTS "games" (
 	"url" text,
 	"version_title" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "games_igdb_id_unique" UNIQUE("igdb_id")
+	CONSTRAINT "games_game_id_unique" UNIQUE("game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "websites" (
+	"category" "WebsiteCategoryEnum",
+	"checksum" text,
+	"game" bigint,
+	"igdb_id" bigint NOT NULL,
+	"trusted" boolean,
+	"url" text,
+	CONSTRAINT "websites_igdb_id_unique" UNIQUE("igdb_id")
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" ("igdb_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" ("slug");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "name_idx" ON "games" ("name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "summary_idx" ON "games" ("summary");
+CREATE INDEX IF NOT EXISTS "name_idx" ON "games" ("name");--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "websites" ADD CONSTRAINT "websites_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;

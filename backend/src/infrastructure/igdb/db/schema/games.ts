@@ -51,9 +51,9 @@ export const gamesTable = pgTable(
     firstReleaseDate: timestamp('first_release_date'),
     gameCategory: GameCategoryPGEnum('game_category'),
     hypes: integer('hypes'),
-    id: serial('game_id').primaryKey(),
+    id: serial('game_id').notNull().unique(),
     igdbCreatedAt: timestamp('igdb_created_at'),
-    igdbId: bigint('igdb_id', { mode: 'number' }).notNull().unique(),
+    igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
     igdbUpdatedAt: timestamp('igdb_updated_at'),
     name: text('name').notNull(),
     rating: doublePrecision('rating'),
@@ -73,7 +73,6 @@ export const gamesTable = pgTable(
       uniqueIgdbIdIdx: uniqueIndex('igdb_id_idx').on(table.igdbId),
       slugIdx: index('slug_idx').on(table.slug),
       nameIdx: index('name_idx').on(table.name),
-      summaryIdx: index('summary_idx').on(table.summary),
     };
   },
 );

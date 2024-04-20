@@ -1,5 +1,5 @@
 {
-  "id": "d5154a81-da13-4368-a1ff-d7f8994af17b",
+  "id": "cde7816b-973a-4063-ad54-0054909936f1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -43,7 +43,7 @@
           "name": "game_category",
           "type": "GameCategoryEnum",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "hypes": {
           "name": "hypes",
@@ -54,7 +54,7 @@
         "game_id": {
           "name": "game_id",
           "type": "serial",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "igdb_created_at": {
@@ -66,7 +66,7 @@
         "igdb_id": {
           "name": "igdb_id",
           "type": "bigint",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true
         },
         "igdb_updated_at": {
@@ -169,21 +169,82 @@
           "columns": [
             "name"
           ],
-          "isUnique": true
-        },
-        "summary_idx": {
-          "name": "summary_idx",
-          "columns": [
-            "summary"
-          ],
           "isUnique": false
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "games_igdb_id_unique": {
-          "name": "games_igdb_id_unique",
+        "games_game_id_unique": {
+          "name": "games_game_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "game_id"
+          ]
+        }
+      }
+    },
+    "websites": {
+      "name": "websites",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "WebsiteCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trusted": {
+          "name": "trusted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "websites_game_games_igdb_id_fk": {
+          "name": "websites_game_games_igdb_id_fk",
+          "tableFrom": "websites",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "websites_igdb_id_unique": {
+          "name": "websites_igdb_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "igdb_id"
@@ -224,6 +285,29 @@
         "CANCELLED": "CANCELLED",
         "RUMORED": "RUMORED",
         "DELISTED": "DELISTED"
+      }
+    },
+    "WebsiteCategoryEnum": {
+      "name": "WebsiteCategoryEnum",
+      "values": {
+        "": "",
+        "official": "official",
+        "wikia": "wikia",
+        "wikipedia": "wikipedia",
+        "facebook": "facebook",
+        "twitter": "twitter",
+        "twitch": "twitch",
+        "instagram": "instagram",
+        "youtube": "youtube",
+        "iphone": "iphone",
+        "ipad": "ipad",
+        "android": "android",
+        "steam": "steam",
+        "reddit": "reddit",
+        "itch": "itch",
+        "epicgames": "epicgames",
+        "gog": "gog",
+        "discord": "discord"
       }
     }
   },

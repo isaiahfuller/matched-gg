@@ -5,10 +5,13 @@ import { config } from '@config/config';
 import { logger } from 'src/util/logger';
 import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
 import * as gamesSchema from '../schema/games';
+import * as websitesSchema from '../schema/websites';
 import { mapGame } from '../map/mapGame';
 import { chunk } from '@util/chunk';
 import { IgdbDbController } from '../controller/IgdbDbController';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
+import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
+import { mapWebsite } from '../map/mapWebsites';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
@@ -54,12 +57,38 @@ const seed = async (): Promise<void> => {
       logger.error(`Error inserting games: ${error}`);
     }
   });
+
+  logger.info('Games inserted');
+
+  const igdbWebsites: WebsiteDTO[] = await igdb.seedWebsites({
+    concurrency: 4,
+    expanded: false,
+  });
+
+  const websites: websitesSchema.Websites[] = igdbWebsites.map(
+    (website: WebsiteDTO): websitesSchema.Websites => {
+      return mapWebsite(website);
+    },
+  );
+
+  logger.info({ websites: websites.length }, 'Websites mapped');
+  const websiteChunks: [websitesSchema.Websites[]] = chunk(websites, 1000);
+
+  logger.info({ chunks: websiteChunks.length }, 'Websites chunked');
+
+  websiteChunks.forEach(async (chunk: websitesSchema.Websites[]) => {
+    try {
+      await igdbDbController.storeWebsites(chunk);
+    } catch (error) {
+      logger.error(`Error inserting websites: ${error}`);
+    }
+  });
+  logger.info('Websites inserted');
 };
 
 seed()
   .then(() => {
     logger.info('Seed complete');
-    process.exit(0);
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);

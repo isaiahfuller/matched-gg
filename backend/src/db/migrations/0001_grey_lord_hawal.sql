@@ -1,1 +1,0 @@
-ALTER TABLE "games" ALTER COLUMN "game_category" DROP NOT NULL;
