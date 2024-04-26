@@ -7,7 +7,7 @@ jobs:
   lint:
     strategy:
       matrix:
-        dir: [frontend, backend, landing]
+        dir: [frontend, backend]
     defaults:
       run:
         working-directory: ${{ matrix.dir }}
