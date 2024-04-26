@@ -26,10 +26,10 @@ export type AllFields =
   | ExpandedArtworkFields
   | ExpandedArtworkFields[];
 
-  export type AllDTO = 
+export type AllDTO =
   | GameDTO
-  | GameDTO[]  
+  | GameDTO[]
   | WebsiteDTO
   | WebsiteDTO[]
   | ArtworkDTO
-  | ArtworkDTO[]
+  | ArtworkDTO[];
