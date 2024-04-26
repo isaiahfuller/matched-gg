@@ -42,7 +42,7 @@ export class GetAll implements IGetAll {
   public async execute(
     options: RequestAllConfig,
     limit: number,
-    expanded: boolean,
+    expanded: boolean = true,
     totalCount?: number,
   ) {
     this.totalCount = totalCount ? totalCount : undefined;
