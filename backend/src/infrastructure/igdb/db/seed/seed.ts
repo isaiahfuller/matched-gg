@@ -6,12 +6,15 @@ import { logger } from 'src/util/logger';
 import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
 import * as gamesSchema from '../schema/games';
 import * as websitesSchema from '../schema/websites';
+import * as artworksSchema from '../schema/artworks';
 import { mapGame } from '../map/mapGame';
 import { chunk } from '@util/chunk';
 import { IgdbDbController } from '../controller/IgdbDbController';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
 import { mapWebsite } from '../map/mapWebsites';
+import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
+import { mapArtwork } from '../map/mapArtworks';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
@@ -84,6 +87,31 @@ const seed = async (): Promise<void> => {
     }
   });
   logger.info('Websites inserted');
+
+  const igdbArtworks: ArtworkDTO[] = await igdb.seedArtworks({
+    concurrency: 4,
+    expanded: false,
+  });
+
+  const artworks: artworksSchema.Artworks[] = igdbArtworks.map(
+    (artwork: ArtworkDTO): artworksSchema.Artworks => {
+      return mapArtwork(artwork);
+    },
+  );
+
+  logger.info({ artworks: artworks.length }, 'Artworks mapped');
+  const artworkChunks: [artworksSchema.Artworks[]] = chunk(artworks, 1000);
+
+  logger.info({ chunks: artworkChunks.length }, 'Artworks chunked');
+
+  artworkChunks.forEach(async (chunk: artworksSchema.Artworks[]) => {
+    try {
+      await igdbDbController.storeArtworks(chunk);
+    } catch (error) {
+      logger.error(`Error inserting artworks: ${error}`);
+    }
+  });
+  logger.info('Artworks inserted');
 };
 
 seed()

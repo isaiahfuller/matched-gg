@@ -8,8 +8,10 @@ import {
   SeedGamesOptionsDelay,
 } from './interfaces';
 import {
+  IGetAll,
   IGetAllGames,
   IGetAllWebsites,
+  IGetTotalCount,
   IGetTotalGameCount,
   IGetTotalWebsiteCount,
 } from './subsystems/interfaces';
@@ -19,6 +21,12 @@ import { GameDTO } from './subsystems/DTO/GameDTO';
 import { GetAllWebsites } from './subsystems/GetAllWebsites';
 import { GetTotalWebsiteCount } from './subsystems/GetTotalWebsiteCount';
 import { WebsiteDTO } from './subsystems/DTO/WebsiteDTO';
+import { ArtworkDTO } from './subsystems/DTO/ArtworkDTO';
+import { GetTotalCount } from './subsystems/GetTotalCount';
+import { GetAll } from './subsystems/GetAll';
+import { ArtworkFields } from './subsystems/enums/fields/ArtworkFields';
+import { GameFields } from './subsystems/enums/fields/GameFields';
+import { WebsiteFields } from './subsystems/enums/fields/WebsiteFields';
 
 export class IgdbFacade implements IgdbFacadeInterface {
   public config: IgdbFacadeConstructor['config'];
@@ -26,10 +34,12 @@ export class IgdbFacade implements IgdbFacadeInterface {
   public accessToken: IgdbFacadeConstructor['accessToken'];
   public client: Apicalypse;
 
-  protected getAllGames: IGetAllGames;
-  protected getTotalGameCount: IGetTotalGameCount;
-  protected getAllWebsites: IGetAllWebsites;
-  protected getTotalWebsiteCount: IGetTotalWebsiteCount;
+  protected getAllGames: IGetAll;
+  protected getTotalGameCount: IGetTotalCount;
+  protected getAllWebsites: IGetAll;
+  protected getTotalWebsiteCount: IGetTotalCount;
+  protected getAllArtworks: IGetAll
+  protected getTotalArtworkCount: IGetTotalCount
 
   constructor(
     config: IgdbFacadeConstructor['config'],
@@ -41,6 +51,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
     getTotalGameCount?: IGetTotalGameCount,
     getAllWebsites?,
     getTotalWebsiteCount?,
+    getAllArtworks?, getTotalArtworkCount?
   ) {
     this.config = config;
     this.logger = logger;
@@ -50,14 +61,16 @@ export class IgdbFacade implements IgdbFacadeInterface {
       this.accessToken || this.config.accessToken,
     );
     this.getAllGames =
-      getAllGames || new GetAllGames(this.config.clientId, this.accessToken);
+      getAllGames || new GetAll(this.config.clientId, this.accessToken, Object.values(GameFields), 'games')
     this.getTotalGameCount =
-      getTotalGameCount || new GetTotalGameCount(this.client);
+      getTotalGameCount || new GetTotalCount(this.client, 'games');
     this.getAllWebsites =
       getAllWebsites ||
-      new GetAllWebsites(this.config.clientId, this.accessToken);
+      new GetAll(this.config.clientId, this.accessToken, Object.values(WebsiteFields), 'websites')
     this.getTotalWebsiteCount =
-      getTotalWebsiteCount || new GetTotalWebsiteCount(this.client);
+      getTotalWebsiteCount || new GetTotalCount(this.client, 'websites');
+    this.getTotalArtworkCount = getTotalArtworkCount || new GetTotalCount(this.client, 'artworks')
+    this.getAllArtworks = getTotalArtworkCount || new GetAll(this.config.clientId, this.accessToken, Object.values(ArtworkFields), 'artworks')
   }
 
   public async seedGames({
@@ -79,7 +92,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       limit || 500,
       expanded,
       totalGamesCount,
-    );
+    ) as GameDTO[];
     this.logger.info('Games seeded');
     return games;
   }
@@ -103,8 +116,32 @@ export class IgdbFacade implements IgdbFacadeInterface {
       limit || 500,
       expanded,
       totalWebsitesCount,
-    );
+    ) as WebsiteDTO[];
     this.logger.info('Websites seeded');
     return websites;
+  }
+
+  public async seedArtworks({
+    limit,
+    concurrency,
+    delay,
+    expanded,
+  }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<ArtworkDTO[]> {
+    this.logger.info('Starting to seed artworks...');
+    const totalCount = await this.getTotalWebsiteCount.execute();
+    this.logger.info(
+      `Total websites count retrieved from IGDB: ${totalCount}`,
+    );
+    const artworks: ArtworkDTO[] = await this.getAllArtworks.execute(
+      {
+        concurrency: concurrency || 1,
+        delay: delay,
+      },
+      limit || 500,
+      expanded,
+      totalCount,
+    ) as ArtworkDTO[];
+    this.logger.info('Artworks seeded');
+    return artworks;
   }
 }

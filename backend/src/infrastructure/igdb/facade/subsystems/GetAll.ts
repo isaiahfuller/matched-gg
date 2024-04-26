@@ -12,7 +12,7 @@ import {
 } from './enums/fields/WebsiteFields';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
-export abstract class GetAll implements IGetAll {
+export class GetAll implements IGetAll {
   /**
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
@@ -23,10 +23,10 @@ export abstract class GetAll implements IGetAll {
 
   protected totalCount: number | undefined = undefined;
   constructor(
-    resource: string,
     clientId: ClientId,
     accessToken: AccessToken,
     fields: AllFields,
+    resource: string,
   ) {
     this.fields = fields;
     this.resource = resource;
@@ -38,8 +38,6 @@ export abstract class GetAll implements IGetAll {
         responseFieldsInterceptor(response, fields),
     });
   }
-
-  public async prepare(): Promise<void> {}
 
   public async execute(
     options: RequestAllConfig,

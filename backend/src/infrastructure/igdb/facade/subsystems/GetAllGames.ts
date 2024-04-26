@@ -20,7 +20,7 @@ export class GetAllGames extends GetAll implements IGetAllGames {
 
   constructor(clientId: ClientId, accessToken: AccessToken) {
     const fields = Object.values(GameFields);
-    super('games', clientId, accessToken, fields);
+    super(clientId, accessToken, fields, 'games');
   }
 
   public async execute(
