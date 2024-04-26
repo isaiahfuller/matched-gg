@@ -7,7 +7,6 @@
   "workspaces": [
     "frontend",
     "backend",
-    "landing",
     "packages/*"
   ],
   "scripts": {
@@ -19,9 +18,7 @@
     "backend:seed": "yarn --cwd backend seed",
     "generate:pg": "yarn --cwd backend drizzle-kit generate:pg",
     "start:frontend": "yarn --cwd frontend start",
-    "start:landing": "yarn --cwd landing start",
-    "build": "yarn --cwd frontend build",
-    "build:landing": "yarn --cwd landing build"
+    "build": "yarn --cwd frontend build"
   },
   "packageManager": "yarn@4.1.1"
 }
