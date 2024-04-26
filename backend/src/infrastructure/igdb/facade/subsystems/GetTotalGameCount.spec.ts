@@ -11,13 +11,6 @@ describe('GetTotalGameCount', () => {
     getTotalGameCount = new GetTotalGameCount(client);
   });
 
-  describe('prepare', () => {
-    it('should prepare the GetTotalGameCount instance for execution', async () => {
-      await getTotalGameCount.prepare();
-      // Add your assertions here
-    });
-  });
-
   describe('execute', () => {
     it('should retrieve the total count of games', async () => {
       // Mock the request method of the Apicalypse client

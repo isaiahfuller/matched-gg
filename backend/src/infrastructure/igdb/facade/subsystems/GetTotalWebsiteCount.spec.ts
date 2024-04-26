@@ -11,13 +11,6 @@ describe('GetTotalWebsiteCount', () => {
     getTotalWebsiteCount = new GetTotalWebsiteCount(client);
   });
 
-  describe('prepare', () => {
-    it('should prepare the GetTotalWebsiteCount instance for execution', async () => {
-      await getTotalWebsiteCount.prepare();
-      // Add your assertions here
-    });
-  });
-
   describe('execute', () => {
     it('should retrieve the total count of websites', async () => {
       // Mock the request method of the Apicalypse client

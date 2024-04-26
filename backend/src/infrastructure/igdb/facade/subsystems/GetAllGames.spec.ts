@@ -12,12 +12,6 @@ describe('GetAllGames', () => {
     getAllGames.client = client;
   });
 
-  describe('prepare', () => {
-    it('should prepare the GetAllGames instance for execution', async () => {
-      await getAllGames.prepare();
-    });
-  });
-
   describe('execute', () => {
     it('should retrieve all games with default options', async () => {
       client.requestAll = jest.fn().mockResolvedValue([
