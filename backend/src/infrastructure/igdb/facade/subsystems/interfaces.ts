@@ -3,6 +3,7 @@ import { GameFields } from './enums/fields/GameFields';
 import { GameDTO } from './DTO/GameDTO';
 import { AxiosResponse } from 'axios';
 import { WebsiteDTO } from './DTO/WebsiteDTO';
+import { AllDTO } from './types';
 
 export interface IGetGame {
   client: Apicalypse;
@@ -16,9 +17,7 @@ export interface IGetGame {
 
 export interface IGetTotalCount {
   client: Apicalypse;
-
-  prepare(): Promise<void>;
-  execute(resource: string): Promise<number>;
+  execute(): Promise<number>;
 }
 
 export interface IGetTotalGameCount extends IGetTotalCount {
@@ -43,7 +42,12 @@ export interface IGetManyGames {
 
 export interface IGetAll {
   client: Apicalypse;
-  prepare(): Promise<void>;
+  execute(
+    options: RequestAllConfig,
+    limit: number,
+    expanded?: boolean,
+    totalGameCount?: number,
+  ): Promise<AllDTO>;
 }
 
 export interface IGetAllGames extends IGetAll {

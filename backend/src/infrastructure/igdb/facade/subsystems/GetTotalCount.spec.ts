@@ -1,21 +1,14 @@
 import igdb from 'igdb-api-node';
-import { GetTotalGameCount } from './GetTotalGameCount';
+import { GetTotalCount } from './GetTotalCount';
 import { Apicalypse } from 'apicalypse';
 
-describe('GetTotalGameCount', () => {
-  let getTotalGameCount: GetTotalGameCount;
+describe('GetTotalCount', () => {
+  let getTotalCount: GetTotalCount;
   let client: Apicalypse;
 
   beforeEach(() => {
     client = igdb('test', 'test');
-    getTotalGameCount = new GetTotalGameCount(client);
-  });
-
-  describe('prepare', () => {
-    it('should prepare the GetTotalGameCount instance for execution', async () => {
-      await getTotalGameCount.prepare();
-      // Add your assertions here
-    });
+    getTotalCount = new GetTotalCount(client, 'games');
   });
 
   describe('execute', () => {
@@ -25,7 +18,7 @@ describe('GetTotalGameCount', () => {
         .fn()
         .mockResolvedValue({ status: 200, data: { count: 100 } });
 
-      const result = await getTotalGameCount.execute();
+      const result = await getTotalCount.execute();
 
       expect(result).toBe(100);
     });
@@ -36,7 +29,7 @@ describe('GetTotalGameCount', () => {
         .fn()
         .mockRejectedValue(new Error('Failed to get total game count'));
 
-      await expect(getTotalGameCount.execute()).rejects.toThrow(
+      await expect(getTotalCount.execute()).rejects.toThrow(
         'Failed to get total game count',
       );
     });

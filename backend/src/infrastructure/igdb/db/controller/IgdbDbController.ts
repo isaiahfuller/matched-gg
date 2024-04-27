@@ -1,6 +1,7 @@
 import { db } from 'src/db/db';
 import * as gamesSchema from '../schema/games';
 import * as websitesSchema from '../schema/websites';
+import * as artworksSchema from '../schema/artworks';
 import { QueryResult } from 'pg';
 
 export class IgdbDbController {
@@ -22,5 +23,13 @@ export class IgdbDbController {
     return await this.db
       .insert(websitesSchema.websitesTable)
       .values([websites].flat());
+  }
+
+  public async storeArtworks(
+    artworks: artworksSchema.Artworks[] | artworksSchema.Artworks,
+  ): Promise<QueryResult<artworksSchema.Artworks[]>> {
+    return await this.db
+      .insert(artworksSchema.artworksTable)
+      .values([artworks].flat());
   }
 }

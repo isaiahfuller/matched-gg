@@ -1,21 +1,16 @@
 import igdb from 'igdb-api-node';
-import { GetAllGames } from './GetAllGames';
+import { GetAll } from './GetAll';
 import { Apicalypse } from 'apicalypse';
+import { GameFields } from './enums/fields/GameFields';
 
-describe('GetAllGames', () => {
-  let getAllGames: GetAllGames;
+describe('GetAll', () => {
+  let getAll: GetAll;
   let client: Apicalypse;
 
   beforeEach(() => {
     client = igdb('test', 'test');
-    getAllGames = new GetAllGames('test', 'test');
-    getAllGames.client = client;
-  });
-
-  describe('prepare', () => {
-    it('should prepare the GetAllGames instance for execution', async () => {
-      await getAllGames.prepare();
-    });
+    getAll = new GetAll('test', 'test', Object.values(GameFields), 'games');
+    getAll.client = client;
   });
 
   describe('execute', () => {
@@ -25,7 +20,7 @@ describe('GetAllGames', () => {
         { id: 2, name: 'Game 2' },
       ]);
 
-      const result = await getAllGames.execute({}, 10);
+      const result = await getAll.execute({}, 10);
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1' },
@@ -39,12 +34,7 @@ describe('GetAllGames', () => {
         { id: 2, name: 'Game 2' },
       ]);
 
-      const result = await getAllGames.execute(
-        { concurrency: 2 },
-        10,
-        true,
-        100,
-      );
+      const result = await getAll.execute({ concurrency: 2 }, 10, true, 100);
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1' },
@@ -58,7 +48,7 @@ describe('GetAllGames', () => {
         { id: 2, name: 'Game 2' },
       ]);
 
-      const result = await getAllGames.execute({ delay: 1000 }, 10, true, 100);
+      const result = await getAll.execute({ delay: 1000 }, 10, true, 100);
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1' },
@@ -74,7 +64,7 @@ describe('GetAllGames', () => {
           { id: 1, name: 'Game 1', genre: { id: 1, name: 'Genre 1' } },
         ]);
 
-      const result = await getAllGames.execute({}, 10, true);
+      const result = await getAll.execute({}, 10, true);
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1', genre: { id: 1, name: 'Genre 1' } },
@@ -87,7 +77,7 @@ describe('GetAllGames', () => {
         .fn()
         .mockResolvedValue([{ id: 1, name: 'Game 1', genre: 1 }]);
 
-      const result = await getAllGames.execute({}, 10, false);
+      const result = await getAll.execute({}, 10, false);
 
       expect(result).toEqual([{ id: 1, name: 'Game 1', genre: 1 }]);
     });
@@ -97,7 +87,7 @@ describe('GetAllGames', () => {
         .fn()
         .mockRejectedValue(new Error('Failed to get all games'));
 
-      await expect(getAllGames.execute({}, 10)).rejects.toThrow(
+      await expect(getAll.execute({}, 10)).rejects.toThrow(
         'Failed to get all games',
       );
     });

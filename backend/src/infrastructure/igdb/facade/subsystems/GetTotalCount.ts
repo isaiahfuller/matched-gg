@@ -1,25 +1,21 @@
 import { Apicalypse } from 'apicalypse';
 import { IGetTotalCount } from './interfaces';
 
-export abstract class GetTotalCount implements IGetTotalCount {
+export class GetTotalCount implements IGetTotalCount {
   client: Apicalypse;
+  resource: string;
 
-  constructor(client: Apicalypse) {
+  constructor(client: Apicalypse, resource: string) {
     this.client = client;
+    this.resource = resource;
   }
 
-  /**
-   * Prepares the GetCount instance for execution.
-   * @returns A promise that resolves when the preparation is complete.
-   */
-  public async prepare(): Promise<void> {}
-
-  public async execute(resource): Promise<number> {
-    const countRes = await this.client.request(`/${resource}/count`);
+  public async execute(): Promise<number> {
+    const countRes = await this.client.request(`/${this.resource}/count`);
     if (countRes.status === 200) {
       return countRes.data?.count;
     } else {
-      throw new Error(`Failed to get total ${resource} count`);
+      throw new Error(`Failed to get total ${this.resource} count`);
     }
   }
 }
