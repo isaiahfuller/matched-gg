@@ -1,5 +1,5 @@
 import igdb from 'igdb-api-node';
-import { GetTotalCount } from './GetTotalCount';
+import { GetTotalCount } from './GetCount';
 import { Apicalypse } from 'apicalypse';
 
 describe('GetTotalCount', () => {

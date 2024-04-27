@@ -1,5 +1,5 @@
-import { GameCategoryEnum } from '../enums/GameCategoryEnum';
-import { GameStatusEnum } from '../enums/GameStatusEnum';
+import { GameCategoryEnum } from '../enums/GameCategory';
+import { GameStatusEnum } from '../enums/GameStatus';
 
 export type NRGameDTO = Pick<
   GameDTO,

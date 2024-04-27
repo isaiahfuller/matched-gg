@@ -1,4 +1,4 @@
-import { WebsiteEnum } from '../enums/WebsiteEnum';
+import { WebsiteEnum } from '../enums/Website';
 
 export type NRWebsiteDTO = Pick<WebsiteDTO, 'checksum' | 'trusted' | 'url'>;
 

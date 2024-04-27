@@ -10,17 +10,18 @@ import {
 import {
   IGetAll,
   IGetAllGames,
-  IGetTotalCount,
+  IGetCount,
   IGetTotalGameCount,
 } from './subsystems/interfaces';
 import { GameDTO } from './subsystems/DTO/GameDTO';
 import { WebsiteDTO } from './subsystems/DTO/WebsiteDTO';
 import { ArtworkDTO } from './subsystems/DTO/ArtworkDTO';
-import { GetTotalCount } from './subsystems/GetTotalCount';
+import { GetCount } from './subsystems/GetCount';
 import { GetAll } from './subsystems/GetAll';
 import { ArtworkFields } from './subsystems/enums/fields/ArtworkFields';
 import { GameFields } from './subsystems/enums/fields/GameFields';
 import { WebsiteFields } from './subsystems/enums/fields/WebsiteFields';
+import { IgdbResources } from './subsystems/enums/IgdbResources';
 
 export class IgdbFacade implements IgdbFacadeInterface {
   public config: IgdbFacadeConstructor['config'];
@@ -29,11 +30,11 @@ export class IgdbFacade implements IgdbFacadeInterface {
   public client: Apicalypse;
 
   protected getAllGames: IGetAll;
-  protected getTotalGameCount: IGetTotalCount;
+  protected getTotalGameCount: IGetCount;
   protected getAllWebsites: IGetAll;
-  protected getTotalWebsiteCount: IGetTotalCount;
+  protected getTotalWebsiteCount: IGetCount;
   protected getAllArtworks: IGetAll;
-  protected getTotalArtworkCount: IGetTotalCount;
+  protected getTotalArtworkCount: IGetCount;
 
   constructor(
     config: IgdbFacadeConstructor['config'],
@@ -43,10 +44,10 @@ export class IgdbFacade implements IgdbFacadeInterface {
     // Dependency injection for methods
     getAllGames?: IGetAllGames,
     getTotalGameCount?: IGetTotalGameCount,
-    getAllWebsites?,
-    getTotalWebsiteCount?,
-    getAllArtworks?,
-    getTotalArtworkCount?,
+    getAllWebsites?: GetAll,
+    getTotalWebsiteCount?: GetCount,
+    getAllArtworks?: GetAll,
+    getTotalArtworkCount?: GetAll,
   ) {
     this.config = config;
     this.logger = logger;
@@ -64,7 +65,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
         'games',
       );
     this.getTotalGameCount =
-      getTotalGameCount || new GetTotalCount(this.client, 'games');
+      getTotalGameCount || new GetCount(this.client, IgdbResources.GAMES);
     this.getAllWebsites =
       getAllWebsites ||
       new GetAll(
@@ -74,9 +75,9 @@ export class IgdbFacade implements IgdbFacadeInterface {
         'websites',
       );
     this.getTotalWebsiteCount =
-      getTotalWebsiteCount || new GetTotalCount(this.client, 'websites');
+      getTotalWebsiteCount || new GetCount(this.client, IgdbResources.WEBSITES);
     this.getTotalArtworkCount =
-      getTotalArtworkCount || new GetTotalCount(this.client, 'artworks');
+      getTotalArtworkCount || new GetCount(this.client, IgdbResources.ARTWORKS);
     this.getAllArtworks =
       getAllArtworks ||
       new GetAll(

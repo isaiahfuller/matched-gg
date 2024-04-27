@@ -11,6 +11,7 @@ import {
   WebsiteFields,
 } from './enums/fields/WebsiteFields';
 
+export type Count = number;
 export type Fields = string;
 export type AllFields =
   | GameFields

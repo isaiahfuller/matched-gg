@@ -1,69 +1,28 @@
 import { Apicalypse, RequestAllConfig } from 'apicalypse';
-import { GameFields } from './enums/fields/GameFields';
-import { GameDTO } from './DTO/GameDTO';
 import { AxiosResponse } from 'axios';
-import { WebsiteDTO } from './DTO/WebsiteDTO';
-import { AllDTO } from './types';
 
-export interface IGetGame {
+export interface IgdbBase {
   client: Apicalypse;
-
-  prepare(): Promise<void>;
-  execute(
-    id: number,
-    fields: GameFields[] | GameFields | string,
-  ): Promise<GameDTO>;
 }
 
-export interface IGetTotalCount {
-  client: Apicalypse;
-  execute(): Promise<number>;
-}
-
-export interface IGetTotalGameCount extends IGetTotalCount {
-  execute(): Promise<number>;
-}
-
-export interface IGetTotalWebsiteCount extends IGetTotalCount {
-  execute(): Promise<number>;
-}
-
-export interface IGetManyGames {
-  client: Apicalypse;
-
-  prepare(): Promise<void>;
-  execute(
-    fields: GameFields[] | GameFields | string,
+export interface IgdbGet extends IgdbBase {
+  execute<Fields, DTO>(
+    fields: Fields[] | Fields | string,
     limit: number,
     ids: number[],
     offset?: number,
-  ): Promise<AxiosResponse<GameDTO[]>>;
+  ): Promise<AxiosResponse<DTO[]>>;
 }
 
-export interface IGetAll {
-  client: Apicalypse;
-  execute(
+export interface IgdbGetAll extends IgdbBase {
+  execute<DTO>(
     options: RequestAllConfig,
     limit: number,
     expanded?: boolean,
-    totalGameCount?: number,
-  ): Promise<AllDTO>;
+    totalCount?: number,
+  ): Promise<DTO[]>;
 }
 
-export interface IGetAllGames extends IGetAll {
-  execute(
-    options: RequestAllConfig,
-    limit: number,
-    expanded?: boolean,
-    totalGameCount?: number,
-  ): Promise<GameDTO[]>;
-}
-
-export interface IGetAllWebsites extends IGetAll {
-  execute(
-    options: RequestAllConfig,
-    limit: number,
-    expanded?: boolean,
-    totalGameCount?: number,
-  ): Promise<WebsiteDTO[]>;
+export interface IgdbGetCount extends IgdbBase {
+  execute<DTO>(): Promise<AxiosResponse<DTO>>;
 }

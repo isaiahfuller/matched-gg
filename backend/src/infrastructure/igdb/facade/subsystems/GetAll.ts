@@ -1,5 +1,5 @@
 import igdb from 'igdb-api-node';
-import { IGetAll } from './interfaces';
+import { IgdbGetAll } from './interfaces';
 import { Apicalypse, RequestAllConfig } from 'apicalypse';
 import { AccessToken, ClientId } from 'src/infrastructure/types';
 import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
@@ -12,7 +12,7 @@ import {
 } from './enums/fields/WebsiteFields';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
-export class GetAll implements IGetAll {
+export class GetAll implements IgdbGetAll {
   /**
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
