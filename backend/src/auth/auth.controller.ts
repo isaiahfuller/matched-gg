@@ -14,10 +14,13 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SteamAuthResponse } from './types';
+import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
+import { config } from '@config/config';
 
 @Controller('auth')
 export class AuthController {
   private logger = new Logger(AuthController.name);
+  private steamHandler = new SteamHandler(config);
   constructor(private readonly authService: AuthService) {}
 
   @Get('steam') // TODO: Change to Post when front-end is implemented
@@ -32,6 +35,13 @@ export class AuthController {
   @UseGuards(AuthGuard('steam'))
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
     session.profile = req.user._json;
+    await this.steamHandler.getOwnedGames(req.user._json.steamid);
+    console.log(
+      await this.steamHandler.getGameAchievements(
+        req.user._json.steamid,
+        620980,
+      ),
+    );
     // TODO: Stop hardcoding the redirect URL
     res.redirect('http://localhost:5173/');
     return session;

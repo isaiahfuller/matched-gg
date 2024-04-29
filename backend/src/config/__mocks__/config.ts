@@ -12,6 +12,9 @@ const mockConfig = {
     clientId: 'efawefawef',
     clientSecret: 'awefwaefweaf',
   },
+  steam: {
+    apiKey: 'bny8iby8987byobnjhi',
+  },
   pinoOptions: {
     level: 'info',
     name: 'logger',
