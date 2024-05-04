@@ -12,18 +12,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from './auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { SteamAuthResponse } from './types';
 import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
 import { config } from '@config/config';
 
-@Controller('auth')
-export class AuthController {
-  private logger = new Logger(AuthController.name);
+@Controller('steam')
+export class SteamController {
+  private logger = new Logger(SteamController.name);
   private steamHandler = new SteamHandler(config);
   constructor(private readonly authService: AuthService) {}
 
-  @Get('steam') // TODO: Change to Post when front-end is implemented
+  @Get('auth') // TODO: Change to Post when front-end is implemented
   @UseGuards(AuthGuard('steam'))
   @HttpCode(HttpStatus.OK)
   /**
@@ -31,7 +31,7 @@ export class AuthController {
    */
   login() {}
 
-  @Get('steam/return')
+  @Get('auth/return')
   @UseGuards(AuthGuard('steam'))
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
     session.profile = req.user._json;
@@ -47,7 +47,17 @@ export class AuthController {
     return session;
   }
 
-  @Post('steam/valid')
+  @Post('game-achievements')
+  async achivements(@Session() session, @Req() req, @Res() res) {
+    const achivements = await this.steamHandler.getGameAchievements(
+      session.profile.steamid,
+      req.body.appid,
+    );
+    res.send(achivements);
+    return achivements;
+  }
+
+  @Post('valid')
   async validate(@Session() session, @Req() req, @Body() body, @Res() res) {
     res.send(session.profile);
     return session;

@@ -38,7 +38,8 @@ export default class SteamHandler {
       appid: appid,
     });
     const response = (await axios.get(url)).data;
-    console.log(response.playerstats.achievements);
-    return response.playerstats;
+    const achievements = response.playerstats.achievements;
+
+    return achievements;
   }
 }

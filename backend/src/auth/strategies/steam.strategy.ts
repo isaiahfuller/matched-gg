@@ -2,7 +2,12 @@ import { Strategy } from 'passport-steam';
 import { PassportStrategy, AuthModuleOptions } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
-import { DoneFn, Options, SteamProfile, ValidateFn } from '../types';
+import {
+  DoneFn,
+  Options,
+  SteamProfile,
+  ValidateFn,
+} from '../../providers/steam/types';
 import { config } from '@config/config';
 
 @Injectable()
@@ -14,7 +19,7 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
     super(
       {
         // TODO: Stop hardcoding the return & realm URLs
-        returnURL: 'http://localhost:3000/auth/steam/return',
+        returnURL: 'http://localhost:3000/steam/auth/return',
         realm: 'http://localhost:3000/',
         apiKey: config.steam.apiKey,
         passReqToCallback: true,
