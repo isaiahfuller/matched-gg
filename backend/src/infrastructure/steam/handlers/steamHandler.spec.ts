@@ -54,9 +54,32 @@ describe('SteamHandler', () => {
     expect(response).toBeDefined();
     expect(response.game_count).toBeDefined();
   });
-  it('throw an error if missing information', async () => {
+  it('throw an error if missing a Steam ID', async () => {
     await expect(steamHandler.getOwnedGames(null)).rejects.toThrow(
       'No Steam ID provided! Is there a valid, logged in session?',
     );
+  });
+  it('throw an error if the Steam ID is invalid', async () => {
+    mockAxios.get.mockResolvedValue({
+      data: {
+        response: {},
+      },
+    });
+    await expect(steamHandler.getOwnedGames('xxxxxx')).rejects.toThrow(
+      'Steam ID was invalid.',
+    );
+  });
+  it("throw an error if achievements are requested on a game the user doesn't own", async () => {
+    mockAxios.get.mockResolvedValue({
+      data: {
+        playerstats: {
+          success: false,
+          error: 'Requested app has no stats',
+        },
+      },
+    });
+    await expect(
+      steamHandler.getGameAchievements('xxxxxx', 69420),
+    ).rejects.toThrow('Requested app has no stats');
   });
 });

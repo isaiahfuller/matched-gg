@@ -30,6 +30,9 @@ export default class SteamHandler {
     });
     const response = await axios.get(url);
     const data: SteamOwnedGames = response.data.response;
+    if (!('games' in data)) {
+      throw new Error('Steam ID was invalid.');
+    }
     return data;
   }
   /**
@@ -48,6 +51,9 @@ export default class SteamHandler {
       appid: appid,
     });
     const response = await axios.get(url);
+    if (!response.data.playerstats.success) {
+      throw new Error(response.data.playerstats.error);
+    }
     const achievements = response.data.playerstats.achievements;
 
     return achievements;
