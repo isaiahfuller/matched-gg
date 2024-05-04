@@ -47,7 +47,7 @@ export class SteamController {
     return session;
   }
 
-  @Post('game-achievements')
+  @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {
     const achivements = await this.steamHandler.getGameAchievements(
       session.profile.steamid,
@@ -55,6 +55,14 @@ export class SteamController {
     );
     res.send(achivements);
     return achivements;
+  }
+  @Get('getOwnedGames')
+  async ownedGames(@Session() session, @Res() res) {
+    const games = await this.steamHandler.getOwnedGames(
+      session.profile.steamid,
+    );
+    res.send(games.games);
+    return games;
   }
 
   @Post('valid')

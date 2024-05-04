@@ -7,6 +7,9 @@ import { SteamOwnedGames } from './interfaces';
 export default class SteamHandler {
   private apiKey: SteamConfig['apiKey'];
   BASE_URL = 'https://api.steampowered.com';
+  private NoIdError = new Error(
+    'No Steam ID provided! Is there a valid, logged in session?',
+  );
   constructor(config) {
     this.apiKey = config.steam.apiKey;
   }
@@ -17,13 +20,17 @@ export default class SteamHandler {
    * @returns The user's owned games, with playtime and last played timestamp
    */
   public async getOwnedGames(steamId) {
+    if (!steamId) {
+      throw this.NoIdError;
+    }
     const method = 'IPlayerService/GetOwnedGames';
     const url = buildSteamUrl(method, {
       steamid: steamId,
       include_played_free_games: true,
     });
-    const response: SteamOwnedGames = (await axios.get(url)).data.response;
-    return response;
+    const response = await axios.get(url);
+    const data: SteamOwnedGames = response.data.response;
+    return data;
   }
   /**
    *
@@ -32,13 +39,16 @@ export default class SteamHandler {
    * @returns
    */
   public async getGameAchievements(steamId, appid) {
+    if (!steamId) {
+      throw this.NoIdError;
+    }
     const method = 'ISteamUserStats/GetPlayerAchievements';
     const url = buildSteamUrl(method, {
       steamid: steamId,
       appid: appid,
     });
-    const response = (await axios.get(url)).data;
-    const achievements = response.playerstats.achievements;
+    const response = await axios.get(url);
+    const achievements = response.data.playerstats.achievements;
 
     return achievements;
   }
