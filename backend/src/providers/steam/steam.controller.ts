@@ -34,23 +34,17 @@ export class SteamController {
   @Get('auth/return')
   @UseGuards(AuthGuard('steam'))
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
-    session.profile = req.user._json;
-    await this.steamHandler.getOwnedGames(req.user._json.steamid);
-    console.log(
-      await this.steamHandler.getGameAchievements(
-        req.user._json.steamid,
-        620980,
-      ),
-    );
+    if (!('providers' in session)) session.providers = {};
+    session.providers.steam = req.user._json;
     // TODO: Stop hardcoding the redirect URL
     res.redirect('http://localhost:5173/');
-    return session;
+    return;
   }
 
   @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {
     const achivements = await this.steamHandler.getGameAchievements(
-      session.profile.steamid,
+      session.providers.steam.steamid,
       req.body.appid,
     );
     res.send(achivements);
@@ -59,7 +53,7 @@ export class SteamController {
   @Get('getOwnedGames')
   async ownedGames(@Session() session, @Res() res) {
     const games = await this.steamHandler.getOwnedGames(
-      session.profile.steamid,
+      session.providers.steam.steamid,
     );
     res.send(games.games);
     return games;
@@ -67,7 +61,7 @@ export class SteamController {
 
   @Post('valid')
   async validate(@Session() session, @Req() req, @Body() body, @Res() res) {
-    res.send(session.profile);
+    res.send(session.providers.steam);
     return session;
   }
 }
