@@ -1,6 +1,5 @@
 import { SteamConfig } from '@config/interfaces';
 import axios from 'axios';
-import { Logger } from 'pino';
 import buildSteamUrl from '../util/buildSteamUrl';
 import { SteamOwnedGames } from './interfaces';
 
