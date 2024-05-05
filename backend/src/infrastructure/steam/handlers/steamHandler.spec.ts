@@ -1,4 +1,3 @@
-import { Logger } from 'pino';
 import SteamHandler from './steamHandler';
 import axios from 'axios';
 import { SteamOwnedGames } from './interfaces';
@@ -9,12 +8,6 @@ const mockAxios = axios as jest.Mocked<typeof axios>;
 
 describe('SteamHandler', () => {
   let steamHandler: SteamHandler;
-
-  const logger = {
-    info: jest.fn(),
-    error: jest.fn(),
-    warn: jest.fn(),
-  } as unknown as Logger;
 
   beforeEach(() => {
     steamHandler = new SteamHandler({

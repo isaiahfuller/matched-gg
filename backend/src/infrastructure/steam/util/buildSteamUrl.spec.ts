@@ -1,4 +1,3 @@
-import { config } from '@config/config';
 import buildSteamUrl from './buildSteamUrl';
 jest.mock('src/util/logger');
 
