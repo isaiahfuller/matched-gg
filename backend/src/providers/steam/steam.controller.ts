@@ -60,7 +60,11 @@ export class SteamController {
   }
 
   @Post('valid')
-  async validate(@Session() session, @Req() req, @Body() body, @Res() res) {
+  async validate(@Session() session, @Res() res) {
+    if (!('providers' in session) || !('steam' in session.providers)) {
+      res.status(401).send({ error: 'Steam not logged in.' });
+      return session;
+    }
     res.send(session.providers.steam);
     return session;
   }
