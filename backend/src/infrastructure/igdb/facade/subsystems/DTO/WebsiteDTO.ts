@@ -1,9 +1,9 @@
-import { WebsiteEnum } from '../enums/WebsiteEnum';
+import { Website } from '../enums/Website';
 
 export type NRWebsiteDTO = Pick<WebsiteDTO, 'checksum' | 'trusted' | 'url'>;
 
 export interface WebsiteDTO {
-  category: WebsiteEnum;
+  category: Website;
   checksum: string;
   game: number;
   trusted: boolean;
