@@ -1,7 +1,7 @@
 /**
  * Enum representing the available fields for a game in the IGDB API.
  */
-export enum GameFields {
+export enum GameField {
   age_ratings = 'age_ratings',
   aggregated_rating = 'aggregated_rating',
   aggregated_rating_count = 'aggregated_rating_count',

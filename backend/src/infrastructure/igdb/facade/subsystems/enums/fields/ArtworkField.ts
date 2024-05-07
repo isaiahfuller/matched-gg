@@ -1,7 +1,7 @@
 /**
  * Enum representing the available fields for an artwork in the IGDB API.
  */
-export enum ArtworkFields {
+export enum ArtworkField {
   alpha_channel = 'alpha_channel',
   animated = 'animated',
   checksum = 'checksum',
@@ -12,7 +12,7 @@ export enum ArtworkFields {
   width = 'width',
 }
 
-export enum ExpandedArtworkFields {
+export enum ExpandedArtworkField {
   alpha_channel = 'alpha_channel',
   animated = 'animated',
   checksum = 'checksum',
