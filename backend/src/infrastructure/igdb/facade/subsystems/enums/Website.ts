@@ -1,3 +1,6 @@
+/**
+ * Enum representing different types of websites.
+ */
 export enum Website {
   official = 1,
   wikia = 2,
