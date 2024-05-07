@@ -1,5 +1,5 @@
 export enum IgdbEndpoint {
-    ARTWORK = 'artwork',
-    GAMES = 'games',
-    WEBSITES = 'websites',
+  ARTWORK = 'artwork',
+  GAMES = 'games',
+  WEBSITES = 'websites',
 }
