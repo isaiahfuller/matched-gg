@@ -1,4 +1,4 @@
-export enum WebsiteEnum {
+export enum Website {
   official = 1,
   wikia = 2,
   wikipedia = 3,

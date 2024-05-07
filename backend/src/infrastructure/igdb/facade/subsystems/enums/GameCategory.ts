@@ -1,7 +1,7 @@
 /**
  * Represents the categories of a game.
  */
-export enum GameCategoryEnum {
+export enum GameCategory {
   main_game = 0,
   dlc_addon = 1,
   expansion = 2,
