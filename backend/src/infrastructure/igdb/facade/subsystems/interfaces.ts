@@ -1,5 +1,5 @@
 import { Apicalypse, RequestAllConfig } from 'apicalypse';
-import { GameFields } from './enums/fields/GameFields';
+import { GameField } from './enums/fields/GameField';
 import { GameDTO } from './DTO/GameDTO';
 import { AxiosResponse } from 'axios';
 import { WebsiteDTO } from './DTO/WebsiteDTO';
@@ -11,7 +11,7 @@ export interface IGetGame {
   prepare(): Promise<void>;
   execute(
     id: number,
-    fields: GameFields[] | GameFields | string,
+    fields: GameField[] | GameField | string,
   ): Promise<GameDTO>;
 }
 
@@ -33,7 +33,7 @@ export interface IGetManyGames {
 
   prepare(): Promise<void>;
   execute(
-    fields: GameFields[] | GameFields | string,
+    fields: GameField[] | GameField | string,
     limit: number,
     ids: number[],
     offset?: number,
