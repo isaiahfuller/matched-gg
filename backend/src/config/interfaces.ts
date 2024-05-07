@@ -4,6 +4,10 @@ export interface TwitchConfig {
   clientSecret: string;
 }
 
+export interface SteamConfig {
+  apiKey: string;
+}
+
 export interface IgdbConfig {
   clientId: string;
   accessToken: string;
