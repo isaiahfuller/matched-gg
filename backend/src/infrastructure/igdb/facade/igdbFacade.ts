@@ -18,9 +18,9 @@ import { WebsiteDTO } from './subsystems/DTO/WebsiteDTO';
 import { ArtworkDTO } from './subsystems/DTO/ArtworkDTO';
 import { GetTotalCount } from './subsystems/GetTotalCount';
 import { GetAll } from './subsystems/GetAll';
-import { ArtworkFields } from './subsystems/enums/fields/ArtworkFields';
-import { GameFields } from './subsystems/enums/fields/GameFields';
-import { WebsiteFields } from './subsystems/enums/fields/WebsiteFields';
+import { ArtworkField } from './subsystems/enums/fields/ArtworkField';
+import { GameField } from './subsystems/enums/fields/GameField';
+import { WebsiteField } from './subsystems/enums/fields/WebsiteField';
 
 export class IgdbFacade implements IgdbFacadeInterface {
   public config: IgdbFacadeConstructor['config'];
@@ -60,7 +60,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       new GetAll(
         this.config.clientId,
         this.accessToken,
-        Object.values(GameFields),
+        Object.values(GameField),
         'games',
       );
     this.getTotalGameCount =
@@ -70,7 +70,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       new GetAll(
         this.config.clientId,
         this.accessToken,
-        Object.values(WebsiteFields),
+        Object.values(WebsiteField),
         'websites',
       );
     this.getTotalWebsiteCount =
@@ -82,7 +82,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       new GetAll(
         this.config.clientId,
         this.accessToken,
-        Object.values(ArtworkFields),
+        Object.values(ArtworkField),
         'artworks',
       );
   }

@@ -1,7 +1,7 @@
 /**
  * Enum representing the status of a game.
  */
-export enum GameStatusEnum {
+export enum GameStatus {
   released = 0,
   alpha = 2,
   beta = 3,

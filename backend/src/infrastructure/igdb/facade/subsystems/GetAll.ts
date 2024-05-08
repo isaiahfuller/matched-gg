@@ -4,12 +4,12 @@ import { Apicalypse, RequestAllConfig } from 'apicalypse';
 import { AccessToken, ClientId } from 'src/infrastructure/types';
 import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
 import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
-import { AllFields } from './types';
-import { ExpandedGameFields, GameFields } from './enums/fields/GameFields';
+import { AllField } from './types';
+import { ExpandedGameField, GameField } from './enums/fields/GameField';
 import {
-  ExpandedWebsiteFields,
-  WebsiteFields,
-} from './enums/fields/WebsiteFields';
+  ExpandedWebsiteField,
+  WebsiteField,
+} from './enums/fields/WebsiteField';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
 export class GetAll implements IGetAll {
@@ -17,7 +17,7 @@ export class GetAll implements IGetAll {
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
    */
-  fields: AllFields;
+  fields: AllField;
   resource: string;
   client: Apicalypse;
 
@@ -25,7 +25,7 @@ export class GetAll implements IGetAll {
   constructor(
     clientId: ClientId,
     accessToken: AccessToken,
-    fields: AllFields,
+    fields: AllField,
     resource: string,
   ) {
     this.fields = fields;
@@ -48,11 +48,11 @@ export class GetAll implements IGetAll {
     this.totalCount = totalCount ? totalCount : undefined;
     switch (this.resource) {
       case 'games':
-        this.fields = Object.values(expanded ? ExpandedGameFields : GameFields);
+        this.fields = Object.values(expanded ? ExpandedGameField : GameField);
         break;
       case 'websites':
         this.fields = Object.values(
-          expanded ? ExpandedWebsiteFields : WebsiteFields,
+          expanded ? ExpandedWebsiteField : WebsiteField,
         );
     }
     const data = await this.client

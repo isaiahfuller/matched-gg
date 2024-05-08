@@ -1,7 +1,7 @@
 /**
  * Enum representing the available fields for a website in the IGDB API.
  */
-export enum WebsiteFields {
+export enum WebsiteField {
   category = 'category',
   checksum = 'checksum',
   game = 'game',
@@ -12,7 +12,7 @@ export enum WebsiteFields {
 /**
  * Enum representing the expanded fields for a website.
  */
-export enum ExpandedWebsiteFields {
+export enum ExpandedWebsiteField {
   category = 'category',
   checksum = 'checksum',
   game = 'game.*',

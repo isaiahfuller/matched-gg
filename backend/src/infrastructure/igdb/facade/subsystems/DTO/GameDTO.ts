@@ -1,5 +1,5 @@
-import { GameCategoryEnum } from '../enums/GameCategoryEnum';
-import { GameStatusEnum } from '../enums/GameStatusEnum';
+import { GameCategory } from '../enums/GameCategory';
+import { GameStatus } from '../enums/GameStatus';
 
 export type NRGameDTO = Pick<
   GameDTO,
@@ -33,7 +33,7 @@ export interface GameDTO {
   alternative_names?: number[];
   artworks?: number[];
   bundles?: number[];
-  category?: GameCategoryEnum;
+  category?: GameCategory;
   checksum?: string;
   collection?: number;
   collections?: number[];
@@ -70,7 +70,7 @@ export interface GameDTO {
   similar_games?: number[];
   slug?: string;
   standalone_expansions?: number[];
-  status?: GameStatusEnum;
+  status?: GameStatus;
   storyline?: string;
   summary?: string;
   tags?: number[]; // IMPORTANT

@@ -2,29 +2,29 @@ import { ArtworkDTO } from './DTO/ArtworkDTO';
 import { GameDTO } from './DTO/GameDTO';
 import { WebsiteDTO } from './DTO/WebsiteDTO';
 import {
-  ArtworkFields,
-  ExpandedArtworkFields,
-} from './enums/fields/ArtworkFields';
-import { GameFields, ExpandedGameFields } from './enums/fields/GameFields';
+  ArtworkField,
+  ExpandedArtworkField,
+} from './enums/fields/ArtworkField';
+import { GameField, ExpandedGameField } from './enums/fields/GameField';
 import {
-  ExpandedWebsiteFields,
-  WebsiteFields,
-} from './enums/fields/WebsiteFields';
+  ExpandedWebsiteField,
+  WebsiteField,
+} from './enums/fields/WebsiteField';
 
-export type Fields = string;
-export type AllFields =
-  | GameFields
-  | GameFields[]
-  | ExpandedGameFields
-  | ExpandedGameFields[]
-  | WebsiteFields
-  | WebsiteFields[]
-  | ExpandedWebsiteFields
-  | ExpandedWebsiteFields[]
-  | ArtworkFields
-  | ArtworkFields[]
-  | ExpandedArtworkFields
-  | ExpandedArtworkFields[];
+export type Field = string;
+export type AllField =
+  | GameField
+  | GameField[]
+  | ExpandedGameField
+  | ExpandedGameField[]
+  | WebsiteField
+  | WebsiteField[]
+  | ExpandedWebsiteField
+  | ExpandedWebsiteField[]
+  | ArtworkField
+  | ArtworkField[]
+  | ExpandedArtworkField
+  | ExpandedArtworkField[];
 
 export type AllDTO =
   | GameDTO
