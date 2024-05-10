@@ -7,7 +7,7 @@ export const artworksTable = pgTable('artworks', {
   checksum: text('checksum'),
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
   height: integer('height'),
-  imageId: text('image_id'),
+  imageId: text('image_id').primaryKey(),
   url: text('url'),
   width: integer('width'),
 });

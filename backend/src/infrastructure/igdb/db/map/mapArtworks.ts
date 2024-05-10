@@ -2,8 +2,8 @@ import { Artworks } from '../schema/artworks';
 
 export const mapArtwork = (artwork) => {
   const mappedArtwork = {
-    alphaChannel: artwork.alpha_channel,
-    animated: artwork.animated,
+    alphaChannel: artwork.alpha_channel || false,
+    animated: artwork.animated || false,
     checksum: artwork.checksum,
     game: artwork.game,
     height: artwork.height,
