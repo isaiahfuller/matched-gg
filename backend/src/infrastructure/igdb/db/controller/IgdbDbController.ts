@@ -3,6 +3,7 @@ import * as gamesSchema from '../schema/games';
 import * as websitesSchema from '../schema/websites';
 import * as artworksSchema from '../schema/artworks';
 import { QueryResult } from 'pg';
+import { setAllConflictUpdateColumns } from '../util/setAllConflictUpdateColumns';
 
 export class IgdbDbController {
   private readonly db = db;
@@ -14,7 +15,17 @@ export class IgdbDbController {
   public async storeGames(
     games: gamesSchema.Games[] | gamesSchema.Games,
   ): Promise<QueryResult<gamesSchema.Games[]>> {
-    return await this.db.insert(gamesSchema.gamesTable).values([games].flat());
+    return await this.db
+      .insert(gamesSchema.gamesTable)
+      .values([games].flat())
+      .onConflictDoUpdate({
+        target: gamesSchema.gamesTable.igdbId,
+        set: setAllConflictUpdateColumns(gamesSchema.gamesTable, [
+          'createdAt',
+          'igdbId',
+          'id',
+        ]),
+      });
   }
 
   public async storeWebsites(
@@ -22,7 +33,13 @@ export class IgdbDbController {
   ): Promise<QueryResult<websitesSchema.Websites[]>> {
     return await this.db
       .insert(websitesSchema.websitesTable)
-      .values([websites].flat());
+      .values([websites].flat())
+      .onConflictDoUpdate({
+        target: websitesSchema.websitesTable.igdbId,
+        set: setAllConflictUpdateColumns(websitesSchema.websitesTable, [
+          'igdbId',
+        ]),
+      });
   }
 
   public async storeArtworks(
@@ -30,6 +47,12 @@ export class IgdbDbController {
   ): Promise<QueryResult<artworksSchema.Artworks[]>> {
     return await this.db
       .insert(artworksSchema.artworksTable)
-      .values([artworks].flat());
+      .values([artworks].flat())
+      .onConflictDoUpdate({
+        target: artworksSchema.artworksTable.imageId,
+        set: setAllConflictUpdateColumns(artworksSchema.artworksTable, [
+          'imageId',
+        ]),
+      });
   }
 }
