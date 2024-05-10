@@ -43,6 +43,10 @@ export const config: Config = {
     port: Number(process.env.DB_PORT) || 5432,
     database: process.env.DB_NAME || 'postgres',
   },
+  redis: {
+    password: process.env.REDIS_PASSWORD || 'redis',
+    port: Number(process.env.REDIS_PORT) || 6379,
+  },
   twitch: {
     apiUrl: process.env.TWITCH_API_URL || 'https://id.twitch.tv/',
     clientId: process.env.TWITCH_CLIENT_ID || '',
