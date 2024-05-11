@@ -14,6 +14,7 @@ export interface ArtworkDTO {
   animated: boolean;
   checksum: string;
   game: number;
+  game_localization: number;
   height: number;
   id: number;
   image_id: string;

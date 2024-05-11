@@ -8,7 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { gamesTable } from './games';
 
-export const artworksTable = pgTable('artworks', {
+const fields = {
   alphaChannel: boolean('alpha_channel'),
   animated: boolean('animated'),
   checksum: text('checksum'),
@@ -20,6 +20,13 @@ export const artworksTable = pgTable('artworks', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
   width: integer('width'),
+};
+
+export const artworksTable = pgTable('artworks', fields);
+export const coverTable = pgTable('covers', {
+  ...fields,
+  game_localization: bigint('game_localization', { mode: 'number' }),
 });
 
 export type Artworks = typeof artworksTable.$inferInsert;
+export type Covers = typeof coverTable.$inferInsert;

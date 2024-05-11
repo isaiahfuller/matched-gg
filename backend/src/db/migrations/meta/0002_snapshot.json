@@ -1,0 +1,1064 @@
+{
+  "id": "1ba3ed9a-ea43-4f68-b96f-50a475d79fa0",
+  "prevId": "0146a5de-9a4d-47a1-9c8d-f205380304e5",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "age_rating_content_descriptions": {
+      "name": "age_rating_content_descriptions",
+      "schema": "",
+      "columns": {
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "age_rating_content_descriptions_category": {
+          "name": "age_rating_content_descriptions_category",
+          "type": "AgeRatingCDCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "ageRatings": {
+      "name": "ageRatings",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "CategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "rating": {
+          "name": "rating",
+          "type": "RatingEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "synopsis": {
+          "name": "synopsis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "artworks": {
+      "name": "artworks",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "artworks_game_games_igdb_id_fk": {
+          "name": "artworks_game_games_igdb_id_fk",
+          "tableFrom": "artworks",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "covers": {
+      "name": "covers",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_localization": {
+          "name": "game_localization",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "covers_game_games_igdb_id_fk": {
+          "name": "covers_game_games_igdb_id_fk",
+          "tableFrom": "covers",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "change_date": {
+          "name": "change_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "change_date_category": {
+          "name": "change_date_category",
+          "type": "CompanyDateCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_company_id": {
+          "name": "changed_company_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "country": {
+          "name": "country",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "developed": {
+          "name": "developed",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent": {
+          "name": "parent",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "published": {
+          "name": "published",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_date_category": {
+          "name": "start_date_category",
+          "type": "CompanyDateCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "companies_changed_company_id_companies_igdb_id_fk": {
+          "name": "companies_changed_company_id_companies_igdb_id_fk",
+          "tableFrom": "companies",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "changed_company_id"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "companies_parent_companies_igdb_id_fk": {
+          "name": "companies_parent_companies_igdb_id_fk",
+          "tableFrom": "companies",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "parent"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "companyLogos": {
+      "name": "companyLogos",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "companyWebsites": {
+      "name": "companyWebsites",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "WebsiteCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "trusted": {
+          "name": "trusted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "games": {
+      "name": "games",
+      "schema": "",
+      "columns": {
+        "aggregated_rating": {
+          "name": "aggregated_rating",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "aggregated_rating_count": {
+          "name": "aggregated_rating_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "first_release_date": {
+          "name": "first_release_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_category": {
+          "name": "game_category",
+          "type": "GameCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hypes": {
+          "name": "hypes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_id": {
+          "name": "game_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rating": {
+          "name": "rating",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rating_count": {
+          "name": "rating_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "StatusEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "storyline": {
+          "name": "storyline",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_rating": {
+          "name": "total_rating",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_rating_count": {
+          "name": "total_rating_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_title": {
+          "name": "version_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "igdb_id_idx": {
+          "name": "igdb_id_idx",
+          "columns": [
+            "igdb_id"
+          ],
+          "isUnique": true
+        },
+        "slug_idx": {
+          "name": "slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": false
+        },
+        "name_idx": {
+          "name": "name_idx",
+          "columns": [
+            "name"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "games_game_id_unique": {
+          "name": "games_game_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "game_id"
+          ]
+        }
+      }
+    },
+    "websites": {
+      "name": "websites",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "WebsiteCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "trusted": {
+          "name": "trusted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "websites_game_games_igdb_id_fk": {
+          "name": "websites_game_games_igdb_id_fk",
+          "tableFrom": "websites",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {
+    "AgeRatingCDCategoryEnum": {
+      "name": "AgeRatingCDCategoryEnum",
+      "values": {
+        "": "",
+        "ESRB_alcohol_reference": "ESRB_alcohol_reference",
+        "ESRB_animated_blood": "ESRB_animated_blood",
+        "ESRB_blood": "ESRB_blood",
+        "ESRB_blood_and gore": "ESRB_blood_and gore",
+        "ESRB_cartoon_violence": "ESRB_cartoon_violence",
+        "ESRB_comic_mischief": "ESRB_comic_mischief",
+        "ESRB_crude_humor": "ESRB_crude_humor",
+        "ESRB_drug_reference": "ESRB_drug_reference",
+        "ESRB_fantasy_violence": "ESRB_fantasy_violence",
+        "ESRB_intense_violence": "ESRB_intense_violence",
+        "ESRB_language": "ESRB_language",
+        "ESRB_lyrics": "ESRB_lyrics",
+        "ESRB_mature_humor": "ESRB_mature_humor",
+        "ESRB_nudity": "ESRB_nudity",
+        "ESRB_partial_nudity": "ESRB_partial_nudity",
+        "ESRB_real_gambling": "ESRB_real_gambling",
+        "ESRB_sexual_content": "ESRB_sexual_content",
+        "ESRB_sexual_themes": "ESRB_sexual_themes",
+        "ESRB_sexual_violence": "ESRB_sexual_violence",
+        "ESRB_simulated_gambling": "ESRB_simulated_gambling",
+        "ESRB_strong_language": "ESRB_strong_language",
+        "ESRB_strong_lyrics": "ESRB_strong_lyrics",
+        "ESRB_strong_sexual content": "ESRB_strong_sexual content",
+        "ESRB_suggestive_themes": "ESRB_suggestive_themes",
+        "ESRB_tobacco_reference": "ESRB_tobacco_reference",
+        "ESRB_use_of alcohol": "ESRB_use_of alcohol",
+        "ESRB_use_of drugs": "ESRB_use_of drugs",
+        "ESRB_use_of tobacco": "ESRB_use_of tobacco",
+        "ESRB_violence": "ESRB_violence",
+        "ESRB_violent_references": "ESRB_violent_references",
+        "ESRB_animated_violence": "ESRB_animated_violence",
+        "ESRB_mild_language": "ESRB_mild_language",
+        "ESRB_mild_violence": "ESRB_mild_violence",
+        "ESRB_use_of drugs and alcohol": "ESRB_use_of drugs and alcohol",
+        "ESRB_drug_and alcohol reference": "ESRB_drug_and alcohol reference",
+        "ESRB_mild_suggestive themes": "ESRB_mild_suggestive themes",
+        "ESRB_mild_cartoon violence": "ESRB_mild_cartoon violence",
+        "ESRB_mild_blood": "ESRB_mild_blood",
+        "ESRB_realistic_blood and gore": "ESRB_realistic_blood and gore",
+        "ESRB_realistic_violence": "ESRB_realistic_violence",
+        "ESRB_alcohol_and tobacco reference": "ESRB_alcohol_and tobacco reference",
+        "ESRB_mature_sexual themes": "ESRB_mature_sexual themes",
+        "ESRB_mild_animated violence": "ESRB_mild_animated violence",
+        "ESRB_mild_sexual themes": "ESRB_mild_sexual themes",
+        "ESRB_use_of alcohol and tobacco": "ESRB_use_of alcohol and tobacco",
+        "ESRB_animated_blood and gore": "ESRB_animated_blood and gore",
+        "ESRB_mild_fantasy violence": "ESRB_mild_fantasy violence",
+        "ESRB_mild_lyrics": "ESRB_mild_lyrics",
+        "ESRB_realistic_blood": "ESRB_realistic_blood",
+        "PEGI_violence": "PEGI_violence",
+        "PEGI_sex": "PEGI_sex",
+        "PEGI_drugs": "PEGI_drugs",
+        "PEGI_fear": "PEGI_fear",
+        "PEGI_discrimination": "PEGI_discrimination",
+        "PEGI_bad_language": "PEGI_bad_language",
+        "PEGI_gambling": "PEGI_gambling",
+        "PEGI_online_gameplay": "PEGI_online_gameplay",
+        "PEGI_in_game_purchases": "PEGI_in_game_purchases",
+        "CERO_love": "CERO_love",
+        "CERO_sexual_content": "CERO_sexual_content",
+        "CERO_violence": "CERO_violence",
+        "CERO_horror": "CERO_horror",
+        "CERO_drinking_smoking": "CERO_drinking_smoking",
+        "CERO_gambling": "CERO_gambling",
+        "CERO_crime": "CERO_crime",
+        "CERO_controlled_substances": "CERO_controlled_substances",
+        "CERO_languages_and others": "CERO_languages_and others",
+        "GRAC_sexuality": "GRAC_sexuality",
+        "GRAC_violence": "GRAC_violence",
+        "GRAC_fear_horror_threatening": "GRAC_fear_horror_threatening",
+        "GRAC_language": "GRAC_language",
+        "GRAC_alcohol_tobacco_drug": "GRAC_alcohol_tobacco_drug",
+        "GRAC_crime_anti_social": "GRAC_crime_anti_social",
+        "GRAC_gambling": "GRAC_gambling",
+        "CLASS_IND_violencia": "CLASS_IND_violencia",
+        "CLASS_IND_violencia_extrema": "CLASS_IND_violencia_extrema",
+        "CLASS_IND_conteudo_sexual": "CLASS_IND_conteudo_sexual",
+        "CLASS_IND_nudez": "CLASS_IND_nudez",
+        "CLASS_IND_sexo": "CLASS_IND_sexo",
+        "CLASS_IND_sexo_explicito": "CLASS_IND_sexo_explicito",
+        "CLASS_IND_drogas": "CLASS_IND_drogas",
+        "CLASS_IND_drogas_licitas": "CLASS_IND_drogas_licitas",
+        "CLASS_IND_drogas_ilicitas": "CLASS_IND_drogas_ilicitas",
+        "CLASS_IND_linguagem_impropria": "CLASS_IND_linguagem_impropria",
+        "CLASS_IND_atos_criminosos": "CLASS_IND_atos_criminosos"
+      }
+    },
+    "CategoryEnum": {
+      "name": "CategoryEnum",
+      "values": {
+        "": "",
+        "ESRB": "ESRB",
+        "PEGI": "PEGI",
+        "CERO": "CERO",
+        "USK": "USK",
+        "GRAC": "GRAC",
+        "CLASS_IND": "CLASS_IND",
+        "ACB": "ACB"
+      }
+    },
+    "RatingEnum": {
+      "name": "RatingEnum",
+      "values": {
+        "": "",
+        "Seven": "Seven",
+        "Twelve": "Twelve",
+        "Sixteen": "Sixteen",
+        "Eighteen": "Eighteen",
+        "RP": "RP",
+        "EC": "EC",
+        "E": "E",
+        "E10": "E10",
+        "T0": "T0",
+        "M1": "M1",
+        "AO2": "AO2",
+        "CERO_A3": "CERO_A3",
+        "CERO_B4": "CERO_B4",
+        "CERO_C5": "CERO_C5",
+        "CERO_D6": "CERO_D6",
+        "CERO_Z7": "CERO_Z7",
+        "USK_08": "USK_08",
+        "USK_69": "USK_69",
+        "USK_120": "USK_120",
+        "USK_161": "USK_161",
+        "USK_182": "USK_182",
+        "GRAC_ALL3": "GRAC_ALL3",
+        "GRAC_Twelve4": "GRAC_Twelve4",
+        "GRAC_Fifteen5": "GRAC_Fifteen5",
+        "GRAC_Eighteen6": "GRAC_Eighteen6",
+        "GRAC_TESTING7": "GRAC_TESTING7",
+        "CLASS_IND_L8": "CLASS_IND_L8",
+        "CLASS_IND_Ten9": "CLASS_IND_Ten9",
+        "CLASS_IND_Twelve0": "CLASS_IND_Twelve0",
+        "CLASS_IND_Fourteen1": "CLASS_IND_Fourteen1",
+        "CLASS_IND_Sixteen2": "CLASS_IND_Sixteen2",
+        "CLASS_IND_Eighteen3": "CLASS_IND_Eighteen3",
+        "ACB_G4": "ACB_G4",
+        "ACB_PG5": "ACB_PG5",
+        "ACB_M6": "ACB_M6",
+        "ACB_MA157": "ACB_MA157",
+        "ACB_R188": "ACB_R188",
+        "ACB_RC9": "ACB_RC9"
+      }
+    },
+    "CompanyDateCategoryEnum": {
+      "name": "CompanyDateCategoryEnum",
+      "values": {
+        "YYYYMMMMDD": "YYYYMMMMDD",
+        "YYYYMMMM": "YYYYMMMM",
+        "YYYY": "YYYY",
+        "YYYYQ1": "YYYYQ1",
+        "YYYYQ2": "YYYYQ2",
+        "YYYYQ3": "YYYYQ3",
+        "YYYYQ4": "YYYYQ4",
+        "TBD": "TBD"
+      }
+    },
+    "GameCategoryEnum": {
+      "name": "GameCategoryEnum",
+      "values": {
+        "MAIN_GAME": "MAIN_GAME",
+        "DLC_ADDON": "DLC_ADDON",
+        "EXPANSION": "EXPANSION",
+        "BUNDLE": "BUNDLE",
+        "STANDALONE_EXPANSION": "STANDALONE_EXPANSION",
+        "MOD": "MOD",
+        "EPISODE": "EPISODE",
+        "SEASON": "SEASON",
+        "REMAKE": "REMAKE",
+        "REMASTER": "REMASTER",
+        "EXPANDED_GAME": "EXPANDED_GAME",
+        "PORT": "PORT",
+        "FORK": "FORK",
+        "PACK": "PACK",
+        "UPDATE": "UPDATE"
+      }
+    },
+    "StatusEnum": {
+      "name": "StatusEnum",
+      "values": {
+        "RELEASED": "RELEASED",
+        "ALPHA": "ALPHA",
+        "BETA": "BETA",
+        "EARLY_ACCESS": "EARLY_ACCESS",
+        "OFFLINE": "OFFLINE",
+        "CANCELLED": "CANCELLED",
+        "RUMORED": "RUMORED",
+        "DELISTED": "DELISTED"
+      }
+    },
+    "WebsiteCategoryEnum": {
+      "name": "WebsiteCategoryEnum",
+      "values": {
+        "": "",
+        "official": "official",
+        "wikia": "wikia",
+        "wikipedia": "wikipedia",
+        "facebook": "facebook",
+        "twitter": "twitter",
+        "twitch": "twitch",
+        "instagram": "instagram",
+        "youtube": "youtube",
+        "iphone": "iphone",
+        "ipad": "ipad",
+        "android": "android",
+        "steam": "steam",
+        "reddit": "reddit",
+        "itch": "itch",
+        "epicgames": "epicgames",
+        "gog": "gog",
+        "discord": "discord"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
