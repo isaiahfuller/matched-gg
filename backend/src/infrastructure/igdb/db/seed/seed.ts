@@ -12,9 +12,9 @@ import { chunk } from '@util/chunk';
 import { IgdbDbController } from '../controller/IgdbDbController';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
-import { mapWebsite } from '../map/mapWebsites';
+import { mapWebsite } from '../map/mapWebsite';
 import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
-import { mapArtwork } from '../map/mapArtworks';
+import { mapArtwork } from '../map/mapArtwork';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
