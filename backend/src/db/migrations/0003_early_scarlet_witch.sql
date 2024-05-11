@@ -1,0 +1,1 @@
+ALTER TABLE "artworks" ADD COLUMN "id" integer;

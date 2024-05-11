@@ -1,0 +1,1 @@
+ALTER TABLE "artworks" RENAME COLUMN "id" TO "imdb_id";
