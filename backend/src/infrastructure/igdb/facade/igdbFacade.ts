@@ -7,20 +7,16 @@ import {
   SeedGamesOptionsCC,
   SeedGamesOptionsDelay,
 } from './interfaces';
-import {
-  IGetAll,
-  IGetAllGames,
-  IGetTotalCount,
-  IGetTotalGameCount,
-} from './subsystems/interfaces';
+import { IGetAll, IgdbGetCount } from './subsystems/interfaces';
+import { GetCount } from './subsystems/GetCount';
 import { GameDTO } from './subsystems/DTO/GameDTO';
 import { WebsiteDTO } from './subsystems/DTO/WebsiteDTO';
 import { ArtworkDTO } from './subsystems/DTO/ArtworkDTO';
-import { GetTotalCount } from './subsystems/GetTotalCount';
 import { GetAll } from './subsystems/GetAll';
 import { ArtworkField } from './subsystems/enums/fields/ArtworkField';
 import { GameField } from './subsystems/enums/fields/GameField';
 import { WebsiteField } from './subsystems/enums/fields/WebsiteField';
+import { IgdbResources } from './subsystems/enums/IgdbResources';
 
 export class IgdbFacade implements IgdbFacadeInterface {
   public config: IgdbFacadeConstructor['config'];
@@ -29,11 +25,10 @@ export class IgdbFacade implements IgdbFacadeInterface {
   public client: Apicalypse;
 
   protected getAllGames: IGetAll;
-  protected getTotalGameCount: IGetTotalCount;
   protected getAllWebsites: IGetAll;
-  protected getTotalWebsiteCount: IGetTotalCount;
   protected getAllArtworks: IGetAll;
-  protected getTotalArtworkCount: IGetTotalCount;
+
+  protected getCount: IgdbGetCount;
 
   constructor(
     config: IgdbFacadeConstructor['config'],
@@ -41,12 +36,11 @@ export class IgdbFacade implements IgdbFacadeInterface {
     accessToken: IgdbFacadeConstructor['accessToken'],
 
     // Dependency injection for methods
-    getAllGames?: IGetAllGames,
-    getTotalGameCount?: IGetTotalGameCount,
+    getAllGames?: IGetAll,
     getAllWebsites?,
-    getTotalWebsiteCount?,
     getAllArtworks?,
-    getTotalArtworkCount?,
+
+    getCount?: IgdbGetCount,
   ) {
     this.config = config;
     this.logger = logger;
@@ -55,6 +49,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       this.config.clientId,
       this.accessToken || this.config.accessToken,
     );
+    this.getCount = getCount || new GetCount(this.client);
     this.getAllGames =
       getAllGames ||
       new GetAll(
@@ -63,8 +58,6 @@ export class IgdbFacade implements IgdbFacadeInterface {
         Object.values(GameField),
         'games',
       );
-    this.getTotalGameCount =
-      getTotalGameCount || new GetTotalCount(this.client, 'games');
     this.getAllWebsites =
       getAllWebsites ||
       new GetAll(
@@ -73,10 +66,6 @@ export class IgdbFacade implements IgdbFacadeInterface {
         Object.values(WebsiteField),
         'websites',
       );
-    this.getTotalWebsiteCount =
-      getTotalWebsiteCount || new GetTotalCount(this.client, 'websites');
-    this.getTotalArtworkCount =
-      getTotalArtworkCount || new GetTotalCount(this.client, 'artworks');
     this.getAllArtworks =
       getAllArtworks ||
       new GetAll(
@@ -94,9 +83,9 @@ export class IgdbFacade implements IgdbFacadeInterface {
     expanded,
   }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<GameDTO[]> {
     this.logger.info('Starting to seed games...');
-    const totalGamesCount = await this.getTotalGameCount.execute();
+    const totalGamesCount = await this.getCount.execute(IgdbResources.GAMES);
     this.logger.info(
-      `Total games count retrieved from IGDB: ${totalGamesCount}`,
+      `Total games count retrieved from IGDB: ${totalGamesCount.count}`,
     );
     const games: GameDTO[] = (await this.getAllGames.execute(
       {
@@ -105,7 +94,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       },
       limit || 500,
       expanded,
-      totalGamesCount,
+      totalGamesCount.count,
     )) as GameDTO[];
     this.logger.info('Games seeded');
     return games;
@@ -118,9 +107,11 @@ export class IgdbFacade implements IgdbFacadeInterface {
     expanded,
   }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<WebsiteDTO[]> {
     this.logger.info('Starting to seed websites...');
-    const totalWebsitesCount = await this.getTotalWebsiteCount.execute();
+    const totalWebsitesCount = await this.getCount.execute(
+      IgdbResources.WEBSITES,
+    );
     this.logger.info(
-      `Total websites count retrieved from IGDB: ${totalWebsitesCount}`,
+      `Total websites count retrieved from IGDB: ${totalWebsitesCount.count}`,
     );
     const websites: WebsiteDTO[] = (await this.getAllWebsites.execute(
       {
@@ -129,7 +120,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       },
       limit || 500,
       expanded,
-      totalWebsitesCount,
+      totalWebsitesCount.count,
     )) as WebsiteDTO[];
     this.logger.info('Websites seeded');
     return websites;
@@ -142,8 +133,12 @@ export class IgdbFacade implements IgdbFacadeInterface {
     expanded,
   }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<ArtworkDTO[]> {
     this.logger.info('Starting to seed artworks...');
-    const totalCount = await this.getTotalWebsiteCount.execute();
-    this.logger.info(`Total websites count retrieved from IGDB: ${totalCount}`);
+    const totalArtworksCount = await this.getCount.execute(
+      IgdbResources.ARTWORKS,
+    );
+    this.logger.info(
+      `Total websites count retrieved from IGDB: ${totalArtworksCount.count}`,
+    );
     const artworks: ArtworkDTO[] = (await this.getAllArtworks.execute(
       {
         concurrency: concurrency || 1,
@@ -151,7 +146,7 @@ export class IgdbFacade implements IgdbFacadeInterface {
       },
       limit || 500,
       expanded,
-      totalCount,
+      totalArtworksCount.count,
     )) as ArtworkDTO[];
     this.logger.info('Artworks seeded');
     return artworks;
