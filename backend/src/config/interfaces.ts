@@ -21,6 +21,11 @@ export interface DbConfig {
   database: string;
 }
 
+export interface RedisConfig {
+  password: string;
+  port: number;
+}
+
 export interface PinoOptions {
   level: string;
   name: string;
@@ -35,6 +40,7 @@ export interface Config {
   port: number;
   sessionSecret: string;
   db: DbConfig;
+  redis: RedisConfig;
   twitch: TwitchConfig;
   steam: SteamConfig;
   pinoOptions: PinoOptions;
