@@ -43,21 +43,3 @@ export interface IGetAll {
     totalGameCount?: number,
   ): Promise<AllDTO>;
 }
-
-export interface IGetAllGames extends IGetAll {
-  execute(
-    options: RequestAllConfig,
-    limit: number,
-    expanded?: boolean,
-    totalGameCount?: number,
-  ): Promise<GameDTO[]>;
-}
-
-export interface IGetAllWebsites extends IGetAll {
-  execute(
-    options: RequestAllConfig,
-    limit: number,
-    expanded?: boolean,
-    totalGameCount?: number,
-  ): Promise<WebsiteDTO[]>;
-}
