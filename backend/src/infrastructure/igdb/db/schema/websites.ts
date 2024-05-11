@@ -1,4 +1,11 @@
-import { bigint, boolean, pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+import {
+  bigint,
+  boolean,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 import { gamesTable } from './games';
 
 export const WebsitePGEnum = pgEnum('WebsiteCategoryEnum', [
@@ -26,9 +33,11 @@ export const WebsitePGEnum = pgEnum('WebsiteCategoryEnum', [
 export const websitesTable = pgTable('websites', {
   websiteCategory: WebsitePGEnum('category'),
   checksum: text('checksum'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
-  igdbId: bigint('igdb_id', { mode: 'number' }).notNull().unique(),
+  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   trusted: boolean('trusted'),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
 

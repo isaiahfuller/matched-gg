@@ -16,6 +16,20 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "artworks" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"height" integer,
+	"igdb_id" integer,
+	"image_id" text PRIMARY KEY NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "games" (
 	"aggregated_rating" double precision,
 	"aggregated_rating_count" integer,
@@ -46,16 +60,23 @@ CREATE TABLE IF NOT EXISTS "games" (
 CREATE TABLE IF NOT EXISTS "websites" (
 	"category" "WebsiteCategoryEnum",
 	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"game" bigint,
-	"igdb_id" bigint NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"trusted" boolean,
-	"url" text,
-	CONSTRAINT "websites_igdb_id_unique" UNIQUE("igdb_id")
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" ("igdb_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "name_idx" ON "games" ("name");--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "artworks" ADD CONSTRAINT "artworks_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "websites" ADD CONSTRAINT "websites_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION

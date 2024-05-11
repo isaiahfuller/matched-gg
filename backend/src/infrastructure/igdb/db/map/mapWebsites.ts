@@ -10,6 +10,7 @@ export const mapWebsite = (website) => {
         ? null
         : WebsitePGEnum.enumValues[website.category],
     trusted: website.trusted,
+    updatedAt: new Date(),
     url: website.url,
   } satisfies Websites;
   return mappedWebsite;
