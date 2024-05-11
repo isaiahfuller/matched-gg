@@ -8,7 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { gamesTable } from './games';
 
-const fields = {
+const commonArtFields = {
   alphaChannel: boolean('alpha_channel'),
   animated: boolean('animated'),
   checksum: text('checksum'),
@@ -22,9 +22,9 @@ const fields = {
   width: integer('width'),
 };
 
-export const artworksTable = pgTable('artworks', fields);
+export const artworksTable = pgTable('artworks', commonArtFields);
 export const coverTable = pgTable('covers', {
-  ...fields,
+  ...commonArtFields,
   game_localization: bigint('game_localization', { mode: 'number' }),
 });
 
