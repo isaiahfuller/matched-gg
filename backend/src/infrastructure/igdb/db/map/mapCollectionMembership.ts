@@ -20,6 +20,7 @@ export const mapCollectionMembership = (membership) => {
       membership.type === undefined
         ? null
         : CollectionMembershipTypePGEnum.enumValues[membership.type],
+    updatedAt: new Date(),
   } satisfies CollectionMembership;
   return mappedMembership;
 };

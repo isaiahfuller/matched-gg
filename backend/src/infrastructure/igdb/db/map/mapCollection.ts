@@ -14,6 +14,7 @@ export const mapCollection = (collection) => {
       : null,
     slug: collection.slug,
     url: collection.url,
+    updatedAt: new Date(),
   } satisfies Collections;
   return mappedCollection;
 };
