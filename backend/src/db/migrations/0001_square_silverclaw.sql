@@ -1,0 +1,14 @@
+DO $$ BEGIN
+ CREATE TYPE "AgeRatingCDCategoryEnum" AS ENUM('', 'ESRB_alcohol_reference', 'ESRB_animated_blood', 'ESRB_blood', 'ESRB_blood_and gore', 'ESRB_cartoon_violence', 'ESRB_comic_mischief', 'ESRB_crude_humor', 'ESRB_drug_reference', 'ESRB_fantasy_violence', 'ESRB_intense_violence', 'ESRB_language', 'ESRB_lyrics', 'ESRB_mature_humor', 'ESRB_nudity', 'ESRB_partial_nudity', 'ESRB_real_gambling', 'ESRB_sexual_content', 'ESRB_sexual_themes', 'ESRB_sexual_violence', 'ESRB_simulated_gambling', 'ESRB_strong_language', 'ESRB_strong_lyrics', 'ESRB_strong_sexual content', 'ESRB_suggestive_themes', 'ESRB_tobacco_reference', 'ESRB_use_of alcohol', 'ESRB_use_of drugs', 'ESRB_use_of tobacco', 'ESRB_violence', 'ESRB_violent_references', 'ESRB_animated_violence', 'ESRB_mild_language', 'ESRB_mild_violence', 'ESRB_use_of drugs and alcohol', 'ESRB_drug_and alcohol reference', 'ESRB_mild_suggestive themes', 'ESRB_mild_cartoon violence', 'ESRB_mild_blood', 'ESRB_realistic_blood and gore', 'ESRB_realistic_violence', 'ESRB_alcohol_and tobacco reference', 'ESRB_mature_sexual themes', 'ESRB_mild_animated violence', 'ESRB_mild_sexual themes', 'ESRB_use_of alcohol and tobacco', 'ESRB_animated_blood and gore', 'ESRB_mild_fantasy violence', 'ESRB_mild_lyrics', 'ESRB_realistic_blood', 'PEGI_violence', 'PEGI_sex', 'PEGI_drugs', 'PEGI_fear', 'PEGI_discrimination', 'PEGI_bad_language', 'PEGI_gambling', 'PEGI_online_gameplay', 'PEGI_in_game_purchases', 'CERO_love', 'CERO_sexual_content', 'CERO_violence', 'CERO_horror', 'CERO_drinking_smoking', 'CERO_gambling', 'CERO_crime', 'CERO_controlled_substances', 'CERO_languages_and others', 'GRAC_sexuality', 'GRAC_violence', 'GRAC_fear_horror_threatening', 'GRAC_language', 'GRAC_alcohol_tobacco_drug', 'GRAC_crime_anti_social', 'GRAC_gambling', 'CLASS_IND_violencia', 'CLASS_IND_violencia_extrema', 'CLASS_IND_conteudo_sexual', 'CLASS_IND_nudez', 'CLASS_IND_sexo', 'CLASS_IND_sexo_explicito', 'CLASS_IND_drogas', 'CLASS_IND_drogas_licitas', 'CLASS_IND_drogas_ilicitas', 'CLASS_IND_linguagem_impropria', 'CLASS_IND_atos_criminosos');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "age_rating_content_descriptions" (
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"age_rating_content_descriptions_category" "AgeRatingCDCategoryEnum",
+	"description" text,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
