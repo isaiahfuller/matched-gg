@@ -4,6 +4,8 @@ import { GameDTO } from './DTO/GameDTO';
 import { AxiosResponse } from 'axios';
 import { WebsiteDTO } from './DTO/WebsiteDTO';
 import { AllDTO } from './types';
+import { IgdbResources } from './enums/IgdbResources';
+import { CountDTO } from './DTO/CountDTO';
 
 export interface IGetGame {
   client: Apicalypse;
@@ -15,17 +17,9 @@ export interface IGetGame {
   ): Promise<GameDTO>;
 }
 
-export interface IGetTotalCount {
+export interface IgdbGetCount {
   client: Apicalypse;
-  execute(): Promise<number>;
-}
-
-export interface IGetTotalGameCount extends IGetTotalCount {
-  execute(): Promise<number>;
-}
-
-export interface IGetTotalWebsiteCount extends IGetTotalCount {
-  execute(): Promise<number>;
+  execute(resource: IgdbResources): Promise<CountDTO>;
 }
 
 export interface IGetManyGames {
