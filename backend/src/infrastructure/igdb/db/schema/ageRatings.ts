@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+import { bigint, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const AgeRatingCategoryPGEnum = pgEnum('CategoryEnum', [
   '',
@@ -56,9 +56,12 @@ export const RatingPGEnum = pgEnum('RatingEnum', [
 export const ageRatingsTable = pgTable('ageRatings', {
   category: AgeRatingCategoryPGEnum('category'),
   checksum: text('checksum'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   rating: RatingPGEnum('rating'),
   ratingCoverUrl: text('url'),
   synopsis: text('synopsis'),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export type AgeRating = typeof ageRatingsTable.$inferInsert;

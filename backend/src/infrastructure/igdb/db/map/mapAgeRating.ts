@@ -7,6 +7,7 @@ import {
 
 export const mapAgeRating = (rating) => {
   const mappedRating = {
+    igdbId: rating.id,
     category:
       rating.category === undefined
         ? null
@@ -18,6 +19,7 @@ export const mapAgeRating = (rating) => {
         : RatingPGEnum.enumValues[rating.rating],
     ratingCoverUrl: rating.rating_cover_url,
     synopsis: rating.synopsis,
+    updatedAt: new Date(),
   } satisfies AgeRating;
   return mappedRating;
 };
