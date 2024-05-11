@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1715396065932,
-      "tag": "0000_steady_christian_walker",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1715448016659,
-      "tag": "0001_square_silverclaw",
+      "when": 1715464497895,
+      "tag": "0000_light_weapon_omega",
       "breakpoints": true
     }
   ]

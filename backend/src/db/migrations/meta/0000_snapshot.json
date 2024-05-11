@@ -1,9 +1,117 @@
 {
-  "id": "9538736a-a397-4fae-83b4-5c13e375a7a7",
+  "id": "fb59e145-7f02-48bb-9989-761932ee4499",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
+    "age_rating_content_descriptions": {
+      "name": "age_rating_content_descriptions",
+      "schema": "",
+      "columns": {
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "age_rating_content_descriptions_category": {
+          "name": "age_rating_content_descriptions_category",
+          "type": "AgeRatingCDCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "ageRatings": {
+      "name": "ageRatings",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "CategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "rating": {
+          "name": "rating",
+          "type": "RatingEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "synopsis": {
+          "name": "synopsis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "artworks": {
       "name": "artworks",
       "schema": "",
@@ -93,6 +201,231 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "change_date": {
+          "name": "change_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "change_date_category": {
+          "name": "change_date_category",
+          "type": "CompanyDateCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "changed_company_id": {
+          "name": "changed_company_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "country": {
+          "name": "country",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "developed": {
+          "name": "developed",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "parent": {
+          "name": "parent",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "published": {
+          "name": "published",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_date_category": {
+          "name": "start_date_category",
+          "type": "CompanyDateCategoryEnum",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "companies_changed_company_id_companies_igdb_id_fk": {
+          "name": "companies_changed_company_id_companies_igdb_id_fk",
+          "tableFrom": "companies",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "changed_company_id"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "companies_parent_companies_igdb_id_fk": {
+          "name": "companies_parent_companies_igdb_id_fk",
+          "tableFrom": "companies",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "parent"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "companyLogos": {
+      "name": "companyLogos",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -352,6 +685,167 @@
     }
   },
   "enums": {
+    "AgeRatingCDCategoryEnum": {
+      "name": "AgeRatingCDCategoryEnum",
+      "values": {
+        "": "",
+        "ESRB_alcohol_reference": "ESRB_alcohol_reference",
+        "ESRB_animated_blood": "ESRB_animated_blood",
+        "ESRB_blood": "ESRB_blood",
+        "ESRB_blood_and gore": "ESRB_blood_and gore",
+        "ESRB_cartoon_violence": "ESRB_cartoon_violence",
+        "ESRB_comic_mischief": "ESRB_comic_mischief",
+        "ESRB_crude_humor": "ESRB_crude_humor",
+        "ESRB_drug_reference": "ESRB_drug_reference",
+        "ESRB_fantasy_violence": "ESRB_fantasy_violence",
+        "ESRB_intense_violence": "ESRB_intense_violence",
+        "ESRB_language": "ESRB_language",
+        "ESRB_lyrics": "ESRB_lyrics",
+        "ESRB_mature_humor": "ESRB_mature_humor",
+        "ESRB_nudity": "ESRB_nudity",
+        "ESRB_partial_nudity": "ESRB_partial_nudity",
+        "ESRB_real_gambling": "ESRB_real_gambling",
+        "ESRB_sexual_content": "ESRB_sexual_content",
+        "ESRB_sexual_themes": "ESRB_sexual_themes",
+        "ESRB_sexual_violence": "ESRB_sexual_violence",
+        "ESRB_simulated_gambling": "ESRB_simulated_gambling",
+        "ESRB_strong_language": "ESRB_strong_language",
+        "ESRB_strong_lyrics": "ESRB_strong_lyrics",
+        "ESRB_strong_sexual content": "ESRB_strong_sexual content",
+        "ESRB_suggestive_themes": "ESRB_suggestive_themes",
+        "ESRB_tobacco_reference": "ESRB_tobacco_reference",
+        "ESRB_use_of alcohol": "ESRB_use_of alcohol",
+        "ESRB_use_of drugs": "ESRB_use_of drugs",
+        "ESRB_use_of tobacco": "ESRB_use_of tobacco",
+        "ESRB_violence": "ESRB_violence",
+        "ESRB_violent_references": "ESRB_violent_references",
+        "ESRB_animated_violence": "ESRB_animated_violence",
+        "ESRB_mild_language": "ESRB_mild_language",
+        "ESRB_mild_violence": "ESRB_mild_violence",
+        "ESRB_use_of drugs and alcohol": "ESRB_use_of drugs and alcohol",
+        "ESRB_drug_and alcohol reference": "ESRB_drug_and alcohol reference",
+        "ESRB_mild_suggestive themes": "ESRB_mild_suggestive themes",
+        "ESRB_mild_cartoon violence": "ESRB_mild_cartoon violence",
+        "ESRB_mild_blood": "ESRB_mild_blood",
+        "ESRB_realistic_blood and gore": "ESRB_realistic_blood and gore",
+        "ESRB_realistic_violence": "ESRB_realistic_violence",
+        "ESRB_alcohol_and tobacco reference": "ESRB_alcohol_and tobacco reference",
+        "ESRB_mature_sexual themes": "ESRB_mature_sexual themes",
+        "ESRB_mild_animated violence": "ESRB_mild_animated violence",
+        "ESRB_mild_sexual themes": "ESRB_mild_sexual themes",
+        "ESRB_use_of alcohol and tobacco": "ESRB_use_of alcohol and tobacco",
+        "ESRB_animated_blood and gore": "ESRB_animated_blood and gore",
+        "ESRB_mild_fantasy violence": "ESRB_mild_fantasy violence",
+        "ESRB_mild_lyrics": "ESRB_mild_lyrics",
+        "ESRB_realistic_blood": "ESRB_realistic_blood",
+        "PEGI_violence": "PEGI_violence",
+        "PEGI_sex": "PEGI_sex",
+        "PEGI_drugs": "PEGI_drugs",
+        "PEGI_fear": "PEGI_fear",
+        "PEGI_discrimination": "PEGI_discrimination",
+        "PEGI_bad_language": "PEGI_bad_language",
+        "PEGI_gambling": "PEGI_gambling",
+        "PEGI_online_gameplay": "PEGI_online_gameplay",
+        "PEGI_in_game_purchases": "PEGI_in_game_purchases",
+        "CERO_love": "CERO_love",
+        "CERO_sexual_content": "CERO_sexual_content",
+        "CERO_violence": "CERO_violence",
+        "CERO_horror": "CERO_horror",
+        "CERO_drinking_smoking": "CERO_drinking_smoking",
+        "CERO_gambling": "CERO_gambling",
+        "CERO_crime": "CERO_crime",
+        "CERO_controlled_substances": "CERO_controlled_substances",
+        "CERO_languages_and others": "CERO_languages_and others",
+        "GRAC_sexuality": "GRAC_sexuality",
+        "GRAC_violence": "GRAC_violence",
+        "GRAC_fear_horror_threatening": "GRAC_fear_horror_threatening",
+        "GRAC_language": "GRAC_language",
+        "GRAC_alcohol_tobacco_drug": "GRAC_alcohol_tobacco_drug",
+        "GRAC_crime_anti_social": "GRAC_crime_anti_social",
+        "GRAC_gambling": "GRAC_gambling",
+        "CLASS_IND_violencia": "CLASS_IND_violencia",
+        "CLASS_IND_violencia_extrema": "CLASS_IND_violencia_extrema",
+        "CLASS_IND_conteudo_sexual": "CLASS_IND_conteudo_sexual",
+        "CLASS_IND_nudez": "CLASS_IND_nudez",
+        "CLASS_IND_sexo": "CLASS_IND_sexo",
+        "CLASS_IND_sexo_explicito": "CLASS_IND_sexo_explicito",
+        "CLASS_IND_drogas": "CLASS_IND_drogas",
+        "CLASS_IND_drogas_licitas": "CLASS_IND_drogas_licitas",
+        "CLASS_IND_drogas_ilicitas": "CLASS_IND_drogas_ilicitas",
+        "CLASS_IND_linguagem_impropria": "CLASS_IND_linguagem_impropria",
+        "CLASS_IND_atos_criminosos": "CLASS_IND_atos_criminosos"
+      }
+    },
+    "CategoryEnum": {
+      "name": "CategoryEnum",
+      "values": {
+        "": "",
+        "ESRB": "ESRB",
+        "PEGI": "PEGI",
+        "CERO": "CERO",
+        "USK": "USK",
+        "GRAC": "GRAC",
+        "CLASS_IND": "CLASS_IND",
+        "ACB": "ACB"
+      }
+    },
+    "RatingEnum": {
+      "name": "RatingEnum",
+      "values": {
+        "": "",
+        "Seven": "Seven",
+        "Twelve": "Twelve",
+        "Sixteen": "Sixteen",
+        "Eighteen": "Eighteen",
+        "RP": "RP",
+        "EC": "EC",
+        "E": "E",
+        "E10": "E10",
+        "T0": "T0",
+        "M1": "M1",
+        "AO2": "AO2",
+        "CERO_A3": "CERO_A3",
+        "CERO_B4": "CERO_B4",
+        "CERO_C5": "CERO_C5",
+        "CERO_D6": "CERO_D6",
+        "CERO_Z7": "CERO_Z7",
+        "USK_08": "USK_08",
+        "USK_69": "USK_69",
+        "USK_120": "USK_120",
+        "USK_161": "USK_161",
+        "USK_182": "USK_182",
+        "GRAC_ALL3": "GRAC_ALL3",
+        "GRAC_Twelve4": "GRAC_Twelve4",
+        "GRAC_Fifteen5": "GRAC_Fifteen5",
+        "GRAC_Eighteen6": "GRAC_Eighteen6",
+        "GRAC_TESTING7": "GRAC_TESTING7",
+        "CLASS_IND_L8": "CLASS_IND_L8",
+        "CLASS_IND_Ten9": "CLASS_IND_Ten9",
+        "CLASS_IND_Twelve0": "CLASS_IND_Twelve0",
+        "CLASS_IND_Fourteen1": "CLASS_IND_Fourteen1",
+        "CLASS_IND_Sixteen2": "CLASS_IND_Sixteen2",
+        "CLASS_IND_Eighteen3": "CLASS_IND_Eighteen3",
+        "ACB_G4": "ACB_G4",
+        "ACB_PG5": "ACB_PG5",
+        "ACB_M6": "ACB_M6",
+        "ACB_MA157": "ACB_MA157",
+        "ACB_R188": "ACB_R188",
+        "ACB_RC9": "ACB_RC9"
+      }
+    },
+    "CompanyDateCategoryEnum": {
+      "name": "CompanyDateCategoryEnum",
+      "values": {
+        "YYYYMMMMDD": "YYYYMMMMDD",
+        "YYYYMMMM": "YYYYMMMM",
+        "YYYY": "YYYY",
+        "YYYYQ1": "YYYYQ1",
+        "YYYYQ2": "YYYYQ2",
+        "YYYYQ3": "YYYYQ3",
+        "YYYYQ4": "YYYYQ4",
+        "TBD": "TBD"
+      }
+    },
     "GameCategoryEnum": {
       "name": "GameCategoryEnum",
       "values": {

@@ -6,7 +6,7 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
-export const companyLogosTable = pgTable('artworks', {
+export const companyLogosTable = pgTable('companyLogos', {
   alphaChannel: boolean('alpha_channel'),
   animated: boolean('animated'),
   checksum: text('checksum'),
