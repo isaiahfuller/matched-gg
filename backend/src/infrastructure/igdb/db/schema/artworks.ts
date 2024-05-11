@@ -15,7 +15,7 @@ export const artworksTable = pgTable('artworks', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
   height: integer('height'),
-  igdbId: integer('imdb_id'),
+  igdbId: integer('igdb_id'),
   imageId: text('image_id').primaryKey(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),

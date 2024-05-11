@@ -20,9 +20,12 @@ CREATE TABLE IF NOT EXISTS "artworks" (
 	"alpha_channel" boolean,
 	"animated" boolean,
 	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"game" bigint,
 	"height" integer,
+	"igdb_id" integer,
 	"image_id" text PRIMARY KEY NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
 	"width" integer
 );
@@ -57,11 +60,12 @@ CREATE TABLE IF NOT EXISTS "games" (
 CREATE TABLE IF NOT EXISTS "websites" (
 	"category" "WebsiteCategoryEnum",
 	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"game" bigint,
-	"igdb_id" bigint NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"trusted" boolean,
-	"url" text,
-	CONSTRAINT "websites_igdb_id_unique" UNIQUE("igdb_id")
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" ("igdb_id");--> statement-breakpoint
