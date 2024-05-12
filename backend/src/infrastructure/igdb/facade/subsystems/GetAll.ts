@@ -1,7 +1,6 @@
 import igdb from 'igdb-api-node';
 import { IGetAll } from './interfaces';
-import { Apicalypse, RequestAllConfig } from 'apicalypse';
-import { AccessToken, ClientId } from 'src/infrastructure/types';
+import { RequestAllConfig } from 'apicalypse';
 import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
 import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
 import { AllField } from './types';
@@ -12,6 +11,7 @@ import {
 } from './enums/fields/WebsiteField';
 import { Subsystem } from './Subsystem';
 import { IgdbResources } from './enums/IgdbResources';
+import { IgdbConfig } from '@config/interfaces';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
 export class GetAll extends Subsystem implements IGetAll {
@@ -24,8 +24,7 @@ export class GetAll extends Subsystem implements IGetAll {
 
   protected totalCount: number | undefined = undefined;
   constructor(
-    clientId: ClientId,
-    accessToken: AccessToken,
+    { clientId, accessToken }: IgdbConfig,
     fields: AllField,
     resource: IgdbResources,
   ) {
