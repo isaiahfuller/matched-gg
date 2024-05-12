@@ -30,34 +30,40 @@ export class GetAll extends Subsystem implements IGetAll {
   ) {
     super(
       igdb(clientId, accessToken, {
-      timeout: 120000,
-      transformRequest: (data) =>
-        requestFieldsInterceptor(data, fields, this.totalCount),
-      transformResponse: (response) =>
-        responseFieldsInterceptor(response, fields),
+        timeout: 120000,
+        transformRequest: (data) =>
+          requestFieldsInterceptor(data, fields, this.totalCount),
+        transformResponse: (response) =>
+          responseFieldsInterceptor(response, fields),
       }),
     );
     this.fields = fields;
     this.resource = resource;
   }
 
-  public async execute(
+  public getFields(
+    expanded: boolean,
+    resource: IgdbResources,
+  ): AllField | undefined {
+    switch (resource) {
+      case IgdbResources.GAMES:
+        return Object.values(expanded ? ExpandedGameField : GameField);
+      case IgdbResources.WEBSITES:
+        return Object.values(expanded ? ExpandedWebsiteField : WebsiteField);
+      default:
+        return;
+    }
+  }
+
+  public async execute<DTO>(
     options: RequestAllConfig,
     limit: number,
     expanded: boolean = true,
     totalCount?: number,
-  ) {
+  ): Promise<DTO[]> {
     this.totalCount = totalCount ? totalCount : undefined;
-    switch (this.resource) {
-      case 'games':
-        this.fields = Object.values(expanded ? ExpandedGameField : GameField);
-        break;
-      case 'websites':
-        this.fields = Object.values(
-          expanded ? ExpandedWebsiteField : WebsiteField,
-        );
-    }
-    const data = await this.client
+    this.fields = this.getFields(expanded, this.resource) ?? this.fields;
+    const data: DTO[] = await this.client
       .limit(limit)
       .fields(this.fields)
       .requestAll(`/${this.resource}`, options);

@@ -16,6 +16,10 @@ export interface IGetGame {
   ): Promise<GameDTO>;
 }
 
+export interface IgdbSubsystem {
+  client: Apicalypse;
+}
+
 export interface IgdbGetCount {
   client: Apicalypse;
   execute(resource: IgdbResources): Promise<CountDTO>;
@@ -34,11 +38,10 @@ export interface IGetManyGames {
 }
 
 export interface IGetAll {
-  client: Apicalypse;
-  execute(
+  execute<DTO>(
     options: RequestAllConfig,
     limit: number,
     expanded?: boolean,
     totalGameCount?: number,
-  ): Promise<AllDTO>;
+  ): Promise<DTO[]>;
 }
