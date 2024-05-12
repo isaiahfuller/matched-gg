@@ -10,33 +10,36 @@ import {
   ExpandedWebsiteField,
   WebsiteField,
 } from './enums/fields/WebsiteField';
+import { Subsystem } from './Subsystem';
+import { IgdbResources } from './enums/IgdbResources';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
-export class GetAll implements IGetAll {
+export class GetAll extends Subsystem implements IGetAll {
   /**
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
    */
   fields: AllField;
-  resource: string;
-  client: Apicalypse;
+  resource: IgdbResources;
 
   protected totalCount: number | undefined = undefined;
   constructor(
     clientId: ClientId,
     accessToken: AccessToken,
     fields: AllField,
-    resource: string,
+    resource: IgdbResources,
   ) {
-    this.fields = fields;
-    this.resource = resource;
-    this.client = igdb(clientId, accessToken, {
+    super(
+      igdb(clientId, accessToken, {
       timeout: 120000,
       transformRequest: (data) =>
         requestFieldsInterceptor(data, fields, this.totalCount),
       transformResponse: (response) =>
         responseFieldsInterceptor(response, fields),
-    });
+      }),
+    );
+    this.fields = fields;
+    this.resource = resource;
   }
 
   public async execute(
