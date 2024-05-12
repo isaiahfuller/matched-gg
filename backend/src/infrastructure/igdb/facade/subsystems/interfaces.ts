@@ -2,7 +2,6 @@ import { Apicalypse, RequestAllConfig } from 'apicalypse';
 import { GameField } from './enums/fields/GameField';
 import { GameDTO } from './DTO/GameDTO';
 import { AxiosResponse } from 'axios';
-import { AllDTO } from './types';
 import { IgdbResources } from './enums/IgdbResources';
 import { CountDTO } from './DTO/CountDTO';
 
