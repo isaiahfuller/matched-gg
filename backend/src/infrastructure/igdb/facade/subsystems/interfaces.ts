@@ -2,7 +2,6 @@ import { Apicalypse, RequestAllConfig } from 'apicalypse';
 import { GameField } from './enums/fields/GameField';
 import { GameDTO } from './DTO/GameDTO';
 import { AxiosResponse } from 'axios';
-import { AllDTO } from './types';
 import { IgdbResources } from './enums/IgdbResources';
 import { CountDTO } from './DTO/CountDTO';
 
@@ -14,6 +13,10 @@ export interface IGetGame {
     id: number,
     fields: GameField[] | GameField | string,
   ): Promise<GameDTO>;
+}
+
+export interface IgdbSubsystem {
+  client: Apicalypse;
 }
 
 export interface IgdbGetCount {
@@ -34,11 +37,10 @@ export interface IGetManyGames {
 }
 
 export interface IGetAll {
-  client: Apicalypse;
-  execute(
+  execute<DTO>(
     options: RequestAllConfig,
     limit: number,
     expanded?: boolean,
     totalGameCount?: number,
-  ): Promise<AllDTO>;
+  ): Promise<DTO[]>;
 }

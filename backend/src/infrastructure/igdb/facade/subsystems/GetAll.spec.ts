@@ -2,6 +2,7 @@ import igdb from 'igdb-api-node';
 import { GetAll } from './GetAll';
 import { Apicalypse } from 'apicalypse';
 import { GameField } from './enums/fields/GameField';
+import { IgdbResources } from './enums/IgdbResources';
 
 describe('GetAll', () => {
   let getAll: GetAll;
@@ -9,7 +10,11 @@ describe('GetAll', () => {
 
   beforeEach(() => {
     client = igdb('test', 'test');
-    getAll = new GetAll('test', 'test', Object.values(GameField), 'games');
+    getAll = new GetAll(
+      { accessToken: 'test', clientId: 'test' },
+      Object.values(GameField),
+      IgdbResources.GAMES,
+    );
     getAll.client = client;
   });
 
