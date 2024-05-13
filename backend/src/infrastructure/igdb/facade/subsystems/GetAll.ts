@@ -1,44 +1,25 @@
-import igdb from 'igdb-api-node';
 import { IGetAll } from './interfaces';
 import { RequestAllConfig } from 'apicalypse';
-import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
-import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
 import { AllField } from './types';
 import { ExpandedGameField, GameField } from './enums/fields/GameField';
 import {
   ExpandedWebsiteField,
   WebsiteField,
 } from './enums/fields/WebsiteField';
-import { Subsystem } from './Subsystem';
 import { IgdbResources } from './enums/IgdbResources';
 import { IgdbConfig } from '@config/interfaces';
+import { InterceptorSubsystem } from './Subsystem';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
-export class GetAll extends Subsystem implements IGetAll {
+export class GetAll extends InterceptorSubsystem implements IGetAll {
   /**
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
    */
-  fields: AllField;
-  resource: IgdbResources;
-
+  fields: AllField | undefined = undefined;
   protected totalCount: number | undefined = undefined;
-  constructor(
-    { clientId, accessToken }: IgdbConfig,
-    fields: AllField,
-    resource: IgdbResources,
-  ) {
-    super(
-      igdb(clientId, accessToken, {
-        timeout: 120000,
-        transformRequest: (data) =>
-          requestFieldsInterceptor(data, fields, this.totalCount),
-        transformResponse: (response) =>
-          responseFieldsInterceptor(response, fields),
-      }),
-    );
-    this.fields = fields;
-    this.resource = resource;
+  constructor(igdbConfig: IgdbConfig) {
+    super(igdbConfig);
   }
 
   public getFields(
@@ -55,18 +36,40 @@ export class GetAll extends Subsystem implements IGetAll {
     }
   }
 
+  public async prepare({
+    expanded = true,
+    resource,
+    totalResourceCount,
+  }): Promise<void> {
+    this.totalCount = totalResourceCount ? totalResourceCount : undefined;
+    this.fields = this.getFields(expanded, resource) ?? this.fields;
+    console.log(this.fields, this.totalCount);
+    if (this.fields && this.totalCount) {
+      this.setInterceptorClient({
+        timeout: 120000,
+        fields: this.fields,
+        count: this.totalCount,
+      });
+      return Promise.resolve();
+    }
+    throw new Error('Fields and totalCount must be defined.');
+  }
+
   public async execute<DTO>(
     options: RequestAllConfig,
     limit: number,
+    resource: IgdbResources,
     expanded: boolean = true,
-    totalCount?: number,
+    totalResourceCount?: number,
   ): Promise<DTO[]> {
-    this.totalCount = totalCount ? totalCount : undefined;
-    this.fields = this.getFields(expanded, this.resource) ?? this.fields;
-    const data: DTO[] = await this.client
-      .limit(limit)
-      .fields(this.fields)
-      .requestAll(`/${this.resource}`, options);
-    return data;
+    await this.prepare({ expanded, resource, totalResourceCount });
+    if (this.fields) {
+      const data: DTO[] = await this.client
+        .limit(limit)
+        .fields(this.fields)
+        .requestAll(`/${resource}`, options);
+      return data;
+    }
+    return [];
   }
 }

@@ -40,7 +40,8 @@ export interface IGetAll {
   execute<DTO>(
     options: RequestAllConfig,
     limit: number,
+    resource: IgdbResources,
     expanded?: boolean,
-    totalGameCount?: number,
+    totalResourceCount?: number,
   ): Promise<DTO[]>;
 }
