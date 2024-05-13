@@ -1,8 +1,8 @@
 import igdb from 'igdb-api-node';
 import { GetAll } from './GetAll';
 import { Apicalypse } from 'apicalypse';
-import { GameField } from './enums/fields/GameField';
 import { IgdbResources } from './enums/IgdbResources';
+import { GameDTO } from './DTO/GameDTO';
 
 describe('GetAll', () => {
   let getAll: GetAll;
@@ -10,36 +10,25 @@ describe('GetAll', () => {
 
   beforeEach(() => {
     client = igdb('test', 'test');
-    getAll = new GetAll(
-      { accessToken: 'test', clientId: 'test' },
-      Object.values(GameField),
-      IgdbResources.GAMES,
-    );
+    getAll = new GetAll({ accessToken: 'test', clientId: 'test' });
     getAll.client = client;
+    getAll.setInterceptorClient = jest.fn();
   });
 
   describe('execute', () => {
-    it('should retrieve all games with default options', async () => {
-      client.requestAll = jest.fn().mockResolvedValue([
-        { id: 1, name: 'Game 1' },
-        { id: 2, name: 'Game 2' },
-      ]);
-
-      const result = await getAll.execute({}, 10);
-
-      expect(result).toEqual([
-        { id: 1, name: 'Game 1' },
-        { id: 2, name: 'Game 2' },
-      ]);
-    });
-
     it('should retrieve all games with concurrency', async () => {
       client.requestAll = jest.fn().mockResolvedValue([
         { id: 1, name: 'Game 1' },
         { id: 2, name: 'Game 2' },
       ]);
 
-      const result = await getAll.execute({ concurrency: 2 }, 10, true, 100);
+      const result = await getAll.execute<GameDTO>(
+        { concurrency: 2 },
+        10,
+        IgdbResources.GAMES,
+        true,
+        2,
+      );
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1' },
@@ -53,7 +42,13 @@ describe('GetAll', () => {
         { id: 2, name: 'Game 2' },
       ]);
 
-      const result = await getAll.execute({ delay: 1000 }, 10, true, 100);
+      const result = await getAll.execute<GameDTO>(
+        { delay: 1000 },
+        10,
+        IgdbResources.GAMES,
+        true,
+        2,
+      );
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1' },
@@ -69,7 +64,13 @@ describe('GetAll', () => {
           { id: 1, name: 'Game 1', genre: { id: 1, name: 'Genre 1' } },
         ]);
 
-      const result = await getAll.execute({}, 10, true);
+      const result = await getAll.execute<GameDTO>(
+        {},
+        10,
+        IgdbResources.GAMES,
+        true,
+        1,
+      );
 
       expect(result).toEqual([
         { id: 1, name: 'Game 1', genre: { id: 1, name: 'Genre 1' } },
@@ -82,7 +83,13 @@ describe('GetAll', () => {
         .fn()
         .mockResolvedValue([{ id: 1, name: 'Game 1', genre: 1 }]);
 
-      const result = await getAll.execute({}, 10, false);
+      const result = await getAll.execute<GameDTO>(
+        {},
+        10,
+        IgdbResources.GAMES,
+        false,
+        1,
+      );
 
       expect(result).toEqual([{ id: 1, name: 'Game 1', genre: 1 }]);
     });
@@ -92,9 +99,9 @@ describe('GetAll', () => {
         .fn()
         .mockRejectedValue(new Error('Failed to get all games'));
 
-      await expect(getAll.execute({}, 10)).rejects.toThrow(
-        'Failed to get all games',
-      );
+      await expect(
+        getAll.execute<GameDTO>({}, 10, IgdbResources.GAMES, true, 100),
+      ).rejects.toThrow('Failed to get all games');
     });
   });
 });

@@ -2,27 +2,16 @@ import { Logger } from 'pino';
 import { IgdbConfig } from '@config/interfaces';
 import { IgdbAccessToken } from '../types';
 import { Apicalypse } from 'apicalypse';
-import { GameDTO } from './subsystems/DTO/GameDTO';
-
-/**
- * Represents the interface for an IGDB authentication configuration.
- */
-export interface IgdbAuthConfig extends IgdbConfig {
-  accessToken: IgdbAccessToken;
-}
+import { IgdbResources } from './subsystems/enums/IgdbResources';
 
 /**
  * Represents the interface for the IGDB (Internet Game Database) facade.
  */
 export interface IgdbFacadeInterface {
   /**
-   * The access token for the IGDB API.
-   */
-  accessToken: IgdbAccessToken;
-  /**
    * The configuration for the IGDB API.
    */
-  config: IgdbAuthConfig;
+  config: IgdbConfig;
   /**
    * The logger for the IGDB facade.
    */
@@ -40,9 +29,7 @@ export interface IgdbFacadeInterface {
    * @returns A promise that resolves to an array of GameDTO objects.
    * @remarks WARNING: This will return over 200,000 games. Only use for seeding.
    */
-  seedGames(
-    options: SeedGamesOptionsCC | SeedGamesOptionsDelay,
-  ): Promise<GameDTO[]>;
+  seedResources<DTO>(options: SeedOptionsCC | SeedOptionsDelay): Promise<DTO[]>;
 }
 
 /**
@@ -50,14 +37,14 @@ export interface IgdbFacadeInterface {
  */
 export interface IgdbFacadeConstructor {
   accessToken: IgdbAccessToken;
-  config: IgdbAuthConfig;
+  config: IgdbConfig;
   logger: Logger; // TODO: Create logger abstraction that can take any logger and return a logger with the same interface.
 }
 
 /**
  * Base options for seeding games.
  */
-export interface SeedGamesOptions {
+export interface SeedOptions {
   /**
    * The limit of games to retrieve per request.
    * defaults to the maximum of 500.
@@ -70,32 +57,36 @@ export interface SeedGamesOptions {
    * @default true
    */
   expanded?: boolean | true;
+  /**
+   * The IGDB resource to seed.
+   */
+  resource: IgdbResources;
 }
 
 /**
  * Represents options for seeding games using a multi-threaded queue.
- * If you want to use 1 thread, use `SeedGamesOptionsDelay`.
+ * If you want to use 1 thread, use `SeedOptionsDelay`.
  */
-export interface SeedGamesOptionsCC extends SeedGamesOptions {
+export interface SeedOptionsCC extends SeedOptions {
   /**
    * The number of concurrent requests to make when seeding games.
    */
   concurrency?: number | undefined;
   /**
    * The delay in milliseconds between requests.
-   * Not allowed in `SeedGamesOptionsCC`.
+   * Not allowed in `SeedOptionsCC`.
    */
   delay?: never;
 }
 
 /**
  * Represents options for seeding games with a delay.
- * Uses 1 thread by default. If you want to make use of threaded requests, use `SeedGamesOptionsCC`.
+ * Uses 1 thread by default. If you want to make use of threaded requests, use `SeedOptionsCC`.
  */
-export interface SeedGamesOptionsDelay extends SeedGamesOptions {
+export interface SeedOptionsDelay extends SeedOptions {
   /**
    * The number of concurrent requests to make when seeding games.
-   * Not allowed in `SeedGamesOptionsDelay`.
+   * Not allowed in `SeedOptionsDelay`.
    */
   concurrency?: never;
   /**

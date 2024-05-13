@@ -1,7 +1,6 @@
 import { Apicalypse, RequestAllConfig } from 'apicalypse';
 import { GameField } from './enums/fields/GameField';
 import { GameDTO } from './DTO/GameDTO';
-import { AxiosResponse } from 'axios';
 import { IgdbResources } from './enums/IgdbResources';
 import { CountDTO } from './DTO/CountDTO';
 
@@ -24,23 +23,12 @@ export interface IgdbGetCount {
   execute(resource: IgdbResources): Promise<CountDTO>;
 }
 
-export interface IGetManyGames {
-  client: Apicalypse;
-
-  prepare(): Promise<void>;
-  execute(
-    fields: GameField[] | GameField | string,
-    limit: number,
-    ids: number[],
-    offset?: number,
-  ): Promise<AxiosResponse<GameDTO[]>>;
-}
-
 export interface IGetAll {
   execute<DTO>(
     options: RequestAllConfig,
     limit: number,
+    resource: IgdbResources,
     expanded?: boolean,
-    totalGameCount?: number,
+    totalResourceCount?: number,
   ): Promise<DTO[]>;
 }
