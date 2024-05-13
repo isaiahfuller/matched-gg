@@ -1,3 +1,5 @@
+import { ArtBaseDTO } from './ArtBaseDTO';
+
 export type NRArtworkDTO = Pick<
   ArtworkDTO,
   | 'alpha_channel'
@@ -9,15 +11,6 @@ export type NRArtworkDTO = Pick<
   | 'width'
 >;
 
-export interface ArtworkDTO {
-  alpha_channel: boolean;
-  animated: boolean;
-  checksum: string;
+export interface ArtworkDTO extends ArtBaseDTO {
   game: number;
-  game_localization: number;
-  height: number;
-  id: number;
-  image_id: string;
-  url: string;
-  width: number;
 }
