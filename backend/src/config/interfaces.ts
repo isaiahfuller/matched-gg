@@ -8,8 +8,18 @@ export interface SteamConfig {
   apiKey: string;
 }
 
+/**
+ * Represents the configuration for the IGDB (Internet Game Database) API.
+ */
 export interface IgdbConfig {
+  /**
+   * The client ID used for authentication with the IGDB API.
+   */
   clientId: string;
+
+  /**
+   * The access token used for authentication with the IGDB API.
+   */
   accessToken: string;
 }
 

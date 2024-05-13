@@ -12,7 +12,7 @@ const log = logger.child({ module: 'RequestFieldsInterceptor' });
 export const requestFieldsInterceptor = (
   data: any,
   fields: AllField,
-  totalGameCount?: number,
+  totalResourceCount?: number,
 ) => {
   const gameRequest = JSON.stringify(data);
   const isMultipleFields = Array.isArray(fields);
@@ -20,8 +20,8 @@ export const requestFieldsInterceptor = (
   const offsetMatch = gameRequest.match(/offset (\d+);/);
   const offset = offsetMatch ? Number(offsetMatch[1]) : 0;
 
-  const progress = totalGameCount
-    ? ((Number(offset) / totalGameCount) * 100).toFixed(2) + '%'
+  const progress = totalResourceCount
+    ? ((Number(offset) / totalResourceCount) * 100).toFixed(2) + '%'
     : '0%';
 
   log.debug({

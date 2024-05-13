@@ -4,156 +4,69 @@ import { Apicalypse } from 'apicalypse';
 import {
   IgdbFacadeInterface,
   IgdbFacadeConstructor,
-  SeedGamesOptionsCC,
-  SeedGamesOptionsDelay,
+  SeedOptionsCC,
+  SeedOptionsDelay,
 } from './interfaces';
-import {
-  IGetAll,
-  IGetAllGames,
-  IGetTotalCount,
-  IGetTotalGameCount,
-} from './subsystems/interfaces';
-import { GameDTO } from './subsystems/DTO/GameDTO';
-import { WebsiteDTO } from './subsystems/DTO/WebsiteDTO';
-import { ArtworkDTO } from './subsystems/DTO/ArtworkDTO';
-import { GetTotalCount } from './subsystems/GetTotalCount';
+import { IGetAll, IgdbGetCount } from './subsystems/interfaces';
+import { GetCount } from './subsystems/GetCount';
 import { GetAll } from './subsystems/GetAll';
-import { ArtworkField } from './subsystems/enums/fields/ArtworkField';
-import { GameField } from './subsystems/enums/fields/GameField';
-import { WebsiteField } from './subsystems/enums/fields/WebsiteField';
 
 export class IgdbFacade implements IgdbFacadeInterface {
   public config: IgdbFacadeConstructor['config'];
   public logger: IgdbFacadeConstructor['logger'];
   public accessToken: IgdbFacadeConstructor['accessToken'];
+  public clientId: IgdbFacadeConstructor['config']['clientId'];
   public client: Apicalypse;
 
-  protected getAllGames: IGetAll;
-  protected getTotalGameCount: IGetTotalCount;
-  protected getAllWebsites: IGetAll;
-  protected getTotalWebsiteCount: IGetTotalCount;
-  protected getAllArtworks: IGetAll;
-  protected getTotalArtworkCount: IGetTotalCount;
+  protected getAll: IGetAll;
+  protected getCount: IgdbGetCount;
 
-  constructor(
-    config: IgdbFacadeConstructor['config'],
-    logger: IgdbFacadeConstructor['logger'],
-    accessToken: IgdbFacadeConstructor['accessToken'],
-
-    // Dependency injection for methods
-    getAllGames?: IGetAllGames,
-    getTotalGameCount?: IGetTotalGameCount,
-    getAllWebsites?,
-    getTotalWebsiteCount?,
-    getAllArtworks?,
-    getTotalArtworkCount?,
-  ) {
+  constructor({
+    config,
+    logger,
+  }: {
+    config: IgdbFacadeConstructor['config'];
+    logger: IgdbFacadeConstructor['logger'];
+  }) {
     this.config = config;
     this.logger = logger;
-    this.accessToken = accessToken;
+    this.accessToken = config.accessToken;
+    this.clientId = config.clientId;
+
     this.client = igdb(
-      this.config.clientId,
+      this.clientId,
       this.accessToken || this.config.accessToken,
     );
-    this.getAllGames =
-      getAllGames ||
-      new GetAll(
-        this.config.clientId,
-        this.accessToken,
-        Object.values(GameField),
-        'games',
-      );
-    this.getTotalGameCount =
-      getTotalGameCount || new GetTotalCount(this.client, 'games');
-    this.getAllWebsites =
-      getAllWebsites ||
-      new GetAll(
-        this.config.clientId,
-        this.accessToken,
-        Object.values(WebsiteField),
-        'websites',
-      );
-    this.getTotalWebsiteCount =
-      getTotalWebsiteCount || new GetTotalCount(this.client, 'websites');
-    this.getTotalArtworkCount =
-      getTotalArtworkCount || new GetTotalCount(this.client, 'artworks');
-    this.getAllArtworks =
-      getAllArtworks ||
-      new GetAll(
-        this.config.clientId,
-        this.accessToken,
-        Object.values(ArtworkField),
-        'artworks',
-      );
+    this.getCount = new GetCount(this.client);
+    this.getAll = new GetAll(config);
   }
 
-  public async seedGames({
+  public async seedResources<DTO>({
     limit,
     concurrency,
     delay,
     expanded,
-  }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<GameDTO[]> {
-    this.logger.info('Starting to seed games...');
-    const totalGamesCount = await this.getTotalGameCount.execute();
+    resource,
+  }: SeedOptionsCC | SeedOptionsDelay): Promise<DTO[]> {
+    this.logger.info(`Getting count of ${resource}...`);
+    const totalResourcesCount = await this.getCount.execute(resource);
+
     this.logger.info(
-      `Total games count retrieved from IGDB: ${totalGamesCount}`,
+      `Total ${resource} count retrieved from IGDB: ${totalResourcesCount.count}`,
     );
-    const games: GameDTO[] = (await this.getAllGames.execute(
+
+    const resources: DTO[] = await this.getAll.execute<DTO>(
       {
         concurrency: concurrency || 1,
         delay: delay,
       },
       limit || 500,
+      resource,
       expanded,
-      totalGamesCount,
-    )) as GameDTO[];
-    this.logger.info('Games seeded');
-    return games;
-  }
-
-  public async seedWebsites({
-    limit,
-    concurrency,
-    delay,
-    expanded,
-  }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<WebsiteDTO[]> {
-    this.logger.info('Starting to seed websites...');
-    const totalWebsitesCount = await this.getTotalWebsiteCount.execute();
-    this.logger.info(
-      `Total websites count retrieved from IGDB: ${totalWebsitesCount}`,
+      totalResourcesCount.count,
     );
-    const websites: WebsiteDTO[] = (await this.getAllWebsites.execute(
-      {
-        concurrency: concurrency || 1,
-        delay: delay,
-      },
-      limit || 500,
-      expanded,
-      totalWebsitesCount,
-    )) as WebsiteDTO[];
-    this.logger.info('Websites seeded');
-    return websites;
-  }
 
-  public async seedArtworks({
-    limit,
-    concurrency,
-    delay,
-    expanded,
-  }: SeedGamesOptionsCC | SeedGamesOptionsDelay): Promise<ArtworkDTO[]> {
-    this.logger.info('Starting to seed artworks...');
-    const totalCount = await this.getTotalWebsiteCount.execute();
-    this.logger.info(`Total websites count retrieved from IGDB: ${totalCount}`);
-    const artworks: ArtworkDTO[] = (await this.getAllArtworks.execute(
-      {
-        concurrency: concurrency || 1,
-        delay: delay,
-      },
-      limit || 500,
-      expanded,
-      totalCount,
-    )) as ArtworkDTO[];
-    this.logger.info('Artworks seeded');
-    return artworks;
+    this.logger.info(`${resource} seeded`);
+    return resources;
   }
 }
