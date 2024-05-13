@@ -1,3 +1,5 @@
+import { BaseDTO } from './BaseDTO';
+
 export type NRArtBaseDTO = Pick<
   ArtBaseDTO,
   | 'alpha_channel'
@@ -9,10 +11,9 @@ export type NRArtBaseDTO = Pick<
   | 'width'
 >;
 
-export interface ArtBaseDTO {
+export interface ArtBaseDTO extends BaseDTO {
   alpha_channel: boolean;
   animated: boolean;
-  checksum: string;
   height: number;
   id: number;
   image_id: string;
