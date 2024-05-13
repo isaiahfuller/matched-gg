@@ -1,4 +1,4 @@
-export type NGArtworkDTO = Pick<
+export type NRArtworkDTO = Pick<
   ArtworkDTO,
   | 'alpha_channel'
   | 'animated'
