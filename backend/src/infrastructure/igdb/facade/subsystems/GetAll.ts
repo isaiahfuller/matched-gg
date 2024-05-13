@@ -59,7 +59,7 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
     limit: number,
     resource: IgdbResources,
     expanded: boolean = true,
-    totalResourceCount?: number,
+    totalResourceCount: number,
   ): Promise<DTO[]> {
     await this.prepare({ expanded, resource, totalResourceCount });
     if (this.fields) {
