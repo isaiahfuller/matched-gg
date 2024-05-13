@@ -15,6 +15,8 @@ import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
 import { mapWebsite } from '../map/mapWebsite';
 import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
 import { mapArtwork } from '../map/mapArtwork';
+import { IgdbConfig } from '@config/interfaces';
+import { IgdbResources } from '../../facade/subsystems/enums/IgdbResources';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
@@ -28,17 +30,20 @@ const seed = async (): Promise<void> => {
     logger,
   );
 
-  const accessToken = (await twitch.connect()).access_token;
+  const igdbConfig = {
+    clientId: config.twitch.clientId,
+    accessToken: (await twitch.connect()).access_token,
+  } as IgdbConfig;
 
-  const igdb = new IgdbFacade(
-    { accessToken: accessToken, clientId: config.twitch.clientId },
+  const igdb = new IgdbFacade({
+    config: igdbConfig,
     logger,
-    accessToken,
-  );
+  });
 
-  const igdbGames: GameDTO[] = await igdb.seedGames({
+  const igdbGames: GameDTO[] = await igdb.seedResources<GameDTO>({
     concurrency: 4,
     expanded: false,
+    resource: IgdbResources.GAMES,
   });
 
   const games: gamesSchema.Games[] = igdbGames.map(
@@ -63,9 +68,10 @@ const seed = async (): Promise<void> => {
 
   logger.info('Games inserted');
 
-  const igdbWebsites: WebsiteDTO[] = await igdb.seedWebsites({
+  const igdbWebsites: WebsiteDTO[] = await igdb.seedResources<WebsiteDTO>({
     concurrency: 4,
     expanded: false,
+    resource: IgdbResources.WEBSITES,
   });
 
   const websites: websitesSchema.Websites[] = igdbWebsites.map(
@@ -88,9 +94,10 @@ const seed = async (): Promise<void> => {
   });
   logger.info('Websites inserted');
 
-  const igdbArtworks: ArtworkDTO[] = await igdb.seedArtworks({
+  const igdbArtworks: ArtworkDTO[] = await igdb.seedResources<ArtworkDTO>({
     concurrency: 4,
     expanded: false,
+    resource: IgdbResources.ARTWORKS,
   });
 
   const artworks: artworksSchema.Artworks[] = igdbArtworks.map(

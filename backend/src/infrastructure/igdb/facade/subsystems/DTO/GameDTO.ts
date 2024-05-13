@@ -1,5 +1,6 @@
 import { GameCategory } from '../enums/GameCategory';
 import { GameStatus } from '../enums/GameStatus';
+import { BaseDTO } from './BaseDTO';
 
 export type NRGameDTO = Pick<
   GameDTO,
@@ -26,7 +27,7 @@ export type NRGameDTO = Pick<
   | 'version_title'
 >;
 
-export interface GameDTO {
+export interface GameDTO extends BaseDTO {
   age_ratings?: number[];
   aggregated_rating?: number;
   aggregated_rating_count?: number;
@@ -34,11 +35,9 @@ export interface GameDTO {
   artworks?: number[];
   bundles?: number[];
   category?: GameCategory;
-  checksum?: string;
   collection?: number;
   collections?: number[];
   cover?: number;
-  created_at?: number;
   dlcs?: number[];
   expanded_games?: number[];
   expansions?: number[];
@@ -77,7 +76,6 @@ export interface GameDTO {
   themes?: number[];
   total_rating?: number;
   total_rating_count?: number;
-  updated_at?: number;
   url?: string; // url
   version_parent?: number;
   version_title?: string;

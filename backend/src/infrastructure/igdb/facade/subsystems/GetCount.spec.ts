@@ -1,14 +1,15 @@
 import igdb from 'igdb-api-node';
-import { GetTotalCount } from './GetTotalCount';
+import { GetCount } from './GetCount';
 import { Apicalypse } from 'apicalypse';
+import { IgdbResources } from './enums/IgdbResources';
 
-describe('GetTotalCount', () => {
-  let getTotalCount: GetTotalCount;
+describe('GetCount', () => {
+  let getCount: GetCount;
   let client: Apicalypse;
 
   beforeEach(() => {
     client = igdb('test', 'test');
-    getTotalCount = new GetTotalCount(client, 'games');
+    getCount = new GetCount(client);
   });
 
   describe('execute', () => {
@@ -18,19 +19,19 @@ describe('GetTotalCount', () => {
         .fn()
         .mockResolvedValue({ status: 200, data: { count: 100 } });
 
-      const result = await getTotalCount.execute();
+      const result = await getCount.execute(IgdbResources.GAMES);
 
-      expect(result).toBe(100);
+      expect(result.count).toBe(100);
     });
 
     it('should throw an error if the request fails', async () => {
       // Mock the request method of the Apicalypse client to simulate a failure
       client.request = jest
         .fn()
-        .mockRejectedValue(new Error('Failed to get total game count'));
+        .mockRejectedValue(new Error('Failed to get total games count'));
 
-      await expect(getTotalCount.execute()).rejects.toThrow(
-        'Failed to get total game count',
+      await expect(getCount.execute(IgdbResources.GAMES)).rejects.toThrow(
+        'Failed to get total games count',
       );
     });
   });
