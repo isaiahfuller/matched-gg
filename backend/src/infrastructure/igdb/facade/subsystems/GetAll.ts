@@ -43,7 +43,6 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
   }): Promise<void> {
     this.totalCount = totalResourceCount ? totalResourceCount : undefined;
     this.fields = this.getFields(expanded, resource) ?? this.fields;
-    console.log(this.fields, this.totalCount);
     if (this.fields && this.totalCount) {
       this.setInterceptorClient({
         timeout: 120000,
