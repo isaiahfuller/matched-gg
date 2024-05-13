@@ -1,3 +1,5 @@
+import { StaticBaseDTO } from './BaseDTO';
+
 export type NGArtworkDTO = Pick<
   ArtworkDTO,
   | 'alpha_channel'
@@ -9,10 +11,9 @@ export type NGArtworkDTO = Pick<
   | 'width'
 >;
 
-export interface ArtworkDTO {
+export interface ArtworkDTO extends StaticBaseDTO {
   alpha_channel: boolean;
   animated: boolean;
-  checksum: string;
   game: number;
   height: number;
   id: number;
