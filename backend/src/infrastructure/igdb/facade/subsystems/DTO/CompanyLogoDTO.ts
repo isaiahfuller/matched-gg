@@ -1,14 +1,5 @@
-import { ArtBaseDTO } from './ArtBaseDTO';
+import { ArtBaseDTO, NRArtBaseDTO } from './ArtBaseDTO';
 
-export type NGCompanyLogoDTO = Pick<
-  CompanyLogoDTO,
-  | 'alpha_channel'
-  | 'animated'
-  | 'checksum'
-  | 'height'
-  | 'image_id'
-  | 'url'
-  | 'width'
->;
+export type NRCompanyLogoDTO = NRArtBaseDTO;
 
 export interface CompanyLogoDTO extends ArtBaseDTO {}
