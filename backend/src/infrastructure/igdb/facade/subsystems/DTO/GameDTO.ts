@@ -10,7 +10,6 @@ export interface GameDTO extends BaseDTO {
   artworks?: number[];
   bundles?: number[];
   category?: GameCategory;
-  collection?: number;
   collections?: number[];
   cover?: number;
   dlcs?: number[];
