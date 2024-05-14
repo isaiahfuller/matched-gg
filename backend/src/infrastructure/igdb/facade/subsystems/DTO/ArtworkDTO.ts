@@ -1,12 +1,5 @@
-import { StaticBaseDTO } from './BaseDTO';
+import { ArtBaseDTO, NRArtBaseDTO } from './ArtBaseDTO';
 
-export interface ArtworkDTO extends StaticBaseDTO {
-  alpha_channel: boolean;
-  animated: boolean;
+export interface ArtworkDTO extends ArtBaseDTO {
   game: number;
-  height: number;
-  id: number;
-  image_id: string;
-  url: string;
-  width: number;
 }
