@@ -105,3 +105,5 @@ export const externalGamesTable = pgTable(
     };
   },
 );
+
+export type ExternalGames = typeof externalGamesTable.$inferInsert;
