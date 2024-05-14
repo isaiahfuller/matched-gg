@@ -1,16 +1,5 @@
 import { StaticBaseDTO } from './BaseDTO';
 
-export type NGArtworkDTO = Pick<
-  ArtworkDTO,
-  | 'alpha_channel'
-  | 'animated'
-  | 'checksum'
-  | 'height'
-  | 'image_id'
-  | 'url'
-  | 'width'
->;
-
 export interface ArtworkDTO extends StaticBaseDTO {
   alpha_channel: boolean;
   animated: boolean;

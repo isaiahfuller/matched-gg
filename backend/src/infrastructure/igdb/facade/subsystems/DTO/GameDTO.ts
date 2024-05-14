@@ -2,31 +2,6 @@ import { GameCategory } from '../enums/GameCategory';
 import { GameStatus } from '../enums/GameStatus';
 import { BaseDTO } from './BaseDTO';
 
-export type NRGameDTO = Pick<
-  GameDTO,
-  | 'aggregated_rating'
-  | 'aggregated_rating_count'
-  | 'category'
-  | 'checksum'
-  | 'created_at'
-  | 'first_release_date'
-  | 'hypes'
-  | 'id'
-  | 'name'
-  | 'rating'
-  | 'rating_count'
-  | 'slug'
-  | 'status'
-  | 'storyline'
-  | 'summary'
-  | 'tags'
-  | 'total_rating'
-  | 'total_rating_count'
-  | 'updated_at'
-  | 'url'
-  | 'version_title'
->;
-
 export interface GameDTO extends BaseDTO {
   age_ratings?: number[];
   aggregated_rating?: number;
