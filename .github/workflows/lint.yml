@@ -8,9 +8,6 @@ jobs:
     strategy:
       matrix:
         dir: [frontend, backend]
-    defaults:
-      run:
-        working-directory: ${{ matrix.dir }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,4 +25,4 @@ jobs:
         run: yarn install --no-immutable
 
       - name: Run lint
-        run: yarn lint
+        run: yarn --cwd ${{ matrix.dir }} lint
