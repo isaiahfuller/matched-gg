@@ -1,22 +1,5 @@
 import { CompanyDateCategoryEnum } from '../enums/CompanyDateCategoryEnum';
 
-export type NRCompanyDTO = Pick<
-  CompanyDTO,
-  | 'change_date'
-  | 'change_date_category'
-  | 'checksum'
-  | 'country'
-  | 'created_at'
-  | 'description'
-  | 'id'
-  | 'name'
-  | 'slug'
-  | 'start_date'
-  | 'start_date_category'
-  | 'updated_at'
-  | 'url'
->;
-
 export interface CompanyDTO {
   change_date: number;
   change_date_category: CompanyDateCategoryEnum;

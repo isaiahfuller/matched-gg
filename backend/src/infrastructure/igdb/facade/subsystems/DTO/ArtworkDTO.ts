@@ -1,6 +1,4 @@
-import { ArtBaseDTO, NRArtBaseDTO } from './ArtBaseDTO';
-
-export type NRArtworkDTO = NRArtBaseDTO;
+import { ArtBaseDTO } from './ArtBaseDTO';
 
 export interface ArtworkDTO extends ArtBaseDTO {
   game: number;

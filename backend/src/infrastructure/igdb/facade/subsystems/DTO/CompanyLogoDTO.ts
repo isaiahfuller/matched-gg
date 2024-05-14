@@ -1,5 +1,3 @@
-import { ArtBaseDTO, NRArtBaseDTO } from './ArtBaseDTO';
-
-export type NRCompanyLogoDTO = NRArtBaseDTO;
+import { ArtBaseDTO } from './ArtBaseDTO';
 
 export interface CompanyLogoDTO extends ArtBaseDTO {}
