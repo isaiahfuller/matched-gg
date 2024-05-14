@@ -1,13 +1,13 @@
-import { pgTable, serial, text, timestamp, bigint } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, bigint } from 'drizzle-orm/pg-core';
 import { gamesTable } from './games';
 
 export const franchisesTable = pgTable('franchises', {
   checksum: text('checksum'),
+  igdbCreatedAt: timestamp('igdb_created_at'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   games: bigint('game', { mode: 'number' })
     .references(() => gamesTable.igdbId)
     .array(),
-  id: serial('game_id').notNull().unique(),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
   name: text('name').notNull(),
@@ -15,3 +15,5 @@ export const franchisesTable = pgTable('franchises', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
+
+export type Franchises = typeof franchisesTable.$inferInsert;
