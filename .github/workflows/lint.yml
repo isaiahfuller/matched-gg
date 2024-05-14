@@ -22,7 +22,7 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --no-immutable
+        run: yarn --cwd ${{ matrix.dir }} install --no-immutable
 
       - name: Run lint
         run: yarn --cwd ${{ matrix.dir }} lint
