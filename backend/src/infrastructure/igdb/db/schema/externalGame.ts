@@ -2,7 +2,6 @@ import {
   integer,
   pgEnum,
   pgTable,
-  serial,
   text,
   timestamp,
   bigint,
@@ -81,7 +80,6 @@ export const externalGamesTable = pgTable(
   {
     checksum: text('checksum'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
-    id: serial('game_id').notNull().unique(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
     category: ExternalGameCategoryPGEnum('category'),
