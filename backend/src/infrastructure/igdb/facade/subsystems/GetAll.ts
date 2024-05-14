@@ -9,6 +9,10 @@ import {
 import { IgdbResources } from './enums/IgdbResources';
 import { IgdbConfig } from '@config/interfaces';
 import { InterceptorSubsystem } from './Subsystem';
+import {
+  ArtworkField,
+  ExpandedArtworkField,
+} from './enums/fields/ArtworkField';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
 export class GetAll extends InterceptorSubsystem implements IGetAll {
@@ -31,6 +35,8 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
         return Object.values(expanded ? ExpandedGameField : GameField);
       case IgdbResources.WEBSITES:
         return Object.values(expanded ? ExpandedWebsiteField : WebsiteField);
+      case IgdbResources.ARTWORKS:
+        return Object.values(expanded ? ExpandedArtworkField : ArtworkField);
       default:
         return;
     }
