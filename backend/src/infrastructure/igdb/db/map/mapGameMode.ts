@@ -6,6 +6,7 @@ export const mapmodeMode = (mode) => {
     name: mode.name || 'NO_NAME',
     slug: mode.slug,
     checksum: mode.checksum,
+    createdAt: new Date(),
     igdbCreatedAt: mode.created_at ? new Date(mode.created_at * 1000) : null,
     url: mode.url,
     igdbUpdatedAt: mode.updated_at ? new Date(mode.updated_at * 1000) : null,
