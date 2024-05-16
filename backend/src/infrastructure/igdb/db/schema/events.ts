@@ -6,7 +6,7 @@ export const eventsTable = pgTable('events', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   description: text('description'),
   endTime: timestamp('end_time'),
-  games: bigint('game', { mode: 'number' })
+  games: bigint('games', { mode: 'number' })
     .references(() => gamesTable.igdbId)
     .array(),
   igdbCreatedAt: timestamp('igdb_created_at'),
