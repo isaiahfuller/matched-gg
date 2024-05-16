@@ -1,6 +1,6 @@
 import { GameModes } from '../schema/gameMode';
 
-export const mapmodeMode = (mode) => {
+export const mapGameMode = (mode) => {
   const mappedMode = {
     igdbId: mode.id,
     name: mode.name || 'NO_NAME',
