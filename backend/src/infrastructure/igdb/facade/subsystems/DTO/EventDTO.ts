@@ -1,14 +1,14 @@
 import { BaseDTO } from './BaseDTO';
 
 export interface EventDTO extends BaseDTO {
-  description: string;
-  endTime: number;
-  games: number[];
+  description?: string;
+  end_time?: number;
+  games?: number[];
   id: number;
-  liveStreamUrl: string;
-  name: string;
-  slug: string;
-  startTime: number;
-  timeZone: string;
-  videos: number;
+  live_stream_url?: string;
+  name?: string;
+  slug?: string;
+  start_time?: number;
+  time_zone?: string;
+  videos?: number;
 }
