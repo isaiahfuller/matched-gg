@@ -8,12 +8,11 @@ import {
 } from 'drizzle-orm/pg-core';
 import { gamesTable } from './games';
 
-const commonArtFields = {
+export const commonArtFields = {
   alphaChannel: boolean('alpha_channel'),
   animated: boolean('animated'),
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
   height: integer('height'),
   igdbId: integer('igdb_id'),
   imageId: text('image_id').primaryKey(),
@@ -22,7 +21,10 @@ const commonArtFields = {
   width: integer('width'),
 };
 
-export const artworksTable = pgTable('artworks', commonArtFields);
+export const artworksTable = pgTable('artworks', {
+  ...commonArtFields,
+  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
+});
 export const coverTable = pgTable('covers', {
   ...commonArtFields,
   game_localization: bigint('game_localization', { mode: 'number' }),
