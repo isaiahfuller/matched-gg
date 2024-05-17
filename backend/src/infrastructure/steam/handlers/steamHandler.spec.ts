@@ -31,12 +31,12 @@ describe('SteamHandler', () => {
           games: [
             {
               appid: '69420',
-              playtime_forever: 80085,
-              playtime_windows_forever: 145,
-              playtime_mac_forever: 145,
-              playtime_linux_forever: 145,
-              rtime_last_played: 119711,
               playtime_disconnected: 4789,
+              playtime_forever: 80085,
+              playtime_linux_forever: 145,
+              playtime_mac_forever: 145,
+              playtime_windows_forever: 145,
+              rtime_last_played: 119711,
             },
           ],
         } as SteamOwnedGames,
@@ -66,8 +66,8 @@ describe('SteamHandler', () => {
     mockAxios.get.mockResolvedValue({
       data: {
         playerstats: {
-          success: false,
           error: 'Requested app has no stats',
+          success: false,
         },
       },
     });

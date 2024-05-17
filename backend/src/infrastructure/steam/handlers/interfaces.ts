@@ -7,22 +7,22 @@ export interface SteamOwnedGames {
 
 export interface SteamGameBasicInfo {
   appid: string;
-  playtime_forever: number;
-  playtime_windows_forever: number;
-  playtime_mac_forever: number;
-  playtime_linux_forever: number;
-  rtime_last_played: number;
   playtime_disconnected: number;
+  playtime_forever: number;
+  playtime_linux_forever: number;
+  playtime_mac_forever: number;
+  playtime_windows_forever: number;
+  rtime_last_played: number;
 }
 
 export interface SteamGameUserAchievements {
-  steamID: string;
   gameName: string;
+  steamID: string;
   success: boolean;
 }
 
 export interface SteamGameUserAchievement {
-  apiname: string;
   achieved: 1 | 0;
+  apiname: string;
   unlocktime: string;
 }

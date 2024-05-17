@@ -24,8 +24,8 @@ export default class SteamHandler {
     }
     const method = 'IPlayerService/GetOwnedGames';
     const url = buildSteamUrl(method, {
-      steamid: steamId,
       include_played_free_games: true,
+      steamid: steamId,
     });
     const response = await axios.get(url);
     const data: SteamOwnedGames = response.data.response;
@@ -46,8 +46,8 @@ export default class SteamHandler {
     }
     const method = 'ISteamUserStats/GetPlayerAchievements';
     const url = buildSteamUrl(method, {
-      steamid: steamId,
       appid: appid,
+      steamid: steamId,
     });
     const response = await axios.get(url);
     if (!response.data.playerstats.success) {
