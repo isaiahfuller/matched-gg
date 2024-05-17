@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
-import { Config } from './interfaces';
 import path from 'path';
+
+import { Config } from './interfaces';
 
 dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
