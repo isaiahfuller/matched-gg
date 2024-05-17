@@ -24,7 +24,7 @@ export interface TwitchValidTokenResponseDTO {
    *
    * @example ['user:read:email', 'bits:read'] | null
    */
-  scopes: string[] | null;
+  scopes: null | string[];
   /**
    * The user ID of the user who the token represents. This field is undefined if validate endpoint is called with an App Access Token.
    *
