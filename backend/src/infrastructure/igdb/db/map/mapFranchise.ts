@@ -3,8 +3,8 @@ import { Franchises } from '../schema/franchise';
 export const mapFranchise = (franchise) => {
   const mappedFranchise = {
     checksum: franchise.checksum,
-    games: franchise.games,
     createdAt: new Date(),
+    games: franchise.games,
     igdbCreatedAt: franchise.created_at
       ? new Date(franchise.created_at * 1000)
       : null,
