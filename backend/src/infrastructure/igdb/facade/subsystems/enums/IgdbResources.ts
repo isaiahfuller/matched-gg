@@ -4,7 +4,7 @@
  */
 // TODO: Add more resources as needed
 export enum IgdbResources {
+  ARTWORKS = 'artworks',
   GAMES = 'games',
   WEBSITES = 'websites',
-  ARTWORKS = 'artworks',
 }
