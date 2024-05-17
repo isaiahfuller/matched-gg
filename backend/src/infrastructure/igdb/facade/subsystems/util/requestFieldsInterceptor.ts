@@ -1,4 +1,5 @@
 import { logger } from 'src/util/logger';
+
 import { AllField } from '../types';
 
 const log = logger.child({ module: 'RequestFieldsInterceptor' });
