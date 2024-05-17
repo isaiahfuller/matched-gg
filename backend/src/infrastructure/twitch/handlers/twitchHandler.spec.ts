@@ -1,8 +1,9 @@
+import axios from 'axios';
+import { Logger } from 'pino';
+
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidTokenResponseDTO } from './DTO/TwitchValidateResponseDTO';
-import { Logger } from 'pino';
 import TwitchHandler from './twitchHandler';
-import axios from 'axios';
 
 jest.mock('axios');
 

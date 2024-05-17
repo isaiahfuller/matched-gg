@@ -1,7 +1,8 @@
+import { TwitchConfig } from '@config/interfaces';
 import { Logger } from 'pino';
+
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidTokenResponseDTO } from './DTO/TwitchValidateResponseDTO';
-import { TwitchConfig } from '@config/interfaces';
 
 /**
  * Represents the interface for a Twitch handler.
@@ -46,7 +47,7 @@ export interface TwitchHandlerInterface {
    */
   validateToken(
     _accessToken: TwitchHandlerConstructor['accessToken'],
-  ): Promise<TwitchValidTokenResponseDTO | TwitchTokenResponseDTO>;
+  ): Promise<TwitchTokenResponseDTO | TwitchValidTokenResponseDTO>;
 }
 
 /**
