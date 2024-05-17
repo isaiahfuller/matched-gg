@@ -90,13 +90,13 @@ export const AgeRatingCDCategoryPGEnum = pgEnum('AgeRatingCDCategoryEnum', [
 ]);
 
 export const ageRatingCDsTable = pgTable('age_rating_content_descriptions', {
-  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   category: AgeRatingCDCategoryPGEnum(
     'age_rating_content_descriptions_category',
   ),
-  description: text('description'),
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  description: text('description'),
+  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 

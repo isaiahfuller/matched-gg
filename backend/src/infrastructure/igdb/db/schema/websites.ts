@@ -31,7 +31,6 @@ export const WebsitePGEnum = pgEnum('WebsiteCategoryEnum', [
 ]);
 
 export const websitesTable = pgTable('websites', {
-  websiteCategory: WebsitePGEnum('category'),
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
@@ -39,6 +38,7 @@ export const websitesTable = pgTable('websites', {
   trusted: boolean('trusted'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
+  websiteCategory: WebsitePGEnum('category'),
 });
 
 export type Websites = typeof websitesTable.$inferInsert;

@@ -2,17 +2,17 @@ import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { gamesTable } from './games';
 
 export const collectionsTable = pgTable('collections', {
-  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
-  igdbCreatedAt: timestamp('igdb_created_at'),
-  igdbUpdatedAt: timestamp('igdb_updated_at'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
   checksum: text('checksum'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
   games: bigint('game', { mode: 'number' })
     .references(() => gamesTable.igdbId)
     .array(),
+  igdbCreatedAt: timestamp('igdb_created_at'),
+  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
+  igdbUpdatedAt: timestamp('igdb_updated_at'),
   name: text('name'),
   slug: text('slug'),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
 

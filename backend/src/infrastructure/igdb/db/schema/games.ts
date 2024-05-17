@@ -64,15 +64,15 @@ export const gamesTable = pgTable(
     summary: text('summary'),
     totalRating: doublePrecision('total_rating'),
     totalRatingCount: integer('total_rating_count'),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
     url: text('url'),
     versionTitle: text('version_title'),
-    updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
   (table) => {
     return {
-      uniqueIgdbIdIdx: uniqueIndex('igdb_id_idx').on(table.igdbId),
-      slugIdx: index('slug_idx').on(table.slug),
       nameIdx: index('name_idx').on(table.name),
+      slugIdx: index('slug_idx').on(table.slug),
+      uniqueIgdbIdIdx: uniqueIndex('igdb_id_idx').on(table.igdbId),
     };
   },
 );

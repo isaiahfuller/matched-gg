@@ -3,11 +3,11 @@ import { gamesTable } from './games';
 
 export const franchisesTable = pgTable('franchises', {
   checksum: text('checksum'),
-  igdbCreatedAt: timestamp('igdb_created_at'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   games: bigint('game', { mode: 'number' })
     .references(() => gamesTable.igdbId)
     .array(),
+  igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
   name: text('name').notNull(),
