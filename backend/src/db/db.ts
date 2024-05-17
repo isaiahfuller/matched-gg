@@ -1,8 +1,10 @@
 import { config } from '@config/config';
+import logger from '@util/logger';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 
 import * as games from '../infrastructure/igdb/db/schema/games';
+import { QueryLogger } from './QueryLogger';
 
 export const client = new Client({
   database: config.db.database,
@@ -14,4 +16,7 @@ export const client = new Client({
 
 client.connect();
 
-export const db = drizzle(client, { schema: games });
+export const db = drizzle(client, {
+  logger: new QueryLogger({ logger: logger, truncate: true }),
+  schema: games,
+});
