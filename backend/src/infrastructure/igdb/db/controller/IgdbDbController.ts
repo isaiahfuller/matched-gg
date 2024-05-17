@@ -1,8 +1,9 @@
+import { QueryResult } from 'pg';
 import { db } from 'src/db/db';
+
+import * as artworksSchema from '../schema/artworks';
 import * as gamesSchema from '../schema/games';
 import * as websitesSchema from '../schema/websites';
-import * as artworksSchema from '../schema/artworks';
-import { QueryResult } from 'pg';
 import { setAllConflictUpdateColumns } from '../util/setAllConflictUpdateColumns';
 
 export class IgdbDbController {
@@ -12,8 +13,22 @@ export class IgdbDbController {
     return this.db;
   }
 
+  public async storeArtworks(
+    artworks: artworksSchema.Artworks | artworksSchema.Artworks[],
+  ): Promise<QueryResult<artworksSchema.Artworks[]>> {
+    return await this.db
+      .insert(artworksSchema.artworksTable)
+      .values([artworks].flat())
+      .onConflictDoUpdate({
+        set: setAllConflictUpdateColumns(artworksSchema.artworksTable, [
+          'imageId',
+        ]),
+        target: artworksSchema.artworksTable.imageId,
+      });
+  }
+
   public async storeGames(
-    games: gamesSchema.Games[] | gamesSchema.Games,
+    games: gamesSchema.Games | gamesSchema.Games[],
   ): Promise<QueryResult<gamesSchema.Games[]>> {
     return await this.db
       .insert(gamesSchema.gamesTable)
@@ -29,7 +44,7 @@ export class IgdbDbController {
   }
 
   public async storeWebsites(
-    websites: websitesSchema.Websites[] | websitesSchema.Websites,
+    websites: websitesSchema.Websites | websitesSchema.Websites[],
   ): Promise<QueryResult<websitesSchema.Websites[]>> {
     return await this.db
       .insert(websitesSchema.websitesTable)
@@ -39,20 +54,6 @@ export class IgdbDbController {
           'igdbId',
         ]),
         target: websitesSchema.websitesTable.igdbId,
-      });
-  }
-
-  public async storeArtworks(
-    artworks: artworksSchema.Artworks[] | artworksSchema.Artworks,
-  ): Promise<QueryResult<artworksSchema.Artworks[]>> {
-    return await this.db
-      .insert(artworksSchema.artworksTable)
-      .values([artworks].flat())
-      .onConflictDoUpdate({
-        set: setAllConflictUpdateColumns(artworksSchema.artworksTable, [
-          'imageId',
-        ]),
-        target: artworksSchema.artworksTable.imageId,
       });
   }
 }
