@@ -25,15 +25,15 @@ export const requestFieldsInterceptor = (
     : '0%';
 
   log.debug({
+    isMultipleFields,
     request: gameRequest,
     requestedFields: fields,
-    isMultipleFields,
   });
 
   log.info({
-    requestedFieldsCount: isMultipleFields ? fields.length : 1,
     offset: offset ? offset[1] : 0,
     progress,
+    requestedFieldsCount: isMultipleFields ? fields.length : 1,
   });
 
   if (gameRequest.includes('fields')) {
