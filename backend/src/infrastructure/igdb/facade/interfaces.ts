@@ -1,7 +1,8 @@
-import { Logger } from 'pino';
 import { IgdbConfig } from '@config/interfaces';
-import { IgdbAccessToken } from '../types';
 import { Apicalypse } from 'apicalypse';
+import { Logger } from 'pino';
+
+import { IgdbAccessToken } from '../types';
 import { IgdbResources } from './subsystems/enums/IgdbResources';
 
 /**
@@ -46,10 +47,6 @@ export interface IgdbFacadeConstructor {
  */
 export interface SeedOptions {
   /**
-   * The IGDB resource to seed.
-   */
-  resource: IgdbResources;
-  /**
    * Whether to expand the game fields.
    * @default true
    */
@@ -60,7 +57,11 @@ export interface SeedOptions {
    *
    * @default 500
    */
-  limit?: number | 500;
+  limit?: 500 | number;
+  /**
+   * The IGDB resource to seed.
+   */
+  resource: IgdbResources;
 }
 
 /**
