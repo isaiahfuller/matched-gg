@@ -18,11 +18,11 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
   ) {
     super(
       {
-        // TODO: Stop hardcoding the return & realm URLs
-        returnURL: 'http://localhost:3000/steam/auth/return',
-        realm: 'http://localhost:3000/',
         apiKey: config.steam.apiKey,
         passReqToCallback: true,
+        realm: 'http://localhost:3000/',
+        // TODO: Stop hardcoding the return & realm URLs
+        returnURL: 'http://localhost:3000/steam/auth/return',
       } satisfies Options,
       (async (req, identifier, profile, done) => {
         req.isAuthenticated()
