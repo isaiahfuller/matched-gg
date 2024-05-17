@@ -4,11 +4,11 @@ import * as games from '../infrastructure/igdb/db/schema/games';
 import { config } from '@config/config';
 
 export const client = new Client({
-  user: config.db.user,
-  host: config.db.host,
   database: config.db.database,
+  host: config.db.host,
   password: config.db.password,
   port: config.db.port,
+  user: config.db.user,
 });
 
 client.connect();
