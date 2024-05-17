@@ -2,9 +2,9 @@ import { Request } from 'express';
 
 export interface Options {
   apiKey: string;
+  passReqToCallback?: boolean;
   realm: string;
   returnURL: string;
-  passReqToCallback?: boolean;
 }
 
 export type DoneFn = (err: unknown, user?: Express.User | false | null) => void;
