@@ -1,6 +1,7 @@
-import SteamHandler from './steamHandler';
 import axios from 'axios';
+
 import { SteamOwnedGames } from './interfaces';
+import SteamHandler from './steamHandler';
 
 jest.mock('axios');
 

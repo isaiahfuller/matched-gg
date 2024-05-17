@@ -22,7 +22,7 @@ export interface SteamGameUserAchievements {
 }
 
 export interface SteamGameUserAchievement {
-  achieved: 1 | 0;
+  achieved: 0 | 1;
   apiname: string;
   unlocktime: string;
 }
