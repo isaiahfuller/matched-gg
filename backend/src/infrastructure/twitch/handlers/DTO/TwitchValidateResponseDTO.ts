@@ -9,6 +9,10 @@ export interface TwitchValidTokenResponseDTO {
    */
   client_id: string;
   /**
+   * The number of seconds until the token expires.
+   */
+  expires_in: number;
+  /**
    * The login of the user who the token represents. This field is undefined if validate endpoint is called with an App Access Token.
    *
    * @example 'twitchdev' | undefined
@@ -27,10 +31,6 @@ export interface TwitchValidTokenResponseDTO {
    * @example '123456' | undefined
    */
   user_id: string | undefined;
-  /**
-   * The number of seconds until the token expires.
-   */
-  expires_in: number;
 }
 
 /**
@@ -41,17 +41,17 @@ export interface TwitchValidTokenResponseDTO {
  */
 export interface TwitchInvalidTokenResponseDTO {
   /**
-   * The status code of the response.
-   * Only present when the token is invalid.
-   *
-   * @example 401
-   */
-  status: number;
-  /**
    * The message of the response.
    * Only present when the token is invalid.
    *
    * @example 'invalid access token'
    */
   message: 'invalid access token';
+  /**
+   * The status code of the response.
+   * Only present when the token is invalid.
+   *
+   * @example 401
+   */
+  status: number;
 }
