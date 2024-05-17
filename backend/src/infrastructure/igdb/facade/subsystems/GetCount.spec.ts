@@ -1,6 +1,7 @@
-import igdb from 'igdb-api-node';
-import { GetCount } from './GetCount';
 import { Apicalypse } from 'apicalypse';
+import igdb from 'igdb-api-node';
+
+import { GetCount } from './GetCount';
 import { IgdbResources } from './enums/IgdbResources';
 
 describe('GetCount', () => {
@@ -17,7 +18,7 @@ describe('GetCount', () => {
       // Mock the request method of the Apicalypse client
       client.request = jest
         .fn()
-        .mockResolvedValue({ status: 200, data: { count: 100 } });
+        .mockResolvedValue({ data: { count: 100 }, status: 200 });
 
       const result = await getCount.execute(IgdbResources.GAMES);
 

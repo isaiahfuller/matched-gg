@@ -5,12 +5,12 @@ import {
 
 export const mapAgeRatingContentDescription = (ageRatingCD) => {
   const mappedAgeRatingCD = {
-    igdbId: ageRatingCD.id,
     category: ageRatingCD.category
       ? AgeRatingCDCategoryPGEnum.enumValues[ageRatingCD.category]
       : null,
-    description: ageRatingCD.description,
     checksum: ageRatingCD.checksum,
+    description: ageRatingCD.description,
+    igdbId: ageRatingCD.id,
     updatedAt: new Date(),
   } satisfies AgeRatingContentDescriptions;
   return mappedAgeRatingCD;

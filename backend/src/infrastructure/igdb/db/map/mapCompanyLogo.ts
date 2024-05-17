@@ -8,8 +8,8 @@ export const mapCompanyLogo = (logo) => {
     height: logo.height,
     igdbId: logo.id,
     imageId: logo.image_id,
-    url: logo.url,
     updatedAt: new Date(),
+    url: logo.url,
     width: logo.width,
   } satisfies CompanyLogos;
   return mappedCompanyLogo;

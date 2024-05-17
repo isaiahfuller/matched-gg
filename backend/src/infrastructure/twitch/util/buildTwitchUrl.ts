@@ -1,7 +1,8 @@
-import { TwitchEndpoints } from '../handlers/interfaces';
-import validateUrl from './validateUrl';
-import { ApiUrl } from '../handlers/types';
 import { logger } from 'src/util/logger';
+
+import { TwitchEndpoints } from '../handlers/interfaces';
+import { ApiUrl } from '../handlers/types';
+import validateUrl from './validateUrl';
 
 /**
  * Builds a Twitch API URL by combining the base API URL and the specified endpoint.

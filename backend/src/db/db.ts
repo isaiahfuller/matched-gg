@@ -1,21 +1,22 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
-import { QueryLogger } from './QueryLogger';
-import * as games from '../infrastructure/igdb/db/schema/games';
 import { config } from '@config/config';
 import logger from '@util/logger';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Client } from 'pg';
+
+import * as games from '../infrastructure/igdb/db/schema/games';
+import { QueryLogger } from './QueryLogger';
 
 export const client = new Client({
-  user: config.db.user,
-  host: config.db.host,
   database: config.db.database,
+  host: config.db.host,
   password: config.db.password,
   port: config.db.port,
+  user: config.db.user,
 });
 
 client.connect();
 
 export const db = drizzle(client, {
-  schema: games,
   logger: new QueryLogger({ logger: logger, truncate: true }),
+  schema: games,
 });

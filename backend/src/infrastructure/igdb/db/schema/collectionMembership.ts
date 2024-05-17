@@ -1,6 +1,7 @@
 import { bigint, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { gamesTable } from './games';
+
 import { collectionsTable } from './collections';
+import { gamesTable } from './games';
 
 export const CollectionMembershipTypePGEnum = pgEnum('CollectionTypeEnum', [
   '',
@@ -9,17 +10,17 @@ export const CollectionMembershipTypePGEnum = pgEnum('CollectionTypeEnum', [
 ]);
 
 export const collectionMembershipTable = pgTable('collectionMemberships', {
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  igdbCreatedAt: timestamp('igdb_created_at'),
-  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
-  igdbUpdatedAt: timestamp('igdb_updated_at'),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
+  checksum: text('checksum'),
   collection: bigint('game', { mode: 'number' }).references(
     () => collectionsTable.igdbId,
   ),
-  checksum: text('checksum'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
+  igdbCreatedAt: timestamp('igdb_created_at'),
+  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
+  igdbUpdatedAt: timestamp('igdb_updated_at'),
   type: CollectionMembershipTypePGEnum('type'),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export type CollectionMembership =

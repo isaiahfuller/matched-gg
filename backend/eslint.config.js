@@ -2,9 +2,15 @@ const tsplugin = require('@typescript-eslint/eslint-plugin');
 const tseslint = require('typescript-eslint');
 const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 const eslintPluginPrettier = require('eslint-plugin-prettier');
+const perfectionistRecommended = require('eslint-plugin-perfectionist/configs/recommended-natural');
+const perfectionist = require('eslint-plugin-perfectionist');
 
 module.exports = tseslint.config({
-  extends: [...tseslint.configs.recommended, eslintPluginPrettierRecommended],
+  extends: [
+    ...tseslint.configs.recommended,
+    eslintPluginPrettierRecommended,
+    perfectionistRecommended,
+  ],
   files: ['src/**/*.ts', 'src/**/*.ts'],
   languageOptions: {
     sourceType: 'module',
@@ -19,10 +25,20 @@ module.exports = tseslint.config({
   },
   plugins: {
     '@typescript-eslint/eslint-plugin': tsplugin,
+    perfectionist: perfectionist,
     prettier: eslintPluginPrettier,
   },
   ignores: ['**/eslint.config.js', 'dist/**/*'],
   rules: {
+    'perfectionist/sort-enums': [
+      'error',
+      {
+        type: 'natural',
+        order: 'asc',
+        'ignore-case': true,
+        'partition-by-comment': true,
+      },
+    ],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
