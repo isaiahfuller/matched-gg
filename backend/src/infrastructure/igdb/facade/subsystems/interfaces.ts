@@ -1,15 +1,16 @@
 import { Apicalypse, RequestAllConfig } from 'apicalypse';
-import { GameField } from './enums/fields/GameField';
+
+import { CountDTO } from './DTO/CountDTO';
 import { GameDTO } from './DTO/GameDTO';
 import { IgdbResources } from './enums/IgdbResources';
-import { CountDTO } from './DTO/CountDTO';
+import { GameField } from './enums/fields/GameField';
 
 export interface IGetGame {
   client: Apicalypse;
 
   execute(
     id: number,
-    fields: GameField[] | GameField | string,
+    fields: GameField | GameField[] | string,
   ): Promise<GameDTO>;
   prepare(): Promise<void>;
 }

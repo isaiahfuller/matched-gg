@@ -1,6 +1,7 @@
-import igdb from 'igdb-api-node';
-import { GetCount } from './GetCount';
 import { Apicalypse } from 'apicalypse';
+import igdb from 'igdb-api-node';
+
+import { GetCount } from './GetCount';
 import { IgdbResources } from './enums/IgdbResources';
 
 describe('GetCount', () => {

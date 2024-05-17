@@ -1,8 +1,9 @@
-import igdb from 'igdb-api-node';
-import { GetAll } from './GetAll';
 import { Apicalypse } from 'apicalypse';
-import { IgdbResources } from './enums/IgdbResources';
+import igdb from 'igdb-api-node';
+
 import { GameDTO } from './DTO/GameDTO';
+import { GetAll } from './GetAll';
+import { IgdbResources } from './enums/IgdbResources';
 
 describe('GetAll', () => {
   let getAll: GetAll;

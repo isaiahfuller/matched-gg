@@ -1,18 +1,19 @@
-import { IGetAll } from './interfaces';
+import { IgdbConfig } from '@config/interfaces';
 import { RequestAllConfig } from 'apicalypse';
-import { AllField } from './types';
+
+import { InterceptorSubsystem } from './Subsystem';
+import { IgdbResources } from './enums/IgdbResources';
+import {
+  ArtworkField,
+  ExpandedArtworkField,
+} from './enums/fields/ArtworkField';
 import { ExpandedGameField, GameField } from './enums/fields/GameField';
 import {
   ExpandedWebsiteField,
   WebsiteField,
 } from './enums/fields/WebsiteField';
-import { IgdbResources } from './enums/IgdbResources';
-import { IgdbConfig } from '@config/interfaces';
-import { InterceptorSubsystem } from './Subsystem';
-import {
-  ArtworkField,
-  ExpandedArtworkField,
-} from './enums/fields/ArtworkField';
+import { IGetAll } from './interfaces';
+import { AllField } from './types';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
 export class GetAll extends InterceptorSubsystem implements IGetAll {
@@ -24,6 +25,24 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
   protected totalCount: number | undefined = undefined;
   constructor(igdbConfig: IgdbConfig) {
     super(igdbConfig);
+  }
+
+  public async execute<DTO>(
+    options: RequestAllConfig,
+    limit: number,
+    resource: IgdbResources,
+    expanded: boolean = true,
+    totalResourceCount: number,
+  ): Promise<DTO[]> {
+    await this.prepare({ expanded, resource, totalResourceCount });
+    if (this.fields) {
+      const data: DTO[] = await this.client
+        .limit(limit)
+        .fields(this.fields)
+        .requestAll(`/${resource}`, options);
+      return data;
+    }
+    return [];
   }
 
   public getFields(
@@ -58,23 +77,5 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
       return Promise.resolve();
     }
     throw new Error('Fields and totalCount must be defined.');
-  }
-
-  public async execute<DTO>(
-    options: RequestAllConfig,
-    limit: number,
-    resource: IgdbResources,
-    expanded: boolean = true,
-    totalResourceCount: number,
-  ): Promise<DTO[]> {
-    await this.prepare({ expanded, resource, totalResourceCount });
-    if (this.fields) {
-      const data: DTO[] = await this.client
-        .limit(limit)
-        .fields(this.fields)
-        .requestAll(`/${resource}`, options);
-      return data;
-    }
-    return [];
   }
 }
