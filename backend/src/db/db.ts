@@ -1,7 +1,8 @@
+import { config } from '@config/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
+
 import * as games from '../infrastructure/igdb/db/schema/games';
-import { config } from '@config/config';
 
 export const client = new Client({
   database: config.db.database,
