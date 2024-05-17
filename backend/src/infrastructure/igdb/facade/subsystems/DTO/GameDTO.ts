@@ -3,7 +3,6 @@ import { GameStatus } from '../enums/GameStatus';
 import { BaseDTO } from './BaseDTO';
 
 export interface GameDTO extends BaseDTO {
-  id: number;
   age_ratings?: number[];
   aggregated_rating?: number;
   aggregated_rating_count?: number;
@@ -25,6 +24,7 @@ export interface GameDTO extends BaseDTO {
   game_modes?: number[];
   genres?: number[];
   hypes?: number;
+  id: number;
   involved_companies?: number[];
   keywords?: number[];
   language_supports?: number[];

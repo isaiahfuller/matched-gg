@@ -2,7 +2,7 @@ import { AgeRatingContentDescriptionCategory } from '../enums/AgeRatingContentDe
 import { StaticBaseDTO } from './BaseDTO';
 
 export interface AgeRatingContentDescriptionDTO extends StaticBaseDTO {
+  category?: AgeRatingContentDescriptionCategory;
   trusted: boolean;
   url: string;
-  category?: AgeRatingContentDescriptionCategory;
 }
