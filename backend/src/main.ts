@@ -20,10 +20,10 @@ async function bootstrap() {
 
   app.use(
     session({
-      store: redisStore,
-      secret: config.sessionSecret,
       resave: false,
       saveUninitialized: false,
+      secret: config.sessionSecret,
+      store: redisStore,
     }),
   );
   app.use(passport.initialize());
