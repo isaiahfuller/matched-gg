@@ -19,12 +19,12 @@ export class IgdbDbController {
       .insert(gamesSchema.gamesTable)
       .values([games].flat())
       .onConflictDoUpdate({
-        target: gamesSchema.gamesTable.igdbId,
         set: setAllConflictUpdateColumns(gamesSchema.gamesTable, [
           'createdAt',
           'igdbId',
           'id',
         ]),
+        target: gamesSchema.gamesTable.igdbId,
       });
   }
 
@@ -35,10 +35,10 @@ export class IgdbDbController {
       .insert(websitesSchema.websitesTable)
       .values([websites].flat())
       .onConflictDoUpdate({
-        target: websitesSchema.websitesTable.igdbId,
         set: setAllConflictUpdateColumns(websitesSchema.websitesTable, [
           'igdbId',
         ]),
+        target: websitesSchema.websitesTable.igdbId,
       });
   }
 
@@ -49,10 +49,10 @@ export class IgdbDbController {
       .insert(artworksSchema.artworksTable)
       .values([artworks].flat())
       .onConflictDoUpdate({
-        target: artworksSchema.artworksTable.imageId,
         set: setAllConflictUpdateColumns(artworksSchema.artworksTable, [
           'imageId',
         ]),
+        target: artworksSchema.artworksTable.imageId,
       });
   }
 }
