@@ -23,16 +23,16 @@ const seed = async (): Promise<void> => {
 
   const twitch = new TwitchHandler(
     {
+      apiUrl: config.twitch.apiUrl,
       clientId: config.twitch.clientId,
       clientSecret: config.twitch.clientSecret,
-      apiUrl: config.twitch.apiUrl,
     },
     logger,
   );
 
   const igdbConfig = {
-    clientId: config.twitch.clientId,
     accessToken: (await twitch.connect()).access_token,
+    clientId: config.twitch.clientId,
   } as IgdbConfig;
 
   const igdb = new IgdbFacade({
