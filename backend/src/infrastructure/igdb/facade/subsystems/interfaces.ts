@@ -7,11 +7,11 @@ import { CountDTO } from './DTO/CountDTO';
 export interface IGetGame {
   client: Apicalypse;
 
-  prepare(): Promise<void>;
   execute(
     id: number,
     fields: GameField[] | GameField | string,
   ): Promise<GameDTO>;
+  prepare(): Promise<void>;
 }
 
 export interface IgdbSubsystem {
