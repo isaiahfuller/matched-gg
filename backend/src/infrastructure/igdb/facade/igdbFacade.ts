@@ -1,25 +1,26 @@
 // This is a facade design pattern, it is the entry point for the IGDB API.
-import igdb from 'igdb-api-node';
 import { Apicalypse } from 'apicalypse';
+import igdb from 'igdb-api-node';
+
 import {
-  IgdbFacadeInterface,
   IgdbFacadeConstructor,
+  IgdbFacadeInterface,
   SeedOptionsCC,
   SeedOptionsDelay,
 } from './interfaces';
-import { IGetAll, IgdbGetCount } from './subsystems/interfaces';
-import { GetCount } from './subsystems/GetCount';
 import { GetAll } from './subsystems/GetAll';
+import { GetCount } from './subsystems/GetCount';
+import { IGetAll, IgdbGetCount } from './subsystems/interfaces';
 
 export class IgdbFacade implements IgdbFacadeInterface {
-  public config: IgdbFacadeConstructor['config'];
-  public logger: IgdbFacadeConstructor['logger'];
   public accessToken: IgdbFacadeConstructor['accessToken'];
-  public clientId: IgdbFacadeConstructor['config']['clientId'];
   public client: Apicalypse;
-
+  public clientId: IgdbFacadeConstructor['config']['clientId'];
+  public config: IgdbFacadeConstructor['config'];
   protected getAll: IGetAll;
+
   protected getCount: IgdbGetCount;
+  public logger: IgdbFacadeConstructor['logger'];
 
   constructor({
     config,
@@ -42,10 +43,10 @@ export class IgdbFacade implements IgdbFacadeInterface {
   }
 
   public async seedResources<DTO>({
-    limit,
     concurrency,
     delay,
     expanded,
+    limit,
     resource,
   }: SeedOptionsCC | SeedOptionsDelay): Promise<DTO[]> {
     this.logger.info(`Getting count of ${resource}...`);

@@ -4,7 +4,7 @@ import { config } from '@config/config';
 export default {
   schema: './src/**/db/schema/*.ts',
   out: './src/db/migrations',
-  driver: 'pg', // 'pg' | 'mysql2' | 'better-sqlite' | 'libsql' | 'turso'
+  dialect: 'postgresql',
   dbCredentials: {
     host: config.db.host,
     user: config.db.user,

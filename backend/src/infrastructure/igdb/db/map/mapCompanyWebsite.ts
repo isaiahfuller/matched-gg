@@ -3,15 +3,15 @@ import { WebsitePGEnum } from '../schema/websites';
 
 export const mapCompanyWebsite = (website) => {
   const mappedWebsite = {
-    igdbId: website.id,
     checksum: website.checksum,
+    igdbId: website.id,
+    trusted: website.trusted,
+    updatedAt: new Date(),
+    url: website.url,
     websiteCategory:
       website.category === undefined
         ? null
         : WebsitePGEnum.enumValues[website.category],
-    trusted: website.trusted,
-    updatedAt: new Date(),
-    url: website.url,
   } satisfies CompanyWebsites;
   return mappedWebsite;
 };

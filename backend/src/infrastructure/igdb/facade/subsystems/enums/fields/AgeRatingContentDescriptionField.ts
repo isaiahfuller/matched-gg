@@ -1,6 +1,6 @@
 export enum AgeRatingContentDescriptionField {
-  id = 'id',
   category = 'category',
-  description = 'description',
   checksum = 'checksum',
+  description = 'description',
+  id = 'id',
 }

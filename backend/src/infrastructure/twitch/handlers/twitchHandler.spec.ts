@@ -1,8 +1,9 @@
+import axios from 'axios';
+import { Logger } from 'pino';
+
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidTokenResponseDTO } from './DTO/TwitchValidateResponseDTO';
-import { Logger } from 'pino';
 import TwitchHandler from './twitchHandler';
-import axios from 'axios';
 
 jest.mock('axios');
 
@@ -12,17 +13,17 @@ describe('TwitchHandler', () => {
   let twitchHandler: TwitchHandler;
 
   const logger = {
-    info: jest.fn(),
     error: jest.fn(),
+    info: jest.fn(),
     warn: jest.fn(),
   } as unknown as Logger;
 
   beforeEach(() => {
     twitchHandler = new TwitchHandler(
       {
+        apiUrl: 'http://localhost:3000/',
         clientId: '0d2pal0hrbpjyj1wc8ogqk2d81428z',
         clientSecret: 'hslxewai7tzeze1bbh6kj3g7fh61ex',
-        apiUrl: 'http://localhost:3000/',
       },
       logger,
     );
@@ -38,13 +39,13 @@ describe('TwitchHandler', () => {
 
   it('should connect to Twitch API', async () => {
     mockAxios.post.mockResolvedValue({
-      statusText: 'OK',
-      status: 200,
       data: {
         access_token: '0d2pal0hrbpjyj1wc8ogqk2d81428z',
         expires_in: 500000,
         token_type: 'bearer',
       },
+      status: 200,
+      statusText: 'OK',
     });
     const response: TwitchTokenResponseDTO = await twitchHandler.connect();
     expect(response).toBeDefined();
@@ -71,9 +72,9 @@ describe('TwitchHandler', () => {
 
   it('should throw an error if response status is not 200', async () => {
     mockAxios.post.mockResolvedValue({
-      statusText: 'Internal Server Error',
-      status: 500,
       data: null,
+      status: 500,
+      statusText: 'Internal Server Error',
     });
 
     await expect(twitchHandler.connect()).rejects.toThrow(
@@ -83,9 +84,9 @@ describe('TwitchHandler', () => {
 
   it('should throw an error if it fails to receive a token', async () => {
     mockAxios.post.mockResolvedValue({
-      statusText: 'OK',
-      status: 200,
       data: { null: null },
+      status: 200,
+      statusText: 'OK',
     });
 
     await expect(twitchHandler.connect()).rejects.toThrow(
@@ -95,21 +96,21 @@ describe('TwitchHandler', () => {
 
   it('it should validate token', async () => {
     mockAxios.post.mockResolvedValue({
-      statusText: 'OK',
-      status: 200,
       data: {
         access_token: '0d2pal0hrbpjyj1wc8ogqk2d81428z',
         expires_in: 500000,
         token_type: 'bearer',
       },
+      status: 200,
+      statusText: 'OK',
     });
     mockAxios.get.mockResolvedValue({
-      statusText: 'OK',
-      status: 200,
       data: {
         client_id: '0d2pal0hrbpjyj1wc8ogqk2d81428z',
         expires_in: 500000,
       },
+      status: 200,
+      statusText: 'OK',
     });
     await twitchHandler.connect();
     const response =
@@ -122,9 +123,9 @@ describe('TwitchHandler', () => {
   it("should throw an error if there's no token to validate", async () => {
     const twitchHandler = new TwitchHandler(
       {
+        apiUrl: 'http://localhost:3000/',
         clientId: '0d2pal0hrbpjyj1wc8ogqk2d81428z',
         clientSecret: 'hslxewai7tzeze1bbh6kj3g7fh61ex',
-        apiUrl: 'http://localhost:3000/',
       },
       logger,
     );
@@ -133,20 +134,20 @@ describe('TwitchHandler', () => {
 
   it('should refresh token', async () => {
     mockAxios.post.mockResolvedValue({
-      statusText: 'OK',
-      status: 200,
       data: {
         access_token: '0d2pal0hrbpjyj1wc8ogqk2d81428z',
         expires_in: 500000,
         token_type: 'bearer',
       },
+      status: 200,
+      statusText: 'OK',
     });
     mockAxios.get.mockResolvedValue({
-      status: 401,
       data: {
-        status: 401,
         message: 'invalid access token',
+        status: 401,
       },
+      status: 401,
     });
     await twitchHandler.connect();
     const response =

@@ -5,7 +5,7 @@ import {
   ArtworkField,
   ExpandedArtworkField,
 } from './enums/fields/ArtworkField';
-import { GameField, ExpandedGameField } from './enums/fields/GameField';
+import { ExpandedGameField, GameField } from './enums/fields/GameField';
 import {
   ExpandedWebsiteField,
   WebsiteField,
@@ -13,23 +13,23 @@ import {
 
 export type Field = string;
 export type AllField =
-  | GameField
-  | GameField[]
-  | ExpandedGameField
-  | ExpandedGameField[]
-  | WebsiteField
-  | WebsiteField[]
-  | ExpandedWebsiteField
-  | ExpandedWebsiteField[]
   | ArtworkField
   | ArtworkField[]
   | ExpandedArtworkField
-  | ExpandedArtworkField[];
+  | ExpandedArtworkField[]
+  | ExpandedGameField
+  | ExpandedGameField[]
+  | ExpandedWebsiteField
+  | ExpandedWebsiteField[]
+  | GameField
+  | GameField[]
+  | WebsiteField
+  | WebsiteField[];
 
 export type AllDTO =
+  | ArtworkDTO
+  | ArtworkDTO[]
   | GameDTO
   | GameDTO[]
   | WebsiteDTO
-  | WebsiteDTO[]
-  | ArtworkDTO
-  | ArtworkDTO[];
+  | WebsiteDTO[];

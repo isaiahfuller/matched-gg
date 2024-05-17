@@ -1,5 +1,5 @@
-import buildTwitchUrl from './buildTwitchUrl';
 import { TwitchEndpoints } from '../handlers/interfaces';
+import buildTwitchUrl from './buildTwitchUrl';
 jest.mock('src/util/logger');
 
 describe('buildTwitchUrl', () => {
