@@ -1,14 +1,14 @@
 import {
+  bigint,
+  doublePrecision,
+  index,
   integer,
   pgEnum,
   pgTable,
   serial,
   text,
   timestamp,
-  bigint,
   uniqueIndex,
-  index,
-  doublePrecision,
 } from 'drizzle-orm/pg-core';
 
 // declaring enum in database

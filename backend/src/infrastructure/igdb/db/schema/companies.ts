@@ -6,6 +6,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
 import { gamesTable } from './games';
 
 export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
@@ -43,8 +44,8 @@ export const companiesTable = pgTable('companies', {
     .references(() => gamesTable.igdbId)
     .array(),
   slug: text('slug'),
-  startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),
   start_date: timestamp('start_date'),
+  startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, bigint } from 'drizzle-orm/pg-core';
+import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 export const gameModeTable = pgTable('gameModes', {
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),

@@ -6,6 +6,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
 import { gamesTable } from './games';
 
 export const WebsitePGEnum = pgEnum('WebsiteCategoryEnum', [

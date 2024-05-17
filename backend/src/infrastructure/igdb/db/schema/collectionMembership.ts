@@ -1,6 +1,7 @@
 import { bigint, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { gamesTable } from './games';
+
 import { collectionsTable } from './collections';
+import { gamesTable } from './games';
 
 export const CollectionMembershipTypePGEnum = pgEnum('CollectionTypeEnum', [
   '',

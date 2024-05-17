@@ -1,4 +1,5 @@
 import { bigint, boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+
 import { WebsitePGEnum } from './websites';
 
 export const companyWebsitesTable = pgTable('companyWebsites', {

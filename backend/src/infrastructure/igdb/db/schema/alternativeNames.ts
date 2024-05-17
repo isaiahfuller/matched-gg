@@ -1,4 +1,5 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+
 import { gamesTable } from './games';
 
 export const alternativeNamesTable = pgTable('alternativeNames', {
