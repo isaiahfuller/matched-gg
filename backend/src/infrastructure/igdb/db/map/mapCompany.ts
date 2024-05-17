@@ -2,17 +2,20 @@ import { Companies } from '../schema/companies';
 
 export const mapCompany = (company) => {
   const mappedCompany = {
-    igdbId: company.id,
     changeDate: company.change_date,
     changeDateCategory: company.change_date_category,
     changedCompanyId: company.changed_company_id,
     checksum: company.checksum,
     country: company.country,
+    description: company.description,
+    developed: company.developed,
     igdbCreatedAt: company.created_at
       ? new Date(company.created_at * 1000)
       : null,
-    description: company.description,
-    developed: company.developed,
+    igdbId: company.id,
+    igdbUpdatedAt: company.updated_at
+      ? new Date(company.updated_at * 1000)
+      : null,
     logo: company.logo,
     name: company.name,
     parent: company.parent,
@@ -20,9 +23,6 @@ export const mapCompany = (company) => {
     slug: company.slug,
     startDate: company.start_date,
     startDateCategory: company.start_date_category,
-    igdbUpdatedAt: company.updated_at
-      ? new Date(company.updated_at * 1000)
-      : null,
     updatedAt: new Date(),
     url: company.url,
     websites: company.websites,

@@ -6,6 +6,7 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
 import { gamesTable } from './games';
 
 export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
@@ -28,14 +29,13 @@ export const companiesTable = pgTable('companies', {
   checksum: text('checksum'),
   country: integer('country'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  igdbCreatedAt: timestamp('igdb_created_at'),
-  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
-  igdbUpdatedAt: timestamp('igdb_updated_at'),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
   description: text('description'),
   developed: bigint('developed', { mode: 'number' })
     .references(() => gamesTable.igdbId)
     .array(),
+  igdbCreatedAt: timestamp('igdb_created_at'),
+  igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
+  igdbUpdatedAt: timestamp('igdb_updated_at'),
   name: text('name'),
   parent: bigint('parent', { mode: 'number' }).references(
     () => companiesTable.igdbId,
@@ -46,6 +46,7 @@ export const companiesTable = pgTable('companies', {
   slug: text('slug'),
   start_date: timestamp('start_date'),
   startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
 

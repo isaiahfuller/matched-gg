@@ -5,17 +5,17 @@ import {
 
 export const mapCollectionMembership = (membership) => {
   const mappedMembership = {
-    igdbId: membership.id,
     checksum: membership.checksum,
     collection: membership.collection,
+    game: membership.game,
     igdbCreatedAt: membership.created_at
       ? new Date(membership.created_at * 1000)
       : null,
 
+    igdbId: membership.id,
     igdbUpdatedAt: membership.updated_at
       ? new Date(membership.updated_at * 1000)
       : null,
-    game: membership.game,
     type:
       membership.type === undefined
         ? null

@@ -10,8 +10,8 @@ export const mapArtwork = (artwork) => {
     height: artwork.height,
     igdbId: artwork.id,
     imageId: artwork.image_id,
-    url: artwork.url,
     updatedAt: new Date(),
+    url: artwork.url,
     width: artwork.width,
   } satisfies Artworks | Covers;
   return mappedArtwork;
