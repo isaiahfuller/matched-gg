@@ -1,28 +1,32 @@
-import { Strategy } from 'passport-steam';
-import { PassportStrategy, AuthModuleOptions } from '@nestjs/passport';
+import { config } from '@config/config';
 import { Injectable } from '@nestjs/common';
-import { AuthService } from '../auth.service';
+import { AuthModuleOptions, PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-steam';
+
 import {
   DoneFn,
   Options,
   SteamProfile,
   ValidateFn,
 } from '../../providers/steam/types';
-import { config } from '@config/config';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
+  public failureRedirect: string = this.options['failureRedirect'];
+
+  public successRedirect: string = this.options['successRedirect'];
   constructor(
     private authService: AuthService,
     private options: AuthModuleOptions,
   ) {
     super(
       {
-        // TODO: Stop hardcoding the return & realm URLs
-        returnURL: 'http://localhost:3000/steam/auth/return',
-        realm: 'http://localhost:3000/',
         apiKey: config.steam.apiKey,
         passReqToCallback: true,
+        realm: 'http://localhost:3000/',
+        // TODO: Stop hardcoding the return & realm URLs
+        returnURL: 'http://localhost:3000/steam/auth/return',
       } satisfies Options,
       (async (req, identifier, profile, done) => {
         req.isAuthenticated()
@@ -31,9 +35,6 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
       }) satisfies ValidateFn<any>,
     );
   }
-
-  public successRedirect: string = this.options['successRedirect'];
-  public failureRedirect: string = this.options['failureRedirect'];
 
   async validate(identifier: string, profile: SteamProfile, done: DoneFn) {
     const user = await this.authService.validateUser(identifier, profile, done);

@@ -1,5 +1,6 @@
-import { db, client } from './db';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
+
+import { client, db } from './db';
 
 migrate(db, {
   migrationsFolder: 'src/db/migrations',

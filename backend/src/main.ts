@@ -1,9 +1,10 @@
 import { config } from '@config/config';
 import { NestFactory } from '@nestjs/core';
-import { createClient } from 'redis';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
 import passport from 'passport';
+import { createClient } from 'redis';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -20,10 +21,10 @@ async function bootstrap() {
 
   app.use(
     session({
-      store: redisStore,
-      secret: config.sessionSecret,
       resave: false,
       saveUninitialized: false,
+      secret: config.sessionSecret,
+      store: redisStore,
     }),
   );
   app.use(passport.initialize());

@@ -1,15 +1,15 @@
-import { pino, LoggerOptions } from 'pino';
 import { config } from '@config/config';
+import { LoggerOptions, pino } from 'pino';
 
 const pinoOptions: LoggerOptions = {
+  enabled: config.pinoOptions?.enabled || true,
   level: config.pinoOptions?.level || 'info',
   name: config.pinoOptions?.name || 'logger',
-  enabled: config.pinoOptions?.enabled || true,
   transport: {
-    target: 'pino-pretty',
     options: {
       colorize: true,
     },
+    target: 'pino-pretty',
   },
 };
 

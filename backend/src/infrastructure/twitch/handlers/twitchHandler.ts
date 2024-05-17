@@ -1,29 +1,27 @@
-import {
-  TwitchHandlerInterface,
-  TwitchHandlerConstructor,
-  TwitchEndpoints,
-} from './interfaces';
-import { ApiUrl, ClientId, ClientSecret, GrantType } from './types';
+import axios, { AxiosResponse } from 'axios';
 
+import buildTwitchUrl from '../util/buildTwitchUrl';
+import { isInvalidToken } from '../util/isInvalidToken';
 import { TwitchTokenRequestDTO } from './DTO/TwitchTokenRequestDTO';
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import {
-  TwitchValidTokenResponseDTO,
   TwitchInvalidTokenResponseDTO,
+  TwitchValidTokenResponseDTO,
 } from './DTO/TwitchValidateResponseDTO';
-import { isInvalidToken } from '../util/isInvalidToken';
-
-import buildTwitchUrl from '../util/buildTwitchUrl';
-
-import axios, { AxiosResponse } from 'axios';
+import {
+  TwitchEndpoints,
+  TwitchHandlerConstructor,
+  TwitchHandlerInterface,
+} from './interfaces';
+import { ApiUrl, ClientId, ClientSecret, GrantType } from './types';
 
 class TwitchHandler implements TwitchHandlerInterface {
-  private clientId: ClientId;
-  private grantType: GrantType;
   private apiUrl: ApiUrl;
+  private clientId: ClientId;
   private clientSecret: ClientSecret;
-  private tokenValidationInterval: NodeJS.Timeout | undefined = undefined;
-  private initialTimeRemaining: number = 0; // TODO: Implement ticker to keep track of time remaining
+  private grantType: GrantType;
+  private initialTimeRemaining: number = 0;
+  private tokenValidationInterval: NodeJS.Timeout | undefined = undefined; // TODO: Implement ticker to keep track of time remaining
 
   public connected = false;
   public connectionEndpoint: ApiUrl = '';
@@ -37,6 +35,21 @@ class TwitchHandler implements TwitchHandlerInterface {
     this.apiUrl = config.apiUrl;
     this.grantType = 'client_credentials';
     this.logger = logger;
+  }
+
+  private failConnection(): void {
+    this.logger.error('Failed to connect to Twitch API');
+    this.connected = false;
+    throw new Error('Failed to connect to Twitch API');
+  }
+
+  /**
+   * Clears the token validation interval.
+   */
+  clearTokenValidationInterval(): void {
+    this.logger.info('Clearing interval...');
+    clearInterval(this.tokenValidationInterval);
+    this.tokenValidationInterval = undefined;
   }
 
   async connect(): Promise<TwitchTokenResponseDTO> {
@@ -91,61 +104,6 @@ class TwitchHandler implements TwitchHandlerInterface {
     return response.data;
   }
 
-  private failConnection(): void {
-    this.logger.error('Failed to connect to Twitch API');
-    this.connected = false;
-    throw new Error('Failed to connect to Twitch API');
-  }
-
-  /**
-   * Validates the access token by calling the Twitch API.
-   * If a token is provided as an argument, it validates the token *
-   * with the param token. Otherwise, it uses the token stored in the class.
-   *
-   * Unless you have an access token, you should call connect() first before calling this method.
-   *
-   * @param _accessToken - The access token to validate (optional).
-   * @returns A Promise that resolves to a TwitchValidateResponseDTO object.
-   * @throws An error if there's no token to validate. Try calling connect() first.
-   */
-  async validateToken(
-    _accessToken?: TwitchHandlerConstructor['accessToken'],
-  ): Promise<TwitchValidTokenResponseDTO | TwitchTokenResponseDTO> {
-    if (!this.accessToken && !_accessToken) {
-      this.logger.error(
-        { accessToken: this.accessToken },
-        "There's no token to validate! Try calling connect() first.",
-      );
-      throw new Error(
-        "There's no token to validate! Try calling connect() first.",
-      );
-    }
-
-    const endpoint: ApiUrl = buildTwitchUrl(
-      this.apiUrl,
-      TwitchEndpoints.OAUTH2_VALIDATE,
-    );
-
-    const response: AxiosResponse<
-      TwitchValidTokenResponseDTO | TwitchInvalidTokenResponseDTO
-    > = await axios.get(endpoint, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken || _accessToken}`,
-      },
-    });
-
-    if (isInvalidToken(response.data)) {
-      this.logger.error(
-        response.data,
-        'Invalid access token. Please check the logged object for more information. Attempting to reconnect...',
-      );
-      return await this.connect();
-    } else {
-      this.logger.info('Token is valid');
-      return response.data;
-    }
-  }
-
   // TODO: Create a type for the return value
   /**
    * Retrieves the connection status and endpoint of the Twitch handler.
@@ -165,6 +123,11 @@ class TwitchHandler implements TwitchHandlerInterface {
   async getTokenTimeRemaining(): Promise<number> {
     const timeRemaining = await this.validateToken();
     return timeRemaining.expires_in;
+  }
+
+  restartTokenValidationInterval(): void {
+    this.stopTokenValidationInterval();
+    this.startTokenValidationInterval();
   }
 
   /**
@@ -196,18 +159,53 @@ class TwitchHandler implements TwitchHandlerInterface {
     }
   }
 
-  restartTokenValidationInterval(): void {
-    this.stopTokenValidationInterval();
-    this.startTokenValidationInterval();
-  }
-
   /**
-   * Clears the token validation interval.
+   * Validates the access token by calling the Twitch API.
+   * If a token is provided as an argument, it validates the token *
+   * with the param token. Otherwise, it uses the token stored in the class.
+   *
+   * Unless you have an access token, you should call connect() first before calling this method.
+   *
+   * @param _accessToken - The access token to validate (optional).
+   * @returns A Promise that resolves to a TwitchValidateResponseDTO object.
+   * @throws An error if there's no token to validate. Try calling connect() first.
    */
-  clearTokenValidationInterval(): void {
-    this.logger.info('Clearing interval...');
-    clearInterval(this.tokenValidationInterval);
-    this.tokenValidationInterval = undefined;
+  async validateToken(
+    _accessToken?: TwitchHandlerConstructor['accessToken'],
+  ): Promise<TwitchTokenResponseDTO | TwitchValidTokenResponseDTO> {
+    if (!this.accessToken && !_accessToken) {
+      this.logger.error(
+        { accessToken: this.accessToken },
+        "There's no token to validate! Try calling connect() first.",
+      );
+      throw new Error(
+        "There's no token to validate! Try calling connect() first.",
+      );
+    }
+
+    const endpoint: ApiUrl = buildTwitchUrl(
+      this.apiUrl,
+      TwitchEndpoints.OAUTH2_VALIDATE,
+    );
+
+    const response: AxiosResponse<
+      TwitchInvalidTokenResponseDTO | TwitchValidTokenResponseDTO
+    > = await axios.get(endpoint, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken || _accessToken}`,
+      },
+    });
+
+    if (isInvalidToken(response.data)) {
+      this.logger.error(
+        response.data,
+        'Invalid access token. Please check the logged object for more information. Attempting to reconnect...',
+      );
+      return await this.connect();
+    } else {
+      this.logger.info('Token is valid');
+      return response.data;
+    }
   }
 }
 

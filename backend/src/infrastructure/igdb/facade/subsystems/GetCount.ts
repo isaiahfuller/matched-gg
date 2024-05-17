@@ -1,8 +1,9 @@
 import { Apicalypse } from 'apicalypse';
-import { IgdbGetCount } from './interfaces';
-import { IgdbResources } from './enums/IgdbResources';
 import { AxiosResponse } from 'axios';
+
 import { CountDTO } from './DTO/CountDTO';
+import { IgdbResources } from './enums/IgdbResources';
+import { IgdbGetCount } from './interfaces';
 
 export class GetCount implements IgdbGetCount {
   client: Apicalypse;

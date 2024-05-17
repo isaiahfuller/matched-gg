@@ -1,11 +1,12 @@
 import {
+  bigint,
   boolean,
   integer,
   pgTable,
   text,
-  bigint,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
 import { gamesTable } from './games';
 
 const commonArtFields = {
