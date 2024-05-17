@@ -1,9 +1,9 @@
 import { Request } from 'express';
 
 export interface Options {
-  returnURL: string;
-  realm: string;
   apiKey: string;
+  realm: string;
+  returnURL: string;
   passReqToCallback?: boolean;
 }
 
@@ -21,30 +21,30 @@ export type ValidateFn<T extends Options> = T['passReqToCallback'] extends true
 type SteamIdentifier = string;
 
 export interface SteamProfile {
-  provider: 'steam';
   _json: {
-    steamid: string;
-    communityvisibilitystate: number;
-    profilestate: number;
-    personaname: string;
-    commentpermission: number;
-    profileurl: string;
     avatar: string;
-    avatarmedium: string;
     avatarfull: string;
     avatarhash: string;
+    avatarmedium: string;
+    commentpermission: number;
+    communityvisibilitystate: number;
     lastlogoff: number;
-    personastate: number;
-    realname: string;
-    primaryclanid: string;
-    timecreated: number;
-    personastateflags: number;
     loccountrycode: string;
     locstatecode: string;
+    personaname: string;
+    personastate: number;
+    personastateflags: number;
+    primaryclanid: string;
+    profilestate: number;
+    profileurl: string;
+    realname: string;
+    steamid: string;
+    timecreated: number;
   };
-  id: string;
   displayName: string;
+  id: string;
   photos: Array<{ value: string }>;
+  provider: 'steam';
 }
 
 export interface SteamAuthResponse {
