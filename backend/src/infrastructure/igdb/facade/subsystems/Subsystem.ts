@@ -16,9 +16,9 @@ const DEFAULT_TIMEOUT = 60000;
  * Configuration options for the interceptor client.
  */
 interface InterceptorClientConfig {
-  timeout: number;
-  fields: AllField;
   count: CountDTO['count'];
+  fields: AllField;
+  timeout: number;
 }
 
 /**
