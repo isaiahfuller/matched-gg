@@ -7,8 +7,8 @@ import { SteamController } from './providers/steam/steam.controller';
 import { AuthService } from './auth/auth.service';
 
 @Module({
-  imports: [AuthModule],
   controllers: [AppController, GamesController, SteamController],
+  imports: [AuthModule],
   providers: [AppService, AuthService],
 })
 export class AppModule {}
