@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Group, ScrollArea } from "@mantine/core";
+import { Container, Flex } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
-import Navbar from "./components/Navbar/Navbar";
 import GamePage from "./components/GamePage/GamePage";
 import { persona3reload, persona4 } from "./mockGames";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -28,15 +27,22 @@ function App() {
 
   return (
     <>
-      <Group>
+      <Flex>
         <Sidebar isLoggedIn={isLoggedIn} h={height} />
 
-        <ScrollArea.Autosize h={height} scrollbars="y">
-          <Navbar isLoggedIn={isLoggedIn} />
+        <Container
+          h={height}
+          bg="rgb(16, 17, 19)"
+          w="100%"
+          style={{
+            overflowY: "scroll",
+          }}
+          fluid
+        >
           <GamePage game={persona3reload} />
           <GamePage game={persona4} />
-        </ScrollArea.Autosize>
-      </Group>
+        </Container>
+      </Flex>
     </>
   );
 }
