@@ -13,7 +13,7 @@
  */
 
 /**
- * CollectionDTO, AKA Series
+ * Collection, AKA Series
  * @export
  * @interface CollectionDTO
  */
@@ -49,7 +49,7 @@ export interface CollectionDTO {
    */
   games?: Array<number>;
   /**
-   * Umbrella term for a CollectionDTO of games
+   * Umbrella term for a Collection of games
    * @type {string}
    * @memberof CollectionDTO
    */

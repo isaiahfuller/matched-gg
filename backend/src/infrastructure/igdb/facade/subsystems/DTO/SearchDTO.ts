@@ -13,7 +13,7 @@
  */
 
 /**
- * SearchDTO IGDB and get the IDs of items matching your search
+ * Search IGDB and get the IDs of items matching your search
  * @export
  * @interface SearchDTO
  */

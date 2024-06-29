@@ -20,12 +20,12 @@ import { AgeRatingEnum } from '../enums/AgeRatingEnum';
 import { GameCategoryEnums } from './game-category-enums';
 // May contain unused imports in some cases
 // @ts-ignore
-import { GameDTOtatusEnums } from './game-status-enums';
+import { GameStatusEnums } from './game-status-enums';
 
 /**
- * Video GameDTO!
+ * Video games!
  * @export
- * @interface GameDTODTO
+ * @interface GameDTO
  */
 export interface GameDTO {
   /**
@@ -112,7 +112,7 @@ export interface GameDTO {
    * @type {Array<number>}
    * @memberof GameDTO
    */
-  expanded_GameDTO?: Array<number>;
+  expanded_games?: Array<number>;
   /**
    *
    * @type {Array<number>}
@@ -124,7 +124,7 @@ export interface GameDTO {
    * @type {Array<number>}
    * @memberof GameDTO
    */
-  external_GameDTO?: Array<number>;
+  external_games?: Array<number>;
   /**
    * DEPRECATED- TO BE REMOVED. The number of people following a game
    * @type {number}
@@ -211,7 +211,7 @@ export interface GameDTO {
    */
   multiplayer_modes?: Array<number>;
   /**
-   * The name of the Game
+   * The name of the game
    * @type {string}
    * @memberof GameDTO
    */
@@ -281,7 +281,7 @@ export interface GameDTO {
    * @type {Array<number>}
    * @memberof GameDTO
    */
-  similar_GameDTO?: Array<number>;
+  similar_games?: Array<number>;
   /**
    * A url-safe, unique, lower-case version of the name
    * @type {string}
@@ -296,10 +296,10 @@ export interface GameDTO {
   standalone_expansions?: Array<number>;
   /**
    *
-   * @type {GameDTOtatusEnums}
+   * @type {GameStatusEnums}
    * @memberof GameDTO
    */
-  status?: GameDTOtatusEnums;
+  status?: GameStatusEnums;
   /**
    * A short description of a GameDTO story
    * @type {string}

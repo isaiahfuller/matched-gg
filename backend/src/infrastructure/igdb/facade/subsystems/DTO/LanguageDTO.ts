@@ -37,7 +37,7 @@ export interface LanguageDTO {
    */
   native_name?: string;
   /**
-   * The combination of LanguageDTO code and Country code (en-US)
+   * The combination of language code and Country code (en-US)
    * @type {string}
    * @memberof LanguageDTO
    */
