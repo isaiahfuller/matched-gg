@@ -13,75 +13,51 @@
  */
 
 /**
- * Logo for the event
+ * Games can be played with different languages for voice acting, subtitles, or the interface language.
  * @export
- * @interface EventLogoDTO
+ * @interface LanguageSupportDTO
  */
-export interface EventLogoDTO {
+export interface LanguageSupportDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof LanguageSupportDTO
    */
   id?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof LanguageSupportDTO
    */
-  event?: number;
+  game?: number;
   /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
+   * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof LanguageSupportDTO
    */
-  height?: number;
+  language?: number;
   /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
-   * The website address (URL) of the item
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  url?: string;
-  /**
-   * The width of the image in pixels
+   * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof LanguageSupportDTO
    */
-  width?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
+  language_support_type?: number;
   /**
    * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof LanguageSupportDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof LanguageSupportDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof LanguageSupportDTO
    */
   checksum?: string;
 }

@@ -13,51 +13,57 @@
  */
 
 /**
- * The collection memberships
+ * Game localization for a game
  * @export
- * @interface CollectionMembershipDTO
+ * @interface GameLocalizationDTO
  */
-export interface CollectionMembershipDTO {
+export interface GameLocalizationDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameLocalizationDTO
    */
   id?: number;
   /**
+   * The localized name
+   * @type {string}
+   * @memberof GameLocalizationDTO
+   */
+  name?: string;
+  /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameLocalizationDTO
    */
   game?: number;
   /**
-   * Reference ID for Collection
-   * @type {string}
-   * @memberof CollectionMembershipDTO
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof GameLocalizationDTO
    */
-  collection?: string;
+  cover?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameLocalizationDTO
    */
-  type?: number;
+  region?: number;
   /**
-   * The last date this entry was updated in the IGDB database
+   *
    * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameLocalizationDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof GameLocalizationDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameLocalizationDTO
    */
   checksum?: string;
 }

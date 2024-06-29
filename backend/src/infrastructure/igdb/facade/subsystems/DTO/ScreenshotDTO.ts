@@ -13,75 +13,63 @@
  */
 
 /**
- * Logo for the event
+ * Screenshots of games
  * @export
- * @interface EventLogoDTO
+ * @interface ScreenshotDTO
  */
-export interface EventLogoDTO {
+export interface ScreenshotDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  event?: number;
-  /**
    *
    * @type {boolean}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   alpha_channel?: boolean;
   /**
    *
    * @type {boolean}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   animated?: boolean;
   /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof ScreenshotDTO
+   */
+  game?: number;
+  /**
    * The height of the image in pixels
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   height?: number;
   /**
    * The ID of the image used to construct an IGDB image link
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   image_id?: string;
   /**
    * The website address (URL) of the item
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   url?: string;
   /**
    * The width of the image in pixels
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   width?: number;
   /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initially added to the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  created_at?: number;
-  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof ScreenshotDTO
    */
   checksum?: string;
 }

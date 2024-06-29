@@ -13,75 +13,69 @@
  */
 
 /**
- * Logo for the event
+ * Involved companies
  * @export
- * @interface EventLogoDTO
+ * @interface InvolvedCompanyDTO
  */
-export interface EventLogoDTO {
+export interface InvolvedCompanyDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof InvolvedCompanyDTO
    */
   id?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof InvolvedCompanyDTO
    */
-  event?: number;
+  company?: number;
   /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
+   * Date this was initally added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
-   */
-  height?: number;
-  /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
-   * The website address (URL) of the item
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  url?: string;
-  /**
-   * The width of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  width?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initially added to the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof InvolvedCompanyDTO
    */
   created_at?: number;
   /**
+   * Is the company a/the developer?
+   * @type {boolean}
+   * @memberof InvolvedCompanyDTO
+   */
+  developer?: boolean;
+  /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof InvolvedCompanyDTO
+   */
+  game?: number;
+  /**
+   * Did the company port the game?
+   * @type {boolean}
+   * @memberof InvolvedCompanyDTO
+   */
+  porting?: boolean;
+  /**
+   * Did the company publish the game?
+   * @type {boolean}
+   * @memberof InvolvedCompanyDTO
+   */
+  publisher?: boolean;
+  /**
+   * Did the company suppport the game?
+   * @type {boolean}
+   * @memberof InvolvedCompanyDTO
+   */
+  supporting?: boolean;
+  /**
+   * The last date this entry was updated in the IGDB database
+   * @type {number}
+   * @memberof InvolvedCompanyDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof InvolvedCompanyDTO
    */
   checksum?: string;
 }

@@ -13,51 +13,45 @@
  */
 
 /**
- * The collection memberships
+ * A platform developer
  * @export
- * @interface CollectionMembershipDTO
+ * @interface PlatformVersionCompanyDTO
  */
-export interface CollectionMembershipDTO {
+export interface PlatformVersionCompanyDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformVersionCompanyDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * Any notable comments about the developer
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformVersionCompanyDTO
    */
-  collection?: string;
+  comment?: string;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformVersionCompanyDTO
    */
-  type?: number;
+  company?: number;
   /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * If the company is the developer
+   * @type {boolean}
+   * @memberof PlatformVersionCompanyDTO
    */
-  updated_at?: number;
+  developer?: boolean;
   /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * If the company is the manufactuer
+   * @type {boolean}
+   * @memberof PlatformVersionCompanyDTO
    */
-  created_at?: number;
+  manufacturer?: boolean;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformVersionCompanyDTO
    */
   checksum?: string;
 }

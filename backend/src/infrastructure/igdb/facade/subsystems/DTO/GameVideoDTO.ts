@@ -13,51 +13,39 @@
  */
 
 /**
- * The collection memberships
+ * A video associated with a game
  * @export
- * @interface CollectionMembershipDTO
+ * @interface GameVideoDTO
  */
-export interface CollectionMembershipDTO {
+export interface GameVideoDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVideoDTO
    */
   id?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVideoDTO
    */
   game?: number;
   /**
-   * Reference ID for Collection
+   * The name of the video
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVideoDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * The external ID of the video (usually youtube)
+   * @type {string}
+   * @memberof GameVideoDTO
    */
-  type?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  created_at?: number;
+  video_id?: string;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVideoDTO
    */
   checksum?: string;
 }

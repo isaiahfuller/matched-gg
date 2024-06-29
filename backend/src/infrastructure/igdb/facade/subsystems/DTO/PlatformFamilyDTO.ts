@@ -13,51 +13,33 @@
  */
 
 /**
- * The collection memberships
+ * A collection of closely related platforms
  * @export
- * @interface CollectionMembershipDTO
+ * @interface PlatformFamilyDTO
  */
-export interface CollectionMembershipDTO {
+export interface PlatformFamilyDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformFamilyDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the platform family
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformFamilyDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * A url-safe, unique, lower-case version of the name
+   * @type {string}
+   * @memberof PlatformFamilyDTO
    */
-  type?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  created_at?: number;
+  slug?: string;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformFamilyDTO
    */
   checksum?: string;
 }

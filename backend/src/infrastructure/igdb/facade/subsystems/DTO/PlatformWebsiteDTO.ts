@@ -12,52 +12,44 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import { PlatformWebsiteCategoryEnums } from '../enums/PlatformWebsiteCategoryEnums';
+
 /**
- * The collection memberships
+ * The main website for the platform
  * @export
- * @interface CollectionMembershipDTO
+ * @interface PlatformWebsiteDTO
  */
-export interface CollectionMembershipDTO {
+export interface PlatformWebsiteDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformWebsiteDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   *
+   * @type {PlatformWebsiteCategoryEnums}
+   * @memberof PlatformWebsiteDTO
    */
-  game?: number;
+  category?: PlatformWebsiteCategoryEnums;
   /**
-   * Reference ID for Collection
+   *
+   * @type {boolean}
+   * @memberof PlatformWebsiteDTO
+   */
+  trusted?: boolean;
+  /**
+   * The main platform address (URL) of the platform
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformWebsiteDTO
    */
-  collection?: string;
-  /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  type?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  created_at?: number;
+  url?: string;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof PlatformWebsiteDTO
    */
   checksum?: string;
 }

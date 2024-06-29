@@ -12,76 +12,101 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import { CharacterGenderEnum } from '../enums/CharacterGenderEnum';
+// May contain unused imports in some cases
+// @ts-ignore
+import { CharacterSpeciesEnum } from '../enums/CharacterSpeciesEnum';
+
 /**
- * CollectionDTO, AKA Series
+ * Video game characters
  * @export
- * @interface CollectionDTO
+ * @interface CharacterDTO
  */
-export interface CollectionDTO {
+export interface CharacterDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   id?: number;
   /**
-   *
-   * @type {Array<number>}
-   * @memberof CollectionDTO
+   * Alternative names for a character
+   * @type {Array<string>}
+   * @memberof CharacterDTO
    */
-  as_child_relations?: Array<number>;
+  akas?: Array<string>;
   /**
-   *
-   * @type {Array<number>}
-   * @memberof CollectionDTO
+   * A CharacterDTO\'s country of origin
+   * @type {string}
+   * @memberof CharacterDTO
    */
-  as_parent_relations?: Array<number>;
+  country_name?: string;
   /**
    * Date this was initally added to the IGDB database
    * @type {number}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   created_at?: number;
   /**
+   * Text describing a character
+   * @type {string}
+   * @memberof CharacterDTO
+   */
+  description?: string;
+  /**
    *
    * @type {Array<number>}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   games?: Array<number>;
   /**
-   * Umbrella term for a CollectionDTO of games
+   *
+   * @type {CharacterGenderEnum}
+   * @memberof CharacterDTO
+   */
+  gender?: CharacterGenderEnum;
+  /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof CharacterDTO
+   */
+  mug_shot?: number;
+  /**
+   * The character\'s name
    * @type {string}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   name?: string;
   /**
    * A url-safe, unique, lower-case version of the name
    * @type {string}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   slug?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionDTO
+   *
+   * @type {CharacterSpeciesEnum}
+   * @memberof CharacterDTO
    */
-  type?: number;
+  species?: CharacterSpeciesEnum;
   /**
    * The last date this entry was updated in the IGDB database
    * @type {number}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   updated_at?: number;
   /**
    * The website address (URL) of the item
    * @type {string}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   url?: string;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionDTO
+   * @memberof CharacterDTO
    */
   checksum?: string;
 }

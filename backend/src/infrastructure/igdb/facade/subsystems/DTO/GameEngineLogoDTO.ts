@@ -13,75 +13,57 @@
  */
 
 /**
- * Logo for the event
+ * The logos of developers and publishers
  * @export
- * @interface EventLogoDTO
+ * @interface GameEngineLogoDTO
  */
-export interface EventLogoDTO {
+export interface GameEngineLogoDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  event?: number;
-  /**
    *
    * @type {boolean}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   alpha_channel?: boolean;
   /**
    *
    * @type {boolean}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   animated?: boolean;
   /**
    * The height of the image in pixels
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   height?: number;
   /**
    * The ID of the image used to construct an IGDB image link
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   image_id?: string;
   /**
    * The website address (URL) of the item
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   url?: string;
   /**
    * The width of the image in pixels
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   width?: number;
   /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initially added to the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  created_at?: number;
-  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineLogoDTO
    */
   checksum?: string;
 }

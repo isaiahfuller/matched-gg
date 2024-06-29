@@ -13,51 +13,45 @@
  */
 
 /**
- * The collection memberships
+ * An endpoint to provide definition of all of the current release date statuses.
  * @export
- * @interface CollectionMembershipDTO
+ * @interface ReleaseDateStatusDTO
  */
-export interface CollectionMembershipDTO {
+export interface ReleaseDateStatusDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof ReleaseDateStatusDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the release date status
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof ReleaseDateStatusDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * The description of the release date status.
+   * @type {string}
+   * @memberof ReleaseDateStatusDTO
    */
-  type?: number;
+  description?: string;
   /**
-   * The last date this entry was updated in the IGDB database
+   * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof ReleaseDateStatusDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof ReleaseDateStatusDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof ReleaseDateStatusDTO
    */
   checksum?: string;
 }

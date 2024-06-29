@@ -13,75 +13,51 @@
  */
 
 /**
- * Logo for the event
+ * Describes relationship between collections
  * @export
- * @interface EventLogoDTO
+ * @interface CollectionRelationDTO
  */
-export interface EventLogoDTO {
+export interface CollectionRelationDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationDTO
    */
   id?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationDTO
    */
-  event?: number;
+  child_collection?: number;
   /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
+   * Date this was initally added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
-   */
-  height?: number;
-  /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
-   * The website address (URL) of the item
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  url?: string;
-  /**
-   * The width of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  width?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initially added to the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationDTO
    */
   created_at?: number;
   /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof CollectionRelationDTO
+   */
+  parent_collection?: number;
+  /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof CollectionRelationDTO
+   */
+  type?: number;
+  /**
+   * The last date this entry was updated in the IGDB database
+   * @type {number}
+   * @memberof CollectionRelationDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationDTO
    */
   checksum?: string;
 }
