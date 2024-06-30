@@ -14,10 +14,10 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { ExternalGameCategoryEnums } from '../enums/descriptor/ExternalGameCategoryEnums';
+import { ExternalGameCategoryEnums } from '../enum/descriptor/ExternalGameCategoryEnums';
 // May contain unused imports in some cases
 // @ts-ignore
-import { ExternalGameMediaEnums } from '../enums/descriptor/ExternalGameMediaEnums';
+import { ExternalGameMediaEnums } from '../enum/descriptor/ExternalGameMediaEnums';
 
 /**
  * Game IDs on other services

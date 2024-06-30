@@ -14,10 +14,10 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { ChangeDateCategoryEnum } from '../enums/descriptor/ChangeDateCategoryEnum';
+import { ChangeDateCategoryEnum } from '../enum/descriptor/ChangeDateCategoryEnum';
 // May contain unused imports in some cases
 // @ts-ignore
-import { StartDateCategoryEnum } from '../enums/descriptor/StartDateCategoryEnum';
+import { StartDateCategoryEnum } from '../enum/descriptor/StartDateCategoryEnum';
 
 /**
  * Video game companies, both publishers and developers

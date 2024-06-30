@@ -2,10 +2,10 @@ import { IgdbConfig } from '@config/interfaces';
 import { RequestAllConfig } from 'apicalypse';
 
 import { InterceptorSubsystem } from './Subsystem';
-import { IgdbResources } from './enums/IgdbResources';
-import { ArtworkField, ExpandedArtworkField } from './enums/field/ArtworkField';
-import { ExpandedGameField, GameField } from './enums/field/GameField';
-import { ExpandedWebsiteField, WebsiteField } from './enums/field/WebsiteField';
+import { IgdbResources } from './enum/IgdbResources';
+import { ArtworkField, ExpandedArtworkField } from './enum/field/ArtworkField';
+import { ExpandedGameField, GameField } from './enum/field/GameField';
+import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
 import { IGetAll } from './interfaces';
 import { IgdbField } from './types';
 

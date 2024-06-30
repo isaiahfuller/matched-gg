@@ -2,7 +2,7 @@ import { Apicalypse } from 'apicalypse';
 import igdb from 'igdb-api-node';
 
 import { GetCount } from './GetCount';
-import { IgdbResources } from './enums/IgdbResources';
+import { IgdbResources } from './enum/IgdbResources';
 
 describe('GetCount', () => {
   let getCount: GetCount;
