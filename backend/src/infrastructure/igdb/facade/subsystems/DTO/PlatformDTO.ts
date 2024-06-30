@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { PlatformCategoryEnums } from '../enums/PlatformCategoryEnums';
+import { PlatformCategoryEnums } from '../enum/descriptor/PlatformCategoryEnums';
 
 /**
  * The hardware used to run the game or game delivery network

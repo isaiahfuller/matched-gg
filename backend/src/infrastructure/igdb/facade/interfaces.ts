@@ -3,7 +3,7 @@ import { Apicalypse } from 'apicalypse';
 import { Logger } from 'pino';
 
 import { IgdbAccessToken } from '../types';
-import { IgdbResources } from './subsystems/enums/IgdbResources';
+import { IgdbResources } from './subsystems/enum/IgdbResources';
 
 /**
  * Represents the interface for the IGDB (Internet Game Database) facade.

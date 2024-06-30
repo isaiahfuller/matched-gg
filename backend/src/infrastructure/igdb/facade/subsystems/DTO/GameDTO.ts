@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { AgeRatingEnum } from '../enums/AgeRatingEnum';
+import { AgeRatingEnum } from '../enum/descriptor/AgeRatingEnum';
 // May contain unused imports in some cases
 // @ts-ignore
 import { GameCategoryEnums } from './game-category-enums';

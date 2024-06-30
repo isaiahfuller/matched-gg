@@ -1,6 +1,6 @@
 import { logger } from 'src/util/logger';
 
-import { AllField } from '../types';
+import { IgdbField } from '../types';
 
 const log = logger.child({ module: 'RequestFieldsInterceptor' });
 
@@ -12,7 +12,7 @@ const log = logger.child({ module: 'RequestFieldsInterceptor' });
  */
 export const requestFieldsInterceptor = (
   data: any,
-  fields: AllField,
+  fields: IgdbField,
   totalResourceCount?: number,
 ) => {
   const gameRequest = JSON.stringify(data);
