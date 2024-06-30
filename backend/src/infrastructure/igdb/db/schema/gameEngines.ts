@@ -1,6 +1,7 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { companiesTable } from './companies';
+import { gamesTable } from './games';
 
 export const gameEnginesTable = pgTable('gameEngines', {
   checksum: text('checksum'),
@@ -19,3 +20,5 @@ export const gameEnginesTable = pgTable('gameEngines', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
+
+export type GameEngines = typeof gamesTable.$inferInsert;
