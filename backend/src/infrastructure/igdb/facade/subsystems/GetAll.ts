@@ -3,15 +3,9 @@ import { RequestAllConfig } from 'apicalypse';
 
 import { InterceptorSubsystem } from './Subsystem';
 import { IgdbResources } from './enums/IgdbResources';
-import {
-  ArtworkField,
-  ExpandedArtworkField,
-} from './enums/fields/ArtworkField';
-import { ExpandedGameField, GameField } from './enums/fields/GameField';
-import {
-  ExpandedWebsiteField,
-  WebsiteField,
-} from './enums/fields/WebsiteField';
+import { ArtworkField, ExpandedArtworkField } from './enums/field/ArtworkField';
+import { ExpandedGameField, GameField } from './enums/field/GameField';
+import { ExpandedWebsiteField, WebsiteField } from './enums/field/WebsiteField';
 import { IGetAll } from './interfaces';
 import { AllField } from './types';
 

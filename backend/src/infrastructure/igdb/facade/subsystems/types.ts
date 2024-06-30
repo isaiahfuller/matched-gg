@@ -1,15 +1,9 @@
 import { ArtworkDTO } from './DTO/ArtworkDTO';
 import { GameDTO } from './DTO/GameDTO';
 import { WebsiteDTO } from './DTO/WebsiteDTO';
-import {
-  ArtworkField,
-  ExpandedArtworkField,
-} from './enums/fields/ArtworkField';
-import { ExpandedGameField, GameField } from './enums/fields/GameField';
-import {
-  ExpandedWebsiteField,
-  WebsiteField,
-} from './enums/fields/WebsiteField';
+import { ArtworkField, ExpandedArtworkField } from './enums/field/ArtworkField';
+import { ExpandedGameField, GameField } from './enums/field/GameField';
+import { ExpandedWebsiteField, WebsiteField } from './enums/field/WebsiteField';
 
 export type Field = string;
 export type AllField =

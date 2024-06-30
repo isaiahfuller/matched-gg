@@ -3,7 +3,7 @@ import { Apicalypse, RequestAllConfig } from 'apicalypse';
 import { CountDTO } from './DTO/CountDTO';
 import { GameDTO } from './DTO/GameDTO';
 import { IgdbResources } from './enums/IgdbResources';
-import { GameField } from './enums/fields/GameField';
+import { GameField } from './enums/field/GameField';
 
 export interface IGetGame {
   client: Apicalypse;
