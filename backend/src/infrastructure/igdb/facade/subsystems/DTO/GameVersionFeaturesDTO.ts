@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { GameVersionFeatureCategoryEnums } from '../enums/GameVersionFeatureCategoryEnums';
+import { GameVersionFeatureCategoryEnums } from '../enums/descriptor/GameVersionFeatureCategoryEnums';
 
 /**
  * Features and descriptions of what makes each version/edition different from the main game

@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { CompanyWebsiteEnums } from '../enums/CompanyWebsiteEnums';
+import { CompanyWebsiteEnums } from '../enums/descriptor/CompanyWebsiteEnums';
 
 /**
  * A company\'s website links

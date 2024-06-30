@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { WebsiteCategoryEnums } from '../enums/WebsiteCategoryEnums';
+import { WebsiteCategoryEnums } from '../enums/descriptor/WebsiteCategoryEnums';
 
 /**
  * A website URL, usually associated with a game

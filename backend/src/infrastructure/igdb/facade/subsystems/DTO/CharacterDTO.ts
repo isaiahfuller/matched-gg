@@ -14,10 +14,10 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { CharacterGenderEnum } from '../enums/CharacterGenderEnum';
+import { CharacterGenderEnum } from '../enums/descriptor/CharacterGenderEnum';
 // May contain unused imports in some cases
 // @ts-ignore
-import { CharacterSpeciesEnum } from '../enums/CharacterSpeciesEnum';
+import { CharacterSpeciesEnum } from '../enums/descriptor/CharacterSpeciesEnum';
 
 /**
  * Video game characters

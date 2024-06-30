@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { GameVersionIncludedFeatureEnums } from '../enums/GameVersionFeatureCategoryEnums';
+import { GameVersionIncludedFeatureEnums } from '../enums/descriptor/GameVersionFeatureCategoryEnums';
 
 /**
  * The bool/text value of the feature

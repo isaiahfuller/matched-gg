@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { PlatformWebsiteCategoryEnums } from '../enums/PlatformWebsiteCategoryEnums';
+import { PlatformWebsiteCategoryEnums } from '../enums/descriptor/PlatformWebsiteCategoryEnums';
 
 /**
  * The main website for the platform

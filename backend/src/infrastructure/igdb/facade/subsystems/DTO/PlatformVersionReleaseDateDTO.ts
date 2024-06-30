@@ -14,10 +14,10 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { PlatformVersionReleaseDateEnums } from '../enums/PlatformVersionReleaseDateEnums';
+import { PlatformVersionReleaseDateEnums } from '../enums/descriptor/PlatformVersionReleaseDateEnums';
 // May contain unused imports in some cases
 // @ts-ignore
-import { PlatformVersionReleaseDateRegionEnum } from '../enums/PlatformVersionReleaseDateRegionEnum';
+import { PlatformVersionReleaseDateRegionEnum } from '../enums/descriptor/PlatformVersionReleaseDateRegionEnum';
 
 /**
  * A handy endpoint that extends platform release dates. Used to dig deeper into release dates, platforms and versions.
