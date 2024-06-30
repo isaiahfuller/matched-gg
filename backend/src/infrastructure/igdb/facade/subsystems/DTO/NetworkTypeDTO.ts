@@ -13,51 +13,45 @@
  */
 
 /**
- * The collection memberships
+ * Social networks related to the event like twitter, facebook and youtube
  * @export
- * @interface CollectionMembershipDTO
+ * @interface NetworkTypeDTO
  */
-export interface CollectionMembershipDTO {
+export interface NetworkTypeDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof NetworkTypeDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the social network
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof NetworkTypeDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   *
+   * @type {Array<number>}
+   * @memberof NetworkTypeDTO
    */
-  type?: number;
+  event_networks?: Array<number>;
   /**
-   * The last date this entry was updated in the IGDB database
+   * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof NetworkTypeDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof NetworkTypeDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof NetworkTypeDTO
    */
   checksum?: string;
 }

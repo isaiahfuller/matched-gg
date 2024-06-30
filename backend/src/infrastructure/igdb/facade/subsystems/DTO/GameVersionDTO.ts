@@ -13,75 +13,57 @@
  */
 
 /**
- * Logo for the event
+ * Details about game editions and versions. (DLC and more)
  * @export
- * @interface EventLogoDTO
+ * @interface GameVersionDTO
  */
-export interface EventLogoDTO {
+export interface GameVersionDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameVersionDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  event?: number;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  height?: number;
-  /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
-   * The website address (URL) of the item
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  url?: string;
-  /**
-   * The width of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  width?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
-  /**
    * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameVersionDTO
    */
   created_at?: number;
   /**
+   * Features and descriptions of what makes each version/edition different from the main game
+   * @type {Array<number>}
+   * @memberof GameVersionDTO
+   */
+  features?: Array<number>;
+  /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof GameVersionDTO
+   */
+  game?: number;
+  /**
+   * Game Versions and Editions
+   * @type {Array<number>}
+   * @memberof GameVersionDTO
+   */
+  games?: Array<number>;
+  /**
+   * The last date this entry was updated in the IGDB database
+   * @type {number}
+   * @memberof GameVersionDTO
+   */
+  updated_at?: number;
+  /**
+   * The website address (URL) of the item
+   * @type {string}
+   * @memberof GameVersionDTO
+   */
+  url?: string;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof GameVersionDTO
    */
   checksum?: string;
 }

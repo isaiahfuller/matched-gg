@@ -13,51 +13,51 @@
  */
 
 /**
- * The collection memberships
+ * Languages that are used in the LanguageDTO Support endpoint.
  * @export
- * @interface CollectionMembershipDTO
+ * @interface LanguageDTO
  */
-export interface CollectionMembershipDTO {
+export interface LanguageDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the localization
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * The native name of the language
+   * @type {string}
+   * @memberof LanguageDTO
    */
-  type?: number;
+  native_name?: string;
   /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * The combination of language code and Country code (en-US)
+   * @type {string}
+   * @memberof LanguageDTO
    */
-  updated_at?: number;
+  locale?: string;
   /**
-   * Date this was initally added to the IGDB database
+   * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof LanguageDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageDTO
    */
   checksum?: string;
 }

@@ -13,75 +13,51 @@
  */
 
 /**
- * Logo for the event
+ * URLs related to the event like Twitter, Facebook, and Youtube
  * @export
- * @interface EventLogoDTO
+ * @interface EventNetworkDTO
  */
-export interface EventLogoDTO {
+export interface EventNetworkDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof EventNetworkDTO
    */
   id?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof EventNetworkDTO
    */
   event?: number;
   /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  height?: number;
-  /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
    * The website address (URL) of the item
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof EventNetworkDTO
    */
   url?: string;
   /**
-   * The width of the image in pixels
+   * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof EventNetworkDTO
    */
-  width?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
+  network_type?: number;
   /**
    * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof EventNetworkDTO
    */
   created_at?: number;
   /**
+   * The last date this entry was updated in the IGDB database
+   * @type {number}
+   * @memberof EventNetworkDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof EventNetworkDTO
    */
   checksum?: string;
 }

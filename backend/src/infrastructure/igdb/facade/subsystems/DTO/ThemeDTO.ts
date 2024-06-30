@@ -13,51 +13,45 @@
  */
 
 /**
- * The collection memberships
+ * Video game themes
  * @export
- * @interface CollectionMembershipDTO
+ * @interface ThemeDTO
  */
-export interface CollectionMembershipDTO {
+export interface ThemeDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof ThemeDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the theme
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof ThemeDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * A url-safe, unique, lower-case version of the name
+   * @type {string}
+   * @memberof ThemeDTO
    */
-  type?: number;
+  slug?: string;
   /**
-   * The last date this entry was updated in the IGDB database
+   * Date this was last updated in the IGDB database
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof ThemeDTO
    */
   updated_at?: number;
   /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * The website address (URL) of the item
+   * @type {string}
+   * @memberof ThemeDTO
    */
-  created_at?: number;
+  url?: string;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof ThemeDTO
    */
   checksum?: string;
 }

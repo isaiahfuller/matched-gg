@@ -13,75 +13,57 @@
  */
 
 /**
- * Logo for the event
+ * Enums for collection membership type
  * @export
- * @interface EventLogoDTO
+ * @interface CollectionRelationTypeDTO
  */
-export interface EventLogoDTO {
+export interface CollectionRelationType {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationType
    */
   id?: number;
   /**
+   * The membership type name
+   * @type {string}
+   * @memberof CollectionRelationType
+   */
+  name?: string;
+  /**
+   * Description of the membership type
+   * @type {string}
+   * @memberof CollectionRelationType
+   */
+  description?: string;
+  /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationType
    */
-  event?: number;
+  allowed_child_type?: number;
   /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
+   * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationType
    */
-  height?: number;
-  /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
-   * The website address (URL) of the item
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  url?: string;
-  /**
-   * The width of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  width?: number;
+  allowed_parent_type?: number;
   /**
    * The last date this entry was updated in the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationType
    */
   updated_at?: number;
   /**
-   * Date this was initially added to the IGDB database
+   * Date this was initally added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationType
    */
   created_at?: number;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof CollectionRelationType
    */
   checksum?: string;
 }

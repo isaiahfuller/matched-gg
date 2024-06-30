@@ -13,51 +13,59 @@
  */
 
 /**
- * The collection memberships
+ * RegionDTO for game localization
  * @export
- * @interface CollectionMembershipDTO
+ * @interface RegionDTO
  */
-export interface CollectionMembershipDTO {
+export interface RegionDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof RegionDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the region
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof RegionDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * Whether the region is a local or continent
+   * @type {string}
+   * @memberof RegionDTO
    */
-  type?: number;
+  category?: RegionCategoryEnum;
   /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * This is the identifier of each region
+   * @type {any}
+   * @memberof RegionDTO
    */
-  updated_at?: number;
+  identifier?: any;
   /**
-   * Date this was initally added to the IGDB database
+   * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof RegionDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof RegionDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof RegionDTO
    */
   checksum?: string;
 }
+
+export const RegionCategoryEnum = {
+  Locale: "locale",
+  Continent: "continent",
+} as const;
+
+export type RegionCategoryEnum =
+  (typeof RegionCategoryEnum)[keyof typeof RegionCategoryEnum];

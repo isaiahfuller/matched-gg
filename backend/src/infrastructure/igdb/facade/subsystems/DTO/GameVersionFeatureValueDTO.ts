@@ -12,52 +12,50 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import { GameVersionIncludedFeatureEnums } from '../enums/GameVersionFeatureCategoryEnums';
+
 /**
- * The collection memberships
+ * The bool/text value of the feature
  * @export
- * @interface CollectionMembershipDTO
+ * @interface GameVersionFeatureValueDTO
  */
-export interface CollectionMembershipDTO {
+export interface GameVersionFeatureValueDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVersionFeatureValueDTO
    */
   id?: number;
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVersionFeatureValueDTO
    */
   game?: number;
   /**
-   * Reference ID for Collection
-   * @type {string}
-   * @memberof CollectionMembershipDTO
-   */
-  collection?: string;
-  /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVersionFeatureValueDTO
    */
-  type?: number;
+  game_feature?: number;
   /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   *
+   * @type {GameVersionIncludedFeatureEnums}
+   * @memberof GameVersionFeatureValueDTO
    */
-  updated_at?: number;
+  included_feature?: GameVersionIncludedFeatureEnums;
   /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * The text value of this feature
+   * @type {string}
+   * @memberof GameVersionFeatureValueDTO
    */
-  created_at?: number;
+  note?: string;
   /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof GameVersionFeatureValueDTO
    */
   checksum?: string;
 }

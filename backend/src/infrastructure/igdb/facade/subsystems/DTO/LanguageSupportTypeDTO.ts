@@ -13,51 +13,39 @@
  */
 
 /**
- * The collection memberships
+ * Language Support Types contains the identifiers for the support types that Language Support uses.
  * @export
- * @interface CollectionMembershipDTO
+ * @interface LanguageSupportTypeDTO
  */
-export interface CollectionMembershipDTO {
+export interface LanguageSupportTypeDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageSupportTypeDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  game?: number;
-  /**
-   * Reference ID for Collection
+   * The name of the method of support. (Audio, Subtitles, etc)
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageSupportTypeDTO
    */
-  collection?: string;
+  name?: string;
   /**
-   * The IGDB object unique identifier
+   * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  type?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
-   */
-  updated_at?: number;
-  /**
-   * Date this was initally added to the IGDB database
-   * @type {number}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageSupportTypeDTO
    */
   created_at?: number;
   /**
+   * Date this was last updated in the IGDB database
+   * @type {number}
+   * @memberof LanguageSupportTypeDTO
+   */
+  updated_at?: number;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof CollectionMembershipDTO
+   * @memberof LanguageSupportTypeDTO
    */
   checksum?: string;
 }

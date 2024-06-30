@@ -13,75 +13,75 @@
  */
 
 /**
- * Logo for the event
+ * Video game engines such as unreal engine
  * @export
- * @interface EventLogoDTO
+ * @interface GameEngineDTO
  */
-export interface EventLogoDTO {
+export interface GameEngineDTO {
   /**
    * The IGDB object unique identifier
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineDTO
    */
   id?: number;
   /**
-   * The IGDB object unique identifier
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  event?: number;
-  /**
    *
-   * @type {boolean}
-   * @memberof EventLogoDTO
+   * @type {Array<number>}
+   * @memberof GameEngineDTO
    */
-  alpha_channel?: boolean;
-  /**
-   *
-   * @type {boolean}
-   * @memberof EventLogoDTO
-   */
-  animated?: boolean;
-  /**
-   * The height of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  height?: number;
-  /**
-   * The ID of the image used to construct an IGDB image link
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  image_id?: string;
-  /**
-   * The website address (URL) of the item
-   * @type {string}
-   * @memberof EventLogoDTO
-   */
-  url?: string;
-  /**
-   * The width of the image in pixels
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  width?: number;
-  /**
-   * The last date this entry was updated in the IGDB database
-   * @type {number}
-   * @memberof EventLogoDTO
-   */
-  updated_at?: number;
+  companies?: Array<number>;
   /**
    * Date this was initially added to the IGDB database
    * @type {number}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineDTO
    */
   created_at?: number;
   /**
+   * Description of the game engine
+   * @type {string}
+   * @memberof GameEngineDTO
+   */
+  description?: string;
+  /**
+   * The IGDB object unique identifier
+   * @type {number}
+   * @memberof GameEngineDTO
+   */
+  logo?: number;
+  /**
+   * Name of the game engine
+   * @type {string}
+   * @memberof GameEngineDTO
+   */
+  name?: string;
+  /**
+   * Platforms this game engine was deployed on
+   * @type {Array<number>}
+   * @memberof GameEngineDTO
+   */
+  platforms?: Array<number>;
+  /**
+   * A url-safe, unique, lower-case version of the name
+   * @type {string}
+   * @memberof GameEngineDTO
+   */
+  slug?: string;
+  /**
+   * The last date this entry was updated in the IGDB database
+   * @type {number}
+   * @memberof GameEngineDTO
+   */
+  updated_at?: number;
+  /**
+   * The website address (URL) of the item
+   * @type {string}
+   * @memberof GameEngineDTO
+   */
+  url?: string;
+  /**
    * Hash of the object
    * @type {string}
-   * @memberof EventLogoDTO
+   * @memberof GameEngineDTO
    */
   checksum?: string;
 }
