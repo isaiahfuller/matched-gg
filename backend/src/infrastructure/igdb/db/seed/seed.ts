@@ -10,7 +10,7 @@ import TwitchHandler from '../../../twitch/handlers/twitchHandler';
 import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
-import { IgdbResources } from '../../facade/subsystems/enums/IgdbResources';
+import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
 import { IgdbDbController } from '../controller/IgdbDbController';
 import { mapArtwork } from '../map/mapArtwork';
 import { mapGame } from '../map/mapGame';
