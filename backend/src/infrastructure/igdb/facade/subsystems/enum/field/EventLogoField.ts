@@ -1,4 +1,4 @@
-export enum ArtworkField {
+export enum EventLogoField {
   alpha_channel = 'alpha_channel',
   animated = 'animated',
   checksum = 'checksum',
@@ -12,7 +12,7 @@ export enum ArtworkField {
   width = 'width',
 }
 
-export enum ExpandedArtworkField {
+export enum ExpandedEventLogoField {
   alpha_channel = 'alpha_channel',
   animated = 'animated',
   checksum = 'checksum',
