@@ -5,6 +5,7 @@ export const mapGameVersionFeatureValue = (value) => {
     checksum: value.checksum,
     game: value.game,
     gameFeature: value.game_feature,
+    igdbId: value.id,
     includedFeature: value.included_feature,
     note: value.note,
   } satisfies GameVersionFeatureValues;

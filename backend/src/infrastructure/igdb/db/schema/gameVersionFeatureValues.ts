@@ -19,6 +19,7 @@ export const gameVersionFeatureValuesTable = pgTable(
     gameFeature: bigint('game_feature', { mode: 'number' }).references(
       () => gameVersionFeaturesTable.igdbId,
     ),
+    igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
     includedFeature:
       GameVersionFeatureValueIncludedFeaturePGEnum('included_feature'),
     note: text('note'),
