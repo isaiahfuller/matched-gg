@@ -2,18 +2,12 @@ import { IgdbConfig } from '@config/interfaces';
 import { RequestAllConfig } from 'apicalypse';
 
 import { InterceptorSubsystem } from './Subsystem';
-import { IgdbResources } from './enums/IgdbResources';
-import {
-  ArtworkField,
-  ExpandedArtworkField,
-} from './enums/fields/ArtworkField';
-import { ExpandedGameField, GameField } from './enums/fields/GameField';
-import {
-  ExpandedWebsiteField,
-  WebsiteField,
-} from './enums/fields/WebsiteField';
+import { IgdbResources } from './enum/IgdbResources';
+import { ArtworkField, ExpandedArtworkField } from './enum/field/ArtworkField';
+import { ExpandedGameField, GameField } from './enum/field/GameField';
+import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
 import { IGetAll } from './interfaces';
-import { AllField } from './types';
+import { IgdbField } from './types';
 
 // TODO: Fork apicalypse and fix implementation of requestAll
 export class GetAll extends InterceptorSubsystem implements IGetAll {
@@ -21,7 +15,7 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
    * The fields to be requested from the IGDB API.
    * @privateRemarks We have to delcare this at the subsystem level because of the field enforcement. This is a workaround due to the bug mentioned in the TODO.
    */
-  fields: AllField | undefined = undefined;
+  fields: IgdbField | undefined = undefined;
   protected totalCount: number | undefined = undefined;
   constructor(igdbConfig: IgdbConfig) {
     super(igdbConfig);
@@ -48,7 +42,7 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
   public getFields(
     expanded: boolean,
     resource: IgdbResources,
-  ): AllField | undefined {
+  ): IgdbField | undefined {
     switch (resource) {
       case IgdbResources.GAMES:
         return Object.values(expanded ? ExpandedGameField : GameField);

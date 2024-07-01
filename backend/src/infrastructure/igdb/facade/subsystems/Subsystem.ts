@@ -4,7 +4,7 @@ import igdb from 'igdb-api-node';
 
 import { CountDTO } from './DTO/CountDTO';
 import { IgdbSubsystem } from './interfaces';
-import { AllField } from './types';
+import { IgdbField } from './types';
 import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
 import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
 
@@ -18,7 +18,7 @@ const DEFAULT_TIMEOUT = 60000;
  */
 interface InterceptorClientConfig {
   count: CountDTO['count'];
-  fields: AllField;
+  fields: IgdbField;
   timeout: number;
 }
 

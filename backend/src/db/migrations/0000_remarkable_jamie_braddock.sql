@@ -17,6 +17,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ CREATE TYPE "CollectionTypeEnum" AS ENUM('', 'MEMBER', 'SPINOFF');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "CompanyDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -60,18 +66,28 @@ CREATE TABLE IF NOT EXISTS "ageRatings" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "alternativeNames" (
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"comment" text,
+	"game" bigint,
+	"name" text,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "artworks" (
 	"alpha_channel" boolean,
 	"animated" boolean,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"game" bigint,
 	"height" integer,
-	"igdb_id" integer,
-	"image_id" text PRIMARY KEY NOT NULL,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
-	"width" integer
+	"width" integer,
+	"game" bigint
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "covers" (
@@ -79,14 +95,37 @@ CREATE TABLE IF NOT EXISTS "covers" (
 	"animated" boolean,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"game" bigint,
 	"height" integer,
-	"igdb_id" integer,
-	"image_id" text PRIMARY KEY NOT NULL,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
 	"width" integer,
 	"game_localization" bigint
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "collectionMemberships" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"checksum" text,
+	"type" "CollectionTypeEnum"
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "collections" (
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_updated_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"checksum" text,
+	"game" bigint[],
+	"name" text,
+	"slug" text,
+	"url" text
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "companies" (
@@ -134,6 +173,65 @@ CREATE TABLE IF NOT EXISTS "companyWebsites" (
 	"url" text
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "eventLogos" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer,
+	"igdb_created_at" timestamp,
+	"igdb_updated_at" timestamp,
+	"event" bigint
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "events" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text,
+	"end_time" timestamp,
+	"games" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"live_stream_url" text,
+	"name" text NOT NULL,
+	"slug" text,
+	"start_time" timestamp,
+	"time_zone" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"videos" bigint[]
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "franchises" (
+	"checksum" text,
+	"igdb_created_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint[],
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameModes" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "games" (
 	"aggregated_rating" double precision,
 	"aggregated_rating_count" integer,
@@ -176,13 +274,25 @@ CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" ("igdb_id");--> state
 CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" ("slug");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "name_idx" ON "games" ("name");--> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "alternativeNames" ADD CONSTRAINT "alternativeNames_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "artworks" ADD CONSTRAINT "artworks_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "covers" ADD CONSTRAINT "covers_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "collectionMemberships" ADD CONSTRAINT "collectionMemberships_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "collectionMemberships" ADD CONSTRAINT "collectionMemberships_game_collections_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "collections"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -195,6 +305,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "companies" ADD CONSTRAINT "companies_parent_companies_igdb_id_fk" FOREIGN KEY ("parent") REFERENCES "companies"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "eventLogos" ADD CONSTRAINT "eventLogos_event_events_igdb_id_fk" FOREIGN KEY ("event") REFERENCES "events"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
