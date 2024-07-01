@@ -1,5 +1,6 @@
 import { logger } from 'src/util/logger';
-import { AllField } from '../types';
+
+import { IgdbField } from '../types';
 
 const log = logger.child({ module: 'ResponseFieldsInterceptor' });
 
@@ -11,11 +12,14 @@ const log = logger.child({ module: 'ResponseFieldsInterceptor' });
  * @param fields - The requested fields.
  * @returns The intercepted response data.
  */
-export const responseFieldsInterceptor: any = (data: any, fields: AllField) => {
+export const responseFieldsInterceptor: any = (
+  data: any,
+  fields: IgdbField,
+) => {
   try {
     const resJson = JSON.parse(data);
 
-    log.debug({ response: resJson, requestedFields: fields });
+    log.debug({ requestedFields: fields, response: resJson });
     log.info({ responseCount: resJson.length });
 
     return resJson;

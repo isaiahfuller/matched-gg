@@ -1,3 +1,4 @@
+import { config } from '@config/config';
 import {
   Controller,
   Get,
@@ -11,34 +12,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
+
 import { AuthService } from '../../auth/auth.service';
 import { SteamAuthResponse } from './types';
-import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
-import { config } from '@config/config';
 
 @Controller('steam')
 export class SteamController {
   private logger = new Logger(SteamController.name);
   private steamHandler = new SteamHandler(config);
   constructor(private readonly authService: AuthService) {}
-
-  @Get('auth') // TODO: Change to Post when front-end is implemented
-  @UseGuards(AuthGuard('steam'))
-  @HttpCode(HttpStatus.OK)
-  /**
-   * @remarks this is never called due to the authguard sending user to the return route
-   */
-  login() {}
-
-  @Get('auth/return')
-  @UseGuards(AuthGuard('steam'))
-  async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
-    if (!('providers' in session)) session.providers = {};
-    session.providers.steam = req.user._json;
-    // TODO: Stop hardcoding the redirect URL
-    res.redirect('http://localhost:5173/');
-    return;
-  }
 
   @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {
@@ -49,6 +32,15 @@ export class SteamController {
     res.send(achivements);
     return achivements;
   }
+
+  @Get('auth') // TODO: Change to Post when front-end is implemented
+  @UseGuards(AuthGuard('steam'))
+  @HttpCode(HttpStatus.OK)
+  /**
+   * @remarks this is never called due to the authguard sending user to the return route
+   */
+  login() {}
+
   @Get('getOwnedGames')
   async ownedGames(@Session() session, @Res() res) {
     const games = await this.steamHandler.getOwnedGames(
@@ -56,6 +48,15 @@ export class SteamController {
     );
     res.send(games.games);
     return games;
+  }
+  @Get('auth/return')
+  @UseGuards(AuthGuard('steam'))
+  async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
+    if (!('providers' in session)) session.providers = {};
+    session.providers.steam = req.user._json;
+    // TODO: Stop hardcoding the redirect URL
+    res.redirect('http://localhost:5173/');
+    return;
   }
 
   @Post('valid')

@@ -1,7 +1,8 @@
+import { TwitchConfig } from '@config/interfaces';
 import { Logger } from 'pino';
+
 import { TwitchTokenResponseDTO } from './DTO/TwitchTokenResponseDTO';
 import { TwitchValidTokenResponseDTO } from './DTO/TwitchValidateResponseDTO';
-import { TwitchConfig } from '@config/interfaces';
 
 /**
  * Represents the interface for a Twitch handler.
@@ -10,18 +11,16 @@ export interface TwitchHandlerInterface {
   accessToken: string;
 
   /**
+   * Clears the token validation interval.
+   * Reserved for cleanup or destruction of the handler.
+   */
+  clearTokenValidationInterval(): void;
+
+  /**
    * Connects to Twitch and returns a promise that resolves to the Twitch response body.
    * @returns A promise that resolves to the Twitch response body.
    */
   connect(): Promise<TwitchTokenResponseDTO>;
-
-  /**
-   * Validates the Twitch token and returns a promise that resolves to the Twitch response body.
-   * @returns A promise that resolves to the Twitch response body.
-   */
-  validateToken(
-    _accessToken: TwitchHandlerConstructor['accessToken'],
-  ): Promise<TwitchValidTokenResponseDTO | TwitchTokenResponseDTO>;
 
   /**
    * Returns the remaining time in seconds until the token expires.
@@ -43,10 +42,12 @@ export interface TwitchHandlerInterface {
   stopTokenValidationInterval(): void;
 
   /**
-   * Clears the token validation interval.
-   * Reserved for cleanup or destruction of the handler.
+   * Validates the Twitch token and returns a promise that resolves to the Twitch response body.
+   * @returns A promise that resolves to the Twitch response body.
    */
-  clearTokenValidationInterval(): void;
+  validateToken(
+    _accessToken: TwitchHandlerConstructor['accessToken'],
+  ): Promise<TwitchTokenResponseDTO | TwitchValidTokenResponseDTO>;
 }
 
 /**
@@ -63,6 +64,11 @@ export interface TwitchHandlerConstructor {
  */
 export enum TwitchEndpoints {
   /**
+   * Endpoint for revoking an OAuth2 token.
+   */
+  OAUTH2_REVOKE = 'oauth2/revoke',
+
+  /**
    * Endpoint for obtaining an OAuth2 token.
    */
   OAUTH2_TOKEN = 'oauth2/token',
@@ -71,9 +77,4 @@ export enum TwitchEndpoints {
    * Endpoint for validating an OAuth2 token.
    */
   OAUTH2_VALIDATE = 'oauth2/validate',
-
-  /**
-   * Endpoint for revoking an OAuth2 token.
-   */
-  OAUTH2_REVOKE = 'oauth2/revoke',
 }

@@ -1,11 +1,12 @@
-import { Apicalypse } from 'apicalypse';
-import { IgdbSubsystem } from './interfaces';
-import igdb from 'igdb-api-node';
-import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
-import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
-import { AllField } from './types';
-import { CountDTO } from './DTO/CountDTO';
 import { IgdbConfig } from '@config/interfaces';
+import { Apicalypse } from 'apicalypse';
+import igdb from 'igdb-api-node';
+
+import { CountDTO } from './DTO/CountDTO';
+import { IgdbSubsystem } from './interfaces';
+import { IgdbField } from './types';
+import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';
+import { responseFieldsInterceptor } from './util/responseFieldsInterceptor';
 
 /**
  * The default timeout value in milliseconds.
@@ -16,9 +17,9 @@ const DEFAULT_TIMEOUT = 60000;
  * Configuration options for the interceptor client.
  */
 interface InterceptorClientConfig {
-  timeout: number;
-  fields: AllField;
   count: CountDTO['count'];
+  fields: IgdbField;
+  timeout: number;
 }
 
 /**
@@ -38,8 +39,8 @@ export abstract class Subsystem implements IgdbSubsystem {
  * Extends the base Subsystem class.
  */
 export abstract class InterceptorSubsystem extends Subsystem {
-  protected clientId: IgdbConfig['clientId'];
   protected accessToken: IgdbConfig['accessToken'];
+  protected clientId: IgdbConfig['clientId'];
 
   /**
    * Constructs a new InterceptorSubsystem instance.
@@ -47,7 +48,7 @@ export abstract class InterceptorSubsystem extends Subsystem {
    * @param clientId - The client ID for the IGDB API.
    * @param accessToken - The access token for the IGDB API.
    */
-  constructor({ clientId, accessToken }: IgdbConfig) {
+  constructor({ accessToken, clientId }: IgdbConfig) {
     super(igdb(clientId, accessToken));
     this.clientId = clientId;
     this.accessToken = accessToken;
@@ -59,9 +60,9 @@ export abstract class InterceptorSubsystem extends Subsystem {
    * @param config - The configuration options for the interceptor client.
    */
   setInterceptorClient({
-    timeout = DEFAULT_TIMEOUT,
-    fields,
     count,
+    fields,
+    timeout = DEFAULT_TIMEOUT,
   }: InterceptorClientConfig): void {
     this.client = igdb(this.clientId, this.accessToken, {
       timeout,

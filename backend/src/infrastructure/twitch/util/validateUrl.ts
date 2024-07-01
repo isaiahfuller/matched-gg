@@ -1,9 +1,9 @@
-import { z, ZodString, ZodError, ZodUnion } from 'zod';
 import { logger } from 'src/util/logger';
+import { ZodError, ZodString, ZodUnion, z } from 'zod';
 
 export enum UrlProtocol {
-  HTTPS = 'https://',
   HTTP = 'http://',
+  HTTPS = 'https://',
 }
 
 /**

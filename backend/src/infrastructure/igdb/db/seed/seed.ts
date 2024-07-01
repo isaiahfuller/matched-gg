@@ -1,38 +1,39 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
-import TwitchHandler from '../../../twitch/handlers/twitchHandler';
 import { config } from '@config/config';
-import { logger } from 'src/util/logger';
-import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
-import * as gamesSchema from '../schema/games';
-import * as websitesSchema from '../schema/websites';
-import * as artworksSchema from '../schema/artworks';
-import { mapGame } from '../map/mapGame';
+import { IgdbConfig } from '@config/interfaces';
 import { chunk } from '@util/chunk';
-import { IgdbDbController } from '../controller/IgdbDbController';
+import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
+import { logger } from 'src/util/logger';
+
+import TwitchHandler from '../../../twitch/handlers/twitchHandler';
+import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
-import { mapWebsite } from '../map/mapWebsite';
-import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
+import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
+import { IgdbDbController } from '../controller/IgdbDbController';
 import { mapArtwork } from '../map/mapArtwork';
-import { IgdbConfig } from '@config/interfaces';
-import { IgdbResources } from '../../facade/subsystems/enums/IgdbResources';
+import { mapGame } from '../map/mapGame';
+import { mapWebsite } from '../map/mapWebsite';
+import * as artworksSchema from '../schema/artworks';
+import * as gamesSchema from '../schema/games';
+import * as websitesSchema from '../schema/websites';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
 
   const twitch = new TwitchHandler(
     {
+      apiUrl: config.twitch.apiUrl,
       clientId: config.twitch.clientId,
       clientSecret: config.twitch.clientSecret,
-      apiUrl: config.twitch.apiUrl,
     },
     logger,
   );
 
   const igdbConfig = {
-    clientId: config.twitch.clientId,
     accessToken: (await twitch.connect()).access_token,
+    clientId: config.twitch.clientId,
   } as IgdbConfig;
 
   const igdb = new IgdbFacade({

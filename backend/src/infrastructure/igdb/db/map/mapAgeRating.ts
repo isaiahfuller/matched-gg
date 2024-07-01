@@ -6,12 +6,12 @@ import {
 
 export const mapAgeRating = (rating) => {
   const mappedRating = {
-    igdbId: rating.id,
     category:
       rating.category === undefined
         ? null
         : AgeRatingCategoryPGEnum.enumValues[rating.category],
     checksum: rating.checksum,
+    igdbId: rating.id,
     rating:
       rating.rating === undefined
         ? null

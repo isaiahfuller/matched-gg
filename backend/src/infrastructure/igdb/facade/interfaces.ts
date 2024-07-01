@@ -1,13 +1,20 @@
-import { Logger } from 'pino';
 import { IgdbConfig } from '@config/interfaces';
-import { IgdbAccessToken } from '../types';
 import { Apicalypse } from 'apicalypse';
-import { IgdbResources } from './subsystems/enums/IgdbResources';
+import { Logger } from 'pino';
+
+import { IgdbAccessToken } from '../types';
+import { IgdbResources } from './subsystems/enum/IgdbResources';
 
 /**
  * Represents the interface for the IGDB (Internet Game Database) facade.
  */
 export interface IgdbFacadeInterface {
+  /**
+   * The Apicalypse wrapper
+   *
+   * @remarks This is a wrapper returned from the `igdb-api-node` package.
+   */
+  client: Apicalypse;
   /**
    * The configuration for the IGDB API.
    */
@@ -16,12 +23,6 @@ export interface IgdbFacadeInterface {
    * The logger for the IGDB facade.
    */
   logger: Logger;
-  /**
-   * The Apicalypse wrapper
-   *
-   * @remarks This is a wrapper returned from the `igdb-api-node` package.
-   */
-  client: Apicalypse;
 
   /**
    * Seeds games based on the provided options.
@@ -46,17 +47,17 @@ export interface IgdbFacadeConstructor {
  */
 export interface SeedOptions {
   /**
+   * Whether to expand the game fields.
+   * @default true
+   */
+  expanded?: boolean | true;
+  /**
    * The limit of games to retrieve per request.
    * defaults to the maximum of 500.
    *
    * @default 500
    */
-  limit?: number | 500;
-  /**
-   * Whether to expand the game fields.
-   * @default true
-   */
-  expanded?: boolean | true;
+  limit?: 500 | number;
   /**
    * The IGDB resource to seed.
    */

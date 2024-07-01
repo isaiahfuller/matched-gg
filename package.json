@@ -16,7 +16,7 @@
     "start:backend": "yarn --cwd backend start",
     "backend:migrate": "yarn --cwd backend migrate",
     "backend:seed": "yarn --cwd backend seed",
-    "generate:pg": "yarn --cwd backend drizzle-kit generate:pg",
+    "generate": "yarn --cwd backend drizzle-kit generate",
     "start:frontend": "yarn --cwd frontend start",
     "build": "yarn --cwd frontend build"
   },

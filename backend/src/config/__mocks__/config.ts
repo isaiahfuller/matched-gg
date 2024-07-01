@@ -1,24 +1,24 @@
 const mockConfig = {
-  port: 3000,
   db: {
+    database: 'postgres',
     host: 'localhost:5432',
-    user: 'postgres',
     password: 'postgres',
     port: 5432,
-    database: 'postgres',
+    user: 'postgres',
+  },
+  pinoOptions: {
+    enabled: true,
+    level: 'info',
+    name: 'logger',
+  },
+  port: 3000,
+  steam: {
+    apiKey: 'bny8iby8987byobnjhi',
   },
   twitch: {
     apiUrl: 'http://localhost:5000/',
     clientId: 'efawefawef',
     clientSecret: 'awefwaefweaf',
-  },
-  steam: {
-    apiKey: 'bny8iby8987byobnjhi',
-  },
-  pinoOptions: {
-    level: 'info',
-    name: 'logger',
-    enabled: true,
   },
 };
 

@@ -1,8 +1,9 @@
-import igdb from 'igdb-api-node';
-import { GetAll } from './GetAll';
 import { Apicalypse } from 'apicalypse';
-import { IgdbResources } from './enums/IgdbResources';
+import igdb from 'igdb-api-node';
+
 import { GameDTO } from './DTO/GameDTO';
+import { GetAll } from './GetAll';
+import { IgdbResources } from './enum/IgdbResources';
 
 describe('GetAll', () => {
   let getAll: GetAll;
@@ -61,7 +62,7 @@ describe('GetAll', () => {
       client.requestAll = jest
         .fn()
         .mockResolvedValue([
-          { id: 1, name: 'Game 1', genre: { id: 1, name: 'Genre 1' } },
+          { genre: { id: 1, name: 'Genre 1' }, id: 1, name: 'Game 1' },
         ]);
 
       const result = await getAll.execute<GameDTO>(
@@ -73,7 +74,7 @@ describe('GetAll', () => {
       );
 
       expect(result).toEqual([
-        { id: 1, name: 'Game 1', genre: { id: 1, name: 'Genre 1' } },
+        { genre: { id: 1, name: 'Genre 1' }, id: 1, name: 'Game 1' },
       ]);
     });
 
@@ -81,7 +82,7 @@ describe('GetAll', () => {
       // Mock the requestAll method of the Apicalypse client
       client.requestAll = jest
         .fn()
-        .mockResolvedValue([{ id: 1, name: 'Game 1', genre: 1 }]);
+        .mockResolvedValue([{ genre: 1, id: 1, name: 'Game 1' }]);
 
       const result = await getAll.execute<GameDTO>(
         {},
@@ -91,7 +92,7 @@ describe('GetAll', () => {
         1,
       );
 
-      expect(result).toEqual([{ id: 1, name: 'Game 1', genre: 1 }]);
+      expect(result).toEqual([{ genre: 1, id: 1, name: 'Game 1' }]);
     });
 
     it('should throw an error if the request fails', async () => {

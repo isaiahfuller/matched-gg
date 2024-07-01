@@ -1,5 +1,6 @@
 import { logger } from 'src/util/logger';
-import { AllField } from '../types';
+
+import { IgdbField } from '../types';
 
 const log = logger.child({ module: 'RequestFieldsInterceptor' });
 
@@ -11,7 +12,7 @@ const log = logger.child({ module: 'RequestFieldsInterceptor' });
  */
 export const requestFieldsInterceptor = (
   data: any,
-  fields: AllField,
+  fields: IgdbField,
   totalResourceCount?: number,
 ) => {
   const gameRequest = JSON.stringify(data);
@@ -25,15 +26,15 @@ export const requestFieldsInterceptor = (
     : '0%';
 
   log.debug({
+    isMultipleFields,
     request: gameRequest,
     requestedFields: fields,
-    isMultipleFields,
   });
 
   log.info({
-    requestedFieldsCount: isMultipleFields ? fields.length : 1,
     offset: offset ? offset[1] : 0,
     progress,
+    requestedFieldsCount: isMultipleFields ? fields.length : 1,
   });
 
   if (gameRequest.includes('fields')) {
