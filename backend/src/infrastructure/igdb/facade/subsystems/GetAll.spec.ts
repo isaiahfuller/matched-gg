@@ -3,7 +3,7 @@ import igdb from 'igdb-api-node';
 
 import { GameDTO } from './DTO/GameDTO';
 import { GetAll } from './GetAll';
-import { IgdbResources } from './enums/IgdbResources';
+import { IgdbResources } from './enum/IgdbResources';
 
 describe('GetAll', () => {
   let getAll: GetAll;

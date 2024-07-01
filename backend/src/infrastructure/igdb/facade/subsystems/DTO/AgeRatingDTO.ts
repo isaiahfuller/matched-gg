@@ -1,5 +1,5 @@
-import { AgeRatingCategoryEnum } from '../enums/AgeRatingCategoryEnum';
-import { AgeRatingEnum } from '../enums/AgeRatingEnum';
+import { AgeRatingCategoryEnum } from '../enum/descriptor/AgeRatingCategoryEnum';
+import { AgeRatingEnum } from '../enum/descriptor/AgeRatingEnum';
 import { StaticBaseDTO } from './BaseDTO';
 
 export interface AgeRatingDTO extends StaticBaseDTO {

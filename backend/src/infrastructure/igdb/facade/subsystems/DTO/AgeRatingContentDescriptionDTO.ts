@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { AgeRatingContentDescriptionCategory } from '../enums/AgeRatingContentDescriptionCategory';
+import { AgeRatingContentDescriptionCategory } from '../enum/descriptor/AgeRatingContentDescriptionCategory';
 
 /**
  *
