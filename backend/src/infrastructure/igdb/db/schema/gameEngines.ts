@@ -1,6 +1,7 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { companiesTable } from './companies';
+import { gameEngineLogosTable } from './gameEngineLogos';
 import { gamesTable } from './games';
 
 export const gameEnginesTable = pgTable('gameEngines', {
@@ -13,7 +14,9 @@ export const gameEnginesTable = pgTable('gameEngines', {
   igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
-  logo: bigint('logo', { mode: 'number' }), // reference gameenginelogo
+  logo: bigint('logo', { mode: 'number' }).references(
+    () => gameEngineLogosTable.igdbId,
+  ),
   name: text('name').notNull(),
   platforms: bigint('platforms', { mode: 'number' }), // references platform
   slug: text('slug'),
