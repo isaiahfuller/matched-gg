@@ -6,6 +6,7 @@ export const mapGameVideo = (video) => {
     game: video.game,
     igdbId: video.id,
     name: video.name,
+    updatedAt: new Date(),
     videoId: video.video_id,
   } satisfies GameVideos;
   return mapped;
