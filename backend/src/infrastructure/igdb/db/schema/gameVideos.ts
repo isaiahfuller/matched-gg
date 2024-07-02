@@ -7,7 +7,7 @@ export const gameVideosTable = pgTable('gameVideos', {
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   name: text('name').notNull(),
-  video_id: text('url'),
+  videoId: text('url'),
 });
 
 export type GameVideos = typeof gameVideosTable.$inferInsert;
