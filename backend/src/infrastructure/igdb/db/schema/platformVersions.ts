@@ -17,7 +17,7 @@ export const platformVersionsTable = pgTable('platformVersions', {
   platformLogo: bigint('platform_logo', { mode: 'number' }), // reference platform logo
   platformVersionReleaseDates: bigint('platform_version_release_dates', {
     mode: 'number',
-  }).array(), // reference platform version company
+  }).array(), // reference platform version release dates
   resolutions: text('resolutions'),
   slug: text('slug'),
   sound: text('sound'),
