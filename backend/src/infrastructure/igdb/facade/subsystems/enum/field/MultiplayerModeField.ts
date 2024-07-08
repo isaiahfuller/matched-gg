@@ -1,0 +1,17 @@
+export enum MultiplayerModeField {
+  campaigncoop = 'campaigncoop',
+  checksum = 'checksum',
+  dropin = 'dropin',
+  game = 'game',
+  id = 'id',
+  lancoop = 'lancoop',
+  offlinecoop = 'offlinecoop',
+  offlinecoopmax = 'offlinecoopmax',
+  offlinemax = 'offlinemax',
+  onlinecoop = 'onlinecoop',
+  onlinecoopmax = 'onlinecoopmax',
+  onlinemax = 'onlinemax',
+  platform = 'platform',
+  splitscreen = 'splitscreen',
+  splitscreenonline = 'splitscreenonline',
+}
