@@ -13,3 +13,18 @@ export enum ReleaseDateField {
   updated_at = 'updated_at',
   y = 'y',
 }
+export enum ExpandedReleaseDateField {
+  category = 'category',
+  checksum = 'checksum',
+  created_at = 'created_at',
+  date = 'date',
+  game = 'game.*',
+  human = 'human',
+  id = 'id',
+  m = 'm',
+  platform = 'platform.*',
+  region = 'region',
+  status = 'status.*',
+  updated_at = 'updated_at',
+  y = 'y',
+}
