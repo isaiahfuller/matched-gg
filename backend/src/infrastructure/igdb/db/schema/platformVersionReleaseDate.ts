@@ -7,6 +7,8 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
+import { platformVersionsTable } from './platformVersions';
+
 export const PlatformVersionReleaseDateCategoryPGEnum = pgEnum(
   'PlatformVersionReleaseDateCategoryEnum',
   [
@@ -49,7 +51,9 @@ export const platformVersionReleaseDatesTable = pgTable(
     igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
     igdbUpdatedAt: timestamp('igdb_updated_at'),
     m: integer('m'),
-    platformVersion: bigint('platform_version', { mode: 'number' }), // reference
+    platformVersion: bigint('platform_version', { mode: 'number' }).references(
+      () => platformVersionsTable.igdbId,
+    ),
     region: PlatformVersionReleaseDateRegionPGEnum('region'),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     y: integer('y'),

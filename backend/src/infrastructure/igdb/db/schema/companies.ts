@@ -7,8 +7,6 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
-import { gamesTable } from './games';
-
 export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
   'YYYYMMMMDD',
   'YYYYMMMM',
@@ -30,9 +28,7 @@ export const companiesTable = pgTable('companies', {
   country: integer('country'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   description: text('description'),
-  developed: bigint('developed', { mode: 'number' })
-    .references(() => gamesTable.igdbId)
-    .array(),
+  developed: bigint('developed', { mode: 'number' }).array(),
   igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
@@ -40,9 +36,7 @@ export const companiesTable = pgTable('companies', {
   parent: bigint('parent', { mode: 'number' }).references(
     () => companiesTable.igdbId,
   ),
-  published: bigint('published', { mode: 'number' })
-    .references(() => gamesTable.igdbId)
-    .array(),
+  published: bigint('published', { mode: 'number' }).array(),
   slug: text('slug'),
   start_date: timestamp('start_date'),
   startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),

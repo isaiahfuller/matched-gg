@@ -2,6 +2,8 @@ import { pgEnum, pgTable } from 'drizzle-orm/pg-core';
 import { bigint, integer, text, timestamp } from 'drizzle-orm/pg-core/columns';
 
 import { gamesTable } from './games';
+import { platformsTable } from './platforms';
+import { releaseDateStatusesTable } from './releaseDateStatuses';
 
 export const ReleaseDateRegionCategoryPGEnum = pgEnum(
   'ReleaseDateCategoryEnum',
@@ -41,9 +43,13 @@ export const releaseDatesTable = pgTable('releaseDates', {
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
   m: integer('m'),
-  platform: bigint('platform', { mode: 'number' }), // references platforms
+  platform: bigint('platform', { mode: 'number' }).references(
+    () => platformsTable.igdbId,
+  ),
   region: ReleaseDateRegionPGEnum('region'),
-  status: bigint('status', { mode: 'number' }), // reference release date status
+  status: bigint('status', { mode: 'number' }).references(
+    () => releaseDateStatusesTable.igdbId,
+  ),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   y: integer('y'),
 });

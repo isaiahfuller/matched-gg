@@ -1,6 +1,6 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const releaseDateStatuses = pgTable('releaseDateStatuses', {
+export const releaseDateStatusesTable = pgTable('releaseDateStatuses', {
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   description: text('description'),
@@ -11,4 +11,4 @@ export const releaseDateStatuses = pgTable('releaseDateStatuses', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
-export type ReleaseDateStatuses = typeof releaseDateStatuses.$inferInsert;
+export type ReleaseDateStatuses = typeof releaseDateStatusesTable.$inferInsert;

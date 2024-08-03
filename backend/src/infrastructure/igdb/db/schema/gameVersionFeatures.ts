@@ -22,7 +22,7 @@ export const gameVersionFeaturesTable = pgTable('gameVersionFeatures', {
   position: integer('position'),
   title: text('title').notNull(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
-  values: bigint('values', { mode: 'number' }), // reference gameVersionFeatureValues
+  values: bigint('values', { mode: 'number' }).array(),
 });
 
 export type GameVersionFeatures = typeof gameVersionFeaturesTable.$inferInsert;

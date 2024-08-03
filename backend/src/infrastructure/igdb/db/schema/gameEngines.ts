@@ -15,7 +15,7 @@ export const gameEnginesTable = pgTable('gameEngines', {
     () => gameEngineLogosTable.igdbId,
   ),
   name: text('name').notNull(),
-  platforms: bigint('platforms', { mode: 'number' }), // references platform
+  platforms: bigint('platforms', { mode: 'number' }).array(),
   slug: text('slug'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),

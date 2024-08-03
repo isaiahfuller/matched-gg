@@ -8,6 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import { gamesTable } from './games';
+import { platformsTable } from './platforms';
 
 export const multiplayerModesTable = pgTable('multiplayerModes', {
   campaignCoop: boolean('campaigncoop').notNull(),
@@ -25,7 +26,9 @@ export const multiplayerModesTable = pgTable('multiplayerModes', {
   onlineCoop: boolean('onlinecoop').notNull(),
   onlineCoopMax: integer('onlinecoopmax').notNull(),
   onlineMax: integer('onlinemax').notNull(),
-  platform: bigint('platform', { mode: 'number' }).notNull(), // reference platform
+  platform: bigint('platform', { mode: 'number' })
+    .notNull()
+    .references(() => platformsTable.igdbId),
   splitscreen: boolean('splitscreen').notNull(),
   splitscreenOnline: boolean('splitscreenonline').notNull(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),

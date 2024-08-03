@@ -5,7 +5,7 @@ import { gamesTable } from './games';
 export const gameVersionsTable = pgTable('gameVersions', {
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  features: bigint('features', { mode: 'number' }), //TODO: Add reference once gameVersionFeaturesTable is added
+  features: bigint('features', { mode: 'number' }).array(),
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
   games: bigint('games', { mode: 'number' }).array(),
   igdbCreatedAt: timestamp('igdb_created_at'),
