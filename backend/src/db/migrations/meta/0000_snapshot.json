@@ -1,4 +1,6 @@
 {
+  "id": "3956e589-751d-4afd-a0ef-32bac4d4262a",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
   "tables": {
@@ -6,21 +8,10 @@
       "name": "age_rating_content_descriptions",
       "schema": "",
       "columns": {
-        "igdb_id": {
-          "name": "igdb_id",
-          "type": "bigint",
-          "primaryKey": true,
-          "notNull": true
-        },
         "age_rating_content_descriptions_category": {
           "name": "age_rating_content_descriptions_category",
           "type": "AgeRatingCDCategoryEnum",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -36,6 +27,18 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
         },
         "updated_at": {
           "name": "updated_at",
@@ -57,6 +60,7 @@
         "category": {
           "name": "category",
           "type": "CategoryEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -82,6 +86,7 @@
         "rating": {
           "name": "rating",
           "type": "RatingEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -114,32 +119,14 @@
       "name": "alternativeNames",
       "schema": "",
       "columns": {
-        "igdb_id": {
-          "name": "igdb_id",
-          "type": "bigint",
-          "primaryKey": true,
-          "notNull": true
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "comment": {
           "name": "comment",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "game": {
-          "name": "game",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "checksum": {
-          "name": "checksum",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -150,6 +137,24 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -164,15 +169,15 @@
         "alternativeNames_game_games_igdb_id_fk": {
           "name": "alternativeNames_game_games_igdb_id_fk",
           "tableFrom": "alternativeNames",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -256,15 +261,15 @@
         "artworks_game_games_igdb_id_fk": {
           "name": "artworks_game_games_igdb_id_fk",
           "tableFrom": "artworks",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -352,6 +357,18 @@
       "name": "collectionMemberships",
       "schema": "",
       "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -377,59 +394,48 @@
           "primaryKey": false,
           "notNull": false
         },
+        "type": {
+          "name": "type",
+          "type": "CollectionTypeEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "game": {
-          "name": "game",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "checksum": {
-          "name": "checksum",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "type": {
-          "name": "type",
-          "type": "CollectionTypeEnum",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "collectionMemberships_game_games_igdb_id_fk": {
-          "name": "collectionMemberships_game_games_igdb_id_fk",
-          "tableFrom": "collectionMemberships",
-          "columnsFrom": [
-            "game"
-          ],
-          "tableTo": "games",
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
-        },
         "collectionMemberships_game_collections_igdb_id_fk": {
           "name": "collectionMemberships_game_collections_igdb_id_fk",
           "tableFrom": "collectionMemberships",
+          "tableTo": "collections",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "collections",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "collectionMemberships_game_games_igdb_id_fk": {
+          "name": "collectionMemberships_game_games_igdb_id_fk",
+          "tableFrom": "collectionMemberships",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -439,21 +445,9 @@
       "name": "collections",
       "schema": "",
       "columns": {
-        "igdb_id": {
-          "name": "igdb_id",
-          "type": "bigint",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "igdb_created_at": {
-          "name": "igdb_created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "igdb_updated_at": {
-          "name": "igdb_updated_at",
-          "type": "timestamp",
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -464,22 +458,27 @@
           "notNull": true,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "checksum": {
-          "name": "checksum",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "game": {
           "name": "game",
           "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -494,6 +493,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         },
         "url": {
           "name": "url",
@@ -520,6 +526,7 @@
         "change_date_category": {
           "name": "change_date_category",
           "type": "CompanyDateCategoryEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -548,6 +555,18 @@
           "notNull": true,
           "default": "now()"
         },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "developed": {
+          "name": "developed",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
         "igdb_created_at": {
           "name": "igdb_created_at",
           "type": "timestamp",
@@ -563,25 +582,6 @@
         "igdb_updated_at": {
           "name": "igdb_updated_at",
           "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "developed": {
-          "name": "developed",
-          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -618,8 +618,16 @@
         "start_date_category": {
           "name": "start_date_category",
           "type": "CompanyDateCategoryEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         },
         "url": {
           "name": "url",
@@ -633,28 +641,28 @@
         "companies_changed_company_id_companies_igdb_id_fk": {
           "name": "companies_changed_company_id_companies_igdb_id_fk",
           "tableFrom": "companies",
+          "tableTo": "companies",
           "columnsFrom": [
             "changed_company_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "companies_parent_companies_igdb_id_fk": {
           "name": "companies_parent_companies_igdb_id_fk",
           "tableFrom": "companies",
+          "tableTo": "companies",
           "columnsFrom": [
             "parent"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -736,12 +744,6 @@
       "name": "companyWebsites",
       "schema": "",
       "columns": {
-        "category": {
-          "name": "category",
-          "type": "WebsiteCategoryEnum",
-          "primaryKey": false,
-          "notNull": false
-        },
         "checksum": {
           "name": "checksum",
           "type": "text",
@@ -777,6 +779,13 @@
         "url": {
           "name": "url",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "WebsiteCategoryEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         }
@@ -852,6 +861,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "event": {
+          "name": "event",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
         "igdb_created_at": {
           "name": "igdb_created_at",
           "type": "timestamp",
@@ -863,12 +878,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
-        },
-        "event": {
-          "name": "event",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -876,15 +885,95 @@
         "eventLogos_event_events_igdb_id_fk": {
           "name": "eventLogos_event_events_igdb_id_fk",
           "tableFrom": "eventLogos",
+          "tableTo": "events",
           "columnsFrom": [
             "event"
           ],
-          "tableTo": "events",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.eventNetworks": {
+      "name": "eventNetworks",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "event": {
+          "name": "event",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "network_type": {
+          "name": "network_type",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "eventNetworks_event_events_igdb_id_fk": {
+          "name": "eventNetworks_event_events_igdb_id_fk",
+          "tableFrom": "eventNetworks",
+          "tableTo": "events",
+          "columnsFrom": [
+            "event"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -992,6 +1081,138 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.externalGames": {
+      "name": "externalGames",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "countries": {
+          "name": "countries",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "media": {
+          "name": "media",
+          "type": "ExternalGameMediaEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platform": {
+          "name": "platform",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "uid": {
+          "name": "uid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "year": {
+          "name": "year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "igdb_uid_idx": {
+          "name": "igdb_uid_idx",
+          "columns": [
+            "uid"
+          ],
+          "isUnique": false
+        },
+        "url_idx": {
+          "name": "url_idx",
+          "columns": [
+            "url"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "externalGames_game_games_igdb_id_fk": {
+          "name": "externalGames_game_games_igdb_id_fk",
+          "tableFrom": "externalGames",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.franchises": {
       "name": "franchises",
       "schema": "",
@@ -999,12 +1220,6 @@
         "checksum": {
           "name": "checksum",
           "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "igdb_created_at": {
-          "name": "igdb_created_at",
-          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -1018,6 +1233,12 @@
         "game": {
           "name": "game",
           "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -1061,6 +1282,294 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.gameEngineLogos": {
+      "name": "gameEngineLogos",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.gameEngines": {
+      "name": "gameEngines",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "companies": {
+          "name": "companies",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "logo": {
+          "name": "logo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "platforms": {
+          "name": "platforms",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gameEngines_companies_companies_igdb_id_fk": {
+          "name": "gameEngines_companies_companies_igdb_id_fk",
+          "tableFrom": "gameEngines",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "companies"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "gameEngines_logo_gameEngineLogos_igdb_id_fk": {
+          "name": "gameEngines_logo_gameEngineLogos_igdb_id_fk",
+          "tableFrom": "gameEngines",
+          "tableTo": "gameEngineLogos",
+          "columnsFrom": [
+            "logo"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.gameLocalizations": {
+      "name": "gameLocalizations",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cover": {
+          "name": "cover",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "region": {
+          "name": "region",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gameLocalizations_cover_covers_igdb_id_fk": {
+          "name": "gameLocalizations_cover_covers_igdb_id_fk",
+          "tableFrom": "gameLocalizations",
+          "tableTo": "covers",
+          "columnsFrom": [
+            "cover"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "gameLocalizations_game_games_igdb_id_fk": {
+          "name": "gameLocalizations_game_games_igdb_id_fk",
+          "tableFrom": "gameLocalizations",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -1168,6 +1677,7 @@
         "game_category": {
           "name": "game_category",
           "type": "GameCategoryEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -1228,6 +1738,7 @@
         "status": {
           "name": "status",
           "type": "StatusEnum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -1255,6 +1766,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
         "url": {
           "name": "url",
           "type": "text",
@@ -1263,6 +1781,165 @@
         },
         "version_title": {
           "name": "version_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "name_idx": {
+          "name": "name_idx",
+          "columns": [
+            "name"
+          ],
+          "isUnique": false
+        },
+        "slug_idx": {
+          "name": "slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": false
+        },
+        "igdb_id_idx": {
+          "name": "igdb_id_idx",
+          "columns": [
+            "igdb_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "games_game_id_unique": {
+          "name": "games_game_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "game_id"
+          ]
+        }
+      }
+    },
+    "public.gameVersionFeatures": {
+      "name": "gameVersionFeatures",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "GameVersionFeatureEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "position": {
+          "name": "position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "values": {
+          "name": "values",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "gameVersionFeatures_igdb_id_unique": {
+          "name": "gameVersionFeatures_igdb_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "igdb_id"
+          ]
+        }
+      }
+    },
+    "public.gameVersionFeatureValues": {
+      "name": "gameVersionFeatureValues",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "game_feature": {
+          "name": "game_feature",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "included_feature": {
+          "name": "included_feature",
+          "type": "GameVersionFeatureValueIncludedFeatureEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1275,51 +1952,2016 @@
           "default": "now()"
         }
       },
-      "indexes": {
-        "igdb_id_idx": {
-          "name": "igdb_id_idx",
-          "columns": [
+      "indexes": {},
+      "foreignKeys": {
+        "gameVersionFeatureValues_game_games_igdb_id_fk": {
+          "name": "gameVersionFeatureValues_game_games_igdb_id_fk",
+          "tableFrom": "gameVersionFeatureValues",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
             "igdb_id"
           ],
-          "isUnique": true
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
-        "slug_idx": {
-          "name": "slug_idx",
-          "columns": [
-            "slug"
+        "gameVersionFeatureValues_game_feature_gameVersionFeatures_igdb_id_fk": {
+          "name": "gameVersionFeatureValues_game_feature_gameVersionFeatures_igdb_id_fk",
+          "tableFrom": "gameVersionFeatureValues",
+          "tableTo": "gameVersionFeatures",
+          "columnsFrom": [
+            "game_feature"
           ],
-          "isUnique": false
-        },
-        "name_idx": {
-          "name": "name_idx",
-          "columns": [
-            "name"
+          "columnsTo": [
+            "igdb_id"
           ],
-          "isUnique": false
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.gameVersions": {
+      "name": "gameVersions",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "features": {
+          "name": "features",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "games": {
+          "name": "games",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gameVersions_game_games_igdb_id_fk": {
+          "name": "gameVersions_game_games_igdb_id_fk",
+          "tableFrom": "gameVersions",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "gameVersions_games_games_igdb_id_fk": {
+          "name": "gameVersions_games_games_igdb_id_fk",
+          "tableFrom": "gameVersions",
+          "tableTo": "games",
+          "columnsFrom": [
+            "games"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.gameVideos": {
+      "name": "gameVideos",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gameVideos_game_games_igdb_id_fk": {
+          "name": "gameVideos_game_games_igdb_id_fk",
+          "tableFrom": "gameVideos",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.genres": {
+      "name": "genres",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "games_game_id_unique": {
-          "name": "games_game_id_unique",
-          "columns": [
+      "uniqueConstraints": {}
+    },
+    "public.involvedCompanies": {
+      "name": "involvedCompanies",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company": {
+          "name": "company",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "developer": {
+          "name": "developer",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "porting": {
+          "name": "porting",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "publisher": {
+          "name": "publisher",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "supporting": {
+          "name": "supporting",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "involvedCompanies_company_companies_igdb_id_fk": {
+          "name": "involvedCompanies_company_companies_igdb_id_fk",
+          "tableFrom": "involvedCompanies",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "involvedCompanies_game_games_igdb_id_fk": {
+          "name": "involvedCompanies_game_games_igdb_id_fk",
+          "tableFrom": "involvedCompanies",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.keywords": {
+      "name": "keywords",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.languages": {
+      "name": "languages",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "locale": {
+          "name": "locale",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "native_name": {
+          "name": "native_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.languageSupports": {
+      "name": "languageSupports",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "language": {
+          "name": "language",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "language_support_type": {
+          "name": "language_support_type",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "languageSupports_game_games_igdb_id_fk": {
+          "name": "languageSupports_game_games_igdb_id_fk",
+          "tableFrom": "languageSupports",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.languageSupportTypes": {
+      "name": "languageSupportTypes",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.multiplayerModes": {
+      "name": "multiplayerModes",
+      "schema": "",
+      "columns": {
+        "campaigncoop": {
+          "name": "campaigncoop",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "dropin": {
+          "name": "dropin",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "lancoop": {
+          "name": "lancoop",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "offlinecoop": {
+          "name": "offlinecoop",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "offlinecoopmax": {
+          "name": "offlinecoopmax",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "offlinemax": {
+          "name": "offlinemax",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "onlinecoop": {
+          "name": "onlinecoop",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "onlinecoopmax": {
+          "name": "onlinecoopmax",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "onlinemax": {
+          "name": "onlinemax",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "platform": {
+          "name": "platform",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "splitscreen": {
+          "name": "splitscreen",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "splitscreenonline": {
+          "name": "splitscreenonline",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "multiplayerModes_game_games_igdb_id_fk": {
+          "name": "multiplayerModes_game_games_igdb_id_fk",
+          "tableFrom": "multiplayerModes",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.networkTypes": {
+      "name": "networkTypes",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "event_networks": {
+          "name": "event_networks",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "networkTypes_event_networks_eventNetworks_igdb_id_fk": {
+          "name": "networkTypes_event_networks_eventNetworks_igdb_id_fk",
+          "tableFrom": "networkTypes",
+          "tableTo": "eventNetworks",
+          "columnsFrom": [
+            "event_networks"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platformFamilies": {
+      "name": "platformFamilies",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platformLogos": {
+      "name": "platformLogos",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platforms": {
+      "name": "platforms",
+      "schema": "",
+      "columns": {
+        "abbreviation": {
+          "name": "abbreviation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "alternative_name": {
+          "name": "alternative_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "PlatformCategoryEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "generation": {
+          "name": "generation",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "platform_family": {
+          "name": "platform_family",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platform_logo": {
+          "name": "platform_logo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "versions": {
+          "name": "versions",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "websites": {
+          "name": "websites",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platformVersionCompanies": {
+      "name": "platformVersionCompanies",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "comment": {
+          "name": "comment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company": {
+          "name": "company",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "developer": {
+          "name": "developer",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "manufacturer": {
+          "name": "manufacturer",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "platformVersionCompanies_company_companies_igdb_id_fk": {
+          "name": "platformVersionCompanies_company_companies_igdb_id_fk",
+          "tableFrom": "platformVersionCompanies",
+          "tableTo": "companies",
+          "columnsFrom": [
+            "company"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platformVersionReleaseDates": {
+      "name": "platformVersionReleaseDates",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "PlatformVersionReleaseDateCategoryEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "date": {
+          "name": "date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "human": {
+          "name": "human",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "m": {
+          "name": "m",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platform_version": {
+          "name": "platform_version",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "region": {
+          "name": "region",
+          "type": "PlatformVersionReleaseDateRegionEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "y": {
+          "name": "y",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platformVersions": {
+      "name": "platformVersions",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "companies": {
+          "name": "companies",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "connectivity": {
+          "name": "connectivity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpu": {
+          "name": "cpu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "graphics": {
+          "name": "graphics",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "main_manufacturer": {
+          "name": "main_manufacturer",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "media": {
+          "name": "media",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "memory": {
+          "name": "memory",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "os": {
+          "name": "os",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "output": {
+          "name": "output",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platform_logo": {
+          "name": "platform_logo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platform_version_release_dates": {
+          "name": "platform_version_release_dates",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resolutions": {
+          "name": "resolutions",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sound": {
+          "name": "sound",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "storage": {
+          "name": "storage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "summary": {
+          "name": "summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.platformWebsites": {
+      "name": "platformWebsites",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "PlatformWebsiteCategoryEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "trusted": {
+          "name": "trusted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.playerPerspectives": {
+      "name": "playerPerspectives",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.popularityPrimitives": {
+      "name": "popularityPrimitives",
+      "schema": "",
+      "columns": {
+        "calculated_at": {
+          "name": "calculated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "game_id": {
+          "name": "game_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "popularity_source": {
+          "name": "popularity_source",
+          "type": "PopularitySourceEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "popularity_type": {
+          "name": "popularity_type",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "popularityPrimitives_game_id_games_igdb_id_fk": {
+          "name": "popularityPrimitives_game_id_games_igdb_id_fk",
+          "tableFrom": "popularityPrimitives",
+          "tableTo": "games",
+          "columnsFrom": [
             "game_id"
           ],
-          "nullsNotDistinct": false
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
-      }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.popularityTypes": {
+      "name": "popularityTypes",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "popularity_source": {
+          "name": "popularity_source",
+          "type": "PopularitySourceEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.regions": {
+      "name": "regions",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.releaseDates": {
+      "name": "releaseDates",
+      "schema": "",
+      "columns": {
+        "category": {
+          "name": "category",
+          "type": "ReleaseDateCategoryEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "date": {
+          "name": "date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "human": {
+          "name": "human",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "m": {
+          "name": "m",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platform": {
+          "name": "platform",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "region": {
+          "name": "region",
+          "type": "ReleaseDateRegionEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "y": {
+          "name": "y",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "releaseDates_game_games_igdb_id_fk": {
+          "name": "releaseDates_game_games_igdb_id_fk",
+          "tableFrom": "releaseDates",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.releaseDateStatuses": {
+      "name": "releaseDateStatuses",
+      "schema": "",
+      "columns": {
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_created_at": {
+          "name": "igdb_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "igdb_updated_at": {
+          "name": "igdb_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.screenshots": {
+      "name": "screenshots",
+      "schema": "",
+      "columns": {
+        "alpha_channel": {
+          "name": "alpha_channel",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "animated": {
+          "name": "animated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "checksum": {
+          "name": "checksum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game": {
+          "name": "game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "screenshots_game_games_igdb_id_fk": {
+          "name": "screenshots_game_games_igdb_id_fk",
+          "tableFrom": "screenshots",
+          "tableTo": "games",
+          "columnsFrom": [
+            "game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "public.websites": {
       "name": "websites",
       "schema": "",
       "columns": {
-        "category": {
-          "name": "category",
-          "type": "WebsiteCategoryEnum",
-          "primaryKey": false,
-          "notNull": false
-        },
         "checksum": {
           "name": "checksum",
           "type": "text",
@@ -1363,6 +4005,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "WebsiteCategoryEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -1370,15 +4019,15 @@
         "websites_game_games_igdb_id_fk": {
           "name": "websites_game_games_igdb_id_fk",
           "tableFrom": "websites",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1560,6 +4209,15 @@
         "TBD"
       ]
     },
+    "public.ExternalGameMediaEnum": {
+      "name": "ExternalGameMediaEnum",
+      "schema": "public",
+      "values": [
+        "",
+        "DIGITAL",
+        "PHYSICAL"
+      ]
+    },
     "public.GameCategoryEnum": {
       "name": "GameCategoryEnum",
       "schema": "public",
@@ -1595,17 +4253,139 @@
         "DELISTED"
       ]
     },
-    "public.WebsiteCategoryEnum": {
-      "name": "WebsiteCategoryEnum",
+    "public.GameVersionFeatureEnum": {
+      "name": "GameVersionFeatureEnum",
       "schema": "public",
       "values": [
-        "",
+        "boolean",
+        "description"
+      ]
+    },
+    "public.GameVersionFeatureValueIncludedFeatureEnum": {
+      "name": "GameVersionFeatureValueIncludedFeatureEnum",
+      "schema": "public",
+      "values": [
+        "NOT_INCLUDED",
+        "INCLUDED",
+        "PRE_ORDER_ONLY"
+      ]
+    },
+    "public.PlatformCategoryEnum": {
+      "name": "PlatformCategoryEnum",
+      "schema": "public",
+      "values": [
+        "console",
+        "arcade",
+        "platform",
+        "operating_system",
+        "portable_console",
+        "computer"
+      ]
+    },
+    "public.PlatformVersionReleaseDateCategoryEnum": {
+      "name": "PlatformVersionReleaseDateCategoryEnum",
+      "schema": "public",
+      "values": [
+        "YYYYMMMMDD",
+        "YYYYMMMM",
+        "YYYY",
+        "YYYYQ1",
+        "YYYYQ2",
+        "YYYYQ3",
+        "YYYYQ4",
+        "TBD"
+      ]
+    },
+    "public.PlatformVersionReleaseDateRegionEnum": {
+      "name": "PlatformVersionReleaseDateRegionEnum",
+      "schema": "public",
+      "values": [
+        "europe",
+        "north_america",
+        "australia",
+        "new_zealand",
+        "japan",
+        "china",
+        "asia",
+        "worldwide",
+        "korea",
+        "brazil"
+      ]
+    },
+    "public.PlatformWebsiteCategoryEnum": {
+      "name": "PlatformWebsiteCategoryEnum",
+      "schema": "public",
+      "values": [
         "official",
         "wikia",
         "wikipedia",
         "facebook",
         "twitter",
         "twitch",
+        "instagram",
+        "youtube",
+        "iphone",
+        "ipad",
+        "android",
+        "steam",
+        "reddit",
+        "discord",
+        "google_plus",
+        "tumblr",
+        "linkedin",
+        "pinterest",
+        "soundcloud"
+      ]
+    },
+    "public.PopularitySourceEnum": {
+      "name": "PopularitySourceEnum",
+      "schema": "public",
+      "values": [
+        "igdb"
+      ]
+    },
+    "public.ReleaseDateCategoryEnum": {
+      "name": "ReleaseDateCategoryEnum",
+      "schema": "public",
+      "values": [
+        "YYYYMMMMDD",
+        "YYYYMMMM",
+        "YYYY",
+        "YYYYQ1",
+        "YYYYQ2",
+        "YYYYQ3",
+        "YYYYQ4",
+        "TBD"
+      ]
+    },
+    "public.ReleaseDateRegionEnum": {
+      "name": "ReleaseDateRegionEnum",
+      "schema": "public",
+      "values": [
+        "europe",
+        "north_america",
+        "australia",
+        "new_zealand",
+        "japan",
+        "china",
+        "asia",
+        "worldwide",
+        "korea",
+        "brazil"
+      ]
+    },
+    "public.WebsiteCategoryEnum": {
+      "name": "WebsiteCategoryEnum",
+      "schema": "public",
+      "values": [
+        "blank1",
+        "official",
+        "wikia",
+        "wikipedia",
+        "facebook",
+        "twitter",
+        "twitch",
+        "blank2",
         "instagram",
         "youtube",
         "iphone",
@@ -1622,10 +4402,8 @@
   },
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "88328fdf-84be-437a-844c-f5ba906370bf",
-  "prevId": "00000000-0000-0000-0000-000000000000"
+    "tables": {}
+  }
 }

@@ -1,12 +1,12 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1715906039134,
-      "tag": "0000_remarkable_jamie_braddock",
+      "version": "6",
+      "when": 1722709136728,
+      "tag": "0000_calm_daimon_hellstrom",
       "breakpoints": true
     }
   ]
