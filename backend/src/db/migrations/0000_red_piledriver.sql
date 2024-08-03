@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS "gameEngines" (
 	"igdb_updated_at" timestamp,
 	"logo" bigint,
 	"name" text NOT NULL,
-	"platforms" bigint,
+	"platforms" bigint[],
 	"slug" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text
@@ -400,7 +400,7 @@ CREATE TABLE IF NOT EXISTS "gameVersionFeatures" (
 	"position" integer,
 	"title" text NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	"values" bigint,
+	"values" bigint[],
 	CONSTRAINT "gameVersionFeatures_igdb_id_unique" UNIQUE("igdb_id")
 );
 --> statement-breakpoint
@@ -418,7 +418,7 @@ CREATE TABLE IF NOT EXISTS "gameVersionFeatureValues" (
 CREATE TABLE IF NOT EXISTS "gameVersions" (
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"features" bigint,
+	"features" bigint[],
 	"game" bigint,
 	"games" bigint[],
 	"igdb_created_at" timestamp,
@@ -534,7 +534,7 @@ CREATE TABLE IF NOT EXISTS "multiplayerModes" (
 CREATE TABLE IF NOT EXISTS "networkTypes" (
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"event_networks" bigint NOT NULL,
+	"event_networks" bigint[],
 	"igdb_created_at" timestamp,
 	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"igdb_updated_at" timestamp,
@@ -614,7 +614,7 @@ CREATE TABLE IF NOT EXISTS "platformVersionReleaseDates" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "platformVersions" (
 	"checksum" text,
-	"companies" bigint,
+	"companies" bigint[],
 	"connectivity" text,
 	"cpu" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -627,7 +627,7 @@ CREATE TABLE IF NOT EXISTS "platformVersions" (
 	"os" text,
 	"output" text,
 	"platform_logo" bigint,
-	"platform_version_release_dates" bigint,
+	"platform_version_release_dates" bigint[],
 	"resolutions" text,
 	"slug" text,
 	"sound" text,
@@ -799,7 +799,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "eventNetworks" ADD CONSTRAINT "eventNetworks_network_type_networkTypes_igdb_id_fk" FOREIGN KEY ("network_type") REFERENCES "public"."networkTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "externalGames" ADD CONSTRAINT "externalGames_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "externalGames" ADD CONSTRAINT "externalGames_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -818,6 +830,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "gameLocalizations" ADD CONSTRAINT "gameLocalizations_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameLocalizations" ADD CONSTRAINT "gameLocalizations_region_regions_igdb_id_fk" FOREIGN KEY ("region") REFERENCES "public"."regions"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -865,13 +883,49 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_language_languages_igdb_id_fk" FOREIGN KEY ("language") REFERENCES "public"."languages"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_language_support_type_languageSupportTypes_igdb_id_fk" FOREIGN KEY ("language_support_type") REFERENCES "public"."languageSupportTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "multiplayerModes" ADD CONSTRAINT "multiplayerModes_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "networkTypes" ADD CONSTRAINT "networkTypes_event_networks_eventNetworks_igdb_id_fk" FOREIGN KEY ("event_networks") REFERENCES "public"."eventNetworks"("igdb_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "multiplayerModes" ADD CONSTRAINT "multiplayerModes_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "platforms" ADD CONSTRAINT "platforms_platform_family_platformFamilies_igdb_id_fk" FOREIGN KEY ("platform_family") REFERENCES "public"."platformFamilies"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "platforms" ADD CONSTRAINT "platforms_platform_logo_platformLogos_igdb_id_fk" FOREIGN KEY ("platform_logo") REFERENCES "public"."platformLogos"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "platforms" ADD CONSTRAINT "platforms_versions_platformVersions_igdb_id_fk" FOREIGN KEY ("versions") REFERENCES "public"."platformVersions"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "platforms" ADD CONSTRAINT "platforms_websites_platformWebsites_igdb_id_fk" FOREIGN KEY ("websites") REFERENCES "public"."platformWebsites"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -883,13 +937,49 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "platformVersionReleaseDates" ADD CONSTRAINT "platformVersionReleaseDates_platform_version_platformVersions_igdb_id_fk" FOREIGN KEY ("platform_version") REFERENCES "public"."platformVersions"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "platformVersions" ADD CONSTRAINT "platformVersions_main_manufacturer_platformVersionCompanies_igdb_id_fk" FOREIGN KEY ("main_manufacturer") REFERENCES "public"."platformVersionCompanies"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "platformVersions" ADD CONSTRAINT "platformVersions_platform_logo_platformLogos_igdb_id_fk" FOREIGN KEY ("platform_logo") REFERENCES "public"."platformLogos"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "popularityPrimitives" ADD CONSTRAINT "popularityPrimitives_game_id_games_igdb_id_fk" FOREIGN KEY ("game_id") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "popularityPrimitives" ADD CONSTRAINT "popularityPrimitives_popularity_type_popularityTypes_igdb_id_fk" FOREIGN KEY ("popularity_type") REFERENCES "public"."popularityTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "releaseDates" ADD CONSTRAINT "releaseDates_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "releaseDates" ADD CONSTRAINT "releaseDates_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "releaseDates" ADD CONSTRAINT "releaseDates_status_releaseDateStatuses_igdb_id_fk" FOREIGN KEY ("status") REFERENCES "public"."releaseDateStatuses"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
