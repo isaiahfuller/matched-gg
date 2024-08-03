@@ -1,5 +1,5 @@
 {
-  "id": "3956e589-751d-4afd-a0ef-32bac4d4262a",
+  "id": "8356ef66-749d-463b-9611-95c6c75bd408",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -1444,19 +1444,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "gameEngines_companies_companies_igdb_id_fk": {
-          "name": "gameEngines_companies_companies_igdb_id_fk",
-          "tableFrom": "gameEngines",
-          "tableTo": "companies",
-          "columnsFrom": [
-            "companies"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "gameEngines_logo_gameEngineLogos_igdb_id_fk": {
           "name": "gameEngines_logo_gameEngineLogos_igdb_id_fk",
           "tableFrom": "gameEngines",
@@ -2059,19 +2046,6 @@
           "tableTo": "games",
           "columnsFrom": [
             "game"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "gameVersions_games_games_igdb_id_fk": {
-          "name": "gameVersions_games_games_igdb_id_fk",
-          "tableFrom": "gameVersions",
-          "tableTo": "games",
-          "columnsFrom": [
-            "games"
           ],
           "columnsTo": [
             "igdb_id"
@@ -3215,7 +3189,7 @@
         },
         "companies": {
           "name": "companies",
-          "type": "bigint[]",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": false
         },
@@ -3294,7 +3268,7 @@
         },
         "platform_version_release_dates": {
           "name": "platform_version_release_dates",
-          "type": "bigint[]",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": false
         },

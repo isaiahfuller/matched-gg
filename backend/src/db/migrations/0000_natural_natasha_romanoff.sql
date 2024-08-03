@@ -614,7 +614,7 @@ CREATE TABLE IF NOT EXISTS "platformVersionReleaseDates" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "platformVersions" (
 	"checksum" text,
-	"companies" bigint[],
+	"companies" bigint,
 	"connectivity" text,
 	"cpu" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -627,7 +627,7 @@ CREATE TABLE IF NOT EXISTS "platformVersions" (
 	"os" text,
 	"output" text,
 	"platform_logo" bigint,
-	"platform_version_release_dates" bigint[],
+	"platform_version_release_dates" bigint,
 	"resolutions" text,
 	"slug" text,
 	"sound" text,
@@ -805,12 +805,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "gameEngines" ADD CONSTRAINT "gameEngines_companies_companies_igdb_id_fk" FOREIGN KEY ("companies") REFERENCES "public"."companies"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "gameEngines" ADD CONSTRAINT "gameEngines_logo_gameEngineLogos_igdb_id_fk" FOREIGN KEY ("logo") REFERENCES "public"."gameEngineLogos"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -842,12 +836,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "gameVersions" ADD CONSTRAINT "gameVersions_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "gameVersions" ADD CONSTRAINT "gameVersions_games_games_igdb_id_fk" FOREIGN KEY ("games") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

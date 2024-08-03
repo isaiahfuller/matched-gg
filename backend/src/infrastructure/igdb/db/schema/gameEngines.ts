@@ -1,14 +1,11 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { companiesTable } from './companies';
 import { gameEngineLogosTable } from './gameEngineLogos';
 import { gamesTable } from './games';
 
 export const gameEnginesTable = pgTable('gameEngines', {
   checksum: text('checksum'),
-  companies: bigint('companies', { mode: 'number' })
-    .array()
-    .references(() => companiesTable.igdbId),
+  companies: bigint('companies', { mode: 'number' }).array(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   description: text('description'),
   igdbCreatedAt: timestamp('igdb_created_at'),

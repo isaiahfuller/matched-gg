@@ -2,7 +2,7 @@ import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const platformVersionsTable = pgTable('platformVersions', {
   checksum: text('checksum'),
-  companies: bigint('companies', { mode: 'number' }).array(), // reference platform version company
+  companies: bigint('companies', { mode: 'number' }).array(),
   connectivity: text('connectivity'),
   cpu: text('cpu'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -17,7 +17,7 @@ export const platformVersionsTable = pgTable('platformVersions', {
   platformLogo: bigint('platform_logo', { mode: 'number' }), // reference platform logo
   platformVersionReleaseDates: bigint('platform_version_release_dates', {
     mode: 'number',
-  }).array(), // reference platform version release dates
+  }).array(),
   resolutions: text('resolutions'),
   slug: text('slug'),
   sound: text('sound'),

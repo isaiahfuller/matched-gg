@@ -7,9 +7,7 @@ export const gameVersionsTable = pgTable('gameVersions', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   features: bigint('features', { mode: 'number' }), //TODO: Add reference once gameVersionFeaturesTable is added
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
-  games: bigint('games', { mode: 'number' })
-    .array()
-    .references(() => gamesTable.igdbId),
+  games: bigint('games', { mode: 'number' }).array(),
   igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
