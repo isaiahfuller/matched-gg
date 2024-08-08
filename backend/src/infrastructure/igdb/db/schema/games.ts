@@ -50,6 +50,7 @@ export const gamesTable = pgTable(
     ageRatings: bigint('age_ratings', { mode: 'number' }).array(),
     aggregatedRating: doublePrecision('aggregated_rating'),
     aggregatedRatingCount: integer('aggregated_rating_count'),
+    alternativeNames: bigint('alternative_names', { mode: 'number' }).array(),
     artworks: bigint('artworks', { mode: 'number' }).array(),
     bundles: bigint('bundles', { mode: 'number' }).array(),
     category: GameCategoryPGEnum('category'),
