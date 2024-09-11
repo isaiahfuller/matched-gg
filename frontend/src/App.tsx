@@ -1,14 +1,34 @@
 import { useEffect, useState } from "react";
-import { Container, Flex } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
+import {
+  AppShell,
+  Burger,
+  Center,
+  Divider,
+  Flex,
+  Group,
+  NavLink,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import GamePage from "./components/GamePage/GamePage";
 import { persona3reload, persona4 } from "./mockGames";
-import Sidebar from "./components/Sidebar/Sidebar";
+import logo from "./assets/logo.svg";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const pages = [
+  "Recommendations",
+  "Previously Recommended",
+  "Sync your Libraries",
+];
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [_page, setPage] = useState(0);
   const [_profile, setProfile] = useState(null);
-  const { height } = useViewportSize();
+  const { width } = useViewportSize();
+  const [opened, { toggle }] = useDisclosure();
 
   useEffect(() => {
     fetch("steam/valid", {
@@ -25,25 +45,76 @@ function App() {
       });
   }, []);
 
-  return (
-    <>
-      <Flex>
-        <Sidebar isLoggedIn={isLoggedIn} h={height} />
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: number) {
+    e.preventDefault();
+    setPage(idx);
+  }
 
-        <Container
-          h={height}
-          bg="rgb(16, 17, 19)"
-          w="100%"
-          style={{
-            overflowY: "scroll",
-          }}
-          fluid
-        >
-          <GamePage game={persona3reload} />
-          <GamePage game={persona4} />
-        </Container>
-      </Flex>
-    </>
+  return (
+    <AppShell
+      navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      padding="md"
+    >
+      {width < 768 ? (
+        <AppShell.Header>
+          <Group p={8}>
+            <Burger opened={opened} onClick={toggle} />
+            <img src={logo} />
+            <Text fw={500} size="xl">
+              matched.gg
+            </Text>
+          </Group>
+        </AppShell.Header>
+      ) : null}
+      <AppShell.Navbar>
+        <Flex direction="column" justify="space-between" h="100%">
+          <Center p={8}>
+            {width < 768 && opened ? (
+              <Burger opened={opened} onClick={toggle} />
+            ) : null}
+            <img src={logo} />
+            <Text fw={500} size="xl" px={8}>
+              matched.gg
+            </Text>
+          </Center>
+          <Divider mx="md" />
+          <Stack h="100%" justify="center" p={8}>
+            {pages.map((e, i) => (
+              <NavLink
+                key={i}
+                href="#"
+                label={e}
+                onClick={(e) => handleClick(e, i)}
+                rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              />
+            ))}
+          </Stack>
+          <Divider mx="md" />
+          <Stack p={8}>
+            {isLoggedIn ? (
+              <>
+                <NavLink
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  label="Change account"
+                />
+                <NavLink
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  label="Logout"
+                />
+              </>
+            ) : (
+              <NavLink href="/steam/auth" label="Login" />
+            )}
+          </Stack>
+        </Flex>
+      </AppShell.Navbar>
+      <AppShell.Main bg="rgb(16, 17, 19)">
+        <GamePage game={persona3reload} />
+        <GamePage game={persona4} />
+      </AppShell.Main>
+    </AppShell>
   );
 }
 
