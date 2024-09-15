@@ -14,14 +14,13 @@ import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import GamePage from "./components/GamePage/GamePage";
 import { persona3reload, persona4 } from "./mockGames";
 import logo from "./assets/logo.svg";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowsRotate,
+  faChevronRight,
+  faGamepad,
+} from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const pages = [
-  "Recommendations",
-  "Previously Recommended",
-  "Sync your Libraries",
-];
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,15 +78,27 @@ function App() {
           </Center>
           <Divider mx="md" />
           <Stack h="100%" justify="center" p={8}>
-            {pages.map((e, i) => (
-              <NavLink
-                key={i}
-                href="#"
-                label={e}
-                onClick={(e) => handleClick(e, i)}
-                rightSection={<FontAwesomeIcon icon={faChevronRight} />}
-              />
-            ))}
+            <NavLink
+              href="#"
+              label="Recommendations"
+              onClick={(e) => handleClick(e, 0)}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              leftSection={<FontAwesomeIcon icon={faGamepad} />}
+            />
+            <NavLink
+              href="#"
+              label="Previously recommended"
+              onClick={(e) => handleClick(e, 1)}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              leftSection={<FontAwesomeIcon icon={faThumbsUp} />}
+            />
+            <NavLink
+              href="#"
+              label="Sync your libraries"
+              onClick={(e) => handleClick(e, 2)}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
+            />
           </Stack>
           <Divider mx="md" />
           <Stack p={8}>
@@ -102,10 +113,15 @@ function App() {
                   href="#"
                   onClick={(e) => e.preventDefault()}
                   label="Logout"
+                  leftSection={<FontAwesomeIcon icon={faUser} />}
                 />
               </>
             ) : (
-              <NavLink href="/steam/auth" label="Login" />
+              <NavLink
+                href="/steam/auth"
+                label="Login"
+                leftSection={<FontAwesomeIcon icon={faUser} />}
+              />
             )}
           </Stack>
         </Flex>
