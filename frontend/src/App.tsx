@@ -37,6 +37,7 @@ function App() {
       .then((res) => res.json())
       .then((res) => {
         if (res.profileurl) {
+          console.log(res);
           setProfile(res);
           localStorage.setItem("steam-profile", JSON.stringify(res));
           setIsLoggedIn(true);
