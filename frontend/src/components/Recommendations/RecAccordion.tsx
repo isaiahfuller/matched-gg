@@ -8,7 +8,8 @@ import {
   Center,
 } from "@mantine/core";
 import { IGDBGame, IGDBGameArt } from "../../interfaces";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
+import classes from "./index.module.css";
 
 function getScreenUrl(
   id: string,
@@ -36,8 +37,9 @@ export default function RecAccordion({
     typeText: string;
   }[];
 }) {
+  const [itemIdx, setItemIdx] = useState<number>(0);
   const [screenIdx, setScreenIdx] = useState<number>(0);
-  const items = recommendations.map((item) => {
+  const items = recommendations.map((item, idx) => {
     let controlHeader = "";
     switch (item.type) {
       case "company":
@@ -52,8 +54,12 @@ export default function RecAccordion({
     }
     const rating = item.game.rating ? Math.floor(item.game.rating) : null;
     return (
-      <Accordion.Item key={item.game.id} value={item.game.name!}>
-        <AccordionControl icon={item.game.cover}>
+      <Accordion.Item
+        key={item.game.id}
+        value={item.game.name!}
+        onClick={() => setItemIdx(idx)}
+      >
+        <AccordionControl icon={item.game.cover!}>
           <Text>
             {item.game.name!} <span>-{controlHeader}</span>
             <span>{item.typeText}</span>
@@ -72,7 +78,7 @@ export default function RecAccordion({
                 <Stack pl={8}>
                   <Image
                     src={getScreenUrl(
-                      item.game.screenshots[screenIdx]["image_id"],
+                      item.game.screenshots[screenIdx].image_id,
                       "screenshot_med"
                     )}
                   />
@@ -82,7 +88,7 @@ export default function RecAccordion({
                       {item.game.screenshots.slice(0, 4).map((e) => (
                         <img
                           key={e.id}
-                          src={getScreenUrl(e["image_id"], "thumb")}
+                          src={getScreenUrl(e.image_id, "thumb")}
                           style={{
                             objectFit: "contain",
                           }}
@@ -102,6 +108,7 @@ export default function RecAccordion({
   return (
     <Accordion
       defaultValue={recommendations[0].game.name!}
+      classNames={{ chevron: classes.chevron }}
       chevronPosition="left"
     >
       {items}
@@ -110,16 +117,15 @@ export default function RecAccordion({
 }
 
 function AccordionControl({
-  stock,
   icon,
   children,
 }: {
-  stock: AccordionControlProps;
   icon: IGDBGameArt;
+  children: ReactElement;
 }) {
   return (
     <Center>
-      <Accordion.Control {...stock}>{children}</Accordion.Control>
+      <Accordion.Control>{children}</Accordion.Control>
       <img src={getScreenUrl(icon["image_id"], "micro")} />
     </Center>
   );
