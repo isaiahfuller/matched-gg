@@ -21,10 +21,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Recommendations from "./components/Recommendations/Recommendations";
+
+function Pages({ page }: { page: number }) {
+  switch (page) {
+    case 0:
+      return <Recommendations />;
+    default:
+      break;
+  }
+}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [_page, setPage] = useState(0);
+  const [page, setPage] = useState(0);
   const [_profile, setProfile] = useState(null);
   const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
@@ -128,8 +138,7 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
-        <GamePage game={persona3reload} />
-        <GamePage game={persona4} />
+        <Pages page={page} />
       </AppShell.Main>
     </AppShell>
   );
