@@ -1,6 +1,6 @@
 .chevron {
   &[data-rotate] {
-    /* transform: rotate(45deg); */
-    display: none;
+    transform: rotate(90deg);
   }
+  rotate: -90deg;
 }
