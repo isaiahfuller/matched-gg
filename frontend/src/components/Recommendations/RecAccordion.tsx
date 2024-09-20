@@ -1,12 +1,4 @@
-import {
-  Accordion,
-  Flex,
-  Stack,
-  Text,
-  Image,
-  AccordionControlProps,
-  Center,
-} from "@mantine/core";
+import { Accordion, Flex, Stack, Text, Image, Center } from "@mantine/core";
 import { IGDBGame, IGDBGameArt } from "../../interfaces";
 import { ReactElement, useState } from "react";
 import classes from "./index.module.css";
@@ -37,9 +29,8 @@ export default function RecAccordion({
     typeText: string;
   }[];
 }) {
-  const [itemIdx, setItemIdx] = useState<number>(0);
   const [screenIdx, setScreenIdx] = useState<number>(0);
-  const items = recommendations.map((item, idx) => {
+  const items = recommendations.map((item) => {
     let controlHeader = "";
     switch (item.type) {
       case "company":
@@ -54,11 +45,7 @@ export default function RecAccordion({
     }
     const rating = item.game.rating ? Math.floor(item.game.rating) : null;
     return (
-      <Accordion.Item
-        key={item.game.id}
-        value={item.game.name!}
-        onClick={() => setItemIdx(idx)}
-      >
+      <Accordion.Item key={item.game.id} value={item.game.name!}>
         <AccordionControl icon={item.game.cover!}>
           <Text>
             {item.game.name!} <span>-{controlHeader}</span>
@@ -83,19 +70,18 @@ export default function RecAccordion({
                     )}
                   />
                   <Flex align="center">
-                    {/* <Text>{"<"}</Text> */}
                     <Flex wrap="nowrap" justify="space-between" h="64px">
-                      {item.game.screenshots.slice(0, 4).map((e) => (
+                      {item.game.screenshots.slice(0, 4).map((e, i) => (
                         <img
                           key={e.id}
                           src={getScreenUrl(e.image_id, "thumb")}
                           style={{
                             objectFit: "contain",
                           }}
+                          onClick={() => setScreenIdx(i)}
                         />
                       ))}
                     </Flex>
-                    {/* <Text>{">"}</Text> */}
                   </Flex>
                 </Stack>
               ) : null}

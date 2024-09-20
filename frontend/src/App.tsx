@@ -11,8 +11,6 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
-import GamePage from "./components/GamePage/GamePage";
-import { persona3reload, persona4 } from "./mockGames";
 import logo from "./assets/logo.svg";
 import {
   faArrowsRotate,
@@ -27,6 +25,10 @@ function Pages({ page }: { page: number }) {
   switch (page) {
     case 0:
       return <Recommendations />;
+    case 1:
+      return <Text>Previously recommended</Text>;
+    case 2:
+      return <Text>Sync your libraries</Text>;
     default:
       break;
   }
