@@ -2,6 +2,7 @@ import { Accordion, Flex, Stack, Text, Image, Center } from "@mantine/core";
 import { IGDBGame, IGDBGameArt } from "../../interfaces";
 import { ReactElement, useState } from "react";
 import classes from "./index.module.css";
+import { useViewportSize } from "@mantine/hooks";
 
 function getScreenUrl(
   id: string,
@@ -30,6 +31,8 @@ export default function RecAccordion({
   }[];
 }) {
   const [screenIdx, setScreenIdx] = useState<number>(0);
+  const { width } = useViewportSize();
+
   const items = recommendations.map((item) => {
     let controlHeader = "";
     switch (item.type) {
@@ -59,29 +62,28 @@ export default function RecAccordion({
                 Users recommended this title <span>{rating}%</span> of the time.
               </Text>
             ) : null}
-            <Flex>
+            <Flex direction={width < 1000 ? "column" : "row"}>
               <Text>{item.game.summary}</Text>
               {item.game.screenshots ? (
-                <Stack pl={8}>
+                <Stack>
                   <Image
+                    p={8}
                     src={getScreenUrl(
                       item.game.screenshots[screenIdx].image_id,
                       "screenshot_med"
                     )}
                   />
-                  <Flex align="center">
-                    <Flex wrap="nowrap" justify="space-between" h="64px">
-                      {item.game.screenshots.slice(0, 4).map((e, i) => (
-                        <img
-                          key={e.id}
-                          src={getScreenUrl(e.image_id, "thumb")}
-                          style={{
-                            objectFit: "contain",
-                          }}
-                          onClick={() => setScreenIdx(i)}
-                        />
-                      ))}
-                    </Flex>
+                  <Flex wrap="nowrap" justify="space-between" h="64px">
+                    {item.game.screenshots.slice(0, 4).map((e, i) => (
+                      <img
+                        key={e.id}
+                        src={getScreenUrl(e.image_id, "thumb")}
+                        style={{
+                          objectFit: "contain",
+                        }}
+                        onClick={() => setScreenIdx(i)}
+                      />
+                    ))}
                   </Flex>
                 </Stack>
               ) : null}
