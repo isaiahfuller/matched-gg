@@ -65,10 +65,11 @@ function App() {
   return (
     <AppShell
       navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      header={width < 768 ? { height: 50 } : { height: 0 }}
       padding="md"
     >
       {width < 768 ? (
-        <AppShell.Header>
+        <AppShell.Header h={50}>
           <Group p={8}>
             <Burger opened={opened} onClick={toggle} />
             <img src={logo} />
