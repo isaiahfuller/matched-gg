@@ -21,18 +21,20 @@ import {
 
 import classes from "./Login.module.css";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
+import { useViewportSize } from "@mantine/hooks";
 
 export default function Login() {
+  const { width } = useViewportSize();
   return (
     <Container>
       <Center>
         <Paper shadow="xs" px={24} py={18} withBorder>
           <Title order={2}>Sup Gamer?</Title>
           <Title order={5}>Login with your provider</Title>
-          <SimpleGrid cols={2} spacing="xs">
+          <SimpleGrid cols={width < 768 ? 1 : 2} spacing="xs">
             <Button
               variant="filled"
-              classNames={{ inner: classes.button }}
+              classNames={{ root: classes.button }}
               color="rgba(47,45,46,1)"
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
             >
@@ -41,7 +43,7 @@ export default function Login() {
             <a href="/steam/auth">
               <Button
                 variant="filled"
-                classNames={{ inner: classes.button }}
+                classNames={{ root: classes.button }}
                 color="rgba(27,40,56,1)"
                 leftSection={<FontAwesomeIcon icon={faSteam} />}
               >
@@ -50,7 +52,7 @@ export default function Login() {
             </a>
             <Button
               variant="filled"
-              classNames={{ inner: classes.button }}
+              classNames={{ root: classes.button }}
               color="rgba(16,124,16,1)"
               leftSection={<FontAwesomeIcon icon={faXbox} />}
             >
@@ -58,7 +60,7 @@ export default function Login() {
             </Button>
             <Button
               variant="filled"
-              classNames={{ inner: classes.button }}
+              classNames={{ root: classes.button }}
               color="rgba(0,111,205,1)"
               leftSection={<FontAwesomeIcon icon={faPlaystation} />}
             >
@@ -66,7 +68,7 @@ export default function Login() {
             </Button>
             <Button
               variant="filled"
-              classNames={{ inner: classes.button }}
+              classNames={{ root: classes.button }}
               color="rgba(221,32,32,1)"
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
             >
@@ -74,7 +76,7 @@ export default function Login() {
             </Button>
             <Button
               variant="filled"
-              classNames={{ inner: classes.button }}
+              classNames={{ root: classes.button }}
               color="rgba(88,101,242,1)"
               leftSection={<FontAwesomeIcon icon={faDiscord} />}
             >

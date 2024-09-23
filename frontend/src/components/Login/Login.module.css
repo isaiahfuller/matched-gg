@@ -1,4 +1,5 @@
-.button {
+.button > span {
   justify-content: left;
-  width: 150px;
+  width: 175px;
+  text-align: left;
 }
