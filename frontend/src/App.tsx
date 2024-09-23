@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   Group,
+  Menu,
   NavLink,
   Stack,
   Text,
@@ -16,6 +17,7 @@ import {
   faArrowsRotate,
   faChevronRight,
   faGamepad,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -117,19 +119,30 @@ function App() {
           <Divider mx="md" />
           <Stack p={8}>
             {isLoggedIn ? (
-              <>
-                <NavLink
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  label="Change account"
-                />
-                <NavLink
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  label="Logout"
-                  leftSection={<FontAwesomeIcon icon={faUser} />}
-                />
-              </>
+              <Menu position="left-end">
+                <Menu.Target>
+                  <NavLink
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
+                    label="placeholder"
+                    rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+                    leftSection={<FontAwesomeIcon icon={faUser} />}
+                  />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>Actions</Menu.Label>
+                  <Menu.Item
+                    leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
+                  >
+                    Change Account
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={<FontAwesomeIcon icon={faRightFromBracket} />}
+                  >
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
             ) : (
               <NavLink
                 href="/steam/auth"
