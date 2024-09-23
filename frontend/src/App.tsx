@@ -22,17 +22,18 @@ import {
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Recommendations from "./components/Recommendations/Recommendations";
+import Login from "./components/Login/Login";
 
 function Pages({ page }: { page: number }) {
   switch (page) {
-    case 0:
-      return <Recommendations />;
     case 1:
-      return <Text>Previously recommended</Text>;
+      return <Recommendations />;
     case 2:
+      return <Text>Previously recommended</Text>;
+    case 3:
       return <Text>Sync your libraries</Text>;
     default:
-      break;
+      return <Login />;
   }
 }
 
@@ -50,11 +51,12 @@ function App() {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.profileurl) {
-          console.log(res);
+        console.log(res);
+        if ("steamid" in res) {
           setProfile(res);
           localStorage.setItem("steam-profile", JSON.stringify(res));
           setIsLoggedIn(true);
+          setPage(1);
         }
       });
   }, []);
@@ -71,7 +73,7 @@ function App() {
       padding="md"
     >
       {width < 768 ? (
-        <AppShell.Header h={50}>
+        <AppShell.Header>
           <Group p={8}>
             <Burger opened={opened} onClick={toggle} />
             <img src={logo} />
@@ -83,35 +85,36 @@ function App() {
       ) : null}
       <AppShell.Navbar>
         <Flex direction="column" justify="space-between" h="100%">
-          <Center p={8}>
-            {width < 768 && opened ? (
-              <Burger opened={opened} onClick={toggle} />
-            ) : null}
-            <img src={logo} />
-            <Text fw={500} size="xl" px={8}>
-              matched.gg
-            </Text>
-          </Center>
-          <Divider mx="md" />
+          {width >= 768 ? (
+            <Center p={8}>
+              <img src={logo} />
+              <Text fw={500} size="xl" px={8}>
+                matched.gg
+              </Text>
+            </Center>
+          ) : null}
           <Stack h="100%" justify="center" p={8}>
             <NavLink
+              disabled={page === 0 ? true : false}
               href="#"
               label="Recommendations"
-              onClick={(e) => handleClick(e, 0)}
+              onClick={(e) => handleClick(e, 1)}
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
             />
             <NavLink
+              disabled={page === 0 ? true : false}
               href="#"
               label="Previously recommended"
-              onClick={(e) => handleClick(e, 1)}
+              onClick={(e) => handleClick(e, 2)}
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               leftSection={<FontAwesomeIcon icon={faThumbsUp} />}
             />
             <NavLink
+              disabled={page === 0 ? true : false}
               href="#"
               label="Sync your libraries"
-              onClick={(e) => handleClick(e, 2)}
+              onClick={(e) => handleClick(e, 3)}
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
             />
@@ -119,7 +122,10 @@ function App() {
           <Divider mx="md" />
           <Stack p={8}>
             {isLoggedIn ? (
-              <Menu position="left-end">
+              <Menu
+                position={width < 768 ? "top" : "left-end"}
+                disabled={page === 0 ? true : false}
+              >
                 <Menu.Target>
                   <NavLink
                     href="#"
@@ -145,8 +151,9 @@ function App() {
               </Menu>
             ) : (
               <NavLink
+                disabled={page === 0 ? true : false}
                 href="/steam/auth"
-                label="Login"
+                label="Logged out"
                 leftSection={<FontAwesomeIcon icon={faUser} />}
               />
             )}
