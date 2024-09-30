@@ -1,24 +1,33 @@
-import { Container, Stack, Title } from "@mantine/core";
+import { Container, Divider, Stack, Title } from "@mantine/core";
 import RecAccordion from "./RecAccordion";
 import { persona3reload, persona4 } from "../../mockGames";
 
+import classes from "./index.module.css";
+
 export default function Recommendations() {
   return (
-    <Container>
-      <Stack>
-        <Title>
-          Because you beat <span>Elden Ring</span> and <span>Dark Souls</span>
+    <Container size="md">
+      <Stack gap="xl">
+        <Title
+          order={1}
+          classNames={{
+            root: classes.title,
+          }}
+        >
+          Because you beat <span className={classes.link}>Elden Ring</span>, and{" "}
+          <span className={classes.link}>Dark Souls</span>
           ...
         </Title>
-        <Title>
-          You <span>obviously</span> have a knack for <span>souls-like</span>{" "}
-          games
+        <Title style={{ textAlign: "right" }} order={3}>
+          You <span style={{ fontStyle: "italic" }}>obviously</span> have a
+          knack for <span className={classes.link}>souls-like</span> games
         </Title>
-        <Title>
+        <Title order={3}>
           and we checked your library and saw you have also put{" "}
           <span>764 hours</span> into RPGs overall...
         </Title>
-        <Title>so we recommend these titles:</Title>
+        <Divider mx="auto" w={64} />
+        <Title order={3}>so we recommend these titles:</Title>
       </Stack>
       <RecAccordion
         recommendations={[
