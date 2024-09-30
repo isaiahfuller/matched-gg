@@ -1,18 +1,14 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { gamesTable } from './games';
-
-export const gameVersionsTable = pgTable('gameVersions', {
+export const releaseDateStatusesTable = pgTable('releaseDateStatuses', {
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  features: bigint('features', { mode: 'number' }).array(),
-  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
-  games: bigint('games', { mode: 'number' }).array(),
+  description: text('description'),
   igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
+  name: text('name').notNull(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
-  url: text('url'),
 });
 
-export type GameVersions = typeof gameVersionsTable.$inferInsert;
+export type ReleaseDateStatuses = typeof releaseDateStatusesTable.$inferInsert;

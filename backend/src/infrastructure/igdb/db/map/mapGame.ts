@@ -2,24 +2,56 @@ import { GameCategoryPGEnum, Games, StatusPGEnum } from '../schema/games';
 
 export const mapGame = (game) => {
   const mappedGame = {
+    ageRatings: game.age_ratings,
     aggregatedRating: game.aggregated_rating,
     aggregatedRatingCount: game.aggregated_rating_count,
+    alternativeNames: game.alternative_names,
+    artworks: game.artworks,
+    bundles: game.bundles,
     checksum: game.checksum,
+    collections: game.collections,
+    cover: game.cover,
+    dlcs: game.dlcs,
+    expandedGames: game.expanded_games,
+    expansions: game.expansions,
+    externalGames: game.external_games,
     firstReleaseDate: game.first_release_date
       ? new Date(game.first_release_date * 1000)
       : null,
+    follows: game.follows,
+    forks: game.forks,
+    franchise: game.franchise,
+    franchises: game.franchises,
     gameCategory:
       game.category === undefined
         ? null
         : GameCategoryPGEnum.enumValues[game.category],
+    gameEngines: game.game_engines,
+    gameLocalizations: game.game_localizations,
+    gameModes: game.game_modes,
+    genres: game.genres,
     hypes: game.hypes,
     igdbCreatedAt: game.created_at ? new Date(game.created_at * 1000) : null,
     igdbId: game.id,
     igdbUpdatedAt: game.updated_at ? new Date(game.updated_at * 1000) : null,
+    involvedCompanies: game.involved_companies,
+    keywords: game.keywords,
+    languageSupports: game.language_supports,
+    multiplayerModes: game.multiplayer_modes,
     name: game.name || 'NO_NAME',
+    parentGame: game.parent_game,
+    platforms: game.platforms,
+    playerPerspectives: game.player_perspectives,
+    ports: game.ports,
     rating: game.rating,
     ratingCount: game.rating_count,
+    releaseDates: game.release_dates,
+    remakes: game.remakes,
+    remasters: game.remasters,
+    screenshots: game.screenshots,
+    similarGames: game.similar_games,
     slug: game.slug,
+    standaloneExpansions: game.standalone_expansions,
     status:
       game.status === undefined
         ? null
@@ -28,11 +60,16 @@ export const mapGame = (game) => {
           ],
     storyline: game.storyline,
     summary: game.summary,
+    tags: game.tags,
+    themes: game.themes,
     totalRating: game.total_rating,
     totalRatingCount: game.total_rating_count,
     updatedAt: new Date(),
     url: game.url,
+    versionParent: game.version_parent,
     versionTitle: game.version_title,
+    videos: game.videos,
+    websites: game.websites,
   } satisfies Games;
   return mappedGame;
 };

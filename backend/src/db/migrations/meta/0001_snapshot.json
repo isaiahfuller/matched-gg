@@ -1,6 +1,6 @@
 {
-  "id": "17a1a916-68ca-4c6d-b1a6-dde6dc336aaa",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "e994d38e-4271-4aac-969e-c1287c8a9850",
+  "prevId": "17a1a916-68ca-4c6d-b1a6-dde6dc336aaa",
   "version": "6",
   "dialect": "postgresql",
   "tables": {
@@ -1669,6 +1669,12 @@
       "name": "games",
       "schema": "",
       "columns": {
+        "age_ratings": {
+          "name": "age_ratings",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
         "aggregated_rating": {
           "name": "aggregated_rating",
           "type": "double precision",
@@ -1681,9 +1687,40 @@
           "primaryKey": false,
           "notNull": false
         },
+        "artworks": {
+          "name": "artworks",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bundles": {
+          "name": "bundles",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "GameCategoryEnum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
         "checksum": {
           "name": "checksum",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "collections": {
+          "name": "collections",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cover": {
+          "name": "cover",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": false
         },
@@ -1694,9 +1731,51 @@
           "notNull": true,
           "default": "now()"
         },
+        "dlcs": {
+          "name": "dlcs",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expanded_games": {
+          "name": "expanded_games",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expansions": {
+          "name": "expansions",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "external_games": {
+          "name": "external_games",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
         "first_release_date": {
           "name": "first_release_date",
           "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "forks": {
+          "name": "forks",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "franchise": {
+          "name": "franchise",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "franchises": {
+          "name": "franchises",
+          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -1704,6 +1783,30 @@
           "name": "game_category",
           "type": "GameCategoryEnum",
           "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_engines": {
+          "name": "game_engines",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_localizations": {
+          "name": "game_localizations",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "game_modes": {
+          "name": "game_modes",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "genres": {
+          "name": "genres",
+          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -1737,11 +1840,59 @@
           "primaryKey": false,
           "notNull": false
         },
+        "involved_companies": {
+          "name": "involved_companies",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "keywords": {
+          "name": "keywords",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "language_supports": {
+          "name": "language_supports",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "multiplayer_modes": {
+          "name": "multiplayer_modes",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "parent_game": {
+          "name": "parent_game",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "platforms": {
+          "name": "platforms",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "player_perspectives": {
+          "name": "player_perspectives",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ports": {
+          "name": "ports",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
         },
         "rating": {
           "name": "rating",
@@ -1755,9 +1906,45 @@
           "primaryKey": false,
           "notNull": false
         },
+        "release_dates": {
+          "name": "release_dates",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remakes": {
+          "name": "remakes",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remasters": {
+          "name": "remasters",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "screenshots": {
+          "name": "screenshots",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "similar_games": {
+          "name": "similar_games",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
         "slug": {
           "name": "slug",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "standalone_expansions": {
+          "name": "standalone_expansions",
+          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -1777,6 +1964,18 @@
         "summary": {
           "name": "summary",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tags": {
+          "name": "tags",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "themes": {
+          "name": "themes",
+          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -1810,6 +2009,18 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "videos": {
+          "name": "videos",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "websites": {
+          "name": "websites",
+          "type": "bigint[]",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -1835,7 +2046,47 @@
           "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "games_cover_covers_igdb_id_fk": {
+          "name": "games_cover_covers_igdb_id_fk",
+          "tableFrom": "games",
+          "tableTo": "covers",
+          "columnsFrom": [
+            "cover"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "games_franchise_franchises_igdb_id_fk": {
+          "name": "games_franchise_franchises_igdb_id_fk",
+          "tableFrom": "games",
+          "tableTo": "franchises",
+          "columnsFrom": [
+            "franchise"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "games_parent_game_games_igdb_id_fk": {
+          "name": "games_parent_game_games_igdb_id_fk",
+          "tableFrom": "games",
+          "tableTo": "games",
+          "columnsFrom": [
+            "parent_game"
+          ],
+          "columnsTo": [
+            "igdb_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "games_game_id_unique": {

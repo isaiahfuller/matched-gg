@@ -10,6 +10,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import { gamesTable } from './games';
+import { platformsTable } from './platforms';
 
 export const ExternalGameMediaPGEnum = pgEnum('ExternalGameMediaEnum', [
   '',
@@ -32,7 +33,9 @@ export const externalGamesTable = pgTable(
     igdbUpdatedAt: timestamp('igdb_updated_at'),
     media: ExternalGameMediaPGEnum('media'),
     name: text('name'),
-    platform: bigint('platform', { mode: 'number' }), //TODO: Add reference once platformTable is added
+    platform: bigint('platform', { mode: 'number' }).references(
+      () => platformsTable.igdbId,
+    ),
     uid: text('uid'),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     url: text('url'),

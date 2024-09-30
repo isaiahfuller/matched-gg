@@ -10,14 +10,14 @@ import {
 import { gamesTable } from './games';
 
 export const WebsitePGEnum = pgEnum('WebsiteCategoryEnum', [
-  '',
+  'blank1',
   'official',
   'wikia',
   'wikipedia',
   'facebook',
   'twitter',
   'twitch',
-  '',
+  'blank2',
   'instagram',
   'youtube',
   'iphone',

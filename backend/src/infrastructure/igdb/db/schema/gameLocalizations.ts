@@ -2,6 +2,7 @@ import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { coverTable } from './artworks';
 import { gamesTable } from './games';
+import { regionsTable } from './regions';
 
 export const gameLocalizationsTable = pgTable('gameLocalizations', {
   checksum: text('checksum'),
@@ -14,7 +15,9 @@ export const gameLocalizationsTable = pgTable('gameLocalizations', {
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
   name: text('name').notNull(),
-  region: bigint('region', { mode: 'number' }), //TODO: Add reference once regionsTable is added
+  region: bigint('region', { mode: 'number' }).references(
+    () => regionsTable.igdbId,
+  ),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
