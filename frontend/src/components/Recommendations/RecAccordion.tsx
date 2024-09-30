@@ -65,19 +65,22 @@ export default function RecAccordion({
             <Flex direction={width < 1000 ? "column" : "row"}>
               <Text>{item.game.summary}</Text>
               {item.game.screenshots ? (
-                <Stack>
+                <Stack
+                  miw="40%"
+                  pl={width < 1000 ? 0 : 8}
+                  pt={width < 1000 ? 8 : 0}
+                >
                   <Image
-                    p={8}
                     src={getScreenUrl(
                       item.game.screenshots[screenIdx].image_id,
                       "screenshot_med"
                     )}
                   />
-                  <Flex wrap="nowrap" justify="space-between" h="64px">
+                  <Flex wrap="nowrap" justify="space-between">
                     {item.game.screenshots.slice(0, 4).map((e, i) => (
                       <img
                         key={e.id}
-                        src={getScreenUrl(e.image_id, "thumb")}
+                        src={getScreenUrl(e.image_id, "micro")}
                         style={{
                           objectFit: "contain",
                         }}

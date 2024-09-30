@@ -6,7 +6,7 @@ import classes from "./index.module.css";
 
 export default function Recommendations() {
   return (
-    <Container size="md">
+    <Container size="sm">
       <Stack gap="xl">
         <Title
           order={1}
@@ -18,16 +18,18 @@ export default function Recommendations() {
           <span className={classes.link}>Dark Souls</span>
           ...
         </Title>
-        <Title style={{ textAlign: "right" }} order={3}>
+        <Title style={{ textAlign: "right" }} order={2} size="h4">
           You <span style={{ fontStyle: "italic" }}>obviously</span> have a
           knack for <span className={classes.link}>souls-like</span> games
         </Title>
-        <Title order={3}>
+        <Title order={2} size="h4">
           and we checked your library and saw you have also put{" "}
           <span>764 hours</span> into RPGs overall...
         </Title>
         <Divider mx="auto" w={64} />
-        <Title order={3}>so we recommend these titles:</Title>
+        <Title order={2} size="h4">
+          so we recommend these titles:
+        </Title>
       </Stack>
       <RecAccordion
         recommendations={[
