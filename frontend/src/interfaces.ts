@@ -5,8 +5,8 @@ export interface IGDBGame extends IGDBGeneric {
   age_ratings?: unknown | number[];
   bundles?: unknown | number[];
   category: number;
-  cover?: IGDBGameArt | number;
-  artworks?: IGDBGameArt[] | number[];
+  cover?: IGDBGameArt;
+  artworks?: IGDBGameArt[];
   collections?: IGDBGameCollection[] | number[];
   dlcs?: IGDBGame[];
   expanded_games?: IGDBGame[] | number[];
@@ -35,7 +35,7 @@ export interface IGDBGame extends IGDBGeneric {
   release_dates: IGDBDate[] | number[];
   remakes?: IGDBGame[] | number[];
   remasters?: IGDBGame[] | number[];
-  screenshots?: IGDBGameArt[] | number[];
+  screenshots?: IGDBGameArt[];
   similar_games: number[];
   standalone_expansions?: IGDBGame[] | number[];
   storyline?: string;
