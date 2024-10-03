@@ -23,6 +23,7 @@ import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Recommendations from "./components/Recommendations/Recommendations";
 import Login from "./components/Login/Login";
+import Search from "./components/Search/Search";
 
 function Pages({ page }: { page: number }) {
   switch (page) {
@@ -167,6 +168,7 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
+        <Search />
         <Pages page={page} />
       </AppShell.Main>
     </AppShell>
