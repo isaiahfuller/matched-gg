@@ -37,7 +37,7 @@ export default function Search() {
           {results.map((e) => {
             const label = `${e.name} (${e.year || (e.release_dates[0] as IGDBDate).y})`; // Ideally would be first_release_date. Didn't save that for mocks
             return (
-              <HoverCard position="bottom">
+              <HoverCard position="bottom" offset={48}>
                 <HoverCard.Target>
                   <Menu.Item rightSection={null}>{label}</Menu.Item>
                 </HoverCard.Target>
