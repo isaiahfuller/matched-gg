@@ -21,11 +21,6 @@ export default function Search() {
     } else setResults([]);
   }, [searchTerm]);
 
-  useEffect(() => {
-    if (results.length) {
-    }
-  }, [results]);
-
   return (
     <Box py={32} m="auto" maw={512}>
       <Menu opened={results.length ? true : false} trapFocus={false}>
