@@ -1,6 +1,6 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, HoverCard, Input, NavLink, Popover } from "@mantine/core";
+import { Box, HoverCard, Input, Menu } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { IGDBDate, IGDBGame } from "../../interfaces";
 import { persona3reload, persona4 } from "../../mockGames";
@@ -28,8 +28,8 @@ export default function Search() {
 
   return (
     <Box py={32} m="auto" maw={512}>
-      <Popover opened={results.length ? true : false}>
-        <Popover.Target>
+      <Menu opened={results.length ? true : false} trapFocus={false}>
+        <Menu.Target>
           <Input
             leftSection={<FontAwesomeIcon icon={faMagnifyingGlass} />}
             placeholder="Search for games"
@@ -37,15 +37,14 @@ export default function Search() {
             onChange={handleChange}
             radius={8}
           />
-        </Popover.Target>
-        <Popover.Dropdown maw={512} w="100%">
+        </Menu.Target>
+        <Menu.Dropdown maw={512} w="100%">
           {results.map((e) => {
             const label = `${e.name} (${e.year || (e.release_dates[0] as IGDBDate).y})`; // Ideally would be first_release_date. Didn't save that for mocks
             return (
-              <HoverCard>
+              <HoverCard position="bottom">
                 <HoverCard.Target>
-                  <NavLink rightSection={null} label={label} href="#" />
-                  {/* Hover color matches Popover bg right now */}
+                  <Menu.Item rightSection={null}>{label}</Menu.Item>
                 </HoverCard.Target>
                 <HoverCard.Dropdown>
                   <GameHover game={e} />
@@ -53,8 +52,8 @@ export default function Search() {
               </HoverCard>
             );
           })}
-        </Popover.Dropdown>
-      </Popover>
+        </Menu.Dropdown>
+      </Menu>
     </Box>
   );
 }
