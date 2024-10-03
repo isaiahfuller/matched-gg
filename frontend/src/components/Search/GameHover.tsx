@@ -20,12 +20,14 @@ export default function GameHover({ game }: GameHoverProps) {
             {game.platforms ? (
               <Text>
                 Platforms:{" "}
-                {game.platforms?.map((e: IGDBPlatform, i) => (
-                  <Fragment key={e.id}>
-                    <a href={e.url}>{e.abbreviation}</a>
-                    {i < game.platforms!.length - 1 ? ", " : null}
-                  </Fragment>
-                ))}
+                {(game.platforms as IGDBPlatform[])?.map(
+                  (e: IGDBPlatform, i) => (
+                    <Fragment key={e.id}>
+                      <a href={e.url}>{e.abbreviation}</a>
+                      {i < game.platforms!.length - 1 ? ", " : null}
+                    </Fragment>
+                  )
+                )}
               </Text>
             ) : null}
             {game.genres ? (
