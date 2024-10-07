@@ -27,9 +27,13 @@ export default function Login() {
   return (
     <Center h={height}>
       <Paper shadow="xs" px={24} py={18} withBorder>
-        <Title order={2}>Sup Gamer?</Title>
-        <Title order={5}>Login with your provider</Title>
-        <SimpleGrid cols={width < 768 ? 1 : 2} spacing="xs">
+        <Title order={1} size="h2" lh={2}>
+          Sup Gamer?
+        </Title>
+        <Title order={2} size="h5" lh={2}>
+          Login with your provider
+        </Title>
+        <SimpleGrid cols={width < 768 ? 1 : 2} spacing="xs" py={8}>
           <Button
             variant="filled"
             classNames={{ root: classes.button }}
