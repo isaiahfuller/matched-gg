@@ -10,7 +10,6 @@ import "./index.css";
 
 const theme = createTheme({
   primaryColor: "primary",
-  primaryShade: 9,
   colors: {
     primary: virtualColor({
       name: "primary",
