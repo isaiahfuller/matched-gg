@@ -1,15 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { MantineProvider } from "@mantine/core";
+import { generateColors } from "@mantine/colors-generator";
+import { createTheme, MantineProvider, virtualColor } from "@mantine/core";
 import App from "./App.tsx";
 import "@mantine/core/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/carousel/styles.css";
 import "./index.css";
 
+const theme = createTheme({
+  primaryColor: "primary",
+  primaryShade: 9,
+  colors: {
+    primary: virtualColor({
+      name: "primary",
+      dark: "ylw",
+      light: "cyan",
+    }),
+    ylw: generateColors("#fc8a08"),
+  },
+});
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <MantineProvider defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <App />
     </MantineProvider>
   </React.StrictMode>

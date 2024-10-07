@@ -107,6 +107,7 @@ function App() {
               onClick={(e) => handleClick(e, 1)}
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
+              active={page === 1}
             />
             <NavLink
               disabled={page === 0 ? true : false}
@@ -115,6 +116,7 @@ function App() {
               onClick={(e) => handleClick(e, 2)}
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               leftSection={<FontAwesomeIcon icon={faThumbsUp} />}
+              active={page === 2}
             />
             <NavLink
               disabled={page === 0 ? true : false}
@@ -123,6 +125,7 @@ function App() {
               onClick={(e) => handleClick(e, 3)}
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
+              active={page === 3}
             />
           </Stack>
           <Divider mx="md" />

@@ -100,7 +100,9 @@ export default function Login() {
                 withAsterisk
                 placeholder="Input placeholder"
               />
-              <Button fullWidth>Login</Button>
+              <Button fullWidth variant="light">
+                Login
+              </Button>
             </Stack>
           </form>
         </Paper>
