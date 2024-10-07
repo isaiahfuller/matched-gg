@@ -171,7 +171,7 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
-        <Search />
+        {page !== 0 ? <Search /> : null}
         <Pages page={page} />
       </AppShell.Main>
     </AppShell>
