@@ -8,7 +8,6 @@
 .link {
   text-decoration: underline;
   cursor: pointer;
-  color: var(--mantine-color-ylw-2);
 }
 
 .link:hover {
