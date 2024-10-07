@@ -14,7 +14,7 @@ const theme = createTheme({
     primary: virtualColor({
       name: "primary",
       dark: "ylw",
-      light: "cyan",
+      light: "ylw",
     }),
     ylw: generateColors("#fc8a08"),
   },
