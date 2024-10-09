@@ -72,7 +72,7 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
           </Text>
         </Box>
 
-        {icon || <FontAwesomeIcon icon={faChevronRight} />}
+        {icon || <FontAwesomeIcon icon={faChevronRight} size="sm" />}
       </Flex>
     </UnstyledButton>
   )
@@ -145,7 +145,7 @@ function App() {
               href="#"
               label="Recommendations"
               onClick={(e) => handleClick(e, 1)}
-              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
               active={page === 1}
             />
@@ -154,7 +154,7 @@ function App() {
               href="#"
               label="Previously recommended"
               onClick={(e) => handleClick(e, 2)}
-              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faThumbsUp} />}
               active={page === 2}
             />
@@ -163,7 +163,7 @@ function App() {
               href="#"
               label="Sync your libraries"
               onClick={(e) => handleClick(e, 3)}
-              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
               active={page === 3}
             />
