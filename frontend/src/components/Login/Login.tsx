@@ -96,7 +96,7 @@ export default function Login() {
             <PasswordInput
               label="Password"
               withAsterisk
-              placeholder="Input placeholder"
+              placeholder="Your password"
             />
             <Button fullWidth variant="light">
               Login

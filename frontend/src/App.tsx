@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import {
   AppShell,
+  Avatar,
+  Box,
   Burger,
   Center,
   Divider,
@@ -10,6 +12,7 @@ import {
   NavLink,
   Stack,
   Text,
+  UnstyledButton,
 } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import logo from "./assets/logo.svg";
@@ -37,6 +40,43 @@ function Pages({ page }: { page: number }) {
       return <Login />;
   }
 }
+interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
+  image: string;
+  name: string;
+  email: string;
+  width: number;
+  icon?: React.ReactNode;
+}
+const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
+  ({ image, name, email, width, icon, ...others }: UserButtonProps, ref) => (
+    <UnstyledButton
+      ref={ref}
+      style={{
+        color: "var(--mantine-color-text)",
+        borderRadius: "var(--mantine-radius-sm)",
+      }}
+      {...others}
+      py={16}
+      w={width}
+    >
+      <Flex justify="space-between" align="center">
+        <Avatar src={image} radius="xl" />
+
+        <Box style={{ flex: 1 }} px={8} w={75}>
+          <Text size="sm" fw={500} truncate="end">
+            {name}
+          </Text>
+
+          <Text c="dimmed" size="xs" truncate="end">
+            {email}
+          </Text>
+        </Box>
+
+        {icon || <FontAwesomeIcon icon={faChevronRight} />}
+      </Flex>
+    </UnstyledButton>
+  )
+);
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -128,20 +168,20 @@ function App() {
               active={page === 3}
             />
           </Stack>
-          <Divider mx="md" />
+          <Divider />
           <Stack p={8}>
             {isLoggedIn ? (
               <Menu
                 position={width < 768 ? "top" : "left-end"}
                 disabled={page === 0 ? true : false}
+                offset={28}
               >
                 <Menu.Target>
-                  <NavLink
-                    href="#"
-                    onClick={(e) => e.preventDefault()}
-                    label="placeholder"
-                    rightSection={<FontAwesomeIcon icon={faChevronRight} />}
-                    leftSection={<FontAwesomeIcon icon={faUser} />}
+                  <UserButton
+                    name="Place Holder"
+                    email="placeholder@example.com"
+                    image="https://placehold.co/36"
+                    width={width < 768 ? width - 28 : 222}
                   />
                 </Menu.Target>
                 <Menu.Dropdown>
