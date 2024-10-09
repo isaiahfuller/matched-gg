@@ -6,6 +6,7 @@ import {
   Burger,
   Center,
   Divider,
+  Image,
   Flex,
   Group,
   Menu,
@@ -122,10 +123,12 @@ function App() {
         <AppShell.Header>
           <Group p={8}>
             <Burger opened={opened} onClick={toggle} />
-            <img src={logo} />
-            <Text fw={500} size="xl">
-              matched.gg
-            </Text>
+            <Flex>
+              <Image src={logo} w="auto" fit="contain" px={8} />
+              <Text fw={500} size="xl">
+                matched.gg
+              </Text>
+            </Flex>
           </Group>
         </AppShell.Header>
       ) : null}
