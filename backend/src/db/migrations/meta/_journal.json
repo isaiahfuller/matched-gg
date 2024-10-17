@@ -36,6 +36,20 @@
       "when": 1729139423627,
       "tag": "0004_worthless_captain_universe",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1729186664763,
+      "tag": "0005_hot_lester",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1729187152452,
+      "tag": "0006_far_morgan_stark",
+      "breakpoints": true
     }
   ]
 }

@@ -10,17 +10,17 @@ export default class UserHandler {
     this.db = drizzle(client, { schema: { usersTable } });
   }
 
-  async addNewUser(name, email, password) {
-    const newUser: Users = {
-      email,
-      name,
-      password,
-    };
-    return this.db.insert(usersTable).values(newUser).returning({
-      email: usersTable.email,
-      name: usersTable.name,
-      password: usersTable.password,
-    });
+  async addNewUser({ email, name, password }: Users) {
+    return this.db
+      .insert(usersTable)
+      .values({ email, name, password })
+      .returning({
+        createdAt: usersTable.createdAt,
+        email: usersTable.email,
+        id: usersTable.id,
+        name: usersTable.name,
+        updatedAt: usersTable.updatedAt,
+      });
   }
   async deleteUser(email) {
     await this.db
@@ -33,24 +33,41 @@ export default class UserHandler {
       });
   }
 
+  async findById(id: number) {
+    const result = await this.db.query.usersTable.findFirst({
+      where: (usersTable, { eq }) => eq(usersTable.id, id),
+    });
+    return result;
+  }
+
   async findOneByEmail(email: string) {
-    const result = await this.db.query.users.findOne({
+    const result = await this.db.query.usersTable.findFirst({
       where: (usersTable, { eq }) => eq(usersTable.email, email),
     });
     return result;
   }
 
-  async updateUser({ email = null, name = null, password = null }) {
-    if (!name && !email && !password) return null;
+  async updateUser({
+    email = null,
+    id,
+    name = null,
+    password = null,
+    refreshToken = null,
+  }) {
     const updatedUser: Users | any = {};
     if (name) updatedUser.name = name;
     if (email) updatedUser.email = email;
     if (password) updatedUser.password = password;
+    updatedUser.refreshToken = refreshToken;
     updatedUser.updatedAt = new Date();
-    await this.db.update(usersTable).set(updatedUser).returning({
-      email: usersTable.email,
-      name: usersTable.name,
-      password: usersTable.password,
-    });
+    await this.db
+      .update(usersTable)
+      .set(updatedUser)
+      .where(eq(usersTable.id, id))
+      .returning({
+        email: usersTable.email,
+        name: usersTable.name,
+        refreshToken: usersTable.refreshToken,
+      });
   }
 }
