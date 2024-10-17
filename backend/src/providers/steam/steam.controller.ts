@@ -14,14 +14,14 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
 
-import { AuthService } from '../../auth/auth.service';
+import { SteamService } from '../../auth/strategies/steam/steam.service';
 import { SteamAuthResponse } from './types';
 
 @Controller('steam')
 export class SteamController {
   private logger = new Logger(SteamController.name);
   private steamHandler = new SteamHandler(config);
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: SteamService) {}
 
   @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {

@@ -8,8 +8,8 @@ import {
   Options,
   SteamProfile,
   ValidateFn,
-} from '../../providers/steam/types';
-import { AuthService } from '../auth.service';
+} from '../../../providers/steam/types';
+import { SteamService } from './steam.service';
 
 @Injectable()
 export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
@@ -17,7 +17,7 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
 
   public successRedirect: string = this.options['successRedirect'];
   constructor(
-    private authService: AuthService,
+    private authService: SteamService,
     private options: AuthModuleOptions,
   ) {
     super(

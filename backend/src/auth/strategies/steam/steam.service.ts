@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
-export class AuthService {
+export class SteamService {
   constructor() {}
 
   async validateUser(identifier, profile, done) {
