@@ -22,6 +22,20 @@
       "when": 1723239390294,
       "tag": "0002_normal_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729139306827,
+      "tag": "0003_heavy_talon",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1729139423627,
+      "tag": "0004_worthless_captain_universe",
+      "breakpoints": true
     }
   ]
 }

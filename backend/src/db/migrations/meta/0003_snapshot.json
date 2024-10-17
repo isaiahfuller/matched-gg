@@ -1,4 +1,6 @@
 {
+  "id": "b00b296a-1ec9-4d37-802f-b656c1daf486",
+  "prevId": "721ad4e7-011d-43df-be22-2d2a2826a547",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -49,7 +51,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.ageRatings": {
       "name": "ageRatings",
@@ -111,7 +114,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.alternativeNames": {
       "name": "alternativeNames",
@@ -167,19 +171,20 @@
         "alternativeNames_game_games_igdb_id_fk": {
           "name": "alternativeNames_game_games_igdb_id_fk",
           "tableFrom": "alternativeNames",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.artworks": {
       "name": "artworks",
@@ -259,19 +264,20 @@
         "artworks_game_games_igdb_id_fk": {
           "name": "artworks_game_games_igdb_id_fk",
           "tableFrom": "artworks",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.covers": {
       "name": "covers",
@@ -349,7 +355,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.collectionMemberships": {
       "name": "collectionMemberships",
@@ -412,32 +419,33 @@
         "collectionMemberships_game_collections_igdb_id_fk": {
           "name": "collectionMemberships_game_collections_igdb_id_fk",
           "tableFrom": "collectionMemberships",
+          "tableTo": "collections",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "collections",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "collectionMemberships_game_games_igdb_id_fk": {
           "name": "collectionMemberships_game_games_igdb_id_fk",
           "tableFrom": "collectionMemberships",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.collections": {
       "name": "collections",
@@ -509,7 +517,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.companies": {
       "name": "companies",
@@ -639,32 +648,33 @@
         "companies_changed_company_id_companies_igdb_id_fk": {
           "name": "companies_changed_company_id_companies_igdb_id_fk",
           "tableFrom": "companies",
+          "tableTo": "companies",
           "columnsFrom": [
             "changed_company_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "companies_parent_companies_igdb_id_fk": {
           "name": "companies_parent_companies_igdb_id_fk",
           "tableFrom": "companies",
+          "tableTo": "companies",
           "columnsFrom": [
             "parent"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.companyLogos": {
       "name": "companyLogos",
@@ -736,7 +746,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.companyWebsites": {
       "name": "companyWebsites",
@@ -791,7 +802,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.eventLogos": {
       "name": "eventLogos",
@@ -883,19 +895,20 @@
         "eventLogos_event_events_igdb_id_fk": {
           "name": "eventLogos_event_events_igdb_id_fk",
           "tableFrom": "eventLogos",
+          "tableTo": "events",
           "columnsFrom": [
             "event"
           ],
-          "tableTo": "events",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.eventNetworks": {
       "name": "eventNetworks",
@@ -963,32 +976,33 @@
         "eventNetworks_event_events_igdb_id_fk": {
           "name": "eventNetworks_event_events_igdb_id_fk",
           "tableFrom": "eventNetworks",
+          "tableTo": "events",
           "columnsFrom": [
             "event"
           ],
-          "tableTo": "events",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "eventNetworks_network_type_networkTypes_igdb_id_fk": {
           "name": "eventNetworks_network_type_networkTypes_igdb_id_fk",
           "tableFrom": "eventNetworks",
+          "tableTo": "networkTypes",
           "columnsFrom": [
             "network_type"
           ],
-          "tableTo": "networkTypes",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.events": {
       "name": "events",
@@ -1090,7 +1104,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.externalGames": {
       "name": "externalGames",
@@ -1192,6 +1207,7 @@
       },
       "indexes": {
         "igdb_uid_idx": {
+          "name": "igdb_uid_idx",
           "columns": [
             {
               "expression": "uid",
@@ -1200,13 +1216,13 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "igdb_uid_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "url_idx": {
+          "name": "url_idx",
           "columns": [
             {
               "expression": "url",
@@ -1215,43 +1231,43 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "url_idx",
           "isUnique": true,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "externalGames_game_games_igdb_id_fk": {
           "name": "externalGames_game_games_igdb_id_fk",
           "tableFrom": "externalGames",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "externalGames_platform_platforms_igdb_id_fk": {
           "name": "externalGames_platform_platforms_igdb_id_fk",
           "tableFrom": "externalGames",
+          "tableTo": "platforms",
           "columnsFrom": [
             "platform"
           ],
-          "tableTo": "platforms",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.franchises": {
       "name": "franchises",
@@ -1323,7 +1339,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.gameEngineLogos": {
       "name": "gameEngineLogos",
@@ -1395,7 +1412,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.gameEngines": {
       "name": "gameEngines",
@@ -1487,19 +1505,20 @@
         "gameEngines_logo_gameEngineLogos_igdb_id_fk": {
           "name": "gameEngines_logo_gameEngineLogos_igdb_id_fk",
           "tableFrom": "gameEngines",
+          "tableTo": "gameEngineLogos",
           "columnsFrom": [
             "logo"
           ],
-          "tableTo": "gameEngineLogos",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.gameLocalizations": {
       "name": "gameLocalizations",
@@ -1573,45 +1592,46 @@
         "gameLocalizations_cover_covers_igdb_id_fk": {
           "name": "gameLocalizations_cover_covers_igdb_id_fk",
           "tableFrom": "gameLocalizations",
+          "tableTo": "covers",
           "columnsFrom": [
             "cover"
           ],
-          "tableTo": "covers",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "gameLocalizations_game_games_igdb_id_fk": {
           "name": "gameLocalizations_game_games_igdb_id_fk",
           "tableFrom": "gameLocalizations",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "gameLocalizations_region_regions_igdb_id_fk": {
           "name": "gameLocalizations_region_regions_igdb_id_fk",
           "tableFrom": "gameLocalizations",
+          "tableTo": "regions",
           "columnsFrom": [
             "region"
           ],
-          "tableTo": "regions",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.gameModes": {
       "name": "gameModes",
@@ -1677,7 +1697,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.games": {
       "name": "games",
@@ -2051,6 +2072,7 @@
       },
       "indexes": {
         "name_idx": {
+          "name": "name_idx",
           "columns": [
             {
               "expression": "name",
@@ -2059,13 +2081,13 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "name_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "slug_idx": {
+          "name": "slug_idx",
           "columns": [
             {
               "expression": "slug",
@@ -2074,13 +2096,13 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "slug_idx",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "igdb_id_idx": {
+          "name": "igdb_id_idx",
           "columns": [
             {
               "expression": "igdb_id",
@@ -2089,77 +2111,77 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "igdb_id_idx",
           "isUnique": true,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "games_cover_covers_igdb_id_fk": {
           "name": "games_cover_covers_igdb_id_fk",
           "tableFrom": "games",
+          "tableTo": "covers",
           "columnsFrom": [
             "cover"
           ],
-          "tableTo": "covers",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "games_franchise_franchises_igdb_id_fk": {
           "name": "games_franchise_franchises_igdb_id_fk",
           "tableFrom": "games",
+          "tableTo": "franchises",
           "columnsFrom": [
             "franchise"
           ],
-          "tableTo": "franchises",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "games_parent_game_games_igdb_id_fk": {
           "name": "games_parent_game_games_igdb_id_fk",
           "tableFrom": "games",
+          "tableTo": "games",
           "columnsFrom": [
             "parent_game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "games_version_parent_games_igdb_id_fk": {
           "name": "games_version_parent_games_igdb_id_fk",
           "tableFrom": "games",
+          "tableTo": "games",
           "columnsFrom": [
             "version_parent"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "games_game_id_unique": {
           "name": "games_game_id_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "game_id"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.gameVersionFeatures": {
       "name": "gameVersionFeatures",
@@ -2229,12 +2251,13 @@
       "uniqueConstraints": {
         "gameVersionFeatures_igdb_id_unique": {
           "name": "gameVersionFeatures_igdb_id_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "igdb_id"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.gameVersionFeatureValues": {
       "name": "gameVersionFeatureValues",
@@ -2297,32 +2320,33 @@
         "gameVersionFeatureValues_game_games_igdb_id_fk": {
           "name": "gameVersionFeatureValues_game_games_igdb_id_fk",
           "tableFrom": "gameVersionFeatureValues",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "gameVersionFeatureValues_game_feature_gameVersionFeatures_igdb_id_fk": {
           "name": "gameVersionFeatureValues_game_feature_gameVersionFeatures_igdb_id_fk",
           "tableFrom": "gameVersionFeatureValues",
+          "tableTo": "gameVersionFeatures",
           "columnsFrom": [
             "game_feature"
           ],
-          "tableTo": "gameVersionFeatures",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.gameVersions": {
       "name": "gameVersions",
@@ -2396,19 +2420,20 @@
         "gameVersions_game_games_igdb_id_fk": {
           "name": "gameVersions_game_games_igdb_id_fk",
           "tableFrom": "gameVersions",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.gameVideos": {
       "name": "gameVideos",
@@ -2464,19 +2489,20 @@
         "gameVideos_game_games_igdb_id_fk": {
           "name": "gameVideos_game_games_igdb_id_fk",
           "tableFrom": "gameVideos",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.genres": {
       "name": "genres",
@@ -2542,7 +2568,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.involvedCompanies": {
       "name": "involvedCompanies",
@@ -2628,32 +2655,33 @@
         "involvedCompanies_company_companies_igdb_id_fk": {
           "name": "involvedCompanies_company_companies_igdb_id_fk",
           "tableFrom": "involvedCompanies",
+          "tableTo": "companies",
           "columnsFrom": [
             "company"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "involvedCompanies_game_games_igdb_id_fk": {
           "name": "involvedCompanies_game_games_igdb_id_fk",
           "tableFrom": "involvedCompanies",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.keywords": {
       "name": "keywords",
@@ -2719,7 +2747,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.languages": {
       "name": "languages",
@@ -2785,7 +2814,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.languageSupports": {
       "name": "languageSupports",
@@ -2853,45 +2883,46 @@
         "languageSupports_game_games_igdb_id_fk": {
           "name": "languageSupports_game_games_igdb_id_fk",
           "tableFrom": "languageSupports",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "languageSupports_language_languages_igdb_id_fk": {
           "name": "languageSupports_language_languages_igdb_id_fk",
           "tableFrom": "languageSupports",
+          "tableTo": "languages",
           "columnsFrom": [
             "language"
           ],
-          "tableTo": "languages",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "languageSupports_language_support_type_languageSupportTypes_igdb_id_fk": {
           "name": "languageSupports_language_support_type_languageSupportTypes_igdb_id_fk",
           "tableFrom": "languageSupports",
+          "tableTo": "languageSupportTypes",
           "columnsFrom": [
             "language_support_type"
           ],
-          "tableTo": "languageSupportTypes",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.languageSupportTypes": {
       "name": "languageSupportTypes",
@@ -2945,7 +2976,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.multiplayerModes": {
       "name": "multiplayerModes",
@@ -3061,32 +3093,33 @@
         "multiplayerModes_game_games_igdb_id_fk": {
           "name": "multiplayerModes_game_games_igdb_id_fk",
           "tableFrom": "multiplayerModes",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "multiplayerModes_platform_platforms_igdb_id_fk": {
           "name": "multiplayerModes_platform_platforms_igdb_id_fk",
           "tableFrom": "multiplayerModes",
+          "tableTo": "platforms",
           "columnsFrom": [
             "platform"
           ],
-          "tableTo": "platforms",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.networkTypes": {
       "name": "networkTypes",
@@ -3146,7 +3179,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platformFamilies": {
       "name": "platformFamilies",
@@ -3194,7 +3228,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platformLogos": {
       "name": "platformLogos",
@@ -3266,7 +3301,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platforms": {
       "name": "platforms",
@@ -3389,58 +3425,59 @@
         "platforms_platform_family_platformFamilies_igdb_id_fk": {
           "name": "platforms_platform_family_platformFamilies_igdb_id_fk",
           "tableFrom": "platforms",
+          "tableTo": "platformFamilies",
           "columnsFrom": [
             "platform_family"
           ],
-          "tableTo": "platformFamilies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "platforms_platform_logo_platformLogos_igdb_id_fk": {
           "name": "platforms_platform_logo_platformLogos_igdb_id_fk",
           "tableFrom": "platforms",
+          "tableTo": "platformLogos",
           "columnsFrom": [
             "platform_logo"
           ],
-          "tableTo": "platformLogos",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "platforms_versions_platformVersions_igdb_id_fk": {
           "name": "platforms_versions_platformVersions_igdb_id_fk",
           "tableFrom": "platforms",
+          "tableTo": "platformVersions",
           "columnsFrom": [
             "versions"
           ],
-          "tableTo": "platformVersions",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "platforms_websites_platformWebsites_igdb_id_fk": {
           "name": "platforms_websites_platformWebsites_igdb_id_fk",
           "tableFrom": "platforms",
+          "tableTo": "platformWebsites",
           "columnsFrom": [
             "websites"
           ],
-          "tableTo": "platformWebsites",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platformVersionCompanies": {
       "name": "platformVersionCompanies",
@@ -3502,19 +3539,20 @@
         "platformVersionCompanies_company_companies_igdb_id_fk": {
           "name": "platformVersionCompanies_company_companies_igdb_id_fk",
           "tableFrom": "platformVersionCompanies",
+          "tableTo": "companies",
           "columnsFrom": [
             "company"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platformVersionReleaseDates": {
       "name": "platformVersionReleaseDates",
@@ -3608,19 +3646,20 @@
         "platformVersionReleaseDates_platform_version_platformVersions_igdb_id_fk": {
           "name": "platformVersionReleaseDates_platform_version_platformVersions_igdb_id_fk",
           "tableFrom": "platformVersionReleaseDates",
+          "tableTo": "platformVersions",
           "columnsFrom": [
             "platform_version"
           ],
-          "tableTo": "platformVersions",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platformVersions": {
       "name": "platformVersions",
@@ -3766,32 +3805,33 @@
         "platformVersions_main_manufacturer_platformVersionCompanies_igdb_id_fk": {
           "name": "platformVersions_main_manufacturer_platformVersionCompanies_igdb_id_fk",
           "tableFrom": "platformVersions",
+          "tableTo": "platformVersionCompanies",
           "columnsFrom": [
             "main_manufacturer"
           ],
-          "tableTo": "platformVersionCompanies",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "platformVersions_platform_logo_platformLogos_igdb_id_fk": {
           "name": "platformVersions_platform_logo_platformLogos_igdb_id_fk",
           "tableFrom": "platformVersions",
+          "tableTo": "platformLogos",
           "columnsFrom": [
             "platform_logo"
           ],
-          "tableTo": "platformLogos",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.platformWebsites": {
       "name": "platformWebsites",
@@ -3846,7 +3886,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.playerPerspectives": {
       "name": "playerPerspectives",
@@ -3912,7 +3953,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.popularityPrimitives": {
       "name": "popularityPrimitives",
@@ -3993,32 +4035,33 @@
         "popularityPrimitives_game_id_games_igdb_id_fk": {
           "name": "popularityPrimitives_game_id_games_igdb_id_fk",
           "tableFrom": "popularityPrimitives",
+          "tableTo": "games",
           "columnsFrom": [
             "game_id"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "popularityPrimitives_popularity_type_popularityTypes_igdb_id_fk": {
           "name": "popularityPrimitives_popularity_type_popularityTypes_igdb_id_fk",
           "tableFrom": "popularityPrimitives",
+          "tableTo": "popularityTypes",
           "columnsFrom": [
             "popularity_type"
           ],
-          "tableTo": "popularityTypes",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.popularityTypes": {
       "name": "popularityTypes",
@@ -4079,7 +4122,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.regions": {
       "name": "regions",
@@ -4145,7 +4189,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.releaseDates": {
       "name": "releaseDates",
@@ -4251,45 +4296,46 @@
         "releaseDates_game_games_igdb_id_fk": {
           "name": "releaseDates_game_games_igdb_id_fk",
           "tableFrom": "releaseDates",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "releaseDates_platform_platforms_igdb_id_fk": {
           "name": "releaseDates_platform_platforms_igdb_id_fk",
           "tableFrom": "releaseDates",
+          "tableTo": "platforms",
           "columnsFrom": [
             "platform"
           ],
-          "tableTo": "platforms",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "releaseDates_status_releaseDateStatuses_igdb_id_fk": {
           "name": "releaseDates_status_releaseDateStatuses_igdb_id_fk",
           "tableFrom": "releaseDates",
+          "tableTo": "releaseDateStatuses",
           "columnsFrom": [
             "status"
           ],
-          "tableTo": "releaseDateStatuses",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.releaseDateStatuses": {
       "name": "releaseDateStatuses",
@@ -4349,7 +4395,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.screenshots": {
       "name": "screenshots",
@@ -4429,19 +4476,20 @@
         "screenshots_game_games_igdb_id_fk": {
           "name": "screenshots_game_games_igdb_id_fk",
           "tableFrom": "screenshots",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.websites": {
       "name": "websites",
@@ -4504,19 +4552,81 @@
         "websites_game_games_igdb_id_fk": {
           "name": "websites_game_games_igdb_id_fk",
           "tableFrom": "websites",
+          "tableTo": "games",
           "columnsFrom": [
             "game"
           ],
-          "tableTo": "games",
           "columnsTo": [
             "igdb_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "users_user_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1000",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "checkConstraints": {}
     }
   },
   "enums": {
@@ -4886,12 +4996,11 @@
     }
   },
   "schemas": {},
+  "sequences": {},
+  "views": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "721ad4e7-011d-43df-be22-2d2a2826a547",
-  "prevId": "e994d38e-4271-4aac-969e-c1287c8a9850",
-  "sequences": {}
+    "tables": {}
+  }
 }
