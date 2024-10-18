@@ -37,6 +37,7 @@ export class AppController {
   async login(@Request() req) {
     return this.authService.getTokens(req.user);
   }
+
   @UseGuards(AuthGuard('jwt-refresh'))
   @Get('logout')
   async logout(@Request() req) {
