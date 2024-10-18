@@ -9,11 +9,9 @@ import { JwtStrategy } from './strategies/local/jwt.strategy';
 import { LocalService } from './strategies/local/local.service';
 import { LocalStrategy } from './strategies/local/local.strategy';
 import { RefreshTokenStrategy } from './strategies/local/refreshToken.strategy';
-import { SteamService } from './strategies/steam/steam.service';
-import { SteamStrategy } from './strategies/steam/steam.strategy';
 
 @Module({
-  exports: [PassportModule],
+  exports: [PassportModule, AuthService, LocalService],
   imports: [
     PassportModule.register({ session: true }),
     JwtModule.register({
@@ -21,8 +19,6 @@ import { SteamStrategy } from './strategies/steam/steam.strategy';
     }),
   ],
   providers: [
-    SteamService,
-    SteamStrategy,
     SessionSerializer,
     LocalStrategy,
     LocalService,
