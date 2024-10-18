@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
 
+import { AuthService } from './auth.service';
 import { SessionSerializer } from './session.serializer';
 import { JwtStrategy } from './strategies/local/jwt.strategy';
 import { LocalService } from './strategies/local/local.service';
@@ -28,6 +29,7 @@ import { SteamStrategy } from './strategies/steam/steam.strategy';
     UsersService,
     JwtStrategy,
     RefreshTokenStrategy,
+    AuthService,
   ],
 })
 export class AuthModule {}

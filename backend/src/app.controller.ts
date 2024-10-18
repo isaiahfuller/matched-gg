@@ -9,6 +9,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
 import { LocalService } from './auth/strategies/local/local.service';
 
 @Controller()
@@ -17,6 +18,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private localService: LocalService,
+    private readonly authService: AuthService,
   ) {}
 
   @Get()
@@ -33,12 +35,12 @@ export class AppController {
   @UseGuards(AuthGuard('local'))
   @Post('local/auth/login')
   async login(@Request() req) {
-    return this.localService.login(req.user);
+    return this.authService.getTokens(req.user);
   }
   @UseGuards(AuthGuard('jwt-refresh'))
   @Get('logout')
   async logout(@Request() req) {
-    this.localService.logout(req.user.sub);
+    this.authService.logout(req.user.sub);
   }
 
   @Post('/local/auth/signup')
