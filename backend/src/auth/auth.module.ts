@@ -11,7 +11,7 @@ import { LocalStrategy } from './strategies/local/local.strategy';
 import { RefreshTokenStrategy } from './strategies/local/refreshToken.strategy';
 
 @Module({
-  exports: [PassportModule, AuthService, LocalService],
+  exports: [PassportModule, AuthService, LocalService, UsersService],
   imports: [
     PassportModule.register({ session: true }),
     JwtModule.register({

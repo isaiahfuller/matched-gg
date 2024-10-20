@@ -1,17 +1,23 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class SteamService {
-  constructor() {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   async validateUser(identifier, profile, done) {
+    let err: UnauthorizedException | null = null;
     if (!identifier) {
-      throw new UnauthorizedException();
+      err = new UnauthorizedException();
     }
 
     if (!profile) {
-      throw new UnauthorizedException();
+      err = new UnauthorizedException();
     }
-    done(null, profile);
+    done(err, profile);
   }
 }

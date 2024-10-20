@@ -1,6 +1,9 @@
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import { bigint, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const usersTable = pgTable('users', {
+import { steamProfiles } from './steamProfiles';
+
+export const users = pgTable('users', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   email: text('email').notNull().unique(),
   id: integer('user_id')
@@ -9,7 +12,17 @@ export const usersTable = pgTable('users', {
   name: text('name').notNull(),
   password: text('password').notNull(),
   refreshToken: text('refresh_token'),
+  steamId: bigint('steam_id', { mode: 'number' }).references(
+    () => steamProfiles.steamId,
+  ),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
-export type Users = typeof usersTable.$inferInsert;
+export const usersRelations = relations(users, ({ one }) => ({
+  steamProfile: one(steamProfiles, {
+    fields: [users.steamId],
+    references: [steamProfiles.steamId],
+  }),
+}));
+
+export type Users = typeof users.$inferInsert;

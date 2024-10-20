@@ -17,7 +17,7 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
 
   public successRedirect: string = this.options['successRedirect'];
   constructor(
-    private authService: SteamService,
+    private steamService: SteamService,
     private options: AuthModuleOptions,
   ) {
     super(
@@ -37,7 +37,11 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
   }
 
   async validate(identifier: string, profile: SteamProfile, done: DoneFn) {
-    const user = await this.authService.validateUser(identifier, profile, done);
+    const user = await this.steamService.validateUser(
+      identifier,
+      profile,
+      done,
+    );
     return user;
   }
 }

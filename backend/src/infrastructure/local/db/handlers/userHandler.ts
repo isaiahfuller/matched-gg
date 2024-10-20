@@ -2,47 +2,48 @@ import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { client } from 'src/db/db';
 
-import { Users, usersTable } from '../schema/users';
+import { Users, users } from '../schema/users';
 
 export default class UserHandler {
   db;
   constructor() {
-    this.db = drizzle(client, { schema: { usersTable } });
+    this.db = drizzle(client, { schema: { users } });
   }
 
   async addNewUser({ email, name, password }: Users) {
-    return this.db
-      .insert(usersTable)
-      .values({ email, name, password })
-      .returning({
-        createdAt: usersTable.createdAt,
-        email: usersTable.email,
-        id: usersTable.id,
-        name: usersTable.name,
-        updatedAt: usersTable.updatedAt,
-      });
+    return this.db.insert(users).values({ email, name, password }).returning({
+      createdAt: users.createdAt,
+      email: users.email,
+      id: users.id,
+      name: users.name,
+      updatedAt: users.updatedAt,
+    });
   }
   async deleteUser(email) {
-    await this.db
-      .delete(usersTable)
-      .where(eq(usersTable.email, email))
-      .returning({
-        email: usersTable.email,
-        name: usersTable.name,
-        password: usersTable.password,
-      });
+    await this.db.delete(users).where(eq(users.email, email)).returning({
+      email: users.email,
+      name: users.name,
+      password: users.password,
+    });
   }
 
   async findById(id: number) {
-    const result = await this.db.query.usersTable.findFirst({
-      where: (usersTable, { eq }) => eq(usersTable.id, id),
+    const result = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.id, id),
+    });
+    return result;
+  }
+
+  async findBySteamId(id: number) {
+    const result = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.steamId, id),
     });
     return result;
   }
 
   async findOneByEmail(email: string) {
-    const result = await this.db.query.usersTable.findFirst({
-      where: (usersTable, { eq }) => eq(usersTable.email, email),
+    const result = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
     });
     return result;
   }
@@ -61,13 +62,13 @@ export default class UserHandler {
     updatedUser.refreshToken = refreshToken;
     updatedUser.updatedAt = new Date();
     await this.db
-      .update(usersTable)
+      .update(users)
       .set(updatedUser)
-      .where(eq(usersTable.id, id))
+      .where(eq(users.id, id))
       .returning({
-        email: usersTable.email,
-        name: usersTable.name,
-        refreshToken: usersTable.refreshToken,
+        email: users.email,
+        name: users.name,
+        refreshToken: users.refreshToken,
       });
   }
 }
