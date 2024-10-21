@@ -1,4 +1,7 @@
 import { bigint, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm/relations';
+
+import { ageRatingsTable } from './ageRatings';
 
 export const AgeRatingCDCategoryPGEnum = pgEnum('AgeRatingCDCategoryEnum', [
   '',
@@ -99,6 +102,13 @@ export const ageRatingCDsTable = pgTable('age_rating_content_descriptions', {
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
+
+export const ageRatingCDsRelations = relations(
+  ageRatingCDsTable,
+  ({ one }) => ({
+    ageRating: one(ageRatingsTable),
+  }),
+);
 
 export type AgeRatingContentDescriptions =
   typeof ageRatingCDsTable.$inferInsert;
