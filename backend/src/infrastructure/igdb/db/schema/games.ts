@@ -10,9 +10,29 @@ import {
   timestamp,
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm/relations';
 
-import { coverTable } from './artworks';
+import { ageRatingsTable } from './ageRatings';
+import { alternativeNamesTable } from './alternativeNames';
+import { artworksTable, coverTable } from './artworks';
+import { collectionsTable } from './collections';
+import { externalGamesTable } from './externalGame';
 import { franchisesTable } from './franchise';
+import { gameEnginesTable } from './gameEngines';
+import { gameLocalizationsTable } from './gameLocalizations';
+import { gameModeTable } from './gameMode';
+import { gameVideosTable } from './gameVideos';
+import { genresTable } from './genres';
+import { involvedCompaniesTable } from './involvedCompanies';
+import { keywordsTable } from './keywords';
+import { languageSupportsTable } from './languageSupport';
+import { multiplayerModesTable } from './multiplayerModes';
+import { platformsTable } from './platforms';
+import { playerPerspectivesTable } from './playerPerspectives';
+import { releaseDatesTable } from './releaseDates';
+import { screenshotsTable } from './screenshots';
+import { themesTable } from './themes';
+import { websitesTable } from './websites';
 
 // declaring enum in database
 export const GameCategoryPGEnum = pgEnum('GameCategoryEnum', [
@@ -128,5 +148,42 @@ export const gamesTable = pgTable(
     };
   },
 );
+
+export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
+  ageRatings: many(ageRatingsTable),
+  alternativeNames: many(alternativeNamesTable),
+  artworks: many(artworksTable),
+  bundles: many(gamesTable),
+  collections: many(collectionsTable),
+  dlcs: many(gamesTable),
+  expanded_games: many(gamesTable),
+  expansions: many(gamesTable),
+  externalGames: many(externalGamesTable),
+  forks: many(gamesTable),
+  franchise: one(franchisesTable),
+  franchises: many(franchisesTable),
+  gameEngines: many(gameEnginesTable),
+  gameLocalizations: many(gameLocalizationsTable),
+  gameModes: many(gameModeTable),
+  genres: many(genresTable),
+  involvedCompanies: many(involvedCompaniesTable),
+  keywords: many(keywordsTable),
+  languageSupports: many(languageSupportsTable),
+  multiplayerModes: many(multiplayerModesTable),
+  parentGame: one(gamesTable),
+  platforms: many(platformsTable),
+  playerPerspectives: many(playerPerspectivesTable),
+  ports: many(gamesTable),
+  releaseDates: many(releaseDatesTable),
+  remakes: many(gamesTable),
+  remasters: many(gamesTable),
+  screenshots: many(screenshotsTable),
+  similarGames: many(gamesTable),
+  standaloneExpansions: many(gamesTable),
+  themes: many(themesTable),
+  versionParent: one(gamesTable),
+  videos: many(gameVideosTable),
+  websites: many(websitesTable),
+}));
 
 export type Games = typeof gamesTable.$inferInsert;
