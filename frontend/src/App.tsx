@@ -29,13 +29,7 @@ import Recommendations from "./components/Recommendations/Recommendations";
 import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
 
-function Pages({
-  page,
-  changePage,
-}: {
-  page: string;
-  changePage: (e: unknown, idx: string) => void;
-}) {
+function Pages({ page }: { page: string }) {
   switch (page) {
     case "recommendations":
       return <Recommendations />;
@@ -43,9 +37,10 @@ function Pages({
       return <Text>Previously recommended</Text>;
     case "sync":
       return <Text>Sync your libraries</Text>;
+    case "signup":
     case "login":
     default:
-      return <Login changePage={changePage} />;
+      return <Login initSignup={page === "signup"} />;
   }
 }
 interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
@@ -223,7 +218,7 @@ function App() {
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
         {["login", "signup"].includes(page) ? null : <Search />}
-        <Pages page={page} changePage={handleClick} />
+        <Pages page={page} />
       </AppShell.Main>
     </AppShell>
   );

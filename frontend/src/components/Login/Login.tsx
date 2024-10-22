@@ -25,8 +25,8 @@ import { useViewportSize } from "@mantine/hooks";
 import { matches, useForm } from "@mantine/form";
 import { useState } from "react";
 
-export default function Login() {
-  const [signup, setSignup] = useState(false);
+export default function Login({ initSignup }: { initSignup: boolean }) {
+  const [signup, setSignup] = useState(initSignup);
   const { width, height } = useViewportSize();
 
   const form = useForm({
@@ -50,13 +50,12 @@ export default function Login() {
         /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])(?=.*?.).{8,}$/m,
         "Invalid password"
       ),
-      passwordConfirm: (value) =>
+      passwordConfirm: (value: string): string | null =>
         value === form.getValues().password ? null : "Passwords do not match",
     },
   });
 
   async function handleSubmit() {
-    console.log(form.getValues());
     const { name, email, password } = form.getValues();
     const body = JSON.stringify({
       user: {
@@ -65,19 +64,18 @@ export default function Login() {
         password: password,
       },
     });
-    console.log(body);
     // works
-    // if (signup) {
-    //   const res = await fetch("/local/auth/signup", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body,
-    //   });
-    //   const ret = await res.json();
-    //   console.log(ret);
-    // }
+    if (signup) {
+      const res = await fetch("/local/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+      const ret = await res.json();
+      console.log(ret);
+    }
   }
 
   return (
