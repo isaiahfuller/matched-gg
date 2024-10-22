@@ -29,16 +29,23 @@ import Recommendations from "./components/Recommendations/Recommendations";
 import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
 
-function Pages({ page }: { page: number }) {
+function Pages({
+  page,
+  changePage,
+}: {
+  page: string;
+  changePage: (e: unknown, idx: string) => void;
+}) {
   switch (page) {
-    case 1:
+    case "recommendations":
       return <Recommendations />;
-    case 2:
+    case "previous":
       return <Text>Previously recommended</Text>;
-    case 3:
+    case "sync":
       return <Text>Sync your libraries</Text>;
+    case "login":
     default:
-      return <Login />;
+      return <Login changePage={changePage} />;
   }
 }
 interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
@@ -81,12 +88,13 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState("login");
   const [_profile, setProfile] = useState(null);
   const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
 
   useEffect(() => {
+    console.log(page, ["login", "signup"].includes(page));
     fetch("steam/valid", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -98,12 +106,12 @@ function App() {
           setProfile(res);
           localStorage.setItem("steam-profile", JSON.stringify(res));
           setIsLoggedIn(true);
-          setPage(1);
+          setPage("recommendations");
         }
       });
   }, []);
 
-  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: number) {
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
     setPage(idx);
   }
@@ -144,31 +152,31 @@ function App() {
           ) : null}
           <Stack h="100%" justify="center" p={8}>
             <NavLink
-              disabled={page === 0 ? true : false}
+              disabled={["login", "signup"].includes(page)}
               href="#"
               label="Recommendations"
-              onClick={(e) => handleClick(e, 1)}
+              onClick={(e) => handleClick(e, "recommendations")}
               rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
-              active={page === 1}
+              active={page === "recommendations"}
             />
             <NavLink
-              disabled={page === 0 ? true : false}
+              disabled={["login", "signup"].includes(page)}
               href="#"
               label="Previously recommended"
-              onClick={(e) => handleClick(e, 2)}
+              onClick={(e) => handleClick(e, "previous")}
               rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faThumbsUp} />}
-              active={page === 2}
+              active={page === "previous"}
             />
             <NavLink
-              disabled={page === 0 ? true : false}
+              disabled={["login", "signup"].includes(page)}
               href="#"
               label="Sync your libraries"
-              onClick={(e) => handleClick(e, 3)}
+              onClick={(e) => handleClick(e, "sync")}
               rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
-              active={page === 3}
+              active={page === "sync"}
             />
           </Stack>
           <Divider />
@@ -176,7 +184,7 @@ function App() {
             {isLoggedIn ? (
               <Menu
                 position={width < 768 ? "top" : "left-end"}
-                disabled={page === 0 ? true : false}
+                disabled={page === "login" ? true : false}
                 offset={28}
               >
                 <Menu.Target>
@@ -204,7 +212,7 @@ function App() {
               </Menu>
             ) : (
               <NavLink
-                disabled={page === 0 ? true : false}
+                disabled={["login", "signup"].includes(page)}
                 href="/steam/auth"
                 label="Logged out"
                 leftSection={<FontAwesomeIcon icon={faUser} />}
@@ -214,8 +222,8 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
-        {page !== 0 ? <Search /> : null}
-        <Pages page={page} />
+        {["login", "signup"].includes(page) ? null : <Search />}
+        <Pages page={page} changePage={handleClick} />
       </AppShell.Main>
     </AppShell>
   );
