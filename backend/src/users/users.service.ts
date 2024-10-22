@@ -30,6 +30,10 @@ export class UsersService {
     return await this.userHandler.findById(id);
   }
 
+  async findBySteamId(id) {
+    return await this.userHandler.findBySteamId(id);
+  }
+
   async findOne(email: string): Promise<User | undefined> {
     const res = await this.userHandler.findOneByEmail(email);
     return res;

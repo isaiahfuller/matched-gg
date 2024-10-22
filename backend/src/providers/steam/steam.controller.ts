@@ -9,10 +9,13 @@ import {
   Req,
   Res,
   Session,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
 import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
+import { UsersService } from 'src/users/users.service';
 
 import { SteamService } from '../../auth/strategies/steam/steam.service';
 import { SteamAuthResponse } from './types';
@@ -21,7 +24,11 @@ import { SteamAuthResponse } from './types';
 export class SteamController {
   private logger = new Logger(SteamController.name);
   private steamHandler = new SteamHandler(config);
-  constructor(private readonly authService: SteamService) {}
+  constructor(
+    private readonly steamService: SteamService,
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {
@@ -33,8 +40,8 @@ export class SteamController {
     return achivements;
   }
 
-  @Get('auth') // TODO: Change to Post when front-end is implemented
   @UseGuards(AuthGuard('steam'))
+  @Get('auth') // TODO: Change to Post when front-end is implemented
   @HttpCode(HttpStatus.OK)
   /**
    * @remarks this is never called due to the authguard sending user to the return route
@@ -49,14 +56,21 @@ export class SteamController {
     res.send(games.games);
     return games;
   }
-  @Get('auth/return')
+
   @UseGuards(AuthGuard('steam'))
+  @Get('auth/return')
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
     if (!('providers' in session)) session.providers = {};
-    session.providers.steam = req.user._json;
-    // TODO: Stop hardcoding the redirect URL
-    res.redirect('http://localhost:5173/');
-    return;
+    try {
+      const user = await this.usersService.findBySteamId(req.user.id);
+      if (!user) throw new UnauthorizedException('Steam account not linked');
+      session.providers.steam = req.user._json;
+    } catch (e) {
+      session.providers.steam = { error: 'Steam account not linked' };
+    } finally {
+      // TODO: Stop hardcoding the redirect URL
+      res.redirect('http://localhost:5173/');
+    }
   }
 
   @Post('valid')

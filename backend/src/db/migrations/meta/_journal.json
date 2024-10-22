@@ -50,6 +50,20 @@
       "when": 1729187152452,
       "tag": "0006_far_morgan_stark",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1729441012107,
+      "tag": "0007_small_smasher",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1729441183030,
+      "tag": "0008_windy_moon_knight",
+      "breakpoints": true
     }
   ]
 }

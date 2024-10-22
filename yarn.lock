@@ -1427,13 +1427,16 @@ __metadata:
     "@fortawesome/react-fontawesome": "npm:^0.2.0"
     "@mantine/carousel": "npm:^7.8.1"
     "@mantine/charts": "npm:^7.8.1"
+    "@mantine/colors-generator": "npm:^7.13.2"
     "@mantine/core": "npm:^7.8.1"
+    "@mantine/form": "npm:^7.13.3"
     "@mantine/hooks": "npm:^7.8.1"
     "@types/react": "npm:^18.2.73"
     "@types/react-dom": "npm:^18.2.23"
     "@typescript-eslint/eslint-plugin": "npm:^7.4.0"
     "@typescript-eslint/parser": "npm:^7.4.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
+    chroma-js: "npm:^3.1.1"
     embla-carousel-react: "npm:^8.0.2"
     eslint: "npm:^8.57.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
@@ -1867,6 +1870,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/colors-generator@npm:^7.13.2":
+  version: 7.13.2
+  resolution: "@mantine/colors-generator@npm:7.13.2"
+  peerDependencies:
+    chroma-js: ">=2.4.2"
+  checksum: 10c0/b9f7bfb40588c2decf72601c5577eb46887b679bf20f039f4af8cd067c48948ea721be6754dc8394de949208fdf9d919db158a78ecca68e50d01b0fa3ca15682
+  languageName: node
+  linkType: hard
+
 "@mantine/core@npm:^7.8.1":
   version: 7.8.1
   resolution: "@mantine/core@npm:7.8.1"
@@ -1882,6 +1894,18 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
   checksum: 10c0/14f7197c63438fd5144543830249c47038b4cec7941f2ef138f59b6e252f3b93e3db8593107ca28409d2dd47870820e5ddd310f139f5198a1ce4f6952db6b349
+  languageName: node
+  linkType: hard
+
+"@mantine/form@npm:^7.13.3":
+  version: 7.13.3
+  resolution: "@mantine/form@npm:7.13.3"
+  dependencies:
+    fast-deep-equal: "npm:^3.1.3"
+    klona: "npm:^2.0.6"
+  peerDependencies:
+    react: ^18.2.0
+  checksum: 10c0/609a04a50b9ca6a853ccb808f4ee737a8338db88f46ac15112fd7ad3bc48a218302d7f51313e887d729bc7b28d453af2f07e71ce9ccc0d42421dcd7e91507f08
   languageName: node
   linkType: hard
 
@@ -4061,6 +4085,13 @@ __metadata:
   version: 2.0.0
   resolution: "chownr@npm:2.0.0"
   checksum: 10c0/594754e1303672171cc04e50f6c398ae16128eb134a88f801bf5354fd96f205320f23536a045d9abd8b51024a149696e51231565891d4efdab8846021ecf88e6
+  languageName: node
+  linkType: hard
+
+"chroma-js@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "chroma-js@npm:3.1.1"
+  checksum: 10c0/fb5e3cd958a954b8cd44017f70aff42ae37bc561cdcea0ebeeb6d2df5989e7402e02c674274af2eefd1478ee172e05ce51ac353e3cbe1db139f599b338523339
   languageName: node
   linkType: hard
 
@@ -7545,6 +7576,13 @@ __metadata:
   version: 3.0.3
   resolution: "kleur@npm:3.0.3"
   checksum: 10c0/cd3a0b8878e7d6d3799e54340efe3591ca787d9f95f109f28129bdd2915e37807bf8918bb295ab86afb8c82196beec5a1adcaf29042ce3f2bd932b038fe3aa4b
+  languageName: node
+  linkType: hard
+
+"klona@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "klona@npm:2.0.6"
+  checksum: 10c0/94eed2c6c2ce99f409df9186a96340558897b3e62a85afdc1ee39103954d2ebe1c1c4e9fe2b0952771771fa96d70055ede8b27962a7021406374fdb695fd4d01
   languageName: node
   linkType: hard
 

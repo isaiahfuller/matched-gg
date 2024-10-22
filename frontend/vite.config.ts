@@ -11,6 +11,11 @@ export default defineConfig({
         changeOrigin: false,
         secure: false,
       },
+      "/local": {
+        target: "http://localhost:3000/",
+        changeOrigin: false,
+        secure: false,
+      },
       "/steam": {
         target: "http://localhost:3000/",
         changeOrigin: false,
