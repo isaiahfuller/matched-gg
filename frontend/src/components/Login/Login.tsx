@@ -57,16 +57,29 @@ export default function Login({ initSignup }: { initSignup: boolean }) {
 
   async function handleSubmit() {
     const { name, email, password } = form.getValues();
-    const body = JSON.stringify({
-      user: {
-        email: email,
-        name: name,
-        password: password,
-      },
-    });
-    // works
     if (signup) {
+      const body = JSON.stringify({
+        user: {
+          email: email,
+          name: name,
+          password: password,
+        },
+      });
       const res = await fetch("/local/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+      const ret = await res.json();
+      console.log(ret);
+    } else {
+      const body = JSON.stringify({
+        username: email,
+        password: password,
+      });
+      const res = await fetch("/local/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

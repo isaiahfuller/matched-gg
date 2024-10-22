@@ -4,6 +4,7 @@ import {
   Logger,
   Post,
   Request,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -34,8 +35,14 @@ export class AppController {
 
   @UseGuards(AuthGuard('local'))
   @Post('local/auth/login')
-  async login(@Request() req) {
-    return this.authService.getTokens(req.user);
+  async login(@Request() req, @Session() session) {
+    const tokens = await this.authService.getTokens(req.user);
+    // if (tokens) {
+    //   session['access_token'] = tokens.access_token;
+    //   session['refresh_token'] = tokens.access_token;
+    // }
+    // console.log(session);
+    return tokens;
   }
 
   @UseGuards(AuthGuard('jwt-refresh'))
@@ -45,7 +52,13 @@ export class AppController {
   }
 
   @Post('/local/auth/signup')
-  async signup(@Request() req) {
-    return this.localService.signup(req.body.user);
+  async signup(@Request() req, @Session() session) {
+    const tokens = await this.localService.signup(req.body.user);
+    // if (tokens) {
+    //   session['access_token'] = tokens.access_token;
+    //   session['refresh_token'] = tokens.access_token;
+    // }
+    // console.log(session);
+    return tokens;
   }
 }
