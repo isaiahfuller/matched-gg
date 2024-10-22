@@ -103,7 +103,7 @@ export interface IGDBInvolvedCompany extends IGDBGeneric {
   supporting: boolean;
 }
 
-interface IGDBPlatform extends IGDBGeneric {
+export interface IGDBPlatform extends IGDBGeneric {
   abbreviation: string;
   alternative_name: string;
   category: number;
