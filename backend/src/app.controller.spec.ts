@@ -7,6 +7,15 @@ import { AuthService } from './auth/auth.service';
 import { LocalService } from './auth/strategies/local/local.service';
 import { UsersService } from './users/users.service';
 
+jest.mock('pg', () => {
+  const mockClient = {
+    connect: jest.fn(),
+    end: jest.fn(),
+    query: jest.fn(),
+  };
+  return { Client: jest.fn(() => mockClient), Pool: jest.fn(() => mockClient) };
+});
+
 describe('AppController', () => {
   let appController: AppController;
 
