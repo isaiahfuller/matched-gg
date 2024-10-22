@@ -103,7 +103,8 @@
       "<rootDir>/../"
     ],
     "moduleNameMapper": {
-      "^@config/(.*)$": "<rootDir>/../src/config/__mocks__/$1"
+      "^@config/(.*)$": "<rootDir>/../src/config/__mocks__/$1",
+      "^@util/(.*)$": "<rootDir>/../src/util/__mocks__/$1"
     }
   }
 }
