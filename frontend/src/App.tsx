@@ -243,6 +243,7 @@ function App() {
                       width={width < 768 ? width - 28 : 222}
                     />
                   )}
+
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Item onClick={getGames}>owned</Menu.Item>

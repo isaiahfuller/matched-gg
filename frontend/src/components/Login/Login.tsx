@@ -185,6 +185,7 @@ export default function Login({ initSignup, setTokens }: LoginProps) {
                 {...form.getInputProps("name")}
               />
             ) : null}
+
             <TextInput
               label="Email"
               withAsterisk
