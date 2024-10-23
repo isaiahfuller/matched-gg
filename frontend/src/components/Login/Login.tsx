@@ -101,6 +101,7 @@ export default function Login({ initSignup, setTokens }: LoginProps) {
       newTokens = { ...ret };
     }
     setTokens(newTokens);
+    localStorage.setItem("tokens", JSON.stringify(newTokens));
   }
 
   return (

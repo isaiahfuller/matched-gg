@@ -91,6 +91,44 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   )
 );
 
+function refreshAccessToken(
+  refreshToken: string,
+  isLoggedIn: boolean,
+  setIsLoggedIn: (arg: boolean) => void,
+  setTokens: (arg: Tokens) => void,
+  setPage: (arg: string) => void
+) {
+  const opt = {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+      "Content-Type": "application/json",
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+      }),
+    },
+  };
+  fetch("auth/refresh", opt)
+    .then((r) => {
+      if (![200, 201].includes(r.status)) {
+        throw new Error(r.status + "");
+      }
+      return r.json();
+    })
+    .then((res) => {
+      localStorage.setItem("tokens", JSON.stringify(res));
+      setTokens(res);
+      if (!isLoggedIn) {
+        setIsLoggedIn(true);
+      }
+    })
+    .catch(() => {
+      setIsLoggedIn(false);
+      setTokens({ access_token: "", refresh_token: "" });
+      localStorage.clear();
+      setPage("login");
+    });
+}
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>({
@@ -103,56 +141,76 @@ function App() {
   });
   const [gravatarUrl, setGravatarUrl] = useState("");
   const [page, setPage] = useState("login");
-  const { width } = useViewportSize();
+  const [loading, setLoading] = useState(true);
+  const { width, height } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
-  const [tokens, setTokens] = useState<Tokens>(
-    JSON.parse(localStorage.getItem("tokens")!) || {
-      access_token: "",
-      refresh_token: "",
-    }
-  );
-
-  // useEffect(() => {
-  //   if (tokens.refresh_token.length) {
-  //     const opt = {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization: `Bearer ${tokens.refresh_token}`,
-  //         "Content-Type": "application/json",
-  //         body: JSON.stringify({
-  //           refresh_token: tokens.refresh_token,
-  //         }),
-  //       },
-  //     };
-  //     fetch("auth/refresh", opt)
-  //       .then((r) => r.json())
-  //       .then((res) => {
-  //         localStorage.setItem("tokens", JSON.stringify(res));
-  //         setTokens(res);
-  //       });
-  //   }
-  // }, [page]);
+  const [tokens, setTokens] = useState<Tokens>(() => {
+    if (localStorage.getItem("tokens"))
+      return (
+        JSON.parse(localStorage.getItem("tokens")!) || {
+          access_token: "",
+          refresh_token: "",
+        }
+      );
+  });
 
   useEffect(() => {
-    if (tokens && tokens.access_token) {
-      setIsLoggedIn(true);
-      if (page === "login") setPage("recommendations");
+    if (tokens && tokens.access_token.length) {
       const opt = {
         method: "POST",
         headers: {
           Authorization: `Bearer ${tokens.access_token}`,
         },
       };
-      fetch("profile", opt)
-        .then((r) => r.json())
-        .then((res) => {
-          setUser(res);
-          generateSHA256Hash(res.email).then((hash) => {
-            setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
-          });
+      fetch("/verify", opt)
+        .then((r) => {
+          if (![200, 201].includes(r.status)) {
+            throw new Error(r.status + "");
+          }
+          return r.json();
+        })
+        .then(() => {
+          fetch("profile", opt)
+            .then((r) => {
+              if (![200, 201].includes(r.status)) {
+                throw new Error(r.status + "");
+              }
+              return r.json();
+            })
+            .then((res) => {
+              setIsLoggedIn(true);
+              setUser(res);
+              generateSHA256Hash(res.email).then((hash) => {
+                setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
+              });
+              if (page === "login") setPage("recommendations");
+            })
+            .catch(() => {
+              refreshAccessToken(
+                tokens.refresh_token,
+                isLoggedIn,
+                setIsLoggedIn,
+                setTokens,
+                setPage
+              );
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        })
+        .catch(() => {
+          refreshAccessToken(
+            tokens.refresh_token,
+            isLoggedIn,
+            setIsLoggedIn,
+            setTokens,
+            setPage
+          );
         });
+    } else {
+      setLoading(false);
     }
-  }, [tokens, page]);
+  }, [tokens, page, isLoggedIn]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
@@ -163,7 +221,12 @@ function App() {
     const games = await fetch("/steam/getOwnedGames");
     console.log(await games.json());
   }
-
+  if (loading)
+    return (
+      <Center h={height}>
+        <Loader />
+      </Center>
+    );
   return (
     <AppShell
       navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}

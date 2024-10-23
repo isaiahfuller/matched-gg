@@ -11,6 +11,11 @@ export default defineConfig({
         changeOrigin: false,
         secure: false,
       },
+      "/verify": {
+        target: "http://localhost:3000/",
+        changeOrigin: false,
+        secure: false,
+      },
       "/auth": {
         target: "http://localhost:3000/",
         changeOrigin: false,

@@ -31,6 +31,7 @@ export class AuthService {
   async logout(id: number) {
     return this.usersService.update({ id, refreshToken: null });
   }
+
   async refreshTokens(id: number, refreshToken: string) {
     const user = await this.usersService.findById(id);
     if (!user || !user.refreshToken) return null;

@@ -27,7 +27,7 @@ export class AppController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('profile')
-  getProfile(@Request() req, @Session() session) {
+  getProfile(@Session() session) {
     const send = { ...session.user };
     delete send.refreshToken;
     return send;
@@ -41,11 +41,17 @@ export class AppController {
 
   @UseGuards(AuthGuard('jwt-refresh'))
   @Post('auth/refresh')
-  async refreshTokens(@Request() req, @Session() session) {
+  async refreshTokens(@Request() req) {
     const res = await this.authService.refreshTokens(
-      session.user.id,
+      req.user.sub,
       req.user.refreshToken,
     );
     return res;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('verify')
+  async verify() {
+    return { valid: true };
   }
 }
