@@ -112,26 +112,26 @@ function App() {
     }
   );
 
-  useEffect(() => {
-    if (tokens.refresh_token.length) {
-      const opt = {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${tokens.refresh_token}`,
-          "Content-Type": "application/json",
-          body: JSON.stringify({
-            refresh_token: tokens.refresh_token,
-          }),
-        },
-      };
-      fetch("auth/refresh", opt)
-        .then((r) => r.json())
-        .then((res) => {
-          localStorage.setItem("tokens", JSON.stringify(res));
-          setTokens(res);
-        });
-    }
-  }, [page]);
+  // useEffect(() => {
+  //   if (tokens.refresh_token.length) {
+  //     const opt = {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${tokens.refresh_token}`,
+  //         "Content-Type": "application/json",
+  //         body: JSON.stringify({
+  //           refresh_token: tokens.refresh_token,
+  //         }),
+  //       },
+  //     };
+  //     fetch("auth/refresh", opt)
+  //       .then((r) => r.json())
+  //       .then((res) => {
+  //         localStorage.setItem("tokens", JSON.stringify(res));
+  //         setTokens(res);
+  //       });
+  //   }
+  // }, [page]);
 
   useEffect(() => {
     if (tokens && tokens.access_token) {
@@ -152,7 +152,7 @@ function App() {
           });
         });
     }
-  }, [tokens]);
+  }, [tokens, page]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
@@ -243,7 +243,6 @@ function App() {
                       width={width < 768 ? width - 28 : 222}
                     />
                   )}
-
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Item onClick={getGames}>owned</Menu.Item>
