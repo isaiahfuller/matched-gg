@@ -14,6 +14,7 @@ import {
   Stack,
   Text,
   UnstyledButton,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import logo from "./assets/logo.svg";
@@ -28,8 +29,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Recommendations from "./components/Recommendations/Recommendations";
 import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
+import { Tokens, User } from "./interfaces";
+import { generateSHA256Hash } from "./util/generateSha256Hash";
 
-function Pages({ page }: { page: string }) {
+function Pages({
+  page,
+  setTokens,
+}: {
+  page: string;
+  tokens: Tokens;
+  setTokens: (arg: Tokens) => void;
+}) {
   switch (page) {
     case "recommendations":
       return <Recommendations />;
@@ -40,7 +50,7 @@ function Pages({ page }: { page: string }) {
     case "signup":
     case "login":
     default:
-      return <Login initSignup={page === "signup"} />;
+      return <Login initSignup={page === "signup"} setTokens={setTokens} />;
   }
 }
 interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
@@ -83,28 +93,66 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User>({
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    name: "",
+    email: "",
+    id: 0,
+    steamId: 0,
+  });
+  const [gravatarUrl, setGravatarUrl] = useState("");
   const [page, setPage] = useState("login");
-  const [_profile, setProfile] = useState(null);
   const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
+  const [tokens, setTokens] = useState<Tokens>(
+    JSON.parse(localStorage.getItem("tokens")!) || {
+      access_token: "",
+      refresh_token: "",
+    }
+  );
 
   useEffect(() => {
-    console.log(page, ["login", "signup"].includes(page));
-    fetch("steam/valid", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        if ("steamid" in res) {
-          setProfile(res);
-          localStorage.setItem("steam-profile", JSON.stringify(res));
-          setIsLoggedIn(true);
-          setPage("recommendations");
-        }
-      });
-  }, []);
+    if (tokens.refresh_token.length) {
+      const opt = {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${tokens.refresh_token}`,
+          "Content-Type": "application/json",
+          body: JSON.stringify({
+            refresh_token: tokens.refresh_token,
+          }),
+        },
+      };
+      fetch("auth/refresh", opt)
+        .then((r) => r.json())
+        .then((res) => {
+          localStorage.setItem("tokens", JSON.stringify(res));
+          setTokens(res);
+        });
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (tokens && tokens.access_token) {
+      setIsLoggedIn(true);
+      if (page === "login") setPage("recommendations");
+      const opt = {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${tokens.access_token}`,
+        },
+      };
+      fetch("profile", opt)
+        .then((r) => r.json())
+        .then((res) => {
+          setUser(res);
+          generateSHA256Hash(res.email).then((hash) => {
+            setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
+          });
+        });
+    }
+  }, [tokens]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
@@ -183,12 +231,18 @@ function App() {
                 offset={28}
               >
                 <Menu.Target>
-                  <UserButton
-                    name="Place Holder"
-                    email="placeholder@example.com"
-                    image="https://placehold.co/36"
-                    width={width < 768 ? width - 28 : 222}
-                  />
+                  {!user || !user.name.length ? (
+                    <Loader />
+                  ) : (
+                    <UserButton
+                      name={user.name}
+                      email={user.email}
+                      image={
+                        gravatarUrl ? gravatarUrl : "https://placehold.co/36"
+                      }
+                      width={width < 768 ? width - 28 : 222}
+                    />
+                  )}
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Item onClick={getGames}>owned</Menu.Item>
@@ -218,7 +272,7 @@ function App() {
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
         {["login", "signup"].includes(page) ? null : <Search />}
-        <Pages page={page} />
+        <Pages page={page} tokens={tokens} setTokens={setTokens} />
       </AppShell.Main>
     </AppShell>
   );

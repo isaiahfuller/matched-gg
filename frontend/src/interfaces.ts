@@ -48,7 +48,7 @@ export interface IGDBGame extends IGDBGeneric {
   updated_at: Date | number;
   videos?: IGDBVideo[] | number[];
   websites?: IGDBWebsite[] | number[];
-  year?: number
+  year?: number;
 }
 
 export interface IGDBGeneric {
@@ -156,4 +156,18 @@ enum WebsiteEnum {
   epicgames = 16,
   gog = 17,
   discord = 18,
+}
+
+export interface Tokens {
+  access_token: string;
+  refresh_token: string;
+}
+
+export interface User {
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  email: string;
+  id: number;
+  steamId: number;
 }

@@ -34,9 +34,9 @@ export class AuthService {
   async refreshTokens(id: number, refreshToken: string) {
     const user = await this.usersService.findById(id);
     if (!user || !user.refreshToken) return null;
-    const refreshTokenMatches = await bcrypt.validate(
-      user.refreshToken,
+    const refreshTokenMatches = await bcrypt.compare(
       refreshToken,
+      user.refreshToken,
     );
     if (!refreshTokenMatches) return null;
     const tokens = await this.getTokens({
@@ -44,6 +44,7 @@ export class AuthService {
       username: user.email,
     });
     await this.updateRefreshTokens(id, tokens.refresh_token);
+    return tokens;
   }
 
   async updateRefreshTokens(id: number, refreshToken: string) {

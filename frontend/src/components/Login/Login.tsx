@@ -24,8 +24,13 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import { useViewportSize } from "@mantine/hooks";
 import { matches, useForm } from "@mantine/form";
 import { useState } from "react";
+import { Tokens } from "../../interfaces";
 
-export default function Login({ initSignup }: { initSignup: boolean }) {
+interface LoginProps {
+  initSignup: boolean;
+  setTokens: (arg: Tokens) => void;
+}
+export default function Login({ initSignup, setTokens }: LoginProps) {
   const [signup, setSignup] = useState(initSignup);
   const { width, height } = useViewportSize();
 
@@ -45,18 +50,24 @@ export default function Login({ initSignup }: { initSignup: boolean }) {
         )
           ? null
           : "Invalid email",
-      name: (value) => (value.length > 2 ? null : "Invalid name"),
+      name: (value) => (value.length > 2 || !signup ? null : "Invalid name"),
       password: matches(
         /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])(?=.*?.).{8,}$/m,
         "Invalid password"
       ),
       passwordConfirm: (value: string): string | null =>
-        value === form.getValues().password ? null : "Passwords do not match",
+        value === form.getValues().password || !signup
+          ? null
+          : "Passwords do not match",
     },
   });
 
   async function handleSubmit() {
     const { name, email, password } = form.getValues();
+    let newTokens: Tokens = {
+      access_token: "",
+      refresh_token: "",
+    };
     if (signup) {
       const body = JSON.stringify({
         user: {
@@ -73,7 +84,7 @@ export default function Login({ initSignup }: { initSignup: boolean }) {
         body,
       });
       const ret = await res.json();
-      console.log(ret);
+      newTokens = { ...ret };
     } else {
       const body = JSON.stringify({
         username: email,
@@ -87,8 +98,9 @@ export default function Login({ initSignup }: { initSignup: boolean }) {
         body,
       });
       const ret = await res.json();
-      console.log(ret);
+      newTokens = { ...ret };
     }
+    setTokens(newTokens);
   }
 
   return (

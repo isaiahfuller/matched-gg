@@ -6,12 +6,10 @@ import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { SessionSerializer } from './session.serializer';
 import { JwtStrategy } from './strategies/local/jwt.strategy';
-import { LocalService } from './strategies/local/local.service';
-import { LocalStrategy } from './strategies/local/local.strategy';
 import { RefreshTokenStrategy } from './strategies/local/refreshToken.strategy';
 
 @Module({
-  exports: [PassportModule, AuthService, LocalService, UsersService],
+  exports: [PassportModule, AuthService, UsersService],
   imports: [
     PassportModule.register({ session: true }),
     JwtModule.register({
@@ -20,8 +18,6 @@ import { RefreshTokenStrategy } from './strategies/local/refreshToken.strategy';
   ],
   providers: [
     SessionSerializer,
-    LocalStrategy,
-    LocalService,
     UsersService,
     JwtStrategy,
     RefreshTokenStrategy,
