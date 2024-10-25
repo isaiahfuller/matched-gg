@@ -31,14 +31,20 @@ import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
 import { Tokens, User } from "./interfaces";
 import { generateSHA256Hash } from "./util/generateSha256Hash";
+import Settings from "./components/Settings/Settings";
+import refreshAccessToken from "./util/refreshAccessToken";
 
 function Pages({
   page,
   setTokens,
+  user,
+  setUser,
 }: {
   page: string;
   tokens: Tokens;
   setTokens: (arg: Tokens) => void;
+  user: User;
+  setUser: (arg: User) => void;
 }) {
   switch (page) {
     case "recommendations":
@@ -47,6 +53,8 @@ function Pages({
       return <Text>Previously recommended</Text>;
     case "sync":
       return <Text>Sync your libraries</Text>;
+    case "settings":
+      return <Settings user={user} setUser={setUser} />;
     case "signup":
     case "login":
     default:
@@ -60,6 +68,7 @@ interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   width: number;
   icon?: React.ReactNode;
 }
+
 const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   ({ image, name, email, width, icon, ...others }: UserButtonProps, ref) => (
     <UnstyledButton
@@ -91,44 +100,6 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   )
 );
 
-function refreshAccessToken(
-  refreshToken: string,
-  isLoggedIn: boolean,
-  setIsLoggedIn: (arg: boolean) => void,
-  setTokens: (arg: Tokens) => void,
-  setPage: (arg: string) => void
-) {
-  const opt = {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${refreshToken}`,
-      "Content-Type": "application/json",
-      body: JSON.stringify({
-        refresh_token: refreshToken,
-      }),
-    },
-  };
-  fetch("auth/refresh", opt)
-    .then((r) => {
-      if (![200, 201].includes(r.status)) {
-        throw new Error(r.status + "");
-      }
-      return r.json();
-    })
-    .then((res) => {
-      localStorage.setItem("tokens", JSON.stringify(res));
-      setTokens(res);
-      if (!isLoggedIn) {
-        setIsLoggedIn(true);
-      }
-    })
-    .catch(() => {
-      setIsLoggedIn(false);
-      setTokens({ access_token: "", refresh_token: "" });
-      localStorage.clear();
-      setPage("login");
-    });
-}
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>({
@@ -312,6 +283,12 @@ function App() {
                   <Menu.Item onClick={getGames}>owned</Menu.Item>
                   <Menu.Label>Actions</Menu.Label>
                   <Menu.Item
+                    leftSection={<FontAwesomeIcon icon={faUser} />}
+                    onClick={() => setPage("settings")}
+                  >
+                    Account Settings
+                  </Menu.Item>
+                  <Menu.Item
                     leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
                   >
                     Change Account
@@ -335,8 +312,14 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
-        {["login", "signup"].includes(page) ? null : <Search />}
-        <Pages page={page} tokens={tokens} setTokens={setTokens} />
+        {["login", "signup", "settings"].includes(page) ? null : <Search />}
+        <Pages
+          page={page}
+          tokens={tokens}
+          setTokens={setTokens}
+          user={user}
+          setUser={setUser}
+        />
       </AppShell.Main>
     </AppShell>
   );

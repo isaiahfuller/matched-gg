@@ -25,6 +25,7 @@ import { useViewportSize } from "@mantine/hooks";
 import { matches, useForm } from "@mantine/form";
 import { useState } from "react";
 import { Tokens } from "../../interfaces";
+import { emailRegex, passwordRegex } from "../../constants";
 
 interface LoginProps {
   initSignup: boolean;
@@ -44,17 +45,9 @@ export default function Login({ initSignup, setTokens }: LoginProps) {
     },
 
     validate: {
-      email: (value) =>
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-          value
-        )
-          ? null
-          : "Invalid email",
+      email: (value) => (emailRegex.test(value) ? null : "Invalid email"),
       name: (value) => (value.length > 2 || !signup ? null : "Invalid name"),
-      password: matches(
-        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])(?=.*?.).{8,}$/m,
-        "Invalid password"
-      ),
+      password: matches(passwordRegex, "Invalid password"),
       passwordConfirm: (value: string): string | null =>
         value === form.getValues().password || !signup
           ? null
