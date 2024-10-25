@@ -178,6 +178,7 @@ function App() {
               return r.json();
             })
             .then((res) => {
+              if (!res || !res.email) throw new Error("No profile received");
               setIsLoggedIn(true);
               setUser(res);
               generateSHA256Hash(res.email).then((hash) => {
