@@ -42,7 +42,6 @@
     "igdb-api-node": "^5.0.2",
     "modern-passport-steam": "^1.1.4",
     "passport": "^0.7.0",
-    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "passport-steam": "^1.0.18",
     "pg": "^8.13.0",

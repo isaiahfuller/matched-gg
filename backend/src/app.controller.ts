@@ -6,9 +6,7 @@ import {
   Request,
   Session,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
@@ -26,28 +24,15 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Post('profile')
   getProfile(@Session() session) {
     const send = { ...session.user };
-    delete send.refreshToken;
     return send;
   }
 
-  @UseGuards(AuthGuard('jwt-refresh'))
   @Get('logout')
   async logout(@Request() req) {
     this.authService.logout(req.user.sub);
-  }
-
-  @UseGuards(AuthGuard('jwt-refresh'))
-  @Post('auth/refresh')
-  async refreshTokens(@Request() req) {
-    const res = await this.authService.refreshTokens(
-      req.user.sub,
-      req.user.refreshToken,
-    );
-    return res;
   }
 
   @Post('verify')
@@ -59,7 +44,6 @@ export class AppController {
         id: session.user.id,
         name: session.user.name,
       },
-      refresh_token: session.refresh_token,
       valid: true,
     };
   }

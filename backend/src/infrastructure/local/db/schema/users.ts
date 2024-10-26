@@ -11,7 +11,6 @@ export const users = pgTable('users', {
     .generatedAlwaysAsIdentity({ startWith: 1000 }),
   name: text('name').notNull(),
   password: text('password').notNull(),
-  refreshToken: text('refresh_token'),
   steamId: bigint('steam_id', { mode: 'number' }),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

@@ -17,10 +17,10 @@ import { useViewportSize } from "@mantine/hooks";
 
 interface SettingsProps {
   user: User;
-  setUser: (arg: User) => void;
+  setUser?: (arg: User) => void;
 }
 
-export default function Settings({ user, setUser }: SettingsProps) {
+export default function Settings({ user }: SettingsProps) {
   const { width } = useViewportSize();
   const form = useForm({
     mode: "controlled",

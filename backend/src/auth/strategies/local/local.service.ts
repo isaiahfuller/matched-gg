@@ -21,7 +21,8 @@ export class LocalService {
       ...user,
       password: hashedPassword,
     });
-    return this.authService.getTokens(res[0]);
+    return res[0];
+    // return this.authService.getTokens(res[0]);
   }
 
   async validateUser(username: string, pass: string): Promise<any> {

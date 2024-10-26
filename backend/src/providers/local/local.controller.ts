@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Logger,
   Post,
@@ -17,24 +18,20 @@ export class LocalController {
     private localService: LocalService,
     private readonly authService: AuthService,
   ) {}
+
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
   async login(@Request() req, @Session() session) {
-    const tokens = await this.authService.getTokens(req.user);
-    session['user'] = req.user;
-    if (tokens) {
-      session['access_token'] = tokens.access_token;
-      session['refresh_token'] = tokens.refresh_token;
-    }
-    return tokens;
+    session.user = req.user;
+    return session.user;
+    // return tokens;
   }
+
   @Post('auth/signup')
   async signup(@Request() req, @Session() session) {
-    const tokens = await this.localService.signup(req.body.user);
-    if (tokens) {
-      session['access_token'] = tokens.access_token;
-      session['refresh_token'] = tokens.refresh_token;
-    }
-    return tokens;
+    const user = await this.localService.signup(req.body.user);
+    if (!user) throw new BadRequestException('Registration failed');
+    session.user = user;
+    return session.user;
   }
 }

@@ -29,20 +29,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Recommendations from "./components/Recommendations/Recommendations";
 import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
-import { Tokens, User } from "./interfaces";
+import { User } from "./interfaces";
 import { generateSHA256Hash } from "./util/generateSha256Hash";
 import Settings from "./components/Settings/Settings";
-import refreshAccessToken from "./util/refreshAccessToken";
 
 function Pages({
   page,
-  setTokens,
   user,
   setUser,
 }: {
   page: string;
-  tokens: Tokens;
-  setTokens: (arg: Tokens) => void;
   user: User;
   setUser: (arg: User) => void;
 }) {
@@ -58,7 +54,7 @@ function Pages({
     case "signup":
     case "login":
     default:
-      return <Login initSignup={page === "signup"} setTokens={setTokens} />;
+      return <Login initSignup={page === "signup"} />;
   }
 }
 interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
@@ -100,89 +96,54 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   )
 );
 
+const blankUser = {
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  name: "",
+  email: "",
+  id: 0,
+  steamId: 0,
+};
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<User>({
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    name: "",
-    email: "",
-    id: 0,
-    steamId: 0,
-  });
+  const [user, setUser] = useState<User>(blankUser);
   const [gravatarUrl, setGravatarUrl] = useState("");
   const [page, setPage] = useState("login");
   const [loading, setLoading] = useState(true);
   const { width, height } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
-  const [tokens, setTokens] = useState<Tokens>(() => {
-    if (localStorage.getItem("tokens"))
-      return (
-        JSON.parse(localStorage.getItem("tokens")!) || {
-          access_token: "",
-          refresh_token: "",
-        }
-      );
-  });
 
   useEffect(() => {
-    if (tokens && tokens.access_token.length) {
-      const opt = {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${tokens.access_token}`,
-        },
-      };
-      fetch("/verify", opt)
-        .then((r) => {
-          if (![200, 201].includes(r.status)) {
-            throw new Error(r.status + "");
-          }
-          return r.json();
-        })
-        .then(() => {
-          fetch("profile", opt)
-            .then((r) => {
-              if (![200, 201].includes(r.status)) {
-                throw new Error(r.status + "");
-              }
-              return r.json();
-            })
-            .then((res) => {
-              if (!res || !res.email) throw new Error("No profile received");
-              setIsLoggedIn(true);
-              setUser(res);
-              generateSHA256Hash(res.email).then((hash) => {
-                setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
-              });
-              if (page === "login") setPage("recommendations");
-            })
-            .catch(() => {
-              refreshAccessToken(
-                tokens.refresh_token,
-                isLoggedIn,
-                setIsLoggedIn,
-                setTokens,
-                setPage
-              );
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        })
-        .catch(() => {
-          refreshAccessToken(
-            tokens.refresh_token,
-            isLoggedIn,
-            setIsLoggedIn,
-            setTokens,
-            setPage
-          );
+    const opt = {
+      method: "POST",
+    };
+    fetch("/verify", opt)
+      .then((r) => {
+        if (![200, 201].includes(r.status)) {
+          throw new Error(r.status + "");
+        }
+        return r.json();
+      })
+      .then((res) => {
+        console.log(res);
+        if (!res || !res.profile || !res.profile.email)
+          throw new Error("No profile received");
+        setIsLoggedIn(true);
+        setUser(res.profile);
+        generateSHA256Hash(res.profile.email).then((hash) => {
+          setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
         });
-    } else {
-      setLoading(false);
-    }
-  }, [tokens, page, isLoggedIn]);
+        if (page === "login") setPage("recommendations");
+      })
+      .catch(() => {
+        setIsLoggedIn(false);
+        setUser(blankUser);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [page, isLoggedIn]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
@@ -313,13 +274,7 @@ function App() {
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
         {["login", "signup", "settings"].includes(page) ? null : <Search />}
-        <Pages
-          page={page}
-          tokens={tokens}
-          setTokens={setTokens}
-          user={user}
-          setUser={setUser}
-        />
+        <Pages page={page} user={user} setUser={setUser} />
       </AppShell.Main>
     </AppShell>
   );

@@ -35,7 +35,6 @@ export default class UserHandler {
       .returning({
         email: users.email,
         name: users.name,
-        refreshToken: users.refreshToken,
       });
   }
 
@@ -68,18 +67,11 @@ export default class UserHandler {
     return result;
   }
 
-  async updateUser({
-    email = null,
-    id,
-    name = null,
-    password = null,
-    refreshToken = null,
-  }) {
+  async updateUser({ email = null, id, name = null, password = null }) {
     const updatedUser: Users | any = {};
     if (name) updatedUser.name = name;
     if (email) updatedUser.email = email;
     if (password) updatedUser.password = password;
-    updatedUser.refreshToken = refreshToken;
     updatedUser.updatedAt = new Date();
     await this.db
       .update(users)
@@ -88,7 +80,6 @@ export default class UserHandler {
       .returning({
         email: users.email,
         name: users.name,
-        refreshToken: users.refreshToken,
       });
   }
 }

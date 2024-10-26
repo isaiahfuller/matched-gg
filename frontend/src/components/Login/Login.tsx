@@ -24,14 +24,12 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import { useViewportSize } from "@mantine/hooks";
 import { matches, useForm } from "@mantine/form";
 import { useState } from "react";
-import { Tokens } from "../../interfaces";
 import { emailRegex, passwordRegex } from "../../constants";
 
 interface LoginProps {
   initSignup: boolean;
-  setTokens: (arg: Tokens) => void;
 }
-export default function Login({ initSignup, setTokens }: LoginProps) {
+export default function Login({ initSignup }: LoginProps) {
   const [signup, setSignup] = useState(initSignup);
   const { width, height } = useViewportSize();
 
@@ -57,10 +55,6 @@ export default function Login({ initSignup, setTokens }: LoginProps) {
 
   async function handleSubmit() {
     const { name, email, password } = form.getValues();
-    let newTokens: Tokens = {
-      access_token: "",
-      refresh_token: "",
-    };
     if (signup) {
       const body = JSON.stringify({
         user: {
@@ -77,7 +71,7 @@ export default function Login({ initSignup, setTokens }: LoginProps) {
         body,
       });
       const ret = await res.json();
-      newTokens = { ...ret };
+      console.log(ret);
     } else {
       const body = JSON.stringify({
         username: email,
@@ -91,10 +85,8 @@ export default function Login({ initSignup, setTokens }: LoginProps) {
         body,
       });
       const ret = await res.json();
-      newTokens = { ...ret };
+      console.log(ret);
     }
-    setTokens(newTokens);
-    localStorage.setItem("tokens", JSON.stringify(newTokens));
   }
 
   return (

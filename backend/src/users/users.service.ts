@@ -43,19 +43,12 @@ export class UsersService {
     const res = await this.userHandler.findOneByEmail(email);
     return res;
   }
-  async update({
-    email = null,
-    id,
-    name = null,
-    password = null,
-    refreshToken = null,
-  }) {
+  async update({ email = null, id, name = null, password = null }) {
     const res = await this.userHandler.updateUser({
       email,
       id,
       name,
       password,
-      refreshToken,
     });
     this.logger.log(`User ${id} updated`);
     return res;
