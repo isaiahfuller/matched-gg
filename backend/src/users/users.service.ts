@@ -21,6 +21,11 @@ export class UsersService {
     return newUser;
   }
 
+  async createSteam(user, profile) {
+    const newUser = await this.userHandler.addSteamProfile(user, profile);
+    return newUser;
+  }
+
   async delete(email) {
     const res = await this.userHandler.deleteUser(email);
     return res;

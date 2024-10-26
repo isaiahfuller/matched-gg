@@ -96,7 +96,9 @@ export default function Settings({ user, setUser }: SettingsProps) {
             <Text>
               <FontAwesomeIcon icon={faSteam} /> Steam
             </Text>
-            <Button variant="light">Connect</Button>
+            <a href="steam/auth">
+              <Button variant="light">Connect</Button>
+            </a>
           </SimpleGrid>
         </>
       </Stack>

@@ -1,7 +1,9 @@
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { client } from 'src/db/db';
+import { SteamProfile } from 'src/providers/steam/types';
 
+import { steamProfiles } from '../schema/steamProfiles';
 import { Users, users } from '../schema/users';
 
 export default class UserHandler {
@@ -19,6 +21,24 @@ export default class UserHandler {
       updatedAt: users.updatedAt,
     });
   }
+
+  async addSteamProfile(user, profile: SteamProfile) {
+    const newProfile = await this.db
+      .insert(steamProfiles)
+      .values({ steamId: BigInt(profile.profile.steamid), userId: user.id })
+      .returning();
+    console.log(newProfile[0]);
+    return this.db
+      .update(users)
+      .set({ steamId: BigInt(newProfile[0].steamId) })
+      .where(eq(users.id, user.id))
+      .returning({
+        email: users.email,
+        name: users.name,
+        refreshToken: users.refreshToken,
+      });
+  }
+
   async deleteUser(email) {
     await this.db.delete(users).where(eq(users.email, email)).returning({
       email: users.email,
@@ -36,7 +56,7 @@ export default class UserHandler {
 
   async findBySteamId(id: number) {
     const result = await this.db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.steamId, id),
+      where: (users, { eq }) => eq(users.steamId, BigInt(id)),
     });
     return result;
   }

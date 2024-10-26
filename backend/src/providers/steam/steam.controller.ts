@@ -61,10 +61,23 @@ export class SteamController {
   @Get('auth/return')
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
     if (!('providers' in session)) session.providers = {};
+    console.log(session);
     try {
-      const user = await this.usersService.findBySteamId(req.user.id);
-      if (!user) throw new UnauthorizedException('Steam account not linked');
-      session.providers.steam = req.user._json;
+      if (!session.user) {
+        console.log();
+        const user = await this.usersService.findBySteamId(
+          req.user.profile.steamid,
+        );
+        console.log(req.user.profile.steamid, user);
+        if (!user) throw new UnauthorizedException('Steam account not linked');
+        // session.user = user
+      }
+      session.providers.steam = req.user.profile;
+      if (session.user) {
+        // console.log(session, req.user);
+        await this.usersService.createSteam(session.user, req.user);
+        return session;
+      }
     } catch (e) {
       session.providers.steam = { error: 'Steam account not linked' };
     } finally {
@@ -74,12 +87,10 @@ export class SteamController {
   }
 
   @Post('valid')
-  async validate(@Session() session, @Res() res) {
+  async validate(@Session() session) {
     if (!('providers' in session) || !('steam' in session.providers)) {
-      res.status(401).send({ error: 'Steam not logged in.' });
-      return session;
+      throw new UnauthorizedException({ error: 'Steam not logged in.' });
     }
-    res.send(session.providers.steam);
-    return session;
+    return session.providers.steam;
   }
 }

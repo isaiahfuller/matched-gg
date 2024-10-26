@@ -5,6 +5,7 @@ import {
   Post,
   Request,
   Session,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -49,9 +50,17 @@ export class AppController {
     return res;
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Post('verify')
-  async verify() {
-    return { valid: true };
+  async verify(@Session() session) {
+    if (!session.user) throw new UnauthorizedException('Not signed in');
+    return {
+      profile: {
+        email: session.user.email,
+        id: session.user.id,
+        name: session.user.name,
+      },
+      refresh_token: session.refresh_token,
+      valid: true,
+    };
   }
 }

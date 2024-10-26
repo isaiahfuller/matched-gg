@@ -12,9 +12,7 @@ export const users = pgTable('users', {
   name: text('name').notNull(),
   password: text('password').notNull(),
   refreshToken: text('refresh_token'),
-  steamId: bigint('steam_id', { mode: 'number' }).references(
-    () => steamProfiles.steamId,
-  ),
+  steamId: bigint('steam_id', { mode: 'number' }),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
