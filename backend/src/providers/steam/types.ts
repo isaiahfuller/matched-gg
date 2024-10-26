@@ -4,7 +4,7 @@ export interface Options {
   apiKey: string;
   passReqToCallback?: boolean;
   realm: string;
-  returnURL: string;
+  returnUrl: string;
 }
 
 export type DoneFn = (err: unknown, user?: Express.User | false | null) => void;

@@ -1392,6 +1392,7 @@ __metadata:
     express-session: "npm:^1.18.0"
     igdb-api-node: "npm:^5.0.2"
     jest: "npm:^29.7.0"
+    modern-passport-steam: "npm:^1.1.4"
     passport: "npm:^0.7.0"
     passport-jwt: "npm:^4.0.1"
     passport-local: "npm:^1.0.0"
@@ -8062,6 +8063,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"modern-passport-steam@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "modern-passport-steam@npm:1.1.4"
+  dependencies:
+    passport-strategy: "npm:^1.0.0"
+    steamid: "npm:^2.0.0"
+  checksum: 10c0/0d378deeb045cfdd725b355238d307c749dcbe607fcd16601735aa5f78dadd8aac0081c9fee7c169b6d6ad855b37ec92501fed6ebab114a1c5dcfad880be4934
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -9993,6 +10004,13 @@ __metadata:
   dependencies:
     qs: "npm:^6.1.0"
   checksum: 10c0/c9de4ac834315dbc9156c031b355315d4ea6a2fd1dfbe552c73bbb2cfc7befc7b7822fb24578ea55422baba034697cc9f58eb0e08e36438e481d89ae95c40523
+  languageName: node
+  linkType: hard
+
+"steamid@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "steamid@npm:2.1.0"
+  checksum: 10c0/758ca47d5fcdcbc0ffcfcc8443ef34c89286a46dda077a43f8f5a69c3d4fc4d16d4a4ab310bf0a3a96269d3c87e322fc1ec874494e6038e469b1198af47dcd70
   languageName: node
   linkType: hard
 

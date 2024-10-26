@@ -13,6 +13,7 @@ import {
 import { User } from "../../interfaces";
 import { matches, useForm } from "@mantine/form";
 import { emailRegex, passwordRegex } from "../../constants";
+import { useViewportSize } from "@mantine/hooks";
 
 interface SettingsProps {
   user: User;
@@ -20,6 +21,7 @@ interface SettingsProps {
 }
 
 export default function Settings({ user, setUser }: SettingsProps) {
+  const { width } = useViewportSize();
   const form = useForm({
     mode: "controlled",
     initialValues: {
@@ -38,13 +40,14 @@ export default function Settings({ user, setUser }: SettingsProps) {
         value === form.getValues().password ? null : "Passwords do not match",
     },
   });
+
   return (
     <Container>
       <Stack>
         <>
           <Title>Account Settings</Title>
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
-            <SimpleGrid cols={2}>
+            <SimpleGrid cols={width < 768 ? 1 : 2}>
               <Checkbox
                 label="Change name:"
                 key={form.key("changeName")}
@@ -89,7 +92,7 @@ export default function Settings({ user, setUser }: SettingsProps) {
         </>
         <>
           <Title>Connect Accounts</Title>
-          <SimpleGrid cols={2}>
+          <SimpleGrid cols={width < 768 ? 1 : 2}>
             <Text>
               <FontAwesomeIcon icon={faSteam} /> Steam
             </Text>

@@ -9,15 +9,11 @@ export class SteamService {
     private authService: AuthService,
   ) {}
 
-  async validateUser(identifier, profile, done) {
+  async validateUser(user, done) {
     let err: UnauthorizedException | null = null;
-    if (!identifier) {
+    if (!user) {
       err = new UnauthorizedException();
     }
-
-    if (!profile) {
-      err = new UnauthorizedException();
-    }
-    done(err, profile);
+    done(err, user);
   }
 }
