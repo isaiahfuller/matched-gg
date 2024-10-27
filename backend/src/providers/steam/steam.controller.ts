@@ -49,12 +49,14 @@ export class SteamController {
   login() {}
 
   @Get('getOwnedGames')
-  async ownedGames(@Session() session, @Res() res) {
+  async ownedGames(@Session() session) {
+    if (!session.providers || !session.providers.steam) {
+      throw new UnauthorizedException('No Steam account linked');
+    }
     const games = await this.steamHandler.getOwnedGames(
       session.providers.steam.steamid,
     );
-    res.send(games.games);
-    return games;
+    return games.games;
   }
 
   @UseGuards(AuthGuard('steam'))
