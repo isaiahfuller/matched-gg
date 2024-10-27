@@ -1,8 +1,6 @@
-import { forwardRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppShell,
-  Avatar,
-  Box,
   Burger,
   Center,
   Divider,
@@ -13,7 +11,6 @@ import {
   NavLink,
   Stack,
   Text,
-  UnstyledButton,
   Loader,
 } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
@@ -26,84 +23,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Recommendations from "./components/Recommendations/Recommendations";
-import Login from "./components/Login/Login";
 import Search from "./components/Search/Search";
 import { User } from "./interfaces";
 import { generateSHA256Hash } from "./util/generateSha256Hash";
-import Settings from "./components/Settings/Settings";
-
-function Pages({
-  page,
-  user,
-  setUser,
-}: {
-  page: string;
-  user: User;
-  setUser: (arg: User) => void;
-}) {
-  switch (page) {
-    case "recommendations":
-      return <Recommendations />;
-    case "previous":
-      return <Text>Previously recommended</Text>;
-    case "sync":
-      return <Text>Sync your libraries</Text>;
-    case "settings":
-      return <Settings user={user} setUser={setUser} />;
-    case "signup":
-    case "login":
-    default:
-      return <Login initSignup={page === "signup"} />;
-  }
-}
-interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
-  image: string;
-  name: string;
-  email: string;
-  width: number;
-  icon?: React.ReactNode;
-}
-
-const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
-  ({ image, name, email, width, icon, ...others }: UserButtonProps, ref) => (
-    <UnstyledButton
-      ref={ref}
-      style={{
-        color: "var(--mantine-color-text)",
-        borderRadius: "var(--mantine-radius-sm)",
-      }}
-      {...others}
-      py={16}
-      w={width}
-    >
-      <Flex justify="space-between" align="center">
-        <Avatar src={image} radius="xl" />
-
-        <Box style={{ flex: 1 }} px={8} w={75}>
-          <Text size="sm" fw={500} truncate="end">
-            {name}
-          </Text>
-
-          <Text c="dimmed" size="xs" truncate="end">
-            {email}
-          </Text>
-        </Box>
-
-        {icon || <FontAwesomeIcon icon={faChevronRight} size="sm" />}
-      </Flex>
-    </UnstyledButton>
-  )
-);
-
-const blankUser = {
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  name: "",
-  email: "",
-  id: 0,
-  steamId: 0,
-};
+import Pages from "./components/Pages/Pages";
+import { UserButton } from "./components/elements/UserButton";
+import { blankUser } from "./constants";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
