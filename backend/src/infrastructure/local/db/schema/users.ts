@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { bigint, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { steamProfiles } from './steamProfiles';
 
@@ -11,7 +11,7 @@ export const users = pgTable('users', {
     .generatedAlwaysAsIdentity({ startWith: 1000 }),
   name: text('name').notNull(),
   password: text('password').notNull(),
-  steamId: bigint('steam_id', { mode: 'number' }),
+  steamId: text('steam_id'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 

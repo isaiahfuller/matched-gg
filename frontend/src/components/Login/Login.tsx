@@ -55,38 +55,25 @@ export default function Login({ initSignup }: LoginProps) {
 
   async function handleSubmit() {
     const { name, email, password } = form.getValues();
-    if (signup) {
-      const body = JSON.stringify({
-        user: {
-          email: email,
-          name: name,
-          password: password,
-        },
-      });
-      const res = await fetch("/local/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body,
-      });
-      const ret = await res.json();
-      console.log(ret);
-    } else {
-      const body = JSON.stringify({
-        username: email,
+    const body = JSON.stringify({
+      user: {
+        email: email,
+        name: name,
         password: password,
-      });
-      const res = await fetch("/local/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body,
-      });
-      const ret = await res.json();
-      console.log(ret);
-    }
+      },
+      username: email,
+      password: password,
+    });
+    const res = await fetch(`/local/auth/${signup ? "signup" : "login"}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+    const ret = await res.json();
+    console.log(ret);
+    location.reload();
   }
 
   return (

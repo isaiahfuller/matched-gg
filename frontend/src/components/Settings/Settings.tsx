@@ -14,6 +14,7 @@ import { User } from "../../interfaces";
 import { matches, useForm } from "@mantine/form";
 import { emailRegex, passwordRegex } from "../../constants";
 import { useViewportSize } from "@mantine/hooks";
+import { useEffect } from "react";
 
 interface SettingsProps {
   user: User;
@@ -40,6 +41,12 @@ export default function Settings({ user }: SettingsProps) {
         value === form.getValues().password ? null : "Passwords do not match",
     },
   });
+
+  useEffect(() => {
+    if (localStorage.getItem("settings")) {
+      localStorage.removeItem("settings");
+    }
+  }, []);
 
   return (
     <Container>
@@ -96,7 +103,10 @@ export default function Settings({ user }: SettingsProps) {
             <Text>
               <FontAwesomeIcon icon={faSteam} /> Steam
             </Text>
-            <a href="steam/auth">
+            <a
+              href="steam/auth"
+              onClick={() => localStorage.setItem("settings", "s")}
+            >
               <Button variant="light">Connect</Button>
             </a>
           </SimpleGrid>

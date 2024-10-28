@@ -40,6 +40,7 @@ function App() {
   const [opened, { toggle }] = useDisclosure();
 
   useEffect(() => {
+    setLoading(true);
     const opt = {
       method: "POST",
     };
@@ -59,7 +60,6 @@ function App() {
         generateSHA256Hash(res.profile.email).then((hash) => {
           setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
         });
-        if (page === "login") setPage("recommendations");
       })
       .catch(() => {
         setIsLoggedIn(false);
@@ -68,6 +68,12 @@ function App() {
       .finally(() => {
         setLoading(false);
       });
+    if (isLoggedIn && page === "login") {
+      setPage("recommendations");
+    }
+    if (localStorage.getItem("settings")) {
+      setPage("settings");
+    }
   }, [page, isLoggedIn]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {

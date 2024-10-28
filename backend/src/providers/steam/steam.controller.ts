@@ -63,25 +63,21 @@ export class SteamController {
   @Get('auth/return')
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
     if (!('providers' in session)) session.providers = {};
-    console.log(session);
     try {
       if (!session.user) {
-        console.log();
         const user = await this.usersService.findBySteamId(
           req.user.profile.steamid,
         );
-        console.log(req.user.profile.steamid, user);
         if (!user) throw new UnauthorizedException('Steam account not linked');
-        // session.user = user
-      }
-      session.providers.steam = req.user.profile;
-      if (session.user) {
-        // console.log(session, req.user);
+        session.user = user;
+        session.providers.steam = req.user.profile;
+        this.logger.log(`User ${user.id} logged in`);
+      } else if (session.user) {
         await this.usersService.createSteam(session.user, req.user);
         return session;
       }
     } catch (e) {
-      session.providers.steam = { error: 'Steam account not linked' };
+      this.logger.error(e);
     } finally {
       // TODO: Stop hardcoding the redirect URL
       res.redirect('http://localhost:5173/');

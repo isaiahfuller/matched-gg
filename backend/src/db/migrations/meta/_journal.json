@@ -78,6 +78,13 @@
       "when": 1729963309847,
       "tag": "0010_silly_stingray",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1730121570522,
+      "tag": "0011_clever_juggernaut",
+      "breakpoints": true
     }
   ]
 }

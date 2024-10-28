@@ -13,7 +13,7 @@ import { LocalService } from 'src/auth/strategies/local/local.service';
 
 @Controller('local')
 export class LocalController {
-  private readonly logger = new Logger('LocalController');
+  private readonly logger = new Logger(LocalController.name);
   constructor(
     private localService: LocalService,
     private readonly authService: AuthService,
@@ -23,8 +23,8 @@ export class LocalController {
   @Post('auth/login')
   async login(@Request() req, @Session() session) {
     session.user = req.user;
+    this.logger.log(`User ${session.user.id} logged in`);
     return session.user;
-    // return tokens;
   }
 
   @Post('auth/signup')
@@ -32,6 +32,7 @@ export class LocalController {
     const user = await this.localService.signup(req.body.user);
     if (!user) throw new BadRequestException('Registration failed');
     session.user = user;
+    this.logger.log(`User ${session.user.id} created`);
     return session.user;
   }
 }
