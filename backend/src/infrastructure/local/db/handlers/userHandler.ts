@@ -3,13 +3,15 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { client } from 'src/db/db';
 import { SteamProfile } from 'src/providers/steam/types';
 
-import { steamProfiles } from '../schema/steamProfiles';
-import { Users, users } from '../schema/users';
+import { steamProfiles, steamProfilesRelations } from '../schema/steamProfiles';
+import { Users, users, usersRelations } from '../schema/users';
 
 export default class UserHandler {
   db;
   constructor() {
-    this.db = drizzle(client, { schema: { users } });
+    this.db = drizzle(client, {
+      schema: { steamProfiles, steamProfilesRelations, users, usersRelations },
+    });
   }
 
   async addNewUser({ email, name, password }: Users) {
@@ -25,12 +27,17 @@ export default class UserHandler {
   async addSteamProfile(user, profile: SteamProfile) {
     const newProfile = await this.db
       .insert(steamProfiles)
-      .values({ steamId: BigInt(profile.profile.steamid), userId: user.id })
+      .values({
+        avatar: profile.profile.avatarhash,
+        name: profile.profile.personaname,
+        steamId: profile.profile.steamid,
+        url: profile.profile.profileurl,
+        userId: user.id,
+      })
       .returning();
-    console.log(newProfile[0]);
     return this.db
       .update(users)
-      .set({ steamId: BigInt(newProfile[0].steamId) })
+      .set({ steamId: newProfile[0].steamId })
       .where(eq(users.id, user.id))
       .returning({
         email: users.email,
@@ -46,24 +53,35 @@ export default class UserHandler {
     });
   }
 
-  async findById(id: number) {
+  async findById(uid: number) {
     const result = await this.db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.id, id),
+      where: (users, { eq }) => eq(users.id, uid),
+      with: {
+        steam: true,
+      },
     });
     return result;
   }
 
-  async findBySteamId(id: number) {
+  async findBySteamId(steamId: number) {
     const result = await this.db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.steamId, BigInt(id)),
+      where: (users, { eq }) => eq(users.steamId, steamId),
+      with: {
+        steam: true,
+      },
     });
+    if (!result) return null;
     return result;
   }
 
-  async findOneByEmail(email: string) {
+  async findOneByEmail(userEmail: string) {
     const result = await this.db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, email),
+      where: (users, { eq }) => eq(users.email, userEmail),
+      with: {
+        steam: true,
+      },
     });
+    if (!result) return null;
     return result;
   }
 

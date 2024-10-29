@@ -50,11 +50,11 @@ export class SteamController {
 
   @Get('getOwnedGames')
   async ownedGames(@Session() session) {
-    if (!session.providers || !session.providers.steam) {
+    if (!session.user || !session.user.steam) {
       throw new UnauthorizedException('No Steam account linked');
     }
     const games = await this.steamHandler.getOwnedGames(
-      session.providers.steam.steamid,
+      session.user.steam.steamId,
     );
     return games.games;
   }
@@ -62,19 +62,22 @@ export class SteamController {
   @UseGuards(AuthGuard('steam'))
   @Get('auth/return')
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
-    if (!('providers' in session)) session.providers = {};
     try {
       if (!session.user) {
         const user = await this.usersService.findBySteamId(
           req.user.profile.steamid,
         );
         if (!user) throw new UnauthorizedException('Steam account not linked');
+        delete user.password;
         session.user = user;
-        session.providers.steam = req.user.profile;
         this.logger.log(`User ${user.id} logged in`);
       } else if (session.user) {
         await this.usersService.createSteam(session.user, req.user);
-        return session;
+        const user = await this.usersService.findById(session.user.id);
+        if (!user) throw new UnauthorizedException('Not logged in');
+        delete user.password;
+        session.user = user;
+        this.logger.log(`User ${user.id} linked Steam account`);
       }
     } catch (e) {
       this.logger.error(e);

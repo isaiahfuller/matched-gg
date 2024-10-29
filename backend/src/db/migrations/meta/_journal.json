@@ -85,6 +85,13 @@
       "when": 1730121570522,
       "tag": "0011_clever_juggernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1730215663648,
+      "tag": "0012_strong_apocalypse",
+      "breakpoints": true
     }
   ]
 }

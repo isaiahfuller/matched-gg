@@ -71,9 +71,14 @@ export default function Login({ initSignup }: LoginProps) {
       },
       body,
     });
-    const ret = await res.json();
-    console.log(ret);
-    location.reload();
+    try {
+      const ret = await res.json();
+      if (ret && ret.statusCode) throw new Error(ret.message);
+      console.log(ret);
+      location.reload();
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
