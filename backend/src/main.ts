@@ -23,7 +23,7 @@ async function bootstrap() {
     session({
       resave: false,
       saveUninitialized: false,
-      secret: config.sessionSecret,
+      secret: config.authSecrets.session,
       store: redisStore,
     }),
   );

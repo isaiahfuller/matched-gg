@@ -1,17 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor() {}
+  private readonly logger = new Logger('AuthService');
+  constructor(private usersService: UsersService) {}
 
-  async validateUser(identifier, profile, done) {
-    if (!identifier) {
-      throw new UnauthorizedException();
-    }
-
-    if (!profile) {
-      throw new UnauthorizedException();
-    }
-    done(null, profile);
+  async logout(id: number) {
+    return this.usersService.update({ id });
   }
 }

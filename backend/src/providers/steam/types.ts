@@ -4,7 +4,7 @@ export interface Options {
   apiKey: string;
   passReqToCallback?: boolean;
   realm: string;
-  returnURL: string;
+  returnUrl: string;
 }
 
 export type DoneFn = (err: unknown, user?: Express.User | false | null) => void;
@@ -21,7 +21,7 @@ export type ValidateFn<T extends Options> = T['passReqToCallback'] extends true
 type SteamIdentifier = string;
 
 export interface SteamProfile {
-  _json: {
+  profile: {
     avatar: string;
     avatarfull: string;
     avatarhash: string;
@@ -41,10 +41,6 @@ export interface SteamProfile {
     steamid: string;
     timecreated: number;
   };
-  displayName: string;
-  id: string;
-  photos: Array<{ value: string }>;
-  provider: 'steam';
 }
 
 export interface SteamAuthResponse {

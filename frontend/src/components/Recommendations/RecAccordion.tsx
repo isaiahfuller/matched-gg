@@ -1,4 +1,12 @@
-import { Accordion, Flex, Stack, Text, Image, Center } from "@mantine/core";
+import {
+  Accordion,
+  Flex,
+  Stack,
+  Text,
+  Image,
+  Center,
+  Divider,
+} from "@mantine/core";
 import { IGDBGame, IGDBGameArt } from "../../interfaces";
 import { ReactElement, useState } from "react";
 import classes from "./index.module.css";
@@ -51,15 +59,25 @@ export default function RecAccordion({
       <Accordion.Item key={item.game.id} value={item.game.name!}>
         <AccordionControl icon={item.game.cover!}>
           <Text>
-            {item.game.name!} <span>-{controlHeader}</span>
-            <span>{item.typeText}</span>
+            <Text fw={700} span>
+              {item.game.name!}
+            </Text>
+            <Text c="dimmed" span>
+              {" "}
+              -{controlHeader}
+            </Text>
+            <span className={classes.highlight}>{item.typeText}</span>
           </Text>
         </AccordionControl>
         <Accordion.Panel>
           <Stack>
             {rating ? (
-              <Text>
-                Users recommended this title <span>{rating}%</span> of the time.
+              <Text size="sm" c="dimmed" lh={0} pb={4}>
+                Users recommended this title{" "}
+                <Text span lh={0} pb={4}>
+                  {rating}%
+                </Text>{" "}
+                of the time.
               </Text>
             ) : null}
             <Flex direction={width < 1000 ? "column" : "row"}>
@@ -76,6 +94,7 @@ export default function RecAccordion({
                       "screenshot_med"
                     )}
                   />
+                  <Divider mx="auto" w={64} />
                   <Flex wrap="nowrap" justify="space-between">
                     {item.game.screenshots.slice(0, 4).map((e, i) => (
                       <img
@@ -101,6 +120,7 @@ export default function RecAccordion({
       defaultValue={recommendations[0].game.name!}
       classNames={{ chevron: classes.chevron }}
       chevronPosition="left"
+      variant="filled"
     >
       {items}
     </Accordion>
@@ -117,7 +137,12 @@ function AccordionControl({
   return (
     <Center>
       <Accordion.Control>{children}</Accordion.Control>
-      <img src={getScreenUrl(icon["image_id"], "micro")} />
+      <Image
+        src={getScreenUrl(icon["image_id"], "micro")}
+        w={35}
+        h={35}
+        m={4}
+      />
     </Center>
   );
 }

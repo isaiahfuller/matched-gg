@@ -1,7 +1,20 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
+import { LocalService } from './auth/strategies/local/local.service';
+import { UsersService } from './users/users.service';
+
+jest.mock('pg', () => {
+  const mockClient = {
+    connect: jest.fn(),
+    end: jest.fn(),
+    query: jest.fn(),
+  };
+  return { Client: jest.fn(() => mockClient), Pool: jest.fn(() => mockClient) };
+});
 
 describe('AppController', () => {
   let appController: AppController;
@@ -9,7 +22,13 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        AppService,
+        LocalService,
+        UsersService,
+        JwtService,
+        AuthService,
+      ],
     }).compile();
 
     appController = app.get<AppController>(AppController);

@@ -9,19 +9,26 @@ import {
   Req,
   Res,
   Session,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
 import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
+import { UsersService } from 'src/users/users.service';
 
-import { AuthService } from '../../auth/auth.service';
+import { SteamService } from '../../auth/strategies/steam/steam.service';
 import { SteamAuthResponse } from './types';
 
 @Controller('steam')
 export class SteamController {
   private logger = new Logger(SteamController.name);
   private steamHandler = new SteamHandler(config);
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly steamService: SteamService,
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {
@@ -33,8 +40,8 @@ export class SteamController {
     return achivements;
   }
 
-  @Get('auth') // TODO: Change to Post when front-end is implemented
   @UseGuards(AuthGuard('steam'))
+  @Get('auth') // TODO: Change to Post when front-end is implemented
   @HttpCode(HttpStatus.OK)
   /**
    * @remarks this is never called due to the authguard sending user to the return route
@@ -42,30 +49,49 @@ export class SteamController {
   login() {}
 
   @Get('getOwnedGames')
-  async ownedGames(@Session() session, @Res() res) {
+  async ownedGames(@Session() session) {
+    if (!session.user || !session.user.steam) {
+      throw new UnauthorizedException('No Steam account linked');
+    }
     const games = await this.steamHandler.getOwnedGames(
-      session.providers.steam.steamid,
+      session.user.steam.steamId,
     );
-    res.send(games.games);
-    return games;
+    return games.games;
   }
-  @Get('auth/return')
+
   @UseGuards(AuthGuard('steam'))
+  @Get('auth/return')
   async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
-    if (!('providers' in session)) session.providers = {};
-    session.providers.steam = req.user._json;
-    // TODO: Stop hardcoding the redirect URL
-    res.redirect('http://localhost:5173/');
-    return;
+    try {
+      if (!session.user) {
+        const user = await this.usersService.findBySteamId(
+          req.user.profile.steamid,
+        );
+        if (!user) throw new UnauthorizedException('Steam account not linked');
+        delete user.password;
+        session.user = user;
+        this.logger.log(`User ${user.id} logged in`);
+      } else if (session.user) {
+        await this.usersService.createSteam(session.user, req.user);
+        const user = await this.usersService.findById(session.user.id);
+        if (!user) throw new UnauthorizedException('Not logged in');
+        delete user.password;
+        session.user = user;
+        this.logger.log(`User ${user.id} linked Steam account`);
+      }
+    } catch (e) {
+      this.logger.error(e);
+    } finally {
+      // TODO: Stop hardcoding the redirect URL
+      res.redirect('http://localhost:5173/');
+    }
   }
 
   @Post('valid')
-  async validate(@Session() session, @Res() res) {
+  async validate(@Session() session) {
     if (!('providers' in session) || !('steam' in session.providers)) {
-      res.status(401).send({ error: 'Steam not logged in.' });
-      return session;
+      throw new UnauthorizedException({ error: 'Steam not logged in.' });
     }
-    res.send(session.providers.steam);
-    return session;
+    return session.providers.steam;
   }
 }

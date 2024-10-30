@@ -1,10 +1,10 @@
 const mockConfig = {
   db: {
     database: 'postgres',
-    host: 'localhost:5432',
-    password: 'postgres',
+    host: 'localhost',
+    password: 'g4mr',
     port: 5432,
-    user: 'postgres',
+    user: 'g4mr',
   },
   pinoOptions: {
     enabled: true,
