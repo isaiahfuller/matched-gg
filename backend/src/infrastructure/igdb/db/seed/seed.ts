@@ -239,6 +239,7 @@ seed()
   .then(async () => {
     logger.info('Seed complete');
     await igdbSteamLink();
+    process.exit(1);
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);
