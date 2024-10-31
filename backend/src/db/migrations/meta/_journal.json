@@ -15,6 +15,13 @@
       "when": 1730317021907,
       "tag": "0001_furry_swarm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1730335603623,
+      "tag": "0002_ambiguous_odin",
+      "breakpoints": true
     }
   ]
 }
