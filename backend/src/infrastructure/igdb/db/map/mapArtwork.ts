@@ -1,4 +1,5 @@
-import { Artworks, Covers } from '../schema/artworks';
+import { Artworks } from '../schema/artworks';
+import { Covers } from '../schema/covers';
 
 export const mapArtwork = (artwork) => {
   const mappedArtwork = {

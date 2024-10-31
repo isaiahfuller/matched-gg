@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   integer,
@@ -6,6 +7,9 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
+import { companyWebsitesTable } from './companyWebsites';
+import { involvedCompaniesTable } from './involvedCompanies';
 
 export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
   'YYYYMMMMDD',
@@ -21,9 +25,7 @@ export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
 export const companiesTable = pgTable('companies', {
   changeDate: timestamp('change_date'),
   changeDateCategory: CompanyDateCategoryPGEnum('change_date_category'),
-  changedCompanyId: bigint('changed_company_id', { mode: 'number' }).references(
-    () => companiesTable.igdbId,
-  ),
+  changedCompanyId: bigint('changed_company_id', { mode: 'number' }),
   checksum: text('checksum'),
   country: integer('country'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -32,16 +34,24 @@ export const companiesTable = pgTable('companies', {
   igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
+  logo: bigint('logo', { mode: 'number' }),
   name: text('name'),
-  parent: bigint('parent', { mode: 'number' }).references(
-    () => companiesTable.igdbId,
-  ),
+  parent: bigint('parent', { mode: 'number' }),
   published: bigint('published', { mode: 'number' }).array(),
   slug: text('slug'),
-  start_date: timestamp('start_date'),
+  startDate: timestamp('start_date'),
   startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
+
+export const companyRelations = relations(companiesTable, ({ many, one }) => ({
+  involvedCompanies: many(involvedCompaniesTable),
+  parent: one(companiesTable, {
+    fields: [companiesTable.parent],
+    references: [companiesTable.igdbId],
+  }),
+  websites: many(companyWebsitesTable),
+}));
 
 export type Companies = typeof companiesTable.$inferInsert;

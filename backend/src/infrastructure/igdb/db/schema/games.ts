@@ -14,8 +14,9 @@ import { relations } from 'drizzle-orm/relations';
 
 import { ageRatingsTable } from './ageRatings';
 import { alternativeNamesTable } from './alternativeNames';
-import { artworksTable, coverTable } from './artworks';
+import { artworksTable } from './artworks';
 import { collectionsTable } from './collections';
+import { coversTable } from './covers';
 import { externalGamesTable } from './externalGame';
 import { franchisesTable } from './franchise';
 import { gameEnginesTable } from './gameEngines';
@@ -76,9 +77,7 @@ export const gamesTable = pgTable(
     category: GameCategoryPGEnum('category'),
     checksum: text('checksum'),
     collections: bigint('collections', { mode: 'number' }).array(),
-    cover: bigint('cover', { mode: 'number' }).references(
-      () => coverTable.igdbId,
-    ),
+    cover: bigint('cover', { mode: 'number' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     dlcs: bigint('dlcs', { mode: 'number' }).array(),
     expandedGames: bigint('expanded_games', { mode: 'number' }).array(),
@@ -86,9 +85,7 @@ export const gamesTable = pgTable(
     externalGames: bigint('external_games', { mode: 'number' }).array(),
     firstReleaseDate: timestamp('first_release_date'),
     forks: bigint('forks', { mode: 'number' }).array(),
-    franchise: bigint('franchise', { mode: 'number' }).references(
-      () => franchisesTable.igdbId,
-    ),
+    franchise: bigint('franchise', { mode: 'number' }),
     franchises: bigint('franchises', { mode: 'number' }).array(),
     gameCategory: GameCategoryPGEnum('game_category'),
     gameEngines: bigint('game_engines', { mode: 'number' }).array(),
@@ -105,9 +102,7 @@ export const gamesTable = pgTable(
     languageSupports: bigint('language_supports', { mode: 'number' }).array(),
     multiplayerModes: bigint('multiplayer_modes', { mode: 'number' }).array(),
     name: text('name').notNull(),
-    parentGame: bigint('parent_game', { mode: 'number' }).references(
-      () => gamesTable.igdbId,
-    ),
+    parentGame: bigint('parent_game', { mode: 'number' }),
     platforms: bigint('platforms', { mode: 'number' }).array(),
     playerPerspectives: bigint('player_perspectives', {
       mode: 'number',
@@ -133,9 +128,7 @@ export const gamesTable = pgTable(
     totalRatingCount: integer('total_rating_count'),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     url: text('url'),
-    versionParent: bigint('version_parent', { mode: 'number' }).references(
-      () => gamesTable.igdbId,
-    ),
+    versionParent: bigint('version_parent', { mode: 'number' }),
     versionTitle: text('version_title'),
     videos: bigint('videos', { mode: 'number' }).array(),
     websites: bigint('websites', { mode: 'number' }).array(),
@@ -155,12 +148,19 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   artworks: many(artworksTable),
   bundles: many(gamesTable),
   collections: many(collectionsTable),
+  cover: one(coversTable, {
+    fields: [gamesTable.cover],
+    references: [coversTable.igdbId],
+  }),
   dlcs: many(gamesTable),
   expanded_games: many(gamesTable),
   expansions: many(gamesTable),
   externalGames: many(externalGamesTable),
   forks: many(gamesTable),
-  franchise: one(franchisesTable),
+  franchise: one(franchisesTable, {
+    fields: [gamesTable.franchise],
+    references: [franchisesTable.igdbId],
+  }),
   franchises: many(franchisesTable),
   gameEngines: many(gameEnginesTable),
   gameLocalizations: many(gameLocalizationsTable),
@@ -170,7 +170,10 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   keywords: many(keywordsTable),
   languageSupports: many(languageSupportsTable),
   multiplayerModes: many(multiplayerModesTable),
-  parentGame: one(gamesTable),
+  parentGame: one(gamesTable, {
+    fields: [gamesTable.parentGame],
+    references: [gamesTable.igdbId],
+  }),
   platforms: many(platformsTable),
   playerPerspectives: many(playerPerspectivesTable),
   ports: many(gamesTable),
@@ -181,7 +184,10 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   similarGames: many(gamesTable),
   standaloneExpansions: many(gamesTable),
   themes: many(themesTable),
-  versionParent: one(gamesTable),
+  versionParent: one(gamesTable, {
+    fields: [gamesTable.versionParent],
+    references: [gamesTable.igdbId],
+  }),
   videos: many(gameVideosTable),
   websites: many(websitesTable),
 }));

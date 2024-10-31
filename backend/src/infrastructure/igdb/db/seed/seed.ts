@@ -3,20 +3,30 @@ dotenv.config({ path: '../.env' });
 import { config } from '@config/config';
 import { IgdbConfig } from '@config/interfaces';
 import { chunk } from '@util/chunk';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { client } from 'src/db/db';
 import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
 import { logger } from 'src/util/logger';
 
 import TwitchHandler from '../../../twitch/handlers/twitchHandler';
 import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
+import { CompanyDTO } from '../../facade/subsystems/DTO/CompanyDTO';
+import { CoversDTO } from '../../facade/subsystems/DTO/CoversDTO';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
+import { InvolvedCompanyDTO } from '../../facade/subsystems/DTO/InvolvedCompanyDTO';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
 import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
 import { IgdbDbController } from '../controller/IgdbDbController';
 import { mapArtwork } from '../map/mapArtwork';
+import { mapCompany } from '../map/mapCompany';
 import { mapGame } from '../map/mapGame';
+import { mapInvolvedCompany } from '../map/mapInvolvedCompany';
 import { mapWebsite } from '../map/mapWebsite';
 import * as artworksSchema from '../schema/artworks';
+import * as companiesSchema from '../schema/companies';
+import * as coversSchema from '../schema/covers';
 import * as gamesSchema from '../schema/games';
+import * as involvedCompaniesSchema from '../schema/involvedCompanies';
 import * as websitesSchema from '../schema/websites';
 
 const seed = async (): Promise<void> => {
@@ -41,90 +51,81 @@ const seed = async (): Promise<void> => {
     logger,
   });
 
-  const igdbGames: GameDTO[] = await igdb.seedResources<GameDTO>({
-    concurrency: 4,
-    expanded: false,
-    resource: IgdbResources.GAMES,
-  });
+  async function seedResource<DTO>(mapping, endpoint) {
+    const igdbGames = await igdb.seedResources<DTO>({
+      concurrency: 4,
+      expanded: false,
+      resource: endpoint,
+    });
+    const entries = igdbGames.map((entry) => {
+      return mapping(entry);
+    });
 
-  const games: gamesSchema.Games[] = igdbGames.map(
-    (game: GameDTO): gamesSchema.Games => {
-      return mapGame(game);
-    },
+    logger.info({ entries: entries.length }, `${endpoint} mapped`);
+
+    const chunks = chunk(entries, 1000);
+
+    logger.info({ chunks: chunks.length }, `${endpoint} chunked`);
+
+    chunks.forEach(async (chunk) => {
+      try {
+        switch (endpoint) {
+          case IgdbResources.ARTWORKS:
+            return igdbDbController.storeArtworks(chunk);
+          case IgdbResources.COMPANIES:
+            return igdbDbController.storeCompanies(chunk);
+          case IgdbResources.COVERS:
+            return igdbDbController.storeCovers(chunk);
+          case IgdbResources.GAMES:
+            return igdbDbController.storeGames(chunk);
+          case IgdbResources.INVOLVED_COMPANIES:
+            return igdbDbController.storeInvolvedCompanies(chunk);
+          case IgdbResources.WEBSITES:
+            return igdbDbController.storeWebsites(chunk);
+          default:
+            throw new Error('Unhandled endpoint');
+        }
+      } catch (error) {
+        logger.error(`Error inserting ${endpoint}: ${error}`);
+      }
+    });
+
+    logger.info(`${endpoint} inserted`);
+  }
+
+  await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
+  await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
+  await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
+  await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
+  await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
+  await seedResource<InvolvedCompanyDTO>(
+    mapInvolvedCompany,
+    IgdbResources.INVOLVED_COMPANIES,
   );
-
-  logger.info({ games: games.length }, 'Games mapped');
-
-  const gameChunks: [gamesSchema.Games[]] = chunk(games, 1000);
-
-  logger.info({ chunks: gameChunks.length }, 'Games chunked');
-
-  gameChunks.forEach(async (chunk: gamesSchema.Games[]) => {
-    try {
-      await igdbDbController.storeGames(chunk);
-    } catch (error) {
-      logger.error(`Error inserting games: ${error}`);
-    }
-  });
-
-  logger.info('Games inserted');
-
-  const igdbWebsites: WebsiteDTO[] = await igdb.seedResources<WebsiteDTO>({
-    concurrency: 4,
-    expanded: false,
-    resource: IgdbResources.WEBSITES,
-  });
-
-  const websites: websitesSchema.Websites[] = igdbWebsites.map(
-    (website: WebsiteDTO): websitesSchema.Websites => {
-      return mapWebsite(website);
-    },
-  );
-
-  logger.info({ websites: websites.length }, 'Websites mapped');
-  const websiteChunks: [websitesSchema.Websites[]] = chunk(websites, 1000);
-
-  logger.info({ chunks: websiteChunks.length }, 'Websites chunked');
-
-  websiteChunks.forEach(async (chunk: websitesSchema.Websites[]) => {
-    try {
-      await igdbDbController.storeWebsites(chunk);
-    } catch (error) {
-      logger.error(`Error inserting websites: ${error}`);
-    }
-  });
-  logger.info('Websites inserted');
-
-  const igdbArtworks: ArtworkDTO[] = await igdb.seedResources<ArtworkDTO>({
-    concurrency: 4,
-    expanded: false,
-    resource: IgdbResources.ARTWORKS,
-  });
-
-  const artworks: artworksSchema.Artworks[] = igdbArtworks.map(
-    (artwork: ArtworkDTO): artworksSchema.Artworks => {
-      return mapArtwork(artwork);
-    },
-  );
-
-  logger.info({ artworks: artworks.length }, 'Artworks mapped');
-  const artworkChunks: [artworksSchema.Artworks[]] = chunk(artworks, 1000);
-
-  logger.info({ chunks: artworkChunks.length }, 'Artworks chunked');
-
-  artworkChunks.forEach(async (chunk: artworksSchema.Artworks[]) => {
-    try {
-      await igdbDbController.storeArtworks(chunk);
-    } catch (error) {
-      logger.error(`Error inserting artworks: ${error}`);
-    }
-  });
-  logger.info('Artworks inserted');
 };
 
 seed()
   .then(() => {
     logger.info('Seed complete');
+    const db = drizzle(client, {
+      schema: {
+        ...artworksSchema,
+        ...gamesSchema,
+        ...websitesSchema,
+        ...involvedCompaniesSchema,
+        ...coversSchema,
+        ...companiesSchema,
+      },
+    });
+    db.query.gamesTable
+      .findMany({
+        with: {
+          cover: true,
+          involvedCompanies: true,
+          websites: true,
+        },
+      })
+      .then((e) => console.log(e));
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);

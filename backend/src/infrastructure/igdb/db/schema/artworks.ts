@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -24,12 +25,14 @@ export const commonArtFields = {
 
 export const artworksTable = pgTable('artworks', {
   ...commonArtFields,
-  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
-});
-export const coverTable = pgTable('covers', {
-  ...commonArtFields,
-  game_localization: bigint('game_localization', { mode: 'number' }),
+  game: bigint('game', { mode: 'number' }),
 });
 
+export const artworkRelations = relations(artworksTable, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [artworksTable.game],
+    references: [gamesTable.igdbId],
+  }),
+}));
+
 export type Artworks = typeof artworksTable.$inferInsert;
-export type Covers = typeof coverTable.$inferInsert;

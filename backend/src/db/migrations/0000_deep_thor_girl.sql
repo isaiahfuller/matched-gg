@@ -1,111 +1,21 @@
-DO $$ BEGIN
- CREATE TYPE "public"."AgeRatingCDCategoryEnum" AS ENUM('', 'ESRB_alcohol_reference', 'ESRB_animated_blood', 'ESRB_blood', 'ESRB_blood_and gore', 'ESRB_cartoon_violence', 'ESRB_comic_mischief', 'ESRB_crude_humor', 'ESRB_drug_reference', 'ESRB_fantasy_violence', 'ESRB_intense_violence', 'ESRB_language', 'ESRB_lyrics', 'ESRB_mature_humor', 'ESRB_nudity', 'ESRB_partial_nudity', 'ESRB_real_gambling', 'ESRB_sexual_content', 'ESRB_sexual_themes', 'ESRB_sexual_violence', 'ESRB_simulated_gambling', 'ESRB_strong_language', 'ESRB_strong_lyrics', 'ESRB_strong_sexual content', 'ESRB_suggestive_themes', 'ESRB_tobacco_reference', 'ESRB_use_of alcohol', 'ESRB_use_of drugs', 'ESRB_use_of tobacco', 'ESRB_violence', 'ESRB_violent_references', 'ESRB_animated_violence', 'ESRB_mild_language', 'ESRB_mild_violence', 'ESRB_use_of drugs and alcohol', 'ESRB_drug_and alcohol reference', 'ESRB_mild_suggestive themes', 'ESRB_mild_cartoon violence', 'ESRB_mild_blood', 'ESRB_realistic_blood and gore', 'ESRB_realistic_violence', 'ESRB_alcohol_and tobacco reference', 'ESRB_mature_sexual themes', 'ESRB_mild_animated violence', 'ESRB_mild_sexual themes', 'ESRB_use_of alcohol and tobacco', 'ESRB_animated_blood and gore', 'ESRB_mild_fantasy violence', 'ESRB_mild_lyrics', 'ESRB_realistic_blood', 'PEGI_violence', 'PEGI_sex', 'PEGI_drugs', 'PEGI_fear', 'PEGI_discrimination', 'PEGI_bad_language', 'PEGI_gambling', 'PEGI_online_gameplay', 'PEGI_in_game_purchases', 'CERO_love', 'CERO_sexual_content', 'CERO_violence', 'CERO_horror', 'CERO_drinking_smoking', 'CERO_gambling', 'CERO_crime', 'CERO_controlled_substances', 'CERO_languages_and others', 'GRAC_sexuality', 'GRAC_violence', 'GRAC_fear_horror_threatening', 'GRAC_language', 'GRAC_alcohol_tobacco_drug', 'GRAC_crime_anti_social', 'GRAC_gambling', 'CLASS_IND_violencia', 'CLASS_IND_violencia_extrema', 'CLASS_IND_conteudo_sexual', 'CLASS_IND_nudez', 'CLASS_IND_sexo', 'CLASS_IND_sexo_explicito', 'CLASS_IND_drogas', 'CLASS_IND_drogas_licitas', 'CLASS_IND_drogas_ilicitas', 'CLASS_IND_linguagem_impropria', 'CLASS_IND_atos_criminosos');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."CategoryEnum" AS ENUM('', 'ESRB', 'PEGI', 'CERO', 'USK', 'GRAC', 'CLASS_IND', 'ACB');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."RatingEnum" AS ENUM('', 'Seven', 'Twelve', 'Sixteen', 'Eighteen', 'RP', 'EC', 'E', 'E10', 'T0', 'M1', 'AO2', 'CERO_A3', 'CERO_B4', 'CERO_C5', 'CERO_D6', 'CERO_Z7', 'USK_08', 'USK_69', 'USK_120', 'USK_161', 'USK_182', 'GRAC_ALL3', 'GRAC_Twelve4', 'GRAC_Fifteen5', 'GRAC_Eighteen6', 'GRAC_TESTING7', 'CLASS_IND_L8', 'CLASS_IND_Ten9', 'CLASS_IND_Twelve0', 'CLASS_IND_Fourteen1', 'CLASS_IND_Sixteen2', 'CLASS_IND_Eighteen3', 'ACB_G4', 'ACB_PG5', 'ACB_M6', 'ACB_MA157', 'ACB_R188', 'ACB_RC9');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."CollectionTypeEnum" AS ENUM('', 'MEMBER', 'SPINOFF');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."CompanyDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."ExternalGameMediaEnum" AS ENUM('', 'DIGITAL', 'PHYSICAL');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."GameCategoryEnum" AS ENUM('MAIN_GAME', 'DLC_ADDON', 'EXPANSION', 'BUNDLE', 'STANDALONE_EXPANSION', 'MOD', 'EPISODE', 'SEASON', 'REMAKE', 'REMASTER', 'EXPANDED_GAME', 'PORT', 'FORK', 'PACK', 'UPDATE');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."StatusEnum" AS ENUM('RELEASED', 'ALPHA', 'BETA', 'EARLY_ACCESS', 'OFFLINE', 'CANCELLED', 'RUMORED', 'DELISTED');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."GameVersionFeatureEnum" AS ENUM('boolean', 'description');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."GameVersionFeatureValueIncludedFeatureEnum" AS ENUM('NOT_INCLUDED', 'INCLUDED', 'PRE_ORDER_ONLY');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."PlatformCategoryEnum" AS ENUM('console', 'arcade', 'platform', 'operating_system', 'portable_console', 'computer');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."PlatformVersionReleaseDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."PlatformVersionReleaseDateRegionEnum" AS ENUM('europe', 'north_america', 'australia', 'new_zealand', 'japan', 'china', 'asia', 'worldwide', 'korea', 'brazil');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."PlatformWebsiteCategoryEnum" AS ENUM('official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'discord', 'google_plus', 'tumblr', 'linkedin', 'pinterest', 'soundcloud');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."PopularitySourceEnum" AS ENUM('igdb');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."ReleaseDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."ReleaseDateRegionEnum" AS ENUM('europe', 'north_america', 'australia', 'new_zealand', 'japan', 'china', 'asia', 'worldwide', 'korea', 'brazil');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."WebsiteCategoryEnum" AS ENUM('blank1', 'official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'blank2', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'itch', 'epicgames', 'gog', 'discord');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
+CREATE TYPE "public"."AgeRatingCDCategoryEnum" AS ENUM('', 'ESRB_alcohol_reference', 'ESRB_animated_blood', 'ESRB_blood', 'ESRB_blood_and gore', 'ESRB_cartoon_violence', 'ESRB_comic_mischief', 'ESRB_crude_humor', 'ESRB_drug_reference', 'ESRB_fantasy_violence', 'ESRB_intense_violence', 'ESRB_language', 'ESRB_lyrics', 'ESRB_mature_humor', 'ESRB_nudity', 'ESRB_partial_nudity', 'ESRB_real_gambling', 'ESRB_sexual_content', 'ESRB_sexual_themes', 'ESRB_sexual_violence', 'ESRB_simulated_gambling', 'ESRB_strong_language', 'ESRB_strong_lyrics', 'ESRB_strong_sexual content', 'ESRB_suggestive_themes', 'ESRB_tobacco_reference', 'ESRB_use_of alcohol', 'ESRB_use_of drugs', 'ESRB_use_of tobacco', 'ESRB_violence', 'ESRB_violent_references', 'ESRB_animated_violence', 'ESRB_mild_language', 'ESRB_mild_violence', 'ESRB_use_of drugs and alcohol', 'ESRB_drug_and alcohol reference', 'ESRB_mild_suggestive themes', 'ESRB_mild_cartoon violence', 'ESRB_mild_blood', 'ESRB_realistic_blood and gore', 'ESRB_realistic_violence', 'ESRB_alcohol_and tobacco reference', 'ESRB_mature_sexual themes', 'ESRB_mild_animated violence', 'ESRB_mild_sexual themes', 'ESRB_use_of alcohol and tobacco', 'ESRB_animated_blood and gore', 'ESRB_mild_fantasy violence', 'ESRB_mild_lyrics', 'ESRB_realistic_blood', 'PEGI_violence', 'PEGI_sex', 'PEGI_drugs', 'PEGI_fear', 'PEGI_discrimination', 'PEGI_bad_language', 'PEGI_gambling', 'PEGI_online_gameplay', 'PEGI_in_game_purchases', 'CERO_love', 'CERO_sexual_content', 'CERO_violence', 'CERO_horror', 'CERO_drinking_smoking', 'CERO_gambling', 'CERO_crime', 'CERO_controlled_substances', 'CERO_languages_and others', 'GRAC_sexuality', 'GRAC_violence', 'GRAC_fear_horror_threatening', 'GRAC_language', 'GRAC_alcohol_tobacco_drug', 'GRAC_crime_anti_social', 'GRAC_gambling', 'CLASS_IND_violencia', 'CLASS_IND_violencia_extrema', 'CLASS_IND_conteudo_sexual', 'CLASS_IND_nudez', 'CLASS_IND_sexo', 'CLASS_IND_sexo_explicito', 'CLASS_IND_drogas', 'CLASS_IND_drogas_licitas', 'CLASS_IND_drogas_ilicitas', 'CLASS_IND_linguagem_impropria', 'CLASS_IND_atos_criminosos');--> statement-breakpoint
+CREATE TYPE "public"."CategoryEnum" AS ENUM('', 'ESRB', 'PEGI', 'CERO', 'USK', 'GRAC', 'CLASS_IND', 'ACB');--> statement-breakpoint
+CREATE TYPE "public"."RatingEnum" AS ENUM('', 'Seven', 'Twelve', 'Sixteen', 'Eighteen', 'RP', 'EC', 'E', 'E10', 'T0', 'M1', 'AO2', 'CERO_A3', 'CERO_B4', 'CERO_C5', 'CERO_D6', 'CERO_Z7', 'USK_08', 'USK_69', 'USK_120', 'USK_161', 'USK_182', 'GRAC_ALL3', 'GRAC_Twelve4', 'GRAC_Fifteen5', 'GRAC_Eighteen6', 'GRAC_TESTING7', 'CLASS_IND_L8', 'CLASS_IND_Ten9', 'CLASS_IND_Twelve0', 'CLASS_IND_Fourteen1', 'CLASS_IND_Sixteen2', 'CLASS_IND_Eighteen3', 'ACB_G4', 'ACB_PG5', 'ACB_M6', 'ACB_MA157', 'ACB_R188', 'ACB_RC9');--> statement-breakpoint
+CREATE TYPE "public"."CollectionTypeEnum" AS ENUM('', 'MEMBER', 'SPINOFF');--> statement-breakpoint
+CREATE TYPE "public"."CompanyDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');--> statement-breakpoint
+CREATE TYPE "public"."ExternalGameMediaEnum" AS ENUM('', 'DIGITAL', 'PHYSICAL');--> statement-breakpoint
+CREATE TYPE "public"."GameCategoryEnum" AS ENUM('MAIN_GAME', 'DLC_ADDON', 'EXPANSION', 'BUNDLE', 'STANDALONE_EXPANSION', 'MOD', 'EPISODE', 'SEASON', 'REMAKE', 'REMASTER', 'EXPANDED_GAME', 'PORT', 'FORK', 'PACK', 'UPDATE');--> statement-breakpoint
+CREATE TYPE "public"."StatusEnum" AS ENUM('RELEASED', 'ALPHA', 'BETA', 'EARLY_ACCESS', 'OFFLINE', 'CANCELLED', 'RUMORED', 'DELISTED');--> statement-breakpoint
+CREATE TYPE "public"."GameVersionFeatureEnum" AS ENUM('boolean', 'description');--> statement-breakpoint
+CREATE TYPE "public"."GameVersionFeatureValueIncludedFeatureEnum" AS ENUM('NOT_INCLUDED', 'INCLUDED', 'PRE_ORDER_ONLY');--> statement-breakpoint
+CREATE TYPE "public"."PlatformCategoryEnum" AS ENUM('console', 'arcade', 'platform', 'operating_system', 'portable_console', 'computer');--> statement-breakpoint
+CREATE TYPE "public"."PlatformVersionReleaseDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');--> statement-breakpoint
+CREATE TYPE "public"."PlatformVersionReleaseDateRegionEnum" AS ENUM('europe', 'north_america', 'australia', 'new_zealand', 'japan', 'china', 'asia', 'worldwide', 'korea', 'brazil');--> statement-breakpoint
+CREATE TYPE "public"."PlatformWebsiteCategoryEnum" AS ENUM('official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'discord', 'google_plus', 'tumblr', 'linkedin', 'pinterest', 'soundcloud');--> statement-breakpoint
+CREATE TYPE "public"."PopularitySourceEnum" AS ENUM('igdb');--> statement-breakpoint
+CREATE TYPE "public"."ReleaseDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');--> statement-breakpoint
+CREATE TYPE "public"."ReleaseDateRegionEnum" AS ENUM('europe', 'north_america', 'australia', 'new_zealand', 'japan', 'china', 'asia', 'worldwide', 'korea', 'brazil');--> statement-breakpoint
+CREATE TYPE "public"."WebsiteCategoryEnum" AS ENUM('blank1', 'official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'blank2', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'itch', 'epicgames', 'gog', 'discord');--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "age_rating_content_descriptions" (
 	"age_rating_content_descriptions_category" "AgeRatingCDCategoryEnum",
 	"checksum" text,
@@ -150,20 +60,6 @@ CREATE TABLE IF NOT EXISTS "artworks" (
 	"game" bigint
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "covers" (
-	"alpha_channel" boolean,
-	"animated" boolean,
-	"checksum" text,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"height" integer,
-	"igdb_id" integer PRIMARY KEY NOT NULL,
-	"image_id" text,
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	"url" text,
-	"width" integer,
-	"game_localization" bigint
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "collectionMemberships" (
 	"checksum" text,
 	"game" bigint,
@@ -200,6 +96,7 @@ CREATE TABLE IF NOT EXISTS "companies" (
 	"igdb_created_at" timestamp,
 	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"igdb_updated_at" timestamp,
+	"logo" bigint,
 	"name" text,
 	"parent" bigint,
 	"published" bigint[],
@@ -231,6 +128,20 @@ CREATE TABLE IF NOT EXISTS "companyWebsites" (
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
 	"category" "WebsiteCategoryEnum"
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "covers" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer,
+	"game_localization" bigint
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "eventLogos" (
@@ -365,29 +276,66 @@ CREATE TABLE IF NOT EXISTS "gameModes" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "games" (
+	"age_ratings" bigint[],
 	"aggregated_rating" double precision,
 	"aggregated_rating_count" integer,
+	"alternative_names" bigint[],
+	"artworks" bigint[],
+	"bundles" bigint[],
+	"category" "GameCategoryEnum",
 	"checksum" text,
+	"collections" bigint[],
+	"cover" bigint,
 	"created_at" timestamp DEFAULT now() NOT NULL,
+	"dlcs" bigint[],
+	"expanded_games" bigint[],
+	"expansions" bigint[],
+	"external_games" bigint[],
 	"first_release_date" timestamp,
+	"forks" bigint[],
+	"franchise" bigint,
+	"franchises" bigint[],
 	"game_category" "GameCategoryEnum",
+	"game_engines" bigint[],
+	"game_localizations" bigint[],
+	"game_modes" bigint[],
+	"genres" bigint[],
 	"hypes" integer,
 	"game_id" serial NOT NULL,
 	"igdb_created_at" timestamp,
 	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"igdb_updated_at" timestamp,
+	"involved_companies" bigint[],
+	"keywords" bigint[],
+	"language_supports" bigint[],
+	"multiplayer_modes" bigint[],
 	"name" text NOT NULL,
+	"parent_game" bigint,
+	"platforms" bigint[],
+	"player_perspectives" bigint[],
+	"ports" bigint[],
 	"rating" double precision,
 	"rating_count" integer,
+	"release_dates" bigint[],
+	"remakes" bigint[],
+	"remasters" bigint[],
+	"screenshots" bigint[],
+	"similar_games" bigint[],
 	"slug" text,
+	"standalone_expansions" bigint[],
 	"status" "StatusEnum",
 	"storyline" text,
 	"summary" text,
+	"tags" bigint[],
+	"themes" bigint[],
 	"total_rating" double precision,
 	"total_rating_count" integer,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
+	"version_parent" bigint,
 	"version_title" text,
+	"videos" bigint[],
+	"websites" bigint[],
 	CONSTRAINT "games_game_id_unique" UNIQUE("game_id")
 );
 --> statement-breakpoint
@@ -739,6 +687,18 @@ CREATE TABLE IF NOT EXISTS "screenshots" (
 	"game" bigint
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "themes" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "websites" (
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -748,6 +708,27 @@ CREATE TABLE IF NOT EXISTS "websites" (
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
 	"category" "WebsiteCategoryEnum"
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "steam_profiles" (
+	"avatar" text,
+	"created_at" date DEFAULT now(),
+	"name" text,
+	"steam_id" text PRIMARY KEY NOT NULL,
+	"updated_at" date DEFAULT now(),
+	"url" text,
+	"user_id" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "users" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"email" text NOT NULL,
+	"user_id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "users_user_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1000 CACHE 1),
+	"name" text NOT NULL,
+	"password" text NOT NULL,
+	"steam_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -770,18 +751,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "collectionMemberships" ADD CONSTRAINT "collectionMemberships_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "companies" ADD CONSTRAINT "companies_changed_company_id_companies_igdb_id_fk" FOREIGN KEY ("changed_company_id") REFERENCES "public"."companies"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "companies" ADD CONSTRAINT "companies_parent_companies_igdb_id_fk" FOREIGN KEY ("parent") REFERENCES "public"."companies"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -865,18 +834,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "involvedCompanies" ADD CONSTRAINT "involvedCompanies_company_companies_igdb_id_fk" FOREIGN KEY ("company") REFERENCES "public"."companies"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "involvedCompanies" ADD CONSTRAINT "involvedCompanies_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -902,30 +859,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "multiplayerModes" ADD CONSTRAINT "multiplayerModes_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platforms" ADD CONSTRAINT "platforms_platform_family_platformFamilies_igdb_id_fk" FOREIGN KEY ("platform_family") REFERENCES "public"."platformFamilies"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platforms" ADD CONSTRAINT "platforms_platform_logo_platformLogos_igdb_id_fk" FOREIGN KEY ("platform_logo") REFERENCES "public"."platformLogos"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platforms" ADD CONSTRAINT "platforms_versions_platformVersions_igdb_id_fk" FOREIGN KEY ("versions") REFERENCES "public"."platformVersions"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platforms" ADD CONSTRAINT "platforms_websites_platformWebsites_igdb_id_fk" FOREIGN KEY ("websites") REFERENCES "public"."platformWebsites"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -991,13 +924,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "websites" ADD CONSTRAINT "websites_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "steam_profiles" ADD CONSTRAINT "steam_profiles_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "igdb_uid_idx" ON "externalGames" ("uid");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "externalGames" ("url");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "name_idx" ON "games" ("name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" ("slug");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" ("igdb_id");
+CREATE INDEX IF NOT EXISTS "igdb_uid_idx" ON "externalGames" USING btree ("uid");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "externalGames" USING btree ("url");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "name_idx" ON "games" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" USING btree ("slug");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" USING btree ("igdb_id");

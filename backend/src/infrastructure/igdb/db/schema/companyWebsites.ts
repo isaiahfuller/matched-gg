@@ -1,5 +1,7 @@
+import { relations } from 'drizzle-orm';
 import { bigint, boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
+import { companiesTable } from './companies';
 import { WebsitePGEnum } from './websites';
 
 export const companyWebsitesTable = pgTable('companyWebsites', {
@@ -11,5 +13,12 @@ export const companyWebsitesTable = pgTable('companyWebsites', {
   url: text('url'),
   websiteCategory: WebsitePGEnum('category'),
 });
+
+export const companyWebsiteRelations = relations(
+  companyWebsitesTable,
+  ({ one }) => ({
+    company: one(companiesTable),
+  }),
+);
 
 export type CompanyWebsites = typeof companyWebsitesTable.$inferInsert;

@@ -18,7 +18,7 @@ export function setAllConflictUpdateColumns<TTable extends PgTable>(
       }
       if (!columnInfo.default) {
         acc[columnName] = sql.raw(
-          `COALESCE(excluded.${columnInfo.name}, ${tableName}.${columnInfo.name})`,
+          `COALESCE(excluded."${columnInfo.name}", "${tableName}"."${columnInfo.name}")`,
         );
       }
       return acc;

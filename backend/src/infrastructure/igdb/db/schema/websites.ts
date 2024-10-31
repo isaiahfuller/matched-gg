@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -34,12 +35,19 @@ export const WebsitePGEnum = pgEnum('WebsiteCategoryEnum', [
 export const websitesTable = pgTable('websites', {
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
+  game: bigint('game', { mode: 'number' }),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   trusted: boolean('trusted'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
   websiteCategory: WebsitePGEnum('category'),
 });
+
+export const websiteRelations = relations(websitesTable, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [websitesTable.game],
+    references: [gamesTable.igdbId],
+  }),
+}));
 
 export type Websites = typeof websitesTable.$inferInsert;

@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   integer,
@@ -7,6 +8,7 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
+import { gamesTable } from './games';
 import { platformFamiliesTable } from './platformFamilies';
 import { platformLogosTable } from './platformLogos';
 import { platformVersionsTable } from './platformVersions';
@@ -32,22 +34,28 @@ export const platformsTable = pgTable('platforms', {
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
   name: text('name').notNull(),
-  platformFamily: bigint('platform_family', { mode: 'number' }).references(
-    () => platformFamiliesTable.igdbId,
-  ),
-  platformLogo: bigint('platform_logo', { mode: 'number' }).references(
-    () => platformLogosTable.igdbId,
-  ),
+  platformFamily: bigint('platform_family', { mode: 'number' }),
+  platformLogo: bigint('platform_logo', { mode: 'number' }),
   slug: text('slug'),
   summary: text('summary'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
-  versions: bigint('versions', { mode: 'number' }).references(
-    () => platformVersionsTable.igdbId,
-  ),
-  websites: bigint('websites', { mode: 'number' }).references(
-    () => platformWebsitesTable.igdbId,
-  ),
+  versions: bigint('versions', { mode: 'number' }),
+  websites: bigint('websites', { mode: 'number' }),
 });
+
+export const platformRelations = relations(platformsTable, ({ many, one }) => ({
+  games: many(gamesTable),
+  platformFamily: one(platformFamiliesTable, {
+    fields: [platformsTable.platformFamily],
+    references: [platformFamiliesTable.igdbId],
+  }),
+  platformLogo: one(platformLogosTable, {
+    fields: [platformsTable.platformLogo],
+    references: [platformLogosTable.igdbId],
+  }),
+  platformVersions: many(platformVersionsTable),
+  platformWebsites: many(platformWebsitesTable),
+}));
 
 export type Platforms = typeof platformsTable.$inferInsert;

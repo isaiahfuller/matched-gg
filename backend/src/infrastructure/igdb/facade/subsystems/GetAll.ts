@@ -4,7 +4,12 @@ import { RequestAllConfig } from 'apicalypse';
 import { InterceptorSubsystem } from './Subsystem';
 import { IgdbResources } from './enum/IgdbResources';
 import { ArtworkField, ExpandedArtworkField } from './enum/field/ArtworkField';
+import { CompanyField, ExpandedCompanyField } from './enum/field/CompanyField';
 import { ExpandedGameField, GameField } from './enum/field/GameField';
+import {
+  ExpandedInvolvedComanyField,
+  InvolvedComanyField,
+} from './enum/field/InvolvedCompanyField';
 import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
 import { IGetAll } from './interfaces';
 import { IgdbField } from './types';
@@ -30,10 +35,12 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
   ): Promise<DTO[]> {
     await this.prepare({ expanded, resource, totalResourceCount });
     if (this.fields) {
-      const data: DTO[] = await this.client
+      const data = await this.client
         .limit(limit)
         .fields(this.fields)
         .requestAll(`/${resource}`, options);
+      // .request(`/${resource}`)
+      // return data.data
       return data;
     }
     return [];
@@ -50,6 +57,14 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
         return Object.values(expanded ? ExpandedWebsiteField : WebsiteField);
       case IgdbResources.ARTWORKS:
         return Object.values(expanded ? ExpandedArtworkField : ArtworkField);
+      case IgdbResources.COMPANIES:
+        return Object.values(expanded ? ExpandedCompanyField : CompanyField);
+      case IgdbResources.COVERS:
+        return Object.values(expanded ? ExpandedArtworkField : ArtworkField);
+      case IgdbResources.INVOLVED_COMPANIES:
+        return Object.values(
+          expanded ? ExpandedInvolvedComanyField : InvolvedComanyField,
+        );
       default:
         return;
     }

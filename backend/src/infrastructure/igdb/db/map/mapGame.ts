@@ -18,7 +18,6 @@ export const mapGame = (game) => {
     firstReleaseDate: game.first_release_date
       ? new Date(game.first_release_date * 1000)
       : null,
-    follows: game.follows,
     forks: game.forks,
     franchise: game.franchise,
     franchises: game.franchises,

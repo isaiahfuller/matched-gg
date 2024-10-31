@@ -1,13 +1,13 @@
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { coverTable } from './artworks';
+import { coversTable } from './covers';
 import { gamesTable } from './games';
 import { regionsTable } from './regions';
 
 export const gameLocalizationsTable = pgTable('gameLocalizations', {
   checksum: text('checksum'),
   cover: bigint('cover', { mode: 'number' }).references(
-    () => coverTable.igdbId,
+    () => coversTable.igdbId,
   ),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),

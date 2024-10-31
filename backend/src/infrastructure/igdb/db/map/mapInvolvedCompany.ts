@@ -1,4 +1,5 @@
 import { InvolvedCompanies } from '../schema/involvedCompanies';
+import validateTimestamp from '../util/validateTimestamp';
 
 export const mapInvolvedCompany = (company) => {
   const mapped = {
@@ -6,15 +7,11 @@ export const mapInvolvedCompany = (company) => {
     company: company.company,
     developer: company.developer,
     game: company.game,
-    igdbCreatedAt: company.created_at
-      ? new Date(company.created_at * 1000)
-      : null,
+    igdbCreatedAt: validateTimestamp(company.created_at),
     igdbId: company.id,
-    igdbUpdatedAt: company.updated_at
-      ? new Date(company.updated_at * 1000)
-      : null,
+    igdbUpdatedAt: validateTimestamp(company.updated_at),
     porting: company.porting,
-    publisher: company.publishing,
+    publisher: company.publisher,
     supporting: company.supporting,
     updatedAt: new Date(),
   } satisfies InvolvedCompanies;
