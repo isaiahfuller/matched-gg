@@ -39,8 +39,8 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
         .limit(limit)
         .fields(this.fields)
         .requestAll(`/${resource}`, options);
-      // .request(`/${resource}`)
-      // return data.data
+      //   .request(`/${resource}`);
+      // return data.data;
       return data;
     }
     return [];

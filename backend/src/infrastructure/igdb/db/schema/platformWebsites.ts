@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -6,6 +7,8 @@ import {
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
+
+import { platformsTable } from './platforms';
 
 export const PlatformWebsiteCategoryPGEnum = pgEnum(
   'PlatformWebsiteCategoryEnum',
@@ -41,5 +44,12 @@ export const platformWebsitesTable = pgTable('platformWebsites', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
+
+export const platformWebsiteReleations = relations(
+  platformWebsitesTable,
+  ({ many }) => ({
+    platforms: many(platformsTable),
+  }),
+);
 
 export type PlatformWebsites = typeof platformWebsitesTable.$inferInsert;

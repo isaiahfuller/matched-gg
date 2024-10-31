@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   integer,
@@ -51,13 +52,21 @@ export const platformVersionReleaseDatesTable = pgTable(
     igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
     igdbUpdatedAt: timestamp('igdb_updated_at'),
     m: integer('m'),
-    platformVersion: bigint('platform_version', { mode: 'number' }).references(
-      () => platformVersionsTable.igdbId,
-    ),
+    platformVersion: bigint('platform_version', { mode: 'number' }),
     region: PlatformVersionReleaseDateRegionPGEnum('region'),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     y: integer('y'),
   },
+);
+
+export const platformVersionReleaseDateRelations = relations(
+  platformVersionReleaseDatesTable,
+  ({ one }) => ({
+    platformVersion: one(platformVersionsTable, {
+      fields: [platformVersionReleaseDatesTable.platformVersion],
+      references: [platformVersionsTable.igdbId],
+    }),
+  }),
 );
 
 export type PlatformVersionReleaseDates =

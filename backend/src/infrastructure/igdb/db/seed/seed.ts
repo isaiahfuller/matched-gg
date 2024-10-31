@@ -20,6 +20,7 @@ import { mapCompany } from '../map/mapCompany';
 import { mapGame } from '../map/mapGame';
 import { mapInvolvedCompany } from '../map/mapInvolvedCompany';
 import { mapWebsite } from '../map/mapWebsite';
+import { Artworks, artworksTable } from '../schema/artworks';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
@@ -63,7 +64,7 @@ const seed = async (): Promise<void> => {
       try {
         switch (endpoint) {
           case IgdbResources.ARTWORKS:
-            return igdbDbController.storeArtworks(chunk);
+            return igdbDbController.store<Artworks>(chunk, artworksTable);
           case IgdbResources.COMPANIES:
             return igdbDbController.storeCompanies(chunk);
           case IgdbResources.COVERS:
@@ -85,15 +86,15 @@ const seed = async (): Promise<void> => {
     logger.info(`${endpoint} inserted`);
   }
 
-  await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
-  await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
+  // await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
+  // await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
   await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
-  await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
-  await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
-  await seedResource<InvolvedCompanyDTO>(
-    mapInvolvedCompany,
-    IgdbResources.INVOLVED_COMPANIES,
-  );
+  // await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
+  // await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
+  // await seedResource<InvolvedCompanyDTO>(
+  //   mapInvolvedCompany,
+  //   IgdbResources.INVOLVED_COMPANIES,
+  // );
 };
 
 seed()

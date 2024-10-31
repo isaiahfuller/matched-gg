@@ -1,6 +1,8 @@
+import { relations } from 'drizzle-orm';
 import { bigint, boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { companiesTable } from './companies';
+import { platformVersionsTable } from './platformVersions';
 
 export const platformVersionCompaniesTable = pgTable(
   'platformVersionCompanies',
@@ -16,6 +18,13 @@ export const platformVersionCompaniesTable = pgTable(
     manufacturer: boolean('manufacturer'),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
+);
+
+export const platformVersionCompanyRelations = relations(
+  platformVersionCompaniesTable,
+  ({ many }) => ({
+    platforms: many(platformVersionsTable),
+  }),
 );
 
 export type PlatformVersionCompanies =
