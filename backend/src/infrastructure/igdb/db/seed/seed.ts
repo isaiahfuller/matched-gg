@@ -3,8 +3,6 @@ dotenv.config({ path: '../.env' });
 import { config } from '@config/config';
 import { IgdbConfig } from '@config/interfaces';
 import { chunk } from '@util/chunk';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { client } from 'src/db/db';
 import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
 import { logger } from 'src/util/logger';
 
@@ -22,12 +20,6 @@ import { mapCompany } from '../map/mapCompany';
 import { mapGame } from '../map/mapGame';
 import { mapInvolvedCompany } from '../map/mapInvolvedCompany';
 import { mapWebsite } from '../map/mapWebsite';
-import * as artworksSchema from '../schema/artworks';
-import * as companiesSchema from '../schema/companies';
-import * as coversSchema from '../schema/covers';
-import * as gamesSchema from '../schema/games';
-import * as involvedCompaniesSchema from '../schema/involvedCompanies';
-import * as websitesSchema from '../schema/websites';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
@@ -107,25 +99,6 @@ const seed = async (): Promise<void> => {
 seed()
   .then(() => {
     logger.info('Seed complete');
-    const db = drizzle(client, {
-      schema: {
-        ...artworksSchema,
-        ...gamesSchema,
-        ...websitesSchema,
-        ...involvedCompaniesSchema,
-        ...coversSchema,
-        ...companiesSchema,
-      },
-    });
-    db.query.gamesTable
-      .findMany({
-        with: {
-          cover: true,
-          involvedCompanies: true,
-          websites: true,
-        },
-      })
-      .then((e) => console.log(e));
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);

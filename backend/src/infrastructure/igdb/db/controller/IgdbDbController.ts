@@ -61,11 +61,7 @@ export class IgdbDbController {
       .insert(gamesSchema.gamesTable)
       .values([games].flat())
       .onConflictDoUpdate({
-        set: setAllConflictUpdateColumns(gamesSchema.gamesTable, [
-          'createdAt',
-          'igdbId',
-          'id',
-        ]),
+        set: setAllConflictUpdateColumns(gamesSchema.gamesTable, ['igdbId']),
         target: gamesSchema.gamesTable.igdbId,
       });
   }
