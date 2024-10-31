@@ -1,4 +1,4 @@
-export enum GenreField {
+export enum ThemeField {
   checksum = 'checksum',
   created_at = 'created_at',
   id = 'id',
@@ -7,8 +7,7 @@ export enum GenreField {
   updated_at = 'updated_at',
   url = 'url',
 }
-
-export enum ExpandedGenreField {
+export enum ExpandedThemeField {
   checksum = 'checksum',
   created_at = 'created_at',
   id = 'id',

@@ -1,5 +1,5 @@
 {
-  "id": "ba2f15ec-f823-4a1e-801f-2ba3b8a38c47",
+  "id": "559eacda-c961-45a2-9194-9411468dcbcc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -260,21 +260,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "artworks_game_games_igdb_id_fk": {
-          "name": "artworks_game_games_igdb_id_fk",
-          "tableFrom": "artworks",
-          "tableTo": "games",
-          "columnsFrom": [
-            "game"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -2988,34 +2974,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "multiplayerModes_game_games_igdb_id_fk": {
-          "name": "multiplayerModes_game_games_igdb_id_fk",
-          "tableFrom": "multiplayerModes",
-          "tableTo": "games",
-          "columnsFrom": [
-            "game"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "multiplayerModes_platform_platforms_igdb_id_fk": {
-          "name": "multiplayerModes_platform_platforms_igdb_id_fk",
-          "tableFrom": "multiplayerModes",
-          "tableTo": "platforms",
-          "columnsFrom": [
-            "platform"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -3308,13 +3267,13 @@
         },
         "versions": {
           "name": "versions",
-          "type": "bigint",
+          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         },
         "websites": {
           "name": "websites",
-          "type": "bigint",
+          "type": "bigint[]",
           "primaryKey": false,
           "notNull": false
         }
@@ -3488,21 +3447,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "platformVersionReleaseDates_platform_version_platformVersions_igdb_id_fk": {
-          "name": "platformVersionReleaseDates_platform_version_platformVersions_igdb_id_fk",
-          "tableFrom": "platformVersionReleaseDates",
-          "tableTo": "platformVersions",
-          "columnsFrom": [
-            "platform_version"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -3647,34 +3592,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "platformVersions_main_manufacturer_platformVersionCompanies_igdb_id_fk": {
-          "name": "platformVersions_main_manufacturer_platformVersionCompanies_igdb_id_fk",
-          "tableFrom": "platformVersions",
-          "tableTo": "platformVersionCompanies",
-          "columnsFrom": [
-            "main_manufacturer"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "platformVersions_platform_logo_platformLogos_igdb_id_fk": {
-          "name": "platformVersions_platform_logo_platformLogos_igdb_id_fk",
-          "tableFrom": "platformVersions",
-          "tableTo": "platformLogos",
-          "columnsFrom": [
-            "platform_logo"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -4460,7 +4378,23 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "website_url_idx": {
+          "name": "website_url_idx",
+          "columns": [
+            {
+              "expression": "url",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

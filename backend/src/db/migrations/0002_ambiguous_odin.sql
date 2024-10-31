@@ -1,1 +1,0 @@
-CREATE INDEX IF NOT EXISTS "website_url_idx" ON "websites" USING btree ("url");

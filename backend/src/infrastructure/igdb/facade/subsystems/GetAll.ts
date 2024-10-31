@@ -5,11 +5,50 @@ import { InterceptorSubsystem } from './Subsystem';
 import { IgdbResources } from './enum/IgdbResources';
 import { ArtworkField, ExpandedArtworkField } from './enum/field/ArtworkField';
 import { CompanyField, ExpandedCompanyField } from './enum/field/CompanyField';
+import {
+  ExpandedFranchiseField,
+  FranchiseField,
+} from './enum/field/FranchiseField';
 import { ExpandedGameField, GameField } from './enum/field/GameField';
+import { ExpandedGenreField, GenreField } from './enum/field/GenreField';
 import {
   ExpandedInvolvedComanyField,
   InvolvedComanyField,
 } from './enum/field/InvolvedCompanyField';
+import { ExpandedKeywordField, KeywordField } from './enum/field/KeywordField';
+import {
+  ExpandedMultiplayerModeField,
+  MultiplayerModeField,
+} from './enum/field/MultiplayerModeField';
+import {
+  ExpandedPlatformFamilyField,
+  PlatformFamilyField,
+} from './enum/field/PlatformFamilyField';
+import {
+  ExpandedPlatformField,
+  PlatformField,
+} from './enum/field/PlatformField';
+import {
+  ExpandedPlatformLogoField,
+  PlatformLogoField,
+} from './enum/field/PlatformLogoField';
+import {
+  ExpandedPlatformVersionCompanyField,
+  PlatformVersionCompanyField,
+} from './enum/field/PlatformVersionCompanyField';
+import {
+  ExpandedPlatformVersionField,
+  PlatformVersionField,
+} from './enum/field/PlatformVersionField';
+import {
+  ExpandedPlatformVersionReleaseDateField,
+  PlatformVersionReleaseDateField,
+} from './enum/field/PlatformVersionReleaseDateField';
+import {
+  ExpandedPlatformWebsiteField,
+  PlatformWebsiteField,
+} from './enum/field/PlatformWebsiteField';
+import { ExpandedThemeField, ThemeField } from './enum/field/ThemeField';
 import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
 import { IGetAll } from './interfaces';
 import { IgdbField } from './types';
@@ -64,6 +103,50 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
       case IgdbResources.INVOLVED_COMPANIES:
         return Object.values(
           expanded ? ExpandedInvolvedComanyField : InvolvedComanyField,
+        );
+      case IgdbResources.FRANCHISES:
+        return Object.values(
+          expanded ? ExpandedFranchiseField : FranchiseField,
+        );
+      case IgdbResources.PLATFORMS:
+        return Object.values(expanded ? ExpandedPlatformField : PlatformField);
+      case IgdbResources.PLATFORM_LOGOS:
+        return Object.values(
+          expanded ? ExpandedPlatformLogoField : PlatformLogoField,
+        );
+      case IgdbResources.PLATFORM_WEBSITES:
+        return Object.values(
+          expanded ? ExpandedPlatformWebsiteField : PlatformWebsiteField,
+        );
+      case IgdbResources.PLATFORM_FAMILIES:
+        return Object.values(
+          expanded ? ExpandedPlatformFamilyField : PlatformFamilyField,
+        );
+      case IgdbResources.PLATFORM_VERSION_COMPANIES:
+        return Object.values(
+          expanded
+            ? ExpandedPlatformVersionCompanyField
+            : PlatformVersionCompanyField,
+        );
+      case IgdbResources.PLATFORM_VERSIONS:
+        return Object.values(
+          expanded ? ExpandedPlatformVersionField : PlatformVersionField,
+        );
+      case IgdbResources.PLATFORM_VERSION_RELEASE_DATES:
+        return Object.values(
+          expanded
+            ? ExpandedPlatformVersionReleaseDateField
+            : PlatformVersionReleaseDateField,
+        );
+      case IgdbResources.GENRES:
+        return Object.values(expanded ? ExpandedGenreField : GenreField);
+      case IgdbResources.KEYWORDS:
+        return Object.values(expanded ? ExpandedKeywordField : KeywordField);
+      case IgdbResources.THEMES:
+        return Object.values(expanded ? ExpandedThemeField : ThemeField);
+      case IgdbResources.MULTIPLAYER_MODES:
+        return Object.values(
+          expanded ? ExpandedMultiplayerModeField : MultiplayerModeField,
         );
       default:
         return;

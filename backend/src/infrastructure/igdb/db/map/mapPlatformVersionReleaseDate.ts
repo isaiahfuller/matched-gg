@@ -3,21 +3,22 @@ import {
   PlatformVersionReleaseDateRegionPGEnum,
   PlatformVersionReleaseDates,
 } from '../schema/platformVersionReleaseDate';
+import validateTimestamp from '../util/validateTimestamp';
 
 export const mapPlatformVersionReleaseDate = (date) => {
   const mapped = {
-    category: undefined
+    category: date.category
       ? null
       : PlatformVersionReleaseDateCategoryPGEnum.enumValues[date.category],
     checksum: date.checksum,
-    date: date.date,
+    date: validateTimestamp(date.date),
     human: date.human,
-    igdbCreatedAt: date.created_at ? new Date(date.created_at * 1000) : null,
+    igdbCreatedAt: validateTimestamp(date.created_at),
     igdbId: date.id,
-    igdbUpdatedAt: date.updated_at ? new Date(date.updated_at * 1000) : null,
+    igdbUpdatedAt: validateTimestamp(date.updated_at),
     m: date.m,
     platformVersion: date.platform_version,
-    region: undefined
+    region: date.region
       ? null
       : PlatformVersionReleaseDateRegionPGEnum.enumValues[date.region],
     updatedAt: new Date(),

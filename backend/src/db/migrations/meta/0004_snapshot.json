@@ -1,6 +1,6 @@
 {
-  "id": "c70730be-6c61-4298-b3cf-794926105fa2",
-  "prevId": "5c828971-85f9-4140-9ebf-01f23f524398",
+  "id": "cabde1c7-c408-42d5-ace8-285349afc8a7",
+  "prevId": "c70730be-6c61-4298-b3cf-794926105fa2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -2963,7 +2963,7 @@
           "name": "splitscreenonline",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",

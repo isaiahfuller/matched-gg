@@ -1,0 +1,1 @@
+ALTER TABLE "platformVersionCompanies" DROP CONSTRAINT "platformVersionCompanies_company_companies_igdb_id_fk";

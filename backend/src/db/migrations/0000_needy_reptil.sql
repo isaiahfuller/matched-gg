@@ -529,8 +529,8 @@ CREATE TABLE IF NOT EXISTS "platforms" (
 	"summary" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
-	"versions" bigint,
-	"websites" bigint
+	"versions" bigint[],
+	"websites" bigint[]
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "platformVersionCompanies" (
@@ -738,12 +738,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "artworks" ADD CONSTRAINT "artworks_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "collectionMemberships" ADD CONSTRAINT "collectionMemberships_game_collections_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."collections"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -852,37 +846,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "multiplayerModes" ADD CONSTRAINT "multiplayerModes_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "multiplayerModes" ADD CONSTRAINT "multiplayerModes_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "platformVersionCompanies" ADD CONSTRAINT "platformVersionCompanies_company_companies_igdb_id_fk" FOREIGN KEY ("company") REFERENCES "public"."companies"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platformVersionReleaseDates" ADD CONSTRAINT "platformVersionReleaseDates_platform_version_platformVersions_igdb_id_fk" FOREIGN KEY ("platform_version") REFERENCES "public"."platformVersions"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platformVersions" ADD CONSTRAINT "platformVersions_main_manufacturer_platformVersionCompanies_igdb_id_fk" FOREIGN KEY ("main_manufacturer") REFERENCES "public"."platformVersionCompanies"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platformVersions" ADD CONSTRAINT "platformVersions_platform_logo_platformLogos_igdb_id_fk" FOREIGN KEY ("platform_logo") REFERENCES "public"."platformLogos"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -933,4 +897,5 @@ CREATE INDEX IF NOT EXISTS "igdb_uid_idx" ON "externalGames" USING btree ("uid")
 CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "externalGames" USING btree ("url");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "name_idx" ON "games" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" USING btree ("slug");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" USING btree ("igdb_id");
+CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" USING btree ("igdb_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "website_url_idx" ON "websites" USING btree ("url");

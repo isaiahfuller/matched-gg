@@ -9,9 +9,7 @@ export const platformVersionCompaniesTable = pgTable(
   {
     checksum: text('checksum'),
     comment: text('comment'),
-    company: bigint('company', { mode: 'number' }).references(
-      () => companiesTable.igdbId,
-    ),
+    company: bigint('company', { mode: 'number' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     developer: boolean('developer'),
     igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
@@ -22,7 +20,11 @@ export const platformVersionCompaniesTable = pgTable(
 
 export const platformVersionCompanyRelations = relations(
   platformVersionCompaniesTable,
-  ({ many }) => ({
+  ({ many, one }) => ({
+    company: one(companiesTable, {
+      fields: [platformVersionCompaniesTable.company],
+      references: [companiesTable.igdbId],
+    }),
     platforms: many(platformVersionsTable),
   }),
 );

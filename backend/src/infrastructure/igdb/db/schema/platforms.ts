@@ -40,8 +40,8 @@ export const platformsTable = pgTable('platforms', {
   summary: text('summary'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
-  versions: bigint('versions', { mode: 'number' }),
-  websites: bigint('websites', { mode: 'number' }),
+  versions: bigint('versions', { mode: 'number' }).array(),
+  websites: bigint('websites', { mode: 'number' }).array(),
 });
 
 export const platformRelations = relations(platformsTable, ({ many, one }) => ({

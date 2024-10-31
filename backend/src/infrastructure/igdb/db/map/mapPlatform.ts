@@ -1,10 +1,12 @@
-import { Platforms } from '../schema/platforms';
+import { PlatformCategoryPGEnum, Platforms } from '../schema/platforms';
 
 export const mapPlatform = (platform) => {
   const mapped = {
     abbreviation: platform.abbreviation,
     alternativeName: platform.alternative_name,
-    category: platform.category,
+    category: platform.category
+      ? PlatformCategoryPGEnum.enumValues[platform.category]
+      : null,
     checksum: platform.checksum,
     generation: platform.generation,
     igdbCreatedAt: platform.created_at

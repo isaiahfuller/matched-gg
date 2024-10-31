@@ -1,4 +1,4 @@
-export enum PlatformFields {
+export enum PlatformVersionField {
   checksum = 'checksum',
   companies = 'companies',
   connectivity = 'connectivity',
@@ -20,7 +20,7 @@ export enum PlatformFields {
   summary = 'summary',
   url = 'url',
 }
-export enum ExpandedPlatformFields {
+export enum ExpandedPlatformVersionField {
   checksum = 'checksum',
   companies = 'companies.*',
   connectivity = 'connectivity',

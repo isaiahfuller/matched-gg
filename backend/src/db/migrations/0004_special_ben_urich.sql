@@ -1,0 +1,1 @@
+ALTER TABLE "multiplayerModes" ALTER COLUMN "splitscreenonline" DROP NOT NULL;
