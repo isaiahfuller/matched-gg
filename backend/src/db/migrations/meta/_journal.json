@@ -43,6 +43,13 @@
       "when": 1730401540956,
       "tag": "0005_supreme_omega_red",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1730407159687,
+      "tag": "0006_silent_carnage",
+      "breakpoints": true
     }
   ]
 }

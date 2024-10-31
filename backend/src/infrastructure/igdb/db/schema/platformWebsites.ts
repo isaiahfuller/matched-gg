@@ -45,7 +45,7 @@ export const platformWebsitesTable = pgTable('platformWebsites', {
   url: text('url'),
 });
 
-export const platformWebsiteReleations = relations(
+export const platformWebsiteRelations = relations(
   platformWebsitesTable,
   ({ many }) => ({
     platforms: many(platformsTable),

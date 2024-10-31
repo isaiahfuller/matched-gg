@@ -4,6 +4,7 @@ import { config } from '@config/config';
 import { IgdbConfig } from '@config/interfaces';
 import { chunk } from '@util/chunk';
 import { IgdbFacade } from 'src/infrastructure/igdb/facade/igdbFacade';
+import { igdbSteamLink } from 'src/infrastructure/steam/db/seed/gameLink';
 import { logger } from 'src/util/logger';
 
 import TwitchHandler from '../../../twitch/handlers/twitchHandler';
@@ -235,8 +236,9 @@ const seed = async (): Promise<void> => {
 };
 
 seed()
-  .then(() => {
+  .then(async () => {
     logger.info('Seed complete');
+    await igdbSteamLink();
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);

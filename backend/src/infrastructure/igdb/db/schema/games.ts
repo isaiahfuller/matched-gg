@@ -11,6 +11,7 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm/relations';
+import { IgdbSteamConnect } from 'src/infrastructure/steam/db/schema/IgdbSteamConnect';
 
 import { ageRatingsTable } from './ageRatings';
 import { alternativeNamesTable } from './alternativeNames';
@@ -183,6 +184,10 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   screenshots: many(screenshotsTable),
   similarGames: many(gamesTable),
   standaloneExpansions: many(gamesTable),
+  steamId: one(IgdbSteamConnect, {
+    fields: [gamesTable.igdbId],
+    references: [IgdbSteamConnect.igdbId],
+  }),
   themes: many(themesTable),
   versionParent: one(gamesTable, {
     fields: [gamesTable.versionParent],
