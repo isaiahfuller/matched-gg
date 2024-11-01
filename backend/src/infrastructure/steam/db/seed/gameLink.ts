@@ -27,10 +27,7 @@ import {
   involvedCompaniesTable,
   involvedCompanyRelations,
 } from 'src/infrastructure/igdb/db/schema/involvedCompanies';
-import {
-  keywordRelations,
-  keywordsTable,
-} from 'src/infrastructure/igdb/db/schema/keywords';
+import { keywordsTable } from 'src/infrastructure/igdb/db/schema/keywords';
 import {
   multiplayerModesRelations,
   multiplayerModesTable,
@@ -94,7 +91,6 @@ const db = drizzle(client, {
     igdbSteamRelations,
     involvedCompaniesTable,
     involvedCompanyRelations,
-    keywordRelations,
     keywordsTable,
     multiplayerModesRelations,
     multiplayerModesTable,
