@@ -8,10 +8,11 @@ import {
   serial,
   text,
   timestamp,
+  unique,
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm/relations';
-import { IgdbSteamConnect } from 'src/infrastructure/steam/db/schema/IgdbSteamConnect';
+import { igdbSteamConnect } from 'src/infrastructure/steam/db/schema/igdbSteamConnect';
 
 import { ageRatingsTable } from './ageRatings';
 import { alternativeNamesTable } from './alternativeNames';
@@ -168,7 +169,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   gameModes: many(gameModeTable),
   genres: many(genresTable),
   involvedCompanies: many(involvedCompaniesTable),
-  keywords: many(keywordsTable),
+  keywords: many(gameKeywords),
   languageSupports: many(languageSupportsTable),
   multiplayerModes: many(multiplayerModesTable),
   parentGame: one(gamesTable, {
@@ -184,9 +185,9 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   screenshots: many(screenshotsTable),
   similarGames: many(gamesTable),
   standaloneExpansions: many(gamesTable),
-  steamId: one(IgdbSteamConnect, {
+  steamId: one(igdbSteamConnect, {
     fields: [gamesTable.igdbId],
-    references: [IgdbSteamConnect.igdbId],
+    references: [igdbSteamConnect.igdbId],
   }),
   themes: many(themesTable),
   versionParent: one(gamesTable, {
@@ -197,4 +198,27 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   websites: many(websitesTable),
 }));
 
+export const gameKeywords = pgTable(
+  'game_keywords',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    keywordId: bigint('keyword_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.keywordId, t.gameId),
+  }),
+);
+
+export const gameKeywordsRelations = relations(gameKeywords, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gameKeywords.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  keyword: one(keywordsTable, {
+    fields: [gameKeywords.keywordId],
+    references: [keywordsTable.igdbId],
+  }),
+}));
+
 export type Games = typeof gamesTable.$inferInsert;
+export type GameKeywords = typeof gameKeywords.$inferInsert;

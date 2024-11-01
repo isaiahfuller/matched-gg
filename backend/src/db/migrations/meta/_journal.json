@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1730400352803,
-      "tag": "0000_needy_reptil",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1730400901742,
-      "tag": "0001_slim_aqueduct",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1730401352163,
-      "tag": "0002_magical_karma",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1730401427822,
-      "tag": "0003_amazing_hardball",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1730401514122,
-      "tag": "0004_special_ben_urich",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1730401540956,
-      "tag": "0005_supreme_omega_red",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1730407159687,
-      "tag": "0006_silent_carnage",
+      "when": 1730487154207,
+      "tag": "0000_mute_shadowcat",
       "breakpoints": true
     }
   ]

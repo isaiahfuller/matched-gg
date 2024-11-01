@@ -81,6 +81,7 @@ import {
 import { Platforms, platformsTable } from '../schema/platforms';
 import { Themes, themesTable } from '../schema/themes';
 import { Websites, websitesTable } from '../schema/websites';
+import { processRelations } from './processRelations';
 
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
@@ -239,7 +240,7 @@ seed()
   .then(async () => {
     logger.info('Seed complete');
     await igdbSteamLink();
-    process.exit(1);
+    await processRelations();
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);

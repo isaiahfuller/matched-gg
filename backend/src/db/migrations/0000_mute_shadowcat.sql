@@ -275,6 +275,12 @@ CREATE TABLE IF NOT EXISTS "gameModes" (
 	"url" text
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_keywords" (
+	"game_id" bigint NOT NULL,
+	"keyword_id" bigint NOT NULL,
+	CONSTRAINT "game_keywords_keyword_id_game_id_unique" UNIQUE("keyword_id","game_id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "games" (
 	"age_ratings" bigint[],
 	"aggregated_rating" double precision,
@@ -468,14 +474,14 @@ CREATE TABLE IF NOT EXISTS "multiplayerModes" (
 	"igdb_id" bigint PRIMARY KEY NOT NULL,
 	"lancoop" boolean NOT NULL,
 	"offlinecoop" boolean NOT NULL,
-	"offlinecoopmax" integer NOT NULL,
-	"offlinemax" integer NOT NULL,
+	"offlinecoopmax" integer,
+	"offlinemax" integer,
 	"onlinecoop" boolean NOT NULL,
-	"onlinecoopmax" integer NOT NULL,
-	"onlinemax" integer NOT NULL,
-	"platform" bigint NOT NULL,
+	"onlinecoopmax" integer,
+	"onlinemax" integer,
+	"platform" bigint,
 	"splitscreen" boolean NOT NULL,
-	"splitscreenonline" boolean NOT NULL,
+	"splitscreenonline" boolean,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -731,6 +737,13 @@ CREATE TABLE IF NOT EXISTS "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "igdb_steam_connect" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_id" bigint NOT NULL,
+	"steam_id" bigint PRIMARY KEY NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "alternativeNames" ADD CONSTRAINT "alternativeNames_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
@@ -841,12 +854,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_language_support_type_languageSupportTypes_igdb_id_fk" FOREIGN KEY ("language_support_type") REFERENCES "public"."languageSupportTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "platformVersionCompanies" ADD CONSTRAINT "platformVersionCompanies_company_companies_igdb_id_fk" FOREIGN KEY ("company") REFERENCES "public"."companies"("igdb_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

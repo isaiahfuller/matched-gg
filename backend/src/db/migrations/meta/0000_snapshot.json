@@ -1,5 +1,5 @@
 {
-  "id": "559eacda-c961-45a2-9194-9411468dcbcc",
+  "id": "482f5fa7-e585-424c-bea7-cefce5b804f9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1665,6 +1665,38 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "public.game_keywords": {
+      "name": "game_keywords",
+      "schema": "",
+      "columns": {
+        "game_id": {
+          "name": "game_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "keyword_id": {
+          "name": "keyword_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "game_keywords_keyword_id_game_id_unique": {
+          "name": "game_keywords_keyword_id_game_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "keyword_id",
+            "game_id"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
     "public.games": {
       "name": "games",
       "schema": "",
@@ -2921,13 +2953,13 @@
           "name": "offlinecoopmax",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "offlinemax": {
           "name": "offlinemax",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "onlinecoop": {
           "name": "onlinecoop",
@@ -2939,19 +2971,19 @@
           "name": "onlinecoopmax",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "onlinemax": {
           "name": "onlinemax",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "platform": {
           "name": "platform",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "splitscreen": {
           "name": "splitscreen",
@@ -2963,7 +2995,7 @@
           "name": "splitscreenonline",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -3340,21 +3372,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "platformVersionCompanies_company_companies_igdb_id_fk": {
-          "name": "platformVersionCompanies_company_companies_igdb_id_fk",
-          "tableFrom": "platformVersionCompanies",
-          "tableTo": "companies",
-          "columnsFrom": [
-            "company"
-          ],
-          "columnsTo": [
-            "igdb_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -4541,6 +4559,43 @@
           ]
         }
       },
+      "checkConstraints": {}
+    },
+    "public.igdb_steam_connect": {
+      "name": "igdb_steam_connect",
+      "schema": "",
+      "columns": {
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "igdb_id": {
+          "name": "igdb_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "steam_id": {
+          "name": "steam_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "checkConstraints": {}
     }
   },

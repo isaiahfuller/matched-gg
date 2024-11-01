@@ -72,7 +72,11 @@ import {
   websitesTable,
 } from 'src/infrastructure/igdb/db/schema/websites';
 
-import { IgdbSteamConnect } from '../schema/IgdbSteamConnect';
+import {
+  IgdbSteamConnect,
+  igdbSteamConnect,
+  igdbSteamRelations,
+} from '../schema/igdbSteamConnect';
 const db = drizzle(client, {
   schema: {
     artworksTable,
@@ -86,6 +90,8 @@ const db = drizzle(client, {
     gamesTable,
     genreRelations,
     genresTable,
+    igdbSteamConnect,
+    igdbSteamRelations,
     involvedCompaniesTable,
     involvedCompanyRelations,
     keywordRelations,
@@ -138,6 +144,28 @@ export const igdbSteamLink = async () => {
   }
   const chunks = chunk(games, 1000);
   chunks.forEach(async (chunk) => {
-    await db.insert(IgdbSteamConnect).values(chunk).onConflictDoNothing();
+    await db.insert(igdbSteamConnect).values(chunk).onConflictDoNothing();
   });
+
+  // const games = await db.query.igdbSteamConnect.findMany({
+  //   with: {
+  //     igdbGame: {
+  //       with: {
+  //         websites: true,
+  //       },
+  //     },
+  //   },
+  // });
+  // const games = await db.query.gamesTable.findFirst({
+  //   where: eq(gamesTable.igdbId, 241),
+  //   with: {
+  //     steamId: {
+  //       columns: {
+  //         steamId: true,
+  //       },
+  //     },
+  //     websites: true,
+  //   },
+  // });
+  // console.log(games);
 };
