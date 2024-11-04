@@ -38,34 +38,34 @@ export const processRelations = async () => {
     });
   }
 
-  // await processRelation<gamesSchema.GameKeywords>(
-  //   'keywords',
-  //   gamesSchema.gameKeywords,
-  // );
-  // await processRelation<gamesSchema.GameFranchises>(
-  //   'franchises',
-  //   gamesSchema.gameFranchises,
-  // );
-  // await processRelation<gamesSchema.GamePlatforms>(
-  //   'platforms',
-  //   gamesSchema.gamePlatforms,
-  // );
-  // await processRelation<gamesSchema.GameGenres>(
-  //   'genres',
-  //   gamesSchema.gameGenres,
-  // );
-  // await processRelation<gamesSchema.GameThemes>(
-  //   'themes',
-  //   gamesSchema.gameThemes,
-  // );
-  // await processRelation<gamesSchema.GameMultiplayerModes>(
-  //   'multiplayerModes',
-  //   gamesSchema.gameMultiplayerModes,
-  // );
-  // await processRelation<gamesSchema.GameGameModes>(
-  //   'gameModes',
-  //   gamesSchema.gameGameModes,
-  // );
+  await processRelation<gamesSchema.GameKeywords>(
+    'keywords',
+    gamesSchema.gameKeywords,
+  );
+  await processRelation<gamesSchema.GameFranchises>(
+    'franchises',
+    gamesSchema.gameFranchises,
+  );
+  await processRelation<gamesSchema.GamePlatforms>(
+    'platforms',
+    gamesSchema.gamePlatforms,
+  );
+  await processRelation<gamesSchema.GameGenres>(
+    'genres',
+    gamesSchema.gameGenres,
+  );
+  await processRelation<gamesSchema.GameThemes>(
+    'themes',
+    gamesSchema.gameThemes,
+  );
+  await processRelation<gamesSchema.GameMultiplayerModes>(
+    'multiplayerModes',
+    gamesSchema.gameMultiplayerModes,
+  );
+  await processRelation<gamesSchema.GameGameModes>(
+    'gameModes',
+    gamesSchema.gameGameModes,
+  );
   await processRelation<gamesSchema.SimilarGames>(
     'similarGames',
     gamesSchema.gameSimilarGames,
@@ -77,13 +77,18 @@ export const processRelations = async () => {
   //     name: true,
   //   },
   //   limit: 10,
-  //   where: isNotNull(gamesSchema.gamesTable.gameModes),
+  //   // where: isNotNull(gamesSchema.gamesTable.similarGames),
+  //   where: eq(gamesSchema.gamesTable.igdbId, 6893),
   //   with: {
-  //     gameModes: {
-  //       columns: {},
-  //       with: { gameMode: true },
+  //     similarGames: {
+  //       columns: { resourceId: true },
+  //       with: {
+  //         similarGame: {
+  //           columns: { igdbId: true, name: true },
+  //         },
+  //       },
   //     },
   //   },
   // });
-  // console.log(tg, tg[0], tg[0].gameModes[0]);
+  // console.log(tg, tg[0], tg[0].similarGames, tg[0].similarGames[0]);
 };

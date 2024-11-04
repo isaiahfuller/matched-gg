@@ -369,12 +369,8 @@ export const gameSimilarGames = pgTable(
 export const gameSimilarGamesRelations = relations(
   gameSimilarGames,
   ({ one }) => ({
-    game: one(gamesTable, {
-      fields: [gameSimilarGames.gameId],
-      references: [gamesTable.igdbId],
-    }),
     similarGame: one(gamesTable, {
-      fields: [gameSimilarGames.resourceId],
+      fields: [gameSimilarGames.gameId],
       references: [gamesTable.igdbId],
     }),
   }),
