@@ -309,7 +309,7 @@ export const gameThemesRelations = relations(gameThemes, ({ one }) => ({
 }));
 
 export const gameMultiplayerModes = pgTable(
-  'game_multiplayerModes',
+  'game_multiplayer_modes',
   {
     gameId: bigint('game_id', { mode: 'number' }).notNull(),
     resourceId: bigint('multiplayer_mode_id', { mode: 'number' }).notNull(),

@@ -43,6 +43,13 @@
       "when": 1730751876693,
       "tag": "0005_common_silhouette",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1730751990588,
+      "tag": "0006_loose_firebrand",
+      "breakpoints": true
     }
   ]
 }
