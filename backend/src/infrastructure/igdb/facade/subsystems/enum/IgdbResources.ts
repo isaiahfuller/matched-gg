@@ -8,6 +8,7 @@ export enum IgdbResources {
   COMPANIES = 'companies',
   COVERS = 'covers',
   FRANCHISES = 'franchises',
+  GAME_MODES = 'game_modes',
   GAMES = 'games',
   GENRES = 'genres',
   INVOLVED_COMPANIES = 'involved_companies',
@@ -20,6 +21,7 @@ export enum IgdbResources {
   PLATFORM_VERSIONS = 'platform_versions',
   PLATFORM_WEBSITES = 'platform_websites',
   PLATFORMS = 'platforms',
+  SIMILAR_GAMES = 'similar_games',
   THEMES = 'themes',
   WEBSITES = 'websites',
 }

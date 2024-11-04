@@ -58,24 +58,32 @@ export const processRelations = async () => {
   //   'themes',
   //   gamesSchema.gameThemes,
   // );
-  await processRelation<gamesSchema.GameMultiplayerModes>(
-    'multiplayerModes',
-    gamesSchema.gameMultiplayerModes,
+  // await processRelation<gamesSchema.GameMultiplayerModes>(
+  //   'multiplayerModes',
+  //   gamesSchema.gameMultiplayerModes,
+  // );
+  // await processRelation<gamesSchema.GameGameModes>(
+  //   'gameModes',
+  //   gamesSchema.gameGameModes,
+  // );
+  await processRelation<gamesSchema.SimilarGames>(
+    'similarGames',
+    gamesSchema.gameSimilarGames,
   );
 
-  const tg = await db.query.gamesTable.findMany({
-    columns: {
-      igdbId: true,
-      name: true,
-    },
-    limit: 10,
-    where: isNotNull(gamesSchema.gamesTable.multiplayerModes),
-    with: {
-      multiplayerModes: {
-        columns: {},
-        with: { multiplayerMode: true },
-      },
-    },
-  });
-  console.log(tg, tg[0], tg[0].multiplayerModes[0]);
+  // const tg = await db.query.gamesTable.findMany({
+  //   columns: {
+  //     igdbId: true,
+  //     name: true,
+  //   },
+  //   limit: 10,
+  //   where: isNotNull(gamesSchema.gamesTable.gameModes),
+  //   with: {
+  //     gameModes: {
+  //       columns: {},
+  //       with: { gameMode: true },
+  //     },
+  //   },
+  // });
+  // console.log(tg, tg[0], tg[0].gameModes[0]);
 };

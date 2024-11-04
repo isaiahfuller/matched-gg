@@ -10,6 +10,10 @@ import {
   FranchiseField,
 } from './enum/field/FranchiseField';
 import { ExpandedGameField, GameField } from './enum/field/GameField';
+import {
+  ExpandedGameModeField,
+  GameModeField,
+} from './enum/field/GameModeField';
 import { ExpandedGenreField, GenreField } from './enum/field/GenreField';
 import {
   ExpandedInvolvedComanyField,
@@ -148,6 +152,8 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
         return Object.values(
           expanded ? ExpandedMultiplayerModeField : MultiplayerModeField,
         );
+      case IgdbResources.GAME_MODES:
+        return Object.values(expanded ? ExpandedGameModeField : GameModeField);
       default:
         return;
     }

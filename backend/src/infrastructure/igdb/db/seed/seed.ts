@@ -12,6 +12,7 @@ import { ArtworkDTO } from '../../facade/subsystems/DTO/ArtworkDTO';
 import { CompanyDTO } from '../../facade/subsystems/DTO/CompanyDTO';
 import { CoversDTO } from '../../facade/subsystems/DTO/CoversDTO';
 import { GameDTO } from '../../facade/subsystems/DTO/GameDTO';
+import { GameModeDTO } from '../../facade/subsystems/DTO/GameModeDTO';
 import { GenreDTO } from '../../facade/subsystems/DTO/GenreDTO';
 import { InvolvedCompanyDTO } from '../../facade/subsystems/DTO/InvolvedCompanyDTO';
 import { KeywordDTO } from '../../facade/subsystems/DTO/KeywordDTO';
@@ -30,6 +31,7 @@ import { IgdbDbController } from '../controller/IgdbDbController';
 import { mapArtwork } from '../map/mapArtwork';
 import { mapCompany } from '../map/mapCompany';
 import { mapGame } from '../map/mapGame';
+import { mapGameMode } from '../map/mapGameMode';
 import { mapGenre } from '../map/mapGenre';
 import { mapInvolvedCompany } from '../map/mapInvolvedCompany';
 import { mapKeyword } from '../map/mapKeyword';
@@ -46,6 +48,7 @@ import { mapWebsite } from '../map/mapWebsite';
 import { Artworks, artworksTable } from '../schema/artworks';
 import { Companies, companiesTable } from '../schema/companies';
 import { Covers, coversTable } from '../schema/covers';
+import { GameModes, gameModeTable } from '../schema/gameMode';
 import { Games, gamesTable } from '../schema/games';
 import { Genres, genresTable } from '../schema/genres';
 import {
@@ -138,6 +141,8 @@ const seed = async (): Promise<void> => {
             return igdbDbController.store<Companies>(chunk, companiesTable);
           case IgdbResources.COVERS:
             return igdbDbController.store<Covers>(chunk, coversTable);
+          case IgdbResources.GAME_MODES:
+            return igdbDbController.store<GameModes>(chunk, gameModeTable);
           case IgdbResources.GAMES:
             return igdbDbController.store<Games>(chunk, gamesTable);
           case IgdbResources.INVOLVED_COMPANIES:
@@ -242,6 +247,7 @@ const seed = async (): Promise<void> => {
   //   mapMultiplayerMode,
   //   IgdbResources.MULTIPLAYER_MODES,
   // );
+  // await seedResource<GameModeDTO>(mapGameMode, IgdbResources.GAME_MODES);
 };
 
 seed()

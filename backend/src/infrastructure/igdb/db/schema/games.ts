@@ -166,7 +166,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   franchises: many(gameFranchises),
   gameEngines: many(gameEnginesTable),
   gameLocalizations: many(gameLocalizationsTable),
-  gameModes: many(gameModeTable),
+  gameModes: many(gameGameModes),
   genres: many(gameGenres),
   involvedCompanies: many(involvedCompaniesTable),
   keywords: many(gameKeywords),
@@ -183,7 +183,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   remakes: many(gamesTable),
   remasters: many(gamesTable),
   screenshots: many(screenshotsTable),
-  similarGames: many(gamesTable),
+  similarGames: many(gameSimilarGames),
   standaloneExpansions: many(gamesTable),
   steamId: one(igdbSteamConnect, {
     fields: [gamesTable.igdbId],
@@ -333,6 +333,53 @@ export const gameMultiplayerModesRelations = relations(
   }),
 );
 
+export const gameGameModes = pgTable(
+  'game_game_modes',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('game_mode_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameGameModesRelations = relations(gameGameModes, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gameGameModes.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  gameMode: one(gameModeTable, {
+    fields: [gameGameModes.resourceId],
+    references: [gameModeTable.igdbId],
+  }),
+}));
+
+export const gameSimilarGames = pgTable(
+  'game_similar_games',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('similar_game_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameSimilarGamesRelations = relations(
+  gameSimilarGames,
+  ({ one }) => ({
+    game: one(gamesTable, {
+      fields: [gameSimilarGames.gameId],
+      references: [gamesTable.igdbId],
+    }),
+    similarGame: one(gamesTable, {
+      fields: [gameSimilarGames.resourceId],
+      references: [gamesTable.igdbId],
+    }),
+  }),
+);
+
 export type Games = typeof gamesTable.$inferInsert;
 export type GameKeywords = typeof gameKeywords.$inferInsert;
 export type GameFranchises = typeof gameFranchises.$inferInsert;
@@ -340,3 +387,5 @@ export type GamePlatforms = typeof gamePlatforms.$inferInsert;
 export type GameGenres = typeof gameGenres.$inferInsert;
 export type GameThemes = typeof gameThemes.$inferInsert;
 export type GameMultiplayerModes = typeof gameMultiplayerModes.$inferInsert;
+export type GameGameModes = typeof gameGameModes.$inferInsert;
+export type SimilarGames = typeof gameSimilarGames.$inferInsert;

@@ -50,6 +50,20 @@
       "when": 1730751990588,
       "tag": "0006_loose_firebrand",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1730755618668,
+      "tag": "0007_cute_war_machine",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1730756985867,
+      "tag": "0008_blue_winter_soldier",
+      "breakpoints": true
     }
   ]
 }
