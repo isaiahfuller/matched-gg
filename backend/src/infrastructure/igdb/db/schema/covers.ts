@@ -6,11 +6,15 @@ import { gamesTable } from './games';
 
 export const coversTable = pgTable('covers', {
   ...commonArtFields,
-  game_localization: bigint('game_localization', { mode: 'number' }),
+  game: bigint('game', { mode: 'number' }),
+  gameLocalization: bigint('game_localization', { mode: 'number' }),
 });
 
-export const coverRelations = relations(coversTable, ({ many }) => ({
-  games: many(gamesTable),
+export const coverRelations = relations(coversTable, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [coversTable.game, coversTable.gameLocalization],
+    references: [gamesTable.cover, gamesTable.cover],
+  }),
 }));
 
 export type Covers = typeof coversTable.$inferInsert;
