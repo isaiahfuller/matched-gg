@@ -54,20 +54,24 @@ export const processRelations = async () => {
   //   'genres',
   //   gamesSchema.gameGenres,
   // );
+  await processRelation<gamesSchema.GameThemes>(
+    'themes',
+    gamesSchema.gameThemes,
+  );
 
-  // const tg = await db.query.gamesTable.findMany({
-  //   columns: {
-  //     igdbId: true,
-  //     name: true,
-  //   },
-  //   limit: 10,
-  //   where: isNotNull(gamesSchema.gamesTable.genres),
-  //   with: {
-  //     genres: {
-  //       columns: {},
-  //       with: { genre: true },
-  //     },
-  //   },
-  // });
-  // console.log(tg, tg[0], tg[0].genres[0]);
+  const tg = await db.query.gamesTable.findMany({
+    columns: {
+      igdbId: true,
+      name: true,
+    },
+    limit: 10,
+    where: isNotNull(gamesSchema.gamesTable.themes),
+    with: {
+      themes: {
+        columns: {},
+        with: { theme: true },
+      },
+    },
+  });
+  console.log(tg, tg[0], tg[0].themes[0]);
 };

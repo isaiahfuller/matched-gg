@@ -15,6 +15,7 @@ import * as keywords from '../infrastructure/igdb/db/schema/keywords';
 import * as platformFamilies from '../infrastructure/igdb/db/schema/platformFamilies';
 import * as platformLogos from '../infrastructure/igdb/db/schema/platformLogos';
 import * as platforms from '../infrastructure/igdb/db/schema/platforms';
+import * as themes from '../infrastructure/igdb/db/schema/themes';
 import * as websites from '../infrastructure/igdb/db/schema/websites';
 import { QueryLogger } from './QueryLogger';
 
@@ -44,5 +45,6 @@ export const db = drizzle(client, {
     ...platforms,
     ...genres,
     ...websites,
+    ...themes,
   },
 });

@@ -189,7 +189,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
     fields: [gamesTable.igdbId],
     references: [igdbSteamConnect.igdbId],
   }),
-  themes: many(themesTable),
+  themes: many(gameThemes),
   versionParent: one(gamesTable, {
     fields: [gamesTable.versionParent],
     references: [gamesTable.igdbId],
@@ -263,6 +263,7 @@ export const gamePlatformsRelations = relations(gamePlatforms, ({ one }) => ({
     references: [platformsTable.igdbId],
   }),
 }));
+
 export const gameGenres = pgTable(
   'game_genres',
   {
@@ -285,8 +286,31 @@ export const gameGenresRelations = relations(gameGenres, ({ one }) => ({
   }),
 }));
 
+export const gameThemes = pgTable(
+  'game_themes',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('theme_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameThemesRelations = relations(gameThemes, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gameThemes.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  theme: one(themesTable, {
+    fields: [gameThemes.resourceId],
+    references: [themesTable.igdbId],
+  }),
+}));
+
 export type Games = typeof gamesTable.$inferInsert;
 export type GameKeywords = typeof gameKeywords.$inferInsert;
 export type GameFranchises = typeof gameFranchises.$inferInsert;
 export type GamePlatforms = typeof gamePlatforms.$inferInsert;
 export type GameGenres = typeof gameGenres.$inferInsert;
+export type GameThemes = typeof gameThemes.$inferInsert;
