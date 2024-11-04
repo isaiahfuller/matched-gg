@@ -50,43 +50,24 @@ export const processRelations = async () => {
   //   'platforms',
   //   gamesSchema.gamePlatforms,
   // );
+  // await processRelation<gamesSchema.GameGenres>(
+  //   'genres',
+  //   gamesSchema.gameGenres,
+  // );
 
-  const tg = await db.query.gamesTable.findMany({
-    columns: {
-      igdbId: true,
-      name: true,
-    },
-    limit: 10,
-    where: isNotNull(gamesSchema.gamesTable.platforms),
-    with: {
-      platforms: {
-        columns: {},
-        with: {
-          platform: {
-            with: {
-              platformFamily: true,
-              platformLogo: true,
-            },
-          },
-        },
-      },
-    },
-  });
-  console.log(tg, tg[0], tg[0].platforms[0]);
-  // const pl = await db.query.platformLogosTable.findMany({
+  // const tg = await db.query.gamesTable.findMany({
   //   columns: {
-  //     alphaChannel: true,
-  //     animated: true,
-  //     checksum: true,
-  //     createdAt: true,
-  //     height: true,
   //     igdbId: true,
-  //     imageId: true,
-  //     updatedAt: true,
-  //     url: true,
-  //     width: true,
+  //     name: true,
   //   },
   //   limit: 10,
+  //   where: isNotNull(gamesSchema.gamesTable.genres),
+  //   with: {
+  //     genres: {
+  //       columns: {},
+  //       with: { genre: true },
+  //     },
+  //   },
   // });
-  // console.log(pl);
+  // console.log(tg, tg[0], tg[0].genres[0]);
 };

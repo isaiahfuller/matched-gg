@@ -167,7 +167,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   gameEngines: many(gameEnginesTable),
   gameLocalizations: many(gameLocalizationsTable),
   gameModes: many(gameModeTable),
-  genres: many(genresTable),
+  genres: many(gameGenres),
   involvedCompanies: many(involvedCompaniesTable),
   keywords: many(gameKeywords),
   languageSupports: many(languageSupportsTable),
@@ -263,8 +263,30 @@ export const gamePlatformsRelations = relations(gamePlatforms, ({ one }) => ({
     references: [platformsTable.igdbId],
   }),
 }));
+export const gameGenres = pgTable(
+  'game_genres',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('genre_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameGenresRelations = relations(gameGenres, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gameGenres.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  genre: one(genresTable, {
+    fields: [gameGenres.resourceId],
+    references: [genresTable.igdbId],
+  }),
+}));
 
 export type Games = typeof gamesTable.$inferInsert;
 export type GameKeywords = typeof gameKeywords.$inferInsert;
 export type GameFranchises = typeof gameFranchises.$inferInsert;
 export type GamePlatforms = typeof gamePlatforms.$inferInsert;
+export type GameGenres = typeof gameGenres.$inferInsert;
