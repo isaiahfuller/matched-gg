@@ -12,6 +12,7 @@ import * as games from '../infrastructure/igdb/db/schema/games';
 import * as genres from '../infrastructure/igdb/db/schema/genres';
 import * as involvedCompanies from '../infrastructure/igdb/db/schema/involvedCompanies';
 import * as keywords from '../infrastructure/igdb/db/schema/keywords';
+import * as multiplayerModes from '../infrastructure/igdb/db/schema/multiplayerModes';
 import * as platformFamilies from '../infrastructure/igdb/db/schema/platformFamilies';
 import * as platformLogos from '../infrastructure/igdb/db/schema/platformLogos';
 import * as platforms from '../infrastructure/igdb/db/schema/platforms';
@@ -46,5 +47,6 @@ export const db = drizzle(client, {
     ...genres,
     ...websites,
     ...themes,
+    ...multiplayerModes,
   },
 });

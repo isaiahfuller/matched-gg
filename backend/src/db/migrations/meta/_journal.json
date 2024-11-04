@@ -36,6 +36,13 @@
       "when": 1730751538646,
       "tag": "0004_last_moon_knight",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1730751876693,
+      "tag": "0005_common_silhouette",
+      "breakpoints": true
     }
   ]
 }

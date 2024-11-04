@@ -171,7 +171,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   involvedCompanies: many(involvedCompaniesTable),
   keywords: many(gameKeywords),
   languageSupports: many(languageSupportsTable),
-  multiplayerModes: many(multiplayerModesTable),
+  multiplayerModes: many(gameMultiplayerModes),
   parentGame: one(gamesTable, {
     fields: [gamesTable.parentGame],
     references: [gamesTable.igdbId],
@@ -308,9 +308,35 @@ export const gameThemesRelations = relations(gameThemes, ({ one }) => ({
   }),
 }));
 
+export const gameMultiplayerModes = pgTable(
+  'game_multiplayerModes',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('multiplayer_mode_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameMultiplayerModesRelations = relations(
+  gameMultiplayerModes,
+  ({ one }) => ({
+    game: one(gamesTable, {
+      fields: [gameMultiplayerModes.gameId],
+      references: [gamesTable.igdbId],
+    }),
+    multiplayerMode: one(multiplayerModesTable, {
+      fields: [gameMultiplayerModes.resourceId],
+      references: [multiplayerModesTable.igdbId],
+    }),
+  }),
+);
+
 export type Games = typeof gamesTable.$inferInsert;
 export type GameKeywords = typeof gameKeywords.$inferInsert;
 export type GameFranchises = typeof gameFranchises.$inferInsert;
 export type GamePlatforms = typeof gamePlatforms.$inferInsert;
 export type GameGenres = typeof gameGenres.$inferInsert;
 export type GameThemes = typeof gameThemes.$inferInsert;
+export type GameMultiplayerModes = typeof gameMultiplayerModes.$inferInsert;

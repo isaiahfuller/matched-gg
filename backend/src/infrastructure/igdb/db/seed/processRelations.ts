@@ -54,9 +54,13 @@ export const processRelations = async () => {
   //   'genres',
   //   gamesSchema.gameGenres,
   // );
-  await processRelation<gamesSchema.GameThemes>(
-    'themes',
-    gamesSchema.gameThemes,
+  // await processRelation<gamesSchema.GameThemes>(
+  //   'themes',
+  //   gamesSchema.gameThemes,
+  // );
+  await processRelation<gamesSchema.GameMultiplayerModes>(
+    'multiplayerModes',
+    gamesSchema.gameMultiplayerModes,
   );
 
   const tg = await db.query.gamesTable.findMany({
@@ -65,13 +69,13 @@ export const processRelations = async () => {
       name: true,
     },
     limit: 10,
-    where: isNotNull(gamesSchema.gamesTable.themes),
+    where: isNotNull(gamesSchema.gamesTable.multiplayerModes),
     with: {
-      themes: {
+      multiplayerModes: {
         columns: {},
-        with: { theme: true },
+        with: { multiplayerMode: true },
       },
     },
   });
-  console.log(tg, tg[0], tg[0].themes[0]);
+  console.log(tg, tg[0], tg[0].multiplayerModes[0]);
 };
