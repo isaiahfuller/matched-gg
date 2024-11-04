@@ -163,7 +163,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
     fields: [gamesTable.franchise],
     references: [franchisesTable.igdbId],
   }),
-  franchises: many(franchisesTable),
+  franchises: many(gameFranchises),
   gameEngines: many(gameEnginesTable),
   gameLocalizations: many(gameLocalizationsTable),
   gameModes: many(gameModeTable),
@@ -176,7 +176,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
     fields: [gamesTable.parentGame],
     references: [gamesTable.igdbId],
   }),
-  platforms: many(platformsTable),
+  platforms: many(gamePlatforms),
   playerPerspectives: many(playerPerspectivesTable),
   ports: many(gamesTable),
   releaseDates: many(releaseDatesTable),
@@ -202,10 +202,10 @@ export const gameKeywords = pgTable(
   'game_keywords',
   {
     gameId: bigint('game_id', { mode: 'number' }).notNull(),
-    keywordId: bigint('keyword_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('keyword_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
-    unq: unique().on(t.keywordId, t.gameId),
+    unq: unique().on(t.resourceId, t.gameId),
   }),
 );
 
@@ -215,10 +215,56 @@ export const gameKeywordsRelations = relations(gameKeywords, ({ one }) => ({
     references: [gamesTable.igdbId],
   }),
   keyword: one(keywordsTable, {
-    fields: [gameKeywords.keywordId],
+    fields: [gameKeywords.resourceId],
     references: [keywordsTable.igdbId],
+  }),
+}));
+
+export const gameFranchises = pgTable(
+  'game_franchises',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('franchise_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameFranchisesRelations = relations(gameFranchises, ({ one }) => ({
+  franchise: one(franchisesTable, {
+    fields: [gameFranchises.resourceId],
+    references: [franchisesTable.igdbId],
+  }),
+  game: one(gamesTable, {
+    fields: [gameFranchises.gameId],
+    references: [gamesTable.igdbId],
+  }),
+}));
+
+export const gamePlatforms = pgTable(
+  'game_platforms',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('platform_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gamePlatformsRelations = relations(gamePlatforms, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gamePlatforms.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  platform: one(platformsTable, {
+    fields: [gamePlatforms.resourceId],
+    references: [platformsTable.igdbId],
   }),
 }));
 
 export type Games = typeof gamesTable.$inferInsert;
 export type GameKeywords = typeof gameKeywords.$inferInsert;
+export type GameFranchises = typeof gameFranchises.$inferInsert;
+export type GamePlatforms = typeof gamePlatforms.$inferInsert;

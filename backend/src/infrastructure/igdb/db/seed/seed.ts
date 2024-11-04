@@ -105,15 +105,23 @@ const seed = async (): Promise<void> => {
     logger,
   });
 
-  async function seedResource<DTO>(mapping, endpoint) {
+  async function seedResource<DTO extends { id?: number }>(mapping, endpoint) {
     const igdbGames = await igdb.seedResources<DTO>({
       concurrency: 4,
       expanded: false,
       resource: endpoint,
     });
-    const entries = igdbGames.map((entry) => {
-      return mapping(entry);
-    });
+    const idSet = new Set();
+    const entries = igdbGames
+      .reverse()
+      .filter((e) => {
+        if (idSet.has(e.id)) return false;
+        idSet.add(e.id);
+        return true;
+      })
+      .map((entry) => {
+        return mapping(entry);
+      });
 
     logger.info({ entries: entries.length }, `${endpoint} mapped`);
 
@@ -193,54 +201,54 @@ const seed = async (): Promise<void> => {
     logger.info(`${endpoint} inserted`);
   }
 
-  await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
-  await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
-  await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
-  await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
-  await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
-  await seedResource<InvolvedCompanyDTO>(
-    mapInvolvedCompany,
-    IgdbResources.INVOLVED_COMPANIES,
-  );
-  await seedResource<PlatformDTO>(mapPlatform, IgdbResources.PLATFORMS);
-  await seedResource<PlatformLogoDTO>(
-    mapPlatformLogo,
-    IgdbResources.PLATFORM_LOGOS,
-  );
-  await seedResource<PlatformWebsiteDTO>(
-    mapPlatformWebsite,
-    IgdbResources.PLATFORM_WEBSITES,
-  );
-  await seedResource<PlatformFamilyDTO>(
-    mapPlatformFamilies,
-    IgdbResources.PLATFORM_FAMILIES,
-  );
-  await seedResource<PlatformVersionCompanyDTO>(
-    mapPlatformVersionCompany,
-    IgdbResources.PLATFORM_VERSION_COMPANIES,
-  );
-  await seedResource<PlatformVersionDTO>(
-    mapPlatformVersion,
-    IgdbResources.PLATFORM_VERSIONS,
-  );
-  await seedResource<PlatformVersionReleaseDateDTO>(
-    mapPlatformVersionReleaseDate,
-    IgdbResources.PLATFORM_VERSION_RELEASE_DATES,
-  );
-  await seedResource<GenreDTO>(mapGenre, IgdbResources.GENRES);
-  await seedResource<KeywordDTO>(mapKeyword, IgdbResources.KEYWORDS);
-  await seedResource<ThemeDTO>(mapTheme, IgdbResources.THEMES);
-  await seedResource<MultiplayerModeDTO>(
-    mapMultiplayerMode,
-    IgdbResources.MULTIPLAYER_MODES,
-  );
+  // await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
+  // await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
+  // await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
+  // await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
+  // await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
+  // await seedResource<InvolvedCompanyDTO>(
+  //   mapInvolvedCompany,
+  //   IgdbResources.INVOLVED_COMPANIES,
+  // );
+  // await seedResource<PlatformDTO>(mapPlatform, IgdbResources.PLATFORMS);
+  // await seedResource<PlatformLogoDTO>(
+  //   mapPlatformLogo,
+  //   IgdbResources.PLATFORM_LOGOS,
+  // );
+  // await seedResource<PlatformWebsiteDTO>(
+  //   mapPlatformWebsite,
+  //   IgdbResources.PLATFORM_WEBSITES,
+  // );
+  // await seedResource<PlatformFamilyDTO>(
+  //   mapPlatformFamilies,
+  //   IgdbResources.PLATFORM_FAMILIES,
+  // );
+  // await seedResource<PlatformVersionCompanyDTO>(
+  //   mapPlatformVersionCompany,
+  //   IgdbResources.PLATFORM_VERSION_COMPANIES,
+  // );
+  // await seedResource<PlatformVersionDTO>(
+  //   mapPlatformVersion,
+  //   IgdbResources.PLATFORM_VERSIONS,
+  // );
+  // await seedResource<PlatformVersionReleaseDateDTO>(
+  //   mapPlatformVersionReleaseDate,
+  //   IgdbResources.PLATFORM_VERSION_RELEASE_DATES,
+  // );
+  // await seedResource<GenreDTO>(mapGenre, IgdbResources.GENRES);
+  // await seedResource<KeywordDTO>(mapKeyword, IgdbResources.KEYWORDS);
+  // await seedResource<ThemeDTO>(mapTheme, IgdbResources.THEMES);
+  // await seedResource<MultiplayerModeDTO>(
+  //   mapMultiplayerMode,
+  //   IgdbResources.MULTIPLAYER_MODES,
+  // );
 };
 
 seed()
   .then(async () => {
     logger.info('Seed complete');
-    await igdbSteamLink();
     await processRelations();
+    // await igdbSteamLink();
   })
   .catch((error) => {
     logger.error(`Seed failed: ${error}`);

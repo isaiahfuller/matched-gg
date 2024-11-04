@@ -7,7 +7,7 @@ export const mapArtwork = (artwork) => {
     animated: artwork.animated || false,
     checksum: artwork.checksum,
     game: artwork.game,
-    game_localization: artwork.game_localization,
+    gameLocalization: artwork.game_localization,
     height: artwork.height,
     igdbId: artwork.id,
     imageId: artwork.image_id,

@@ -3,8 +3,18 @@ import logger from '@util/logger';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
 
+import * as artworks from '../infrastructure/igdb/db/schema/artworks';
+import * as companies from '../infrastructure/igdb/db/schema/companies';
+import * as covers from '../infrastructure/igdb/db/schema/covers';
+import * as franchises from '../infrastructure/igdb/db/schema/franchise';
+import * as gameEngineLogos from '../infrastructure/igdb/db/schema/gameEngineLogos';
 import * as games from '../infrastructure/igdb/db/schema/games';
+import * as involvedCompanies from '../infrastructure/igdb/db/schema/involvedCompanies';
 import * as keywords from '../infrastructure/igdb/db/schema/keywords';
+import * as platformFamilies from '../infrastructure/igdb/db/schema/platformFamilies';
+import * as platformLogos from '../infrastructure/igdb/db/schema/platformLogos';
+import * as platforms from '../infrastructure/igdb/db/schema/platforms';
+import * as websites from '../infrastructure/igdb/db/schema/websites';
 import { QueryLogger } from './QueryLogger';
 
 export const client = new Client({
@@ -19,5 +29,18 @@ client.connect();
 
 export const db = drizzle(client, {
   logger: new QueryLogger({ logger: logger, truncate: true }),
-  schema: { ...games, ...keywords },
+  schema: {
+    ...artworks,
+    ...companies,
+    ...covers,
+    ...franchises,
+    ...games,
+    ...gameEngineLogos,
+    ...involvedCompanies,
+    ...keywords,
+    ...platformFamilies,
+    ...platformLogos,
+    ...platforms,
+    ...websites,
+  },
 });
