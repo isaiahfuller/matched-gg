@@ -2,8 +2,11 @@ import { faSteam } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
+  Center,
   Checkbox,
   Container,
+  Divider,
+  Paper,
   SimpleGrid,
   Stack,
   Text,
@@ -22,7 +25,7 @@ interface SettingsProps {
 }
 
 export default function Settings({ user }: SettingsProps) {
-  const { width } = useViewportSize();
+  const { width, height } = useViewportSize();
   const form = useForm({
     mode: "controlled",
     initialValues: {
@@ -49,69 +52,80 @@ export default function Settings({ user }: SettingsProps) {
   }, []);
 
   return (
-    <Container>
-      <Stack>
-        <>
-          <Title>Account Settings</Title>
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <Center h={height - 36}>
+      <Paper shadow="xs" px={24} py={18} withBorder>
+        <Stack>
+          <>
+            <Title order={1} size="h2">
+              Account Settings
+            </Title>
+            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+              <SimpleGrid cols={width < 768 ? 1 : 2}>
+                <Checkbox
+                  label="Change name:"
+                  key={form.key("changeName")}
+                  {...form.getInputProps("changeName", { type: "checkbox" })}
+                />
+                <TextInput
+                  key={form.key("name")}
+                  {...form.getInputProps("name")}
+                  disabled={!form.getValues().changeName}
+                />
+                <Checkbox
+                  label="Change email:"
+                  key={form.key("changeEmail")}
+                  {...form.getInputProps("changeEmail", { type: "checkbox" })}
+                />
+                <TextInput
+                  key={form.key("email")}
+                  {...form.getInputProps("email")}
+                  disabled={!form.getValues().changeEmail}
+                />
+                <Checkbox
+                  label="Change password:"
+                  key={form.key("changePassword")}
+                  {...form.getInputProps("changePassword", {
+                    type: "checkbox",
+                  })}
+                />
+                <TextInput
+                  key={form.key("password")}
+                  {...form.getInputProps("password")}
+                  disabled={!form.getValues().changePassword}
+                />
+                <Text size="sm">Verify password: </Text>
+                <TextInput
+                  key={form.key("verify")}
+                  {...form.getInputProps("verify")}
+                />
+                <div />
+                <Button type="submit" variant="light">
+                  Submit
+                </Button>
+              </SimpleGrid>
+            </form>
+          </>
+          <Divider />
+          <>
+            <Title order={1} size="h2">
+              Connect Accounts
+            </Title>
             <SimpleGrid cols={width < 768 ? 1 : 2}>
-              <Checkbox
-                label="Change name:"
-                key={form.key("changeName")}
-                {...form.getInputProps("changeName", { type: "checkbox" })}
-              />
-              <TextInput
-                key={form.key("name")}
-                {...form.getInputProps("name")}
-                disabled={!form.getValues().changeName}
-              />
-              <Checkbox
-                label="Change email:"
-                key={form.key("changeEmail")}
-                {...form.getInputProps("changeEmail", { type: "checkbox" })}
-              />
-              <TextInput
-                key={form.key("email")}
-                {...form.getInputProps("email")}
-                disabled={!form.getValues().changeEmail}
-              />
-              <Checkbox
-                label="Change password:"
-                key={form.key("changePassword")}
-                {...form.getInputProps("changePassword", { type: "checkbox" })}
-              />
-              <TextInput
-                key={form.key("password")}
-                {...form.getInputProps("password")}
-                disabled={!form.getValues().changePassword}
-              />
-              <Text size="sm">Verify password: </Text>
-              <TextInput
-                key={form.key("verify")}
-                {...form.getInputProps("verify")}
-              />
-              <div />
-              <Button type="submit" variant="light">
-                Submit
-              </Button>
+              <Text>
+                <FontAwesomeIcon icon={faSteam} /> Steam
+              </Text>
+              <a
+                href="steam/auth"
+                onClick={() => localStorage.setItem("settings", "s")}
+              >
+                <Button variant="light" fullWidth>
+                  Connect
+                </Button>
+              </a>
             </SimpleGrid>
-          </form>
-        </>
-        <>
-          <Title>Connect Accounts</Title>
-          <SimpleGrid cols={width < 768 ? 1 : 2}>
-            <Text>
-              <FontAwesomeIcon icon={faSteam} /> Steam
-            </Text>
-            <a
-              href="steam/auth"
-              onClick={() => localStorage.setItem("settings", "s")}
-            >
-              <Button variant="light">Connect</Button>
-            </a>
-          </SimpleGrid>
-        </>
-      </Stack>
-    </Container>
+          </>
+        </Stack>
+      </Paper>
+    </Center>
   );
 }
