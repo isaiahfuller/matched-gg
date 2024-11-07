@@ -1,6 +1,11 @@
 import { SteamConfig } from '@config/interfaces';
+import { UnauthorizedException } from '@nestjs/common';
+import { chunk } from '@util/chunk';
 import axios from 'axios';
+import { IgdbDbController } from 'src/infrastructure/igdb/db/controller/IgdbDbController';
 
+import { mapOwnedGame } from '../db/map/mapOwnedGame';
+import { userOwnedGames } from '../db/schema/steamUserOwnedGames';
 import buildSteamUrl from '../util/buildSteamUrl';
 import { SteamOwnedGames } from './interfaces';
 
@@ -9,9 +14,11 @@ export default class SteamHandler {
     'No Steam ID provided! Is there a valid, logged in session?',
   );
   private apiKey: SteamConfig['apiKey'];
+  private dbController: IgdbDbController;
   BASE_URL = 'https://api.steampowered.com';
   constructor(config) {
     this.apiKey = config.steam.apiKey;
+    this.dbController = new IgdbDbController();
   }
 
   /**
@@ -57,5 +64,17 @@ export default class SteamHandler {
       throw new Error('Steam ID was invalid.');
     }
     return data;
+  }
+  public async syncAccount(session) {
+    if (!session || !session.user || !session.user.steam) {
+      throw new UnauthorizedException('No Steam account linked');
+    }
+    const data = await this.getOwnedGames(session.user.steam.steamId);
+    const games = data.games.map((game) => mapOwnedGame(game, session.user.id));
+    const chunks = chunk(games, 1000);
+    chunks.forEach((chunk) => {
+      this.dbController.storeOwnedSteam(chunk, userOwnedGames);
+    });
+    return games;
   }
 }

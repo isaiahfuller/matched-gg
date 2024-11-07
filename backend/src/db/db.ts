@@ -19,6 +19,8 @@ import * as platformLogos from '../infrastructure/igdb/db/schema/platformLogos';
 import * as platforms from '../infrastructure/igdb/db/schema/platforms';
 import * as themes from '../infrastructure/igdb/db/schema/themes';
 import * as websites from '../infrastructure/igdb/db/schema/websites';
+import * as igdbSteamConnect from '../infrastructure/steam/db/schema/igdbSteamConnect';
+import * as steamUserOwnedGames from '../infrastructure/steam/db/schema/steamUserOwnedGames';
 import { QueryLogger } from './QueryLogger';
 
 export const client = new Client({
@@ -50,5 +52,7 @@ export const db = drizzle(client, {
     ...themes,
     ...multiplayerModes,
     ...gameModes,
+    ...igdbSteamConnect,
+    ...steamUserOwnedGames,
   },
 });

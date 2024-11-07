@@ -1,0 +1,1 @@
+ALTER TABLE "steam_user_owned_games" ADD COLUMN "playtime_disconnected" integer;

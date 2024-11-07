@@ -17,7 +17,7 @@ import { AuthService } from 'src/auth/auth.service';
 import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
 import { UsersService } from 'src/users/users.service';
 
-import { SteamService } from '../../auth/strategies/steam/steam.service';
+import { SteamService } from '../../strategies/steam/steam.service';
 import { SteamAuthResponse } from './types';
 
 @Controller('steam')
@@ -57,6 +57,15 @@ export class SteamController {
       session.user.steam.steamId,
     );
     return games.games;
+  }
+
+  @Get('processLibrary')
+  async processLibrary(@Session() session) {
+    if (!session.user || !session.user.steam) {
+      throw new UnauthorizedException('No Steam account linked');
+    }
+    const games = await this.steamHandler.syncAccount(session);
+    return games;
   }
 
   @UseGuards(AuthGuard('steam'))

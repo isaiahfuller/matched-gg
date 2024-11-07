@@ -253,11 +253,11 @@ const seed = async (): Promise<void> => {
 async function main() {
   let step = 'Seed';
   try {
-    await seed();
+    // await seed();
     step = 'Relations processing';
     await processRelations();
-    await igdbSteamLink();
-    step = 'Extracting Steam IDs';
+    // await igdbSteamLink();
+    // step = 'Extracting Steam IDs';
     logger.info('Seed complete');
   } catch (error) {
     logger.error(`${step} failed: ${error}`);

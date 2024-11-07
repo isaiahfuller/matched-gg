@@ -1,5 +1,5 @@
 import { chunk } from '@util/chunk';
-import { isNotNull } from 'drizzle-orm';
+import { eq, isNotNull } from 'drizzle-orm';
 
 import { IgdbDbController } from '../controller/IgdbDbController';
 import * as gamesSchema from '../schema/games';
@@ -38,57 +38,52 @@ export const processRelations = async () => {
     });
   }
 
-  await processRelation<gamesSchema.GameKeywords>(
-    'keywords',
-    gamesSchema.gameKeywords,
-  );
-  await processRelation<gamesSchema.GameFranchises>(
-    'franchises',
-    gamesSchema.gameFranchises,
-  );
-  await processRelation<gamesSchema.GamePlatforms>(
-    'platforms',
-    gamesSchema.gamePlatforms,
-  );
-  await processRelation<gamesSchema.GameGenres>(
-    'genres',
-    gamesSchema.gameGenres,
-  );
-  await processRelation<gamesSchema.GameThemes>(
-    'themes',
-    gamesSchema.gameThemes,
-  );
-  await processRelation<gamesSchema.GameMultiplayerModes>(
-    'multiplayerModes',
-    gamesSchema.gameMultiplayerModes,
-  );
-  await processRelation<gamesSchema.GameGameModes>(
-    'gameModes',
-    gamesSchema.gameGameModes,
-  );
-  await processRelation<gamesSchema.SimilarGames>(
-    'similarGames',
-    gamesSchema.gameSimilarGames,
-  );
+  // await processRelation<gamesSchema.GameKeywords>(
+  //   'keywords',
+  //   gamesSchema.gameKeywords,
+  // );
+  // await processRelation<gamesSchema.GameFranchises>(
+  //   'franchises',
+  //   gamesSchema.gameFranchises,
+  // );
+  // await processRelation<gamesSchema.GamePlatforms>(
+  //   'platforms',
+  //   gamesSchema.gamePlatforms,
+  // );
+  // await processRelation<gamesSchema.GameGenres>(
+  //   'genres',
+  //   gamesSchema.gameGenres,
+  // );
+  // await processRelation<gamesSchema.GameThemes>(
+  //   'themes',
+  //   gamesSchema.gameThemes,
+  // );
+  // await processRelation<gamesSchema.GameMultiplayerModes>(
+  //   'multiplayerModes',
+  //   gamesSchema.gameMultiplayerModes,
+  // );
+  // await processRelation<gamesSchema.GameGameModes>(
+  //   'gameModes',
+  //   gamesSchema.gameGameModes,
+  // );
+  // await processRelation<gamesSchema.SimilarGames>(
+  //   'similarGames',
+  //   gamesSchema.gameSimilarGames,
+  // );
 
-  // const tg = await db.query.gamesTable.findMany({
-  //   columns: {
-  //     igdbId: true,
-  //     name: true,
-  //   },
-  //   limit: 10,
-  //   // where: isNotNull(gamesSchema.gamesTable.similarGames),
-  //   where: eq(gamesSchema.gamesTable.igdbId, 6893),
-  //   with: {
-  //     similarGames: {
-  //       columns: { resourceId: true },
-  //       with: {
-  //         similarGame: {
-  //           columns: { igdbId: true, name: true },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
-  // console.log(tg, tg[0], tg[0].similarGames, tg[0].similarGames[0]);
+  const tg = await db.query.userOwnedGames.findMany({
+    // columns: {},
+    // limit: 10,
+    with: {
+      steam: {
+        with: {
+          igdbGame: true,
+        },
+      },
+    },
+  });
+  // console.log(tg, tg[0]);
+  for (const g of tg) {
+    console.log(g);
+  }
 };

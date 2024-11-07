@@ -1,0 +1,1 @@
+ALTER TABLE "steam_user_owned_games" ADD CONSTRAINT "steam_user_owned_games_steam_id_user_id_unique" UNIQUE("steam_id","user_id");

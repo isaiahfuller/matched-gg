@@ -8,7 +8,7 @@ import {
   Options,
   SteamProfile,
   ValidateFn,
-} from '../../../providers/steam/types';
+} from '../../providers/steam/types';
 import { SteamService } from './steam.service';
 
 @Injectable()

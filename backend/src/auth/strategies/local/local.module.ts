@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
-import { LocalController } from 'src/providers/local/local.controller';
+import { LocalController } from 'src/auth/providers/local/local.controller';
 
 import { LocalService } from './local.service';
 import { LocalStrategy } from './local.strategy';
