@@ -6,6 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
+      "/games": {
+        target: "http://localhost:3000/",
+        changeOrigin: false,
+        secure: false,
+      },
       "/profile": {
         target: "http://localhost:3000/",
         changeOrigin: false,

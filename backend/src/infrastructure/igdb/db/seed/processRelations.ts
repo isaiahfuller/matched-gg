@@ -1,5 +1,5 @@
 import { chunk } from '@util/chunk';
-import { eq, isNotNull } from 'drizzle-orm';
+import { isNotNull } from 'drizzle-orm';
 
 import { IgdbDbController } from '../controller/IgdbDbController';
 import * as gamesSchema from '../schema/games';
@@ -38,38 +38,42 @@ export const processRelations = async () => {
     });
   }
 
-  // await processRelation<gamesSchema.GameKeywords>(
-  //   'keywords',
-  //   gamesSchema.gameKeywords,
-  // );
-  // await processRelation<gamesSchema.GameFranchises>(
-  //   'franchises',
-  //   gamesSchema.gameFranchises,
-  // );
-  // await processRelation<gamesSchema.GamePlatforms>(
-  //   'platforms',
-  //   gamesSchema.gamePlatforms,
-  // );
-  // await processRelation<gamesSchema.GameGenres>(
-  //   'genres',
-  //   gamesSchema.gameGenres,
-  // );
-  // await processRelation<gamesSchema.GameThemes>(
-  //   'themes',
-  //   gamesSchema.gameThemes,
-  // );
-  // await processRelation<gamesSchema.GameMultiplayerModes>(
-  //   'multiplayerModes',
-  //   gamesSchema.gameMultiplayerModes,
-  // );
-  // await processRelation<gamesSchema.GameGameModes>(
-  //   'gameModes',
-  //   gamesSchema.gameGameModes,
-  // );
-  // await processRelation<gamesSchema.SimilarGames>(
-  //   'similarGames',
-  //   gamesSchema.gameSimilarGames,
-  // );
+  await processRelation<gamesSchema.GameKeywords>(
+    'keywords',
+    gamesSchema.gameKeywords,
+  );
+  await processRelation<gamesSchema.GameFranchises>(
+    'franchises',
+    gamesSchema.gameFranchises,
+  );
+  await processRelation<gamesSchema.GamePlatforms>(
+    'platforms',
+    gamesSchema.gamePlatforms,
+  );
+  await processRelation<gamesSchema.GameGenres>(
+    'genres',
+    gamesSchema.gameGenres,
+  );
+  await processRelation<gamesSchema.GameThemes>(
+    'themes',
+    gamesSchema.gameThemes,
+  );
+  await processRelation<gamesSchema.GameMultiplayerModes>(
+    'multiplayerModes',
+    gamesSchema.gameMultiplayerModes,
+  );
+  await processRelation<gamesSchema.GameGameModes>(
+    'gameModes',
+    gamesSchema.gameGameModes,
+  );
+  await processRelation<gamesSchema.SimilarGames>(
+    'similarGames',
+    gamesSchema.gameSimilarGames,
+  );
+  await processRelation<gamesSchema.SimilarGames>(
+    'screenshots',
+    gamesSchema.gameScreenshots,
+  );
 
   const tg = await db.query.userOwnedGames.findMany({
     // columns: {},

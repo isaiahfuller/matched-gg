@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import {
   bigint,
+  index,
   integer,
   pgTable,
   timestamp,
@@ -23,9 +24,12 @@ export const userOwnedGames = pgTable(
     playtimeWindows: integer('playtime_windows'),
     steamId: bigint('steam_id', { mode: 'number' }),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
-    userId: integer('user_id'),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id),
   },
   (t) => ({
+    playtimeIdx: index('playtime_idx').on(t.playtime.desc()).concurrently(),
     unq: unique().on(t.steamId, t.userId),
   }),
 );

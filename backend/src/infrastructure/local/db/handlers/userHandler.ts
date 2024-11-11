@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { client } from 'src/db/db';
 import { SteamProfile } from 'src/auth/providers/steam/types';
+import { client } from 'src/db/db';
 
 import { steamProfiles, steamProfilesRelations } from '../schema/steamProfiles';
 import { Users, users, usersRelations } from '../schema/users';

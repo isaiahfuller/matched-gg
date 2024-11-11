@@ -52,6 +52,10 @@ import {
   ExpandedPlatformWebsiteField,
   PlatformWebsiteField,
 } from './enum/field/PlatformWebsiteField';
+import {
+  ExpandedScreenshotField,
+  ScreenshotField,
+} from './enum/field/ScreenshotField';
 import { ExpandedThemeField, ThemeField } from './enum/field/ThemeField';
 import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
 import { IGetAll } from './interfaces';
@@ -148,6 +152,10 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
         return Object.values(expanded ? ExpandedKeywordField : KeywordField);
       case IgdbResources.THEMES:
         return Object.values(expanded ? ExpandedThemeField : ThemeField);
+      case IgdbResources.SCREENSHOTS:
+        return Object.values(
+          expanded ? ExpandedScreenshotField : ScreenshotField,
+        );
       case IgdbResources.MULTIPLAYER_MODES:
         return Object.values(
           expanded ? ExpandedMultiplayerModeField : MultiplayerModeField,

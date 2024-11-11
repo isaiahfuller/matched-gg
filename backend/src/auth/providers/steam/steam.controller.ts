@@ -40,6 +40,12 @@ export class SteamController {
     return achivements;
   }
 
+  @Get('getSimilarGames')
+  async getSimilarGames(@Session() session) {
+    const games = this.steamHandler.getSimilarGames(session);
+    return games;
+  }
+
   @UseGuards(AuthGuard('steam'))
   @Get('auth') // TODO: Change to Post when front-end is implemented
   @HttpCode(HttpStatus.OK)

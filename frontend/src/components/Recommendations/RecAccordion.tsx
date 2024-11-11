@@ -82,7 +82,7 @@ export default function RecAccordion({
             ) : null}
             <Flex direction={width < 1000 ? "column" : "row"}>
               <Text>{item.game.summary}</Text>
-              {item.game.screenshots ? (
+              {item.game.screenshots && item.game.screenshots.length ? (
                 <Stack
                   miw="40%"
                   pl={width < 1000 ? 0 : 8}
@@ -90,7 +90,7 @@ export default function RecAccordion({
                 >
                   <Image
                     src={getScreenUrl(
-                      item.game.screenshots[screenIdx].image_id,
+                      item.game.screenshots[screenIdx].imageId,
                       "screenshot_med"
                     )}
                   />
@@ -99,7 +99,7 @@ export default function RecAccordion({
                     {item.game.screenshots.slice(0, 4).map((e, i) => (
                       <img
                         key={e.id}
-                        src={getScreenUrl(e.image_id, "micro")}
+                        src={getScreenUrl(e.imageId, "micro")}
                         style={{
                           objectFit: "contain",
                         }}
@@ -115,16 +115,17 @@ export default function RecAccordion({
       </Accordion.Item>
     );
   });
-  return (
-    <Accordion
-      defaultValue={recommendations[0].game.name!}
-      classNames={{ chevron: classes.chevron }}
-      chevronPosition="left"
-      variant="filled"
-    >
-      {items}
-    </Accordion>
-  );
+  if (recommendations)
+    return (
+      <Accordion
+        defaultValue={recommendations[0].game.name!}
+        classNames={{ chevron: classes.chevron }}
+        chevronPosition="left"
+        variant="filled"
+      >
+        {items}
+      </Accordion>
+    );
 }
 
 function AccordionControl({
@@ -137,12 +138,9 @@ function AccordionControl({
   return (
     <Center>
       <Accordion.Control>{children}</Accordion.Control>
-      <Image
-        src={getScreenUrl(icon["image_id"], "micro")}
-        w={35}
-        h={35}
-        m={4}
-      />
+      {icon ? (
+        <Image src={getScreenUrl(icon.imageId, "micro")} w={35} h={35} m={4} />
+      ) : null}
     </Center>
   );
 }

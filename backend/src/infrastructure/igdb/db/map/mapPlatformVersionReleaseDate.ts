@@ -1,9 +1,10 @@
+import validateTimestamp from '@util/validateTimestamp';
+
 import {
   PlatformVersionReleaseDateCategoryPGEnum,
   PlatformVersionReleaseDateRegionPGEnum,
   PlatformVersionReleaseDates,
 } from '../schema/platformVersionReleaseDate';
-import validateTimestamp from '../../../../util/validateTimestamp';
 
 export const mapPlatformVersionReleaseDate = (date) => {
   const mapped = {

@@ -5,6 +5,7 @@ import {
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
@@ -182,8 +183,8 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   releaseDates: many(releaseDatesTable),
   remakes: many(gamesTable),
   remasters: many(gamesTable),
-  screenshots: many(screenshotsTable),
-  similarGames: many(gameSimilarGames),
+  screenshots: many(gameScreenshots),
+  similarGames: many(gameSimilarGames, { relationName: 'parentGame' }),
   standaloneExpansions: many(gamesTable),
   steamId: one(igdbSteamConnect, {
     fields: [gamesTable.igdbId],
@@ -286,6 +287,31 @@ export const gameGenresRelations = relations(gameGenres, ({ one }) => ({
   }),
 }));
 
+export const gameScreenshots = pgTable(
+  'game_screenshots',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('screenshot_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameScreenshotsRelations = relations(
+  gameScreenshots,
+  ({ one }) => ({
+    game: one(gamesTable, {
+      fields: [gameScreenshots.gameId],
+      references: [gamesTable.igdbId],
+    }),
+    screenshot: one(screenshotsTable, {
+      fields: [gameScreenshots.resourceId],
+      references: [screenshotsTable.igdbId],
+    }),
+  }),
+);
+
 export const gameThemes = pgTable(
   'game_themes',
   {
@@ -362,6 +388,7 @@ export const gameSimilarGames = pgTable(
     resourceId: bigint('similar_game_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
@@ -369,9 +396,15 @@ export const gameSimilarGames = pgTable(
 export const gameSimilarGamesRelations = relations(
   gameSimilarGames,
   ({ one }) => ({
-    similarGame: one(gamesTable, {
+    parentGame: one(gamesTable, {
       fields: [gameSimilarGames.gameId],
       references: [gamesTable.igdbId],
+      relationName: 'parentGame',
+    }),
+    similarGame: one(gamesTable, {
+      fields: [gameSimilarGames.resourceId],
+      references: [gamesTable.igdbId],
+      relationName: 'similarGame',
     }),
   }),
 );

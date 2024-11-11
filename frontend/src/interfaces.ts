@@ -67,7 +67,7 @@ export interface IGDBGameArt extends IGDBGeneric {
   height: number;
   url: string;
   width: number;
-  image_id: string;
+  imageId: string;
   game?: IGDBGame | number;
 }
 

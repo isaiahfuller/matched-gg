@@ -24,6 +24,7 @@ import { PlatformVersionCompanyDTO } from '../../facade/subsystems/DTO/PlatformV
 import { PlatformVersionDTO } from '../../facade/subsystems/DTO/PlatformVersionDTO';
 import { PlatformVersionReleaseDateDTO } from '../../facade/subsystems/DTO/PlatformVersionReleaseDateDTO';
 import { PlatformWebsiteDTO } from '../../facade/subsystems/DTO/PlatformWebsiteDTO';
+import { ScreenshotDTO } from '../../facade/subsystems/DTO/ScreenshotDTO';
 import { ThemeDTO } from '../../facade/subsystems/DTO/ThemeDTO';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/WebsiteDTO';
 import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
@@ -43,6 +44,7 @@ import { mapPlatformVersion } from '../map/mapPlatformVersion';
 import { mapPlatformVersionCompany } from '../map/mapPlatformVersionCompany';
 import { mapPlatformVersionReleaseDate } from '../map/mapPlatformVersionReleaseDate';
 import { mapPlatformWebsite } from '../map/mapPlatformWebsite';
+import { mapScreenshot } from '../map/mapScreenshot';
 import { mapTheme } from '../map/mapTheme';
 import { mapWebsite } from '../map/mapWebsite';
 import { Artworks, artworksTable } from '../schema/artworks';
@@ -82,6 +84,7 @@ import {
   platformWebsitesTable,
 } from '../schema/platformWebsites';
 import { Platforms, platformsTable } from '../schema/platforms';
+import { Screenshots, screenshotsTable } from '../schema/screenshots';
 import { Themes, themesTable } from '../schema/themes';
 import { Websites, websitesTable } from '../schema/websites';
 import { processRelations } from './processRelations';
@@ -195,6 +198,8 @@ const seed = async (): Promise<void> => {
               chunk,
               multiplayerModesTable,
             );
+          case IgdbResources.SCREENSHOTS:
+            return igdbDbController.store<Screenshots>(chunk, screenshotsTable);
           default:
             throw new Error('Unhandled endpoint');
         }
@@ -206,58 +211,59 @@ const seed = async (): Promise<void> => {
     logger.info(`${endpoint} inserted`);
   }
 
-  await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
-  await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
-  await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
-  await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
-  await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
-  await seedResource<InvolvedCompanyDTO>(
-    mapInvolvedCompany,
-    IgdbResources.INVOLVED_COMPANIES,
-  );
-  await seedResource<PlatformDTO>(mapPlatform, IgdbResources.PLATFORMS);
-  await seedResource<PlatformLogoDTO>(
-    mapPlatformLogo,
-    IgdbResources.PLATFORM_LOGOS,
-  );
-  await seedResource<PlatformWebsiteDTO>(
-    mapPlatformWebsite,
-    IgdbResources.PLATFORM_WEBSITES,
-  );
-  await seedResource<PlatformFamilyDTO>(
-    mapPlatformFamilies,
-    IgdbResources.PLATFORM_FAMILIES,
-  );
-  await seedResource<PlatformVersionCompanyDTO>(
-    mapPlatformVersionCompany,
-    IgdbResources.PLATFORM_VERSION_COMPANIES,
-  );
-  await seedResource<PlatformVersionDTO>(
-    mapPlatformVersion,
-    IgdbResources.PLATFORM_VERSIONS,
-  );
-  await seedResource<PlatformVersionReleaseDateDTO>(
-    mapPlatformVersionReleaseDate,
-    IgdbResources.PLATFORM_VERSION_RELEASE_DATES,
-  );
-  await seedResource<GenreDTO>(mapGenre, IgdbResources.GENRES);
-  await seedResource<KeywordDTO>(mapKeyword, IgdbResources.KEYWORDS);
-  await seedResource<ThemeDTO>(mapTheme, IgdbResources.THEMES);
-  await seedResource<MultiplayerModeDTO>(
-    mapMultiplayerMode,
-    IgdbResources.MULTIPLAYER_MODES,
-  );
-  await seedResource<GameModeDTO>(mapGameMode, IgdbResources.GAME_MODES);
+  // await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
+  // await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
+  // await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
+  // await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
+  // await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
+  // await seedResource<InvolvedCompanyDTO>(
+  //   mapInvolvedCompany,
+  //   IgdbResources.INVOLVED_COMPANIES,
+  // );
+  // await seedResource<PlatformDTO>(mapPlatform, IgdbResources.PLATFORMS);
+  // await seedResource<PlatformLogoDTO>(
+  //   mapPlatformLogo,
+  //   IgdbResources.PLATFORM_LOGOS,
+  // );
+  // await seedResource<PlatformWebsiteDTO>(
+  //   mapPlatformWebsite,
+  //   IgdbResources.PLATFORM_WEBSITES,
+  // );
+  // await seedResource<PlatformFamilyDTO>(
+  //   mapPlatformFamilies,
+  //   IgdbResources.PLATFORM_FAMILIES,
+  // );
+  // await seedResource<PlatformVersionCompanyDTO>(
+  //   mapPlatformVersionCompany,
+  //   IgdbResources.PLATFORM_VERSION_COMPANIES,
+  // );
+  // await seedResource<PlatformVersionDTO>(
+  //   mapPlatformVersion,
+  //   IgdbResources.PLATFORM_VERSIONS,
+  // );
+  // await seedResource<PlatformVersionReleaseDateDTO>(
+  //   mapPlatformVersionReleaseDate,
+  //   IgdbResources.PLATFORM_VERSION_RELEASE_DATES,
+  // );
+  // await seedResource<GenreDTO>(mapGenre, IgdbResources.GENRES);
+  // await seedResource<KeywordDTO>(mapKeyword, IgdbResources.KEYWORDS);
+  // await seedResource<ThemeDTO>(mapTheme, IgdbResources.THEMES);
+  // await seedResource<MultiplayerModeDTO>(
+  //   mapMultiplayerMode,
+  //   IgdbResources.MULTIPLAYER_MODES,
+  // );
+  // await seedResource<GameModeDTO>(mapGameMode, IgdbResources.GAME_MODES);
+  await seedResource<ScreenshotDTO>(mapScreenshot, IgdbResources.SCREENSHOTS);
 };
 
 async function main() {
   let step = 'Seed';
   try {
-    // await seed();
+    await seed();
     step = 'Relations processing';
     await processRelations();
-    // await igdbSteamLink();
-    // step = 'Extracting Steam IDs';
+    await igdbSteamLink();
+    step = 'Extracting Steam IDs';
     logger.info('Seed complete');
   } catch (error) {
     logger.error(`${step} failed: ${error}`);

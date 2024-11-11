@@ -1,0 +1,54 @@
+import { Injectable } from '@nestjs/common';
+
+import { DrizzleDB } from './db/db';
+import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
+
+@Injectable()
+export class GameService {
+  db: IgdbDbController;
+  dbConnection: DrizzleDB;
+  constructor() {
+    this.db = new IgdbDbController();
+    this.dbConnection = this.db.getConnection();
+  }
+
+  async getGames(page = 0, size = 100) {
+    return await this.dbConnection.query.gamesTable.findMany({
+      limit: size,
+      offset: page * size,
+      with: {
+        cover: true,
+        franchises: {
+          columns: {},
+          with: { franchise: true },
+        },
+        gameModes: {
+          columns: {},
+          with: { gameMode: true },
+        },
+        genres: {
+          columns: {},
+          with: { genre: true },
+        },
+        keywords: {
+          columns: {},
+          with: { keyword: true },
+        },
+        multiplayerModes: {
+          columns: {},
+          with: { multiplayerMode: true },
+        },
+        parentGame: true,
+        platforms: {
+          columns: {},
+          with: { platform: true },
+        },
+        steamId: true,
+        themes: {
+          columns: {},
+          with: { theme: true },
+        },
+      },
+    });
+  }
+}

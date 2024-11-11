@@ -1,12 +1,35 @@
 import { Button, Container, Divider, Flex, Stack, Title } from "@mantine/core";
 import RecAccordion from "./RecAccordion";
-import { persona3reload, persona4 } from "../../mockGames";
+// import { persona3reload, persona4 } from "../../mockGames";
 
 import classes from "./index.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { IGDBGame } from "../../interfaces";
 
 export default function Recommendations() {
+  const [games, setGames] = useState<
+    {
+      game: IGDBGame;
+      type: string;
+      typeText: string;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    fetch("/steam/getSimilarGames")
+      .then((r) => r.json())
+      .then((r: { game: IGDBGame; type: string; typeText: string }[]) => {
+        for (const g of r) {
+          g.type = "company";
+          g.typeText = "qwerty";
+        }
+        console.log(r);
+        setGames([...r]);
+      });
+  }, []);
+
   return (
     <Container size="sm">
       <Stack gap="xl">
@@ -46,12 +69,15 @@ export default function Recommendations() {
           so we recommend these titles:
         </Title>
       </Stack>
-      <RecAccordion
-        recommendations={[
-          { game: persona4, type: "company", typeText: "Sega" },
-          { game: persona3reload, type: "tag", typeText: "Role-playing (RPG)" },
-        ]}
-      />
+      {games.length ? (
+        <RecAccordion
+          // recommendations={[
+          //   { game: persona4, type: "company", typeText: "Sega" },
+          //   { game: persona3reload, type: "tag", typeText: "Role-playing (RPG)" },
+          // ]}
+          recommendations={games.slice(0, 5)}
+        />
+      ) : null}
       <Divider p={8} mx="auto" w={64} />
       <Flex direction="row-reverse">
         <Button

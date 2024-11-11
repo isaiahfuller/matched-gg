@@ -56,3 +56,5 @@ export const db = drizzle(client, {
     ...steamUserOwnedGames,
   },
 });
+
+export type DrizzleDB = typeof db;

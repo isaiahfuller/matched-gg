@@ -1,9 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common';
+
+import { AppService } from './app.service';
+import { GameService } from './games.service';
+import { Games } from './infrastructure/igdb/db/schema/games';
 
 @Controller('games')
 export class GamesController {
-  @Get()
-  findAll(): string {
-    return 'All games';
+  private readonly logger = new Logger('GameController');
+
+  constructor(
+    private readonly appService: AppService,
+    private readonly gameService: GameService,
+  ) {}
+
+  @Get('getGames')
+  async findAll(): Promise<Games[]> {
+    console.log('r');
+    return await this.gameService.getGames();
   }
 }

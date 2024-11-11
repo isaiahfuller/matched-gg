@@ -1,5 +1,6 @@
+import validateTimestamp from '@util/validateTimestamp';
+
 import { InvolvedCompanies } from '../schema/involvedCompanies';
-import validateTimestamp from '../../../../util/validateTimestamp';
 
 export const mapInvolvedCompany = (company) => {
   const mapped = {

@@ -1,5 +1,6 @@
+import validateTimestamp from '@util/validateTimestamp';
+
 import { Companies, CompanyDateCategoryPGEnum } from '../schema/companies';
-import validateTimestamp from '../../../../util/validateTimestamp';
 
 export const mapCompany = (company) => {
   const mappedCompany = {

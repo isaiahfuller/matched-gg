@@ -2,6 +2,7 @@ import { SteamConfig } from '@config/interfaces';
 import { UnauthorizedException } from '@nestjs/common';
 import { chunk } from '@util/chunk';
 import axios from 'axios';
+import { eq, gt } from 'drizzle-orm';
 import { IgdbDbController } from 'src/infrastructure/igdb/db/controller/IgdbDbController';
 
 import { mapOwnedGame } from '../db/map/mapOwnedGame';
@@ -64,6 +65,62 @@ export default class SteamHandler {
       throw new Error('Steam ID was invalid.');
     }
     return data;
+  }
+  public async getSimilarGames(session) {
+    if (!session || !session.user || !session.user.steam) {
+      throw new UnauthorizedException('No Steam account linked');
+    }
+    const db = this.dbController.getConnection();
+    const data = await db.query.userOwnedGames.findMany({
+      columns: {},
+      orderBy: (userOwnedGames, { desc }) => [desc(userOwnedGames.playtime)],
+      where:
+        eq(userOwnedGames.userId, session.user.id) &&
+        gt(userOwnedGames.playtime, 20),
+      with: {
+        steam: {
+          columns: {},
+          with: {
+            igdbGame: {
+              columns: {},
+              with: {
+                similarGames: {
+                  columns: { gameId: true, resourceId: true },
+                  with: {
+                    parentGame: {
+                      columns: {
+                        name: true,
+                      },
+                    },
+                    similarGame: {
+                      with: {
+                        artworks: true,
+                        cover: true,
+                        screenshots: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    console.log(data);
+    const games = {};
+    for (const p of data.filter(
+      (p) => p.steam && p.steam.igdbGame && p.steam.igdbGame.similarGames,
+    )) {
+      for (const g of p.steam!.igdbGame!.similarGames) {
+        if (!games[g.similarGame.igdbId])
+          games[g.similarGame.igdbId] = { count: 1, game: g.similarGame };
+        else games[g.similarGame.igdbId].count++;
+      }
+    }
+    return Object.values<{ count: number }>(games).sort(
+      (a, b) => b.count - a.count,
+    );
   }
   public async syncAccount(session) {
     if (!session || !session.user || !session.user.steam) {

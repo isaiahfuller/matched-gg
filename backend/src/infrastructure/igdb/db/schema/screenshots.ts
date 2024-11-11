@@ -7,14 +7,12 @@ import {
   timestamp,
 } from 'drizzle-orm/pg-core';
 
-import { gamesTable } from './games';
-
 export const screenshotsTable = pgTable('screenshots', {
   alphaChannel: boolean('alpha_channel'),
   animated: boolean('animated'),
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  game: bigint('game', { mode: 'number' }).references(() => gamesTable.igdbId),
+  game: bigint('game', { mode: 'number' }),
   height: integer('height'),
   igdbId: integer('igdb_id').primaryKey(),
   imageId: text('image_id'),
