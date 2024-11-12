@@ -87,12 +87,6 @@ function App() {
     console.log(await games.json());
   }
 
-  if (loading)
-    return (
-      <Center h={height}>
-        <Loader />
-      </Center>
-    );
   return (
     <AppShell
       navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
@@ -206,8 +200,16 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
-        {["login", "signup", "settings"].includes(page) ? null : <Search />}
-        <Pages page={page} user={user} setUser={setUser} />
+        {loading ? (
+          <Center h={height}>
+            <Loader />
+          </Center>
+        ) : (
+          <>
+            {["login", "signup", "settings"].includes(page) ? null : <Search />}
+            <Pages page={page} user={user} setUser={setUser} />
+          </>
+        )}
       </AppShell.Main>
     </AppShell>
   );
