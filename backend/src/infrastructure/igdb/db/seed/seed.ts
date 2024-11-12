@@ -211,48 +211,48 @@ const seed = async (): Promise<void> => {
     logger.info(`${endpoint} inserted`);
   }
 
-  // await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
-  // await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
-  // await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
-  // await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
-  // await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
-  // await seedResource<InvolvedCompanyDTO>(
-  //   mapInvolvedCompany,
-  //   IgdbResources.INVOLVED_COMPANIES,
-  // );
-  // await seedResource<PlatformDTO>(mapPlatform, IgdbResources.PLATFORMS);
-  // await seedResource<PlatformLogoDTO>(
-  //   mapPlatformLogo,
-  //   IgdbResources.PLATFORM_LOGOS,
-  // );
-  // await seedResource<PlatformWebsiteDTO>(
-  //   mapPlatformWebsite,
-  //   IgdbResources.PLATFORM_WEBSITES,
-  // );
-  // await seedResource<PlatformFamilyDTO>(
-  //   mapPlatformFamilies,
-  //   IgdbResources.PLATFORM_FAMILIES,
-  // );
-  // await seedResource<PlatformVersionCompanyDTO>(
-  //   mapPlatformVersionCompany,
-  //   IgdbResources.PLATFORM_VERSION_COMPANIES,
-  // );
-  // await seedResource<PlatformVersionDTO>(
-  //   mapPlatformVersion,
-  //   IgdbResources.PLATFORM_VERSIONS,
-  // );
-  // await seedResource<PlatformVersionReleaseDateDTO>(
-  //   mapPlatformVersionReleaseDate,
-  //   IgdbResources.PLATFORM_VERSION_RELEASE_DATES,
-  // );
-  // await seedResource<GenreDTO>(mapGenre, IgdbResources.GENRES);
-  // await seedResource<KeywordDTO>(mapKeyword, IgdbResources.KEYWORDS);
-  // await seedResource<ThemeDTO>(mapTheme, IgdbResources.THEMES);
-  // await seedResource<MultiplayerModeDTO>(
-  //   mapMultiplayerMode,
-  //   IgdbResources.MULTIPLAYER_MODES,
-  // );
-  // await seedResource<GameModeDTO>(mapGameMode, IgdbResources.GAME_MODES);
+  await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
+  await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
+  await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
+  await seedResource<CoversDTO>(mapArtwork, IgdbResources.COVERS);
+  await seedResource<CompanyDTO>(mapCompany, IgdbResources.COMPANIES);
+  await seedResource<InvolvedCompanyDTO>(
+    mapInvolvedCompany,
+    IgdbResources.INVOLVED_COMPANIES,
+  );
+  await seedResource<PlatformDTO>(mapPlatform, IgdbResources.PLATFORMS);
+  await seedResource<PlatformLogoDTO>(
+    mapPlatformLogo,
+    IgdbResources.PLATFORM_LOGOS,
+  );
+  await seedResource<PlatformWebsiteDTO>(
+    mapPlatformWebsite,
+    IgdbResources.PLATFORM_WEBSITES,
+  );
+  await seedResource<PlatformFamilyDTO>(
+    mapPlatformFamilies,
+    IgdbResources.PLATFORM_FAMILIES,
+  );
+  await seedResource<PlatformVersionCompanyDTO>(
+    mapPlatformVersionCompany,
+    IgdbResources.PLATFORM_VERSION_COMPANIES,
+  );
+  await seedResource<PlatformVersionDTO>(
+    mapPlatformVersion,
+    IgdbResources.PLATFORM_VERSIONS,
+  );
+  await seedResource<PlatformVersionReleaseDateDTO>(
+    mapPlatformVersionReleaseDate,
+    IgdbResources.PLATFORM_VERSION_RELEASE_DATES,
+  );
+  await seedResource<GenreDTO>(mapGenre, IgdbResources.GENRES);
+  await seedResource<KeywordDTO>(mapKeyword, IgdbResources.KEYWORDS);
+  await seedResource<ThemeDTO>(mapTheme, IgdbResources.THEMES);
+  await seedResource<MultiplayerModeDTO>(
+    mapMultiplayerMode,
+    IgdbResources.MULTIPLAYER_MODES,
+  );
+  await seedResource<GameModeDTO>(mapGameMode, IgdbResources.GAME_MODES);
   await seedResource<ScreenshotDTO>(mapScreenshot, IgdbResources.SCREENSHOTS);
 };
 

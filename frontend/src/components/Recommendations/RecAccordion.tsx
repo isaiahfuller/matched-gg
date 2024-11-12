@@ -90,7 +90,7 @@ export default function RecAccordion({
                 >
                   <Image
                     src={getScreenUrl(
-                      item.game.screenshots[screenIdx].imageId,
+                      item.game.screenshots[screenIdx].ss.imageId,
                       "screenshot_med"
                     )}
                   />
@@ -98,8 +98,8 @@ export default function RecAccordion({
                   <Flex wrap="nowrap" justify="space-between">
                     {item.game.screenshots.slice(0, 4).map((e, i) => (
                       <img
-                        key={e.id}
-                        src={getScreenUrl(e.imageId, "micro")}
+                        key={e.ss.igdbId}
+                        src={getScreenUrl(e.ss.imageId, "micro")}
                         style={{
                           objectFit: "contain",
                         }}

@@ -20,11 +20,11 @@ export class GameService {
         cover: true,
         franchises: {
           columns: {},
-          with: { franchise: true },
+          with: { f: true },
         },
         gameModes: {
           columns: {},
-          with: { gameMode: true },
+          with: { gm: true },
         },
         genres: {
           columns: {},
@@ -32,16 +32,16 @@ export class GameService {
         },
         keywords: {
           columns: {},
-          with: { keyword: true },
+          with: { kw: true },
         },
         multiplayerModes: {
           columns: {},
-          with: { multiplayerMode: true },
+          with: { mm: true },
         },
         parentGame: true,
         platforms: {
           columns: {},
-          with: { platform: true },
+          with: { p: true },
         },
         steamId: true,
         themes: {

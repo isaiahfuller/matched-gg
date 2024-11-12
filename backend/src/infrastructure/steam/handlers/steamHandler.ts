@@ -85,18 +85,19 @@ export default class SteamHandler {
               columns: {},
               with: {
                 similarGames: {
-                  columns: { gameId: true, resourceId: true },
+                  columns: {},
                   with: {
-                    parentGame: {
-                      columns: {
-                        name: true,
-                      },
+                    pg: {
+                      columns: { name: true },
                     },
-                    similarGame: {
+                    sg: {
                       with: {
-                        artworks: true,
+                        // artworks: true,
                         cover: true,
-                        screenshots: true,
+                        screenshots: {
+                          columns: {},
+                          with: { ss: true },
+                        },
                       },
                     },
                   },
@@ -113,9 +114,8 @@ export default class SteamHandler {
       (p) => p.steam && p.steam.igdbGame && p.steam.igdbGame.similarGames,
     )) {
       for (const g of p.steam!.igdbGame!.similarGames) {
-        if (!games[g.similarGame.igdbId])
-          games[g.similarGame.igdbId] = { count: 1, game: g.similarGame };
-        else games[g.similarGame.igdbId].count++;
+        if (!games[g.sg.igdbId]) games[g.sg.igdbId] = { count: 1, game: g.sg };
+        else games[g.sg.igdbId].count++;
       }
     }
     return Object.values<{ count: number }>(games).sort(

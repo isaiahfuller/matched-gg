@@ -51,13 +51,13 @@ CREATE TABLE IF NOT EXISTS "artworks" (
 	"animated" boolean,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
 	"height" integer,
 	"igdb_id" integer PRIMARY KEY NOT NULL,
 	"image_id" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
-	"width" integer,
-	"game" bigint
+	"width" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "collectionMemberships" (
@@ -135,13 +135,14 @@ CREATE TABLE IF NOT EXISTS "covers" (
 	"animated" boolean,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"game_localization" bigint,
 	"height" integer,
 	"igdb_id" integer PRIMARY KEY NOT NULL,
 	"image_id" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
-	"width" integer,
-	"game_localization" bigint
+	"width" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "eventLogos" (
@@ -149,15 +150,15 @@ CREATE TABLE IF NOT EXISTS "eventLogos" (
 	"animated" boolean,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
+	"event" bigint,
 	"height" integer,
+	"igdb_created_at" timestamp,
 	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
 	"image_id" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
-	"width" integer,
-	"event" bigint,
-	"igdb_created_at" timestamp,
-	"igdb_updated_at" timestamp
+	"width" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "eventNetworks" (
@@ -275,10 +276,67 @@ CREATE TABLE IF NOT EXISTS "gameModes" (
 	"url" text
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_franchises" (
+	"game_id" bigint NOT NULL,
+	"franchise_id" bigint NOT NULL,
+	CONSTRAINT "game_franchises_game_id_franchise_id_pk" PRIMARY KEY("game_id","franchise_id"),
+	CONSTRAINT "game_franchises_franchise_id_game_id_unique" UNIQUE("franchise_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_game_modes" (
+	"game_id" bigint NOT NULL,
+	"game_mode_id" bigint NOT NULL,
+	CONSTRAINT "game_game_modes_game_id_game_mode_id_pk" PRIMARY KEY("game_id","game_mode_id"),
+	CONSTRAINT "game_game_modes_game_mode_id_game_id_unique" UNIQUE("game_mode_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_genres" (
+	"game_id" bigint NOT NULL,
+	"genre_id" bigint NOT NULL,
+	CONSTRAINT "game_genres_game_id_genre_id_pk" PRIMARY KEY("game_id","genre_id"),
+	CONSTRAINT "game_genres_genre_id_game_id_unique" UNIQUE("genre_id","game_id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "game_keywords" (
 	"game_id" bigint NOT NULL,
 	"keyword_id" bigint NOT NULL,
+	CONSTRAINT "game_keywords_game_id_keyword_id_pk" PRIMARY KEY("game_id","keyword_id"),
 	CONSTRAINT "game_keywords_keyword_id_game_id_unique" UNIQUE("keyword_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_multiplayer_modes" (
+	"game_id" bigint NOT NULL,
+	"multiplayer_mode_id" bigint NOT NULL,
+	CONSTRAINT "game_multiplayer_modes_game_id_multiplayer_mode_id_pk" PRIMARY KEY("game_id","multiplayer_mode_id"),
+	CONSTRAINT "game_multiplayer_modes_multiplayer_mode_id_game_id_unique" UNIQUE("multiplayer_mode_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_platforms" (
+	"game_id" bigint NOT NULL,
+	"platform_id" bigint NOT NULL,
+	CONSTRAINT "game_platforms_game_id_platform_id_pk" PRIMARY KEY("game_id","platform_id"),
+	CONSTRAINT "game_platforms_platform_id_game_id_unique" UNIQUE("platform_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_screenshots" (
+	"game_id" bigint NOT NULL,
+	"screenshot_id" bigint NOT NULL,
+	CONSTRAINT "game_screenshots_game_id_screenshot_id_pk" PRIMARY KEY("game_id","screenshot_id"),
+	CONSTRAINT "game_screenshots_screenshot_id_game_id_unique" UNIQUE("screenshot_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_similar_games" (
+	"game_id" bigint NOT NULL,
+	"similar_game_id" bigint NOT NULL,
+	CONSTRAINT "game_similar_games_game_id_similar_game_id_pk" PRIMARY KEY("game_id","similar_game_id"),
+	CONSTRAINT "game_similar_games_similar_game_id_game_id_unique" UNIQUE("similar_game_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_themes" (
+	"game_id" bigint NOT NULL,
+	"theme_id" bigint NOT NULL,
+	CONSTRAINT "game_themes_game_id_theme_id_pk" PRIMARY KEY("game_id","theme_id"),
+	CONSTRAINT "game_themes_theme_id_game_id_unique" UNIQUE("theme_id","game_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "games" (
@@ -684,13 +742,13 @@ CREATE TABLE IF NOT EXISTS "screenshots" (
 	"animated" boolean,
 	"checksum" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
 	"height" integer,
 	"igdb_id" integer PRIMARY KEY NOT NULL,
 	"image_id" text,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"url" text,
-	"width" integer,
-	"game" bigint
+	"width" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "themes" (
@@ -742,6 +800,21 @@ CREATE TABLE IF NOT EXISTS "igdb_steam_connect" (
 	"igdb_id" bigint NOT NULL,
 	"steam_id" bigint PRIMARY KEY NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "steam_user_owned_games" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"last_played" timestamp,
+	"playtime" integer,
+	"playtime_deck" integer,
+	"playtime_disconnected" integer,
+	"playtime_linux" integer,
+	"playtime_mac" integer,
+	"playtime_windows" integer,
+	"steam_id" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"user_id" integer NOT NULL,
+	CONSTRAINT "steam_user_owned_games_steam_id_user_id_unique" UNIQUE("steam_id","user_id")
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -889,13 +962,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "screenshots" ADD CONSTRAINT "screenshots_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "steam_profiles" ADD CONSTRAINT "steam_profiles_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "steam_profiles" ADD CONSTRAINT "steam_profiles_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "steam_user_owned_games" ADD CONSTRAINT "steam_user_owned_games_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -905,4 +978,5 @@ CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "externalGames" USING btree ("url
 CREATE INDEX IF NOT EXISTS "name_idx" ON "games" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" USING btree ("slug");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" USING btree ("igdb_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "website_url_idx" ON "websites" USING btree ("url");
+CREATE INDEX IF NOT EXISTS "website_url_idx" ON "websites" USING btree ("url");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "playtime_idx" ON "steam_user_owned_games" USING btree ("playtime" DESC NULLS LAST);

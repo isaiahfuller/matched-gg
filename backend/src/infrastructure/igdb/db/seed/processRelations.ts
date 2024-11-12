@@ -75,19 +75,19 @@ export const processRelations = async () => {
     gamesSchema.gameScreenshots,
   );
 
-  const tg = await db.query.userOwnedGames.findMany({
-    // columns: {},
-    // limit: 10,
-    with: {
-      steam: {
-        with: {
-          igdbGame: true,
-        },
-      },
-    },
-  });
-  // console.log(tg, tg[0]);
-  for (const g of tg) {
-    console.log(g);
-  }
+  // const tg = await db.query.userOwnedGames.findMany({
+  //   // columns: {},
+  //   // limit: 10,
+  //   with: {
+  //     steam: {
+  //       with: {
+  //         igdbGame: true,
+  //       },
+  //     },
+  //   },
+  // });
+  // // console.log(tg, tg[0]);
+  // for (const g of tg) {
+  //   console.log(g);
+  // }
 };

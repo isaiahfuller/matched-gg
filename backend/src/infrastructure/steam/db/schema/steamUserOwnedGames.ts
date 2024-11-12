@@ -29,7 +29,7 @@ export const userOwnedGames = pgTable(
       .references(() => users.id),
   },
   (t) => ({
-    playtimeIdx: index('playtime_idx').on(t.playtime.desc()).concurrently(),
+    playtimeIdx: index('playtime_idx').on(t.playtime.desc()),
     unq: unique().on(t.steamId, t.userId),
   }),
 );

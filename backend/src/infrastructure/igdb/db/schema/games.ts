@@ -206,16 +206,17 @@ export const gameKeywords = pgTable(
     resourceId: bigint('keyword_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
 
 export const gameKeywordsRelations = relations(gameKeywords, ({ one }) => ({
-  game: one(gamesTable, {
+  g: one(gamesTable, {
     fields: [gameKeywords.gameId],
     references: [gamesTable.igdbId],
   }),
-  keyword: one(keywordsTable, {
+  kw: one(keywordsTable, {
     fields: [gameKeywords.resourceId],
     references: [keywordsTable.igdbId],
   }),
@@ -228,16 +229,17 @@ export const gameFranchises = pgTable(
     resourceId: bigint('franchise_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
 
 export const gameFranchisesRelations = relations(gameFranchises, ({ one }) => ({
-  franchise: one(franchisesTable, {
+  f: one(franchisesTable, {
     fields: [gameFranchises.resourceId],
     references: [franchisesTable.igdbId],
   }),
-  game: one(gamesTable, {
+  g: one(gamesTable, {
     fields: [gameFranchises.gameId],
     references: [gamesTable.igdbId],
   }),
@@ -250,16 +252,17 @@ export const gamePlatforms = pgTable(
     resourceId: bigint('platform_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
 
 export const gamePlatformsRelations = relations(gamePlatforms, ({ one }) => ({
-  game: one(gamesTable, {
+  g: one(gamesTable, {
     fields: [gamePlatforms.gameId],
     references: [gamesTable.igdbId],
   }),
-  platform: one(platformsTable, {
+  p: one(platformsTable, {
     fields: [gamePlatforms.resourceId],
     references: [platformsTable.igdbId],
   }),
@@ -272,6 +275,7 @@ export const gameGenres = pgTable(
     resourceId: bigint('genre_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
@@ -294,6 +298,7 @@ export const gameScreenshots = pgTable(
     resourceId: bigint('screenshot_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
@@ -301,11 +306,11 @@ export const gameScreenshots = pgTable(
 export const gameScreenshotsRelations = relations(
   gameScreenshots,
   ({ one }) => ({
-    game: one(gamesTable, {
+    g: one(gamesTable, {
       fields: [gameScreenshots.gameId],
       references: [gamesTable.igdbId],
     }),
-    screenshot: one(screenshotsTable, {
+    ss: one(screenshotsTable, {
       fields: [gameScreenshots.resourceId],
       references: [screenshotsTable.igdbId],
     }),
@@ -319,6 +324,7 @@ export const gameThemes = pgTable(
     resourceId: bigint('theme_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
@@ -341,6 +347,7 @@ export const gameMultiplayerModes = pgTable(
     resourceId: bigint('multiplayer_mode_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
@@ -348,11 +355,11 @@ export const gameMultiplayerModes = pgTable(
 export const gameMultiplayerModesRelations = relations(
   gameMultiplayerModes,
   ({ one }) => ({
-    game: one(gamesTable, {
+    g: one(gamesTable, {
       fields: [gameMultiplayerModes.gameId],
       references: [gamesTable.igdbId],
     }),
-    multiplayerMode: one(multiplayerModesTable, {
+    mm: one(multiplayerModesTable, {
       fields: [gameMultiplayerModes.resourceId],
       references: [multiplayerModesTable.igdbId],
     }),
@@ -366,16 +373,17 @@ export const gameGameModes = pgTable(
     resourceId: bigint('game_mode_id', { mode: 'number' }).notNull(),
   },
   (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
     unq: unique().on(t.resourceId, t.gameId),
   }),
 );
 
 export const gameGameModesRelations = relations(gameGameModes, ({ one }) => ({
-  game: one(gamesTable, {
+  g: one(gamesTable, {
     fields: [gameGameModes.gameId],
     references: [gamesTable.igdbId],
   }),
-  gameMode: one(gameModeTable, {
+  gm: one(gameModeTable, {
     fields: [gameGameModes.resourceId],
     references: [gameModeTable.igdbId],
   }),
@@ -396,12 +404,12 @@ export const gameSimilarGames = pgTable(
 export const gameSimilarGamesRelations = relations(
   gameSimilarGames,
   ({ one }) => ({
-    parentGame: one(gamesTable, {
+    pg: one(gamesTable, {
       fields: [gameSimilarGames.gameId],
       references: [gamesTable.igdbId],
       relationName: 'parentGame',
     }),
-    similarGame: one(gamesTable, {
+    sg: one(gamesTable, {
       fields: [gameSimilarGames.resourceId],
       references: [gamesTable.igdbId],
       relationName: 'similarGame',

@@ -1,4 +1,13 @@
-import { Button, Container, Divider, Flex, Stack, Title } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Container,
+  Divider,
+  Flex,
+  Loader,
+  Stack,
+  Title,
+} from "@mantine/core";
 import RecAccordion from "./RecAccordion";
 // import { persona3reload, persona4 } from "../../mockGames";
 
@@ -16,8 +25,10 @@ export default function Recommendations() {
       typeText: string;
     }[]
   >([]);
+  const [accLoading, setAccLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setAccLoading(true);
     fetch("/steam/getSimilarGames")
       .then((r) => r.json())
       .then((r: { game: IGDBGame; type: string; typeText: string }[]) => {
@@ -27,6 +38,7 @@ export default function Recommendations() {
         }
         console.log(r);
         setGames([...r]);
+        setAccLoading(false);
       });
   }, []);
 
@@ -69,24 +81,30 @@ export default function Recommendations() {
           so we recommend these titles:
         </Title>
       </Stack>
-      {games.length ? (
-        <RecAccordion
-          // recommendations={[
-          //   { game: persona4, type: "company", typeText: "Sega" },
-          //   { game: persona3reload, type: "tag", typeText: "Role-playing (RPG)" },
-          // ]}
-          recommendations={games.slice(0, 5)}
-        />
-      ) : null}
-      <Divider p={8} mx="auto" w={64} />
-      <Flex direction="row-reverse">
-        <Button
-          rightSection={<FontAwesomeIcon icon={faChevronRight} />}
-          variant="transparent"
-        >
-          Get more
-        </Button>
-      </Flex>
+      {games.length && !accLoading ? (
+        <>
+          <RecAccordion
+            // recommendations={[
+            //   { game: persona4, type: "company", typeText: "Sega" },
+            //   { game: persona3reload, type: "tag", typeText: "Role-playing (RPG)" },
+            // ]}
+            recommendations={games.slice(0, 5)}
+          />
+          <Divider p={8} mx="auto" w={64} />
+          <Flex direction="row-reverse">
+            <Button
+              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              variant="transparent"
+            >
+              Get more
+            </Button>
+          </Flex>
+        </>
+      ) : (
+        <Center>
+          <Loader p={64} />
+        </Center>
+      )}
     </Container>
   );
 }

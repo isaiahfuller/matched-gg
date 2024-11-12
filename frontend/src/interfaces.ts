@@ -35,7 +35,7 @@ export interface IGDBGame extends IGDBGeneric {
   release_dates: IGDBDate[] | number[];
   remakes?: IGDBGame[] | number[];
   remasters?: IGDBGame[] | number[];
-  screenshots?: IGDBGameArt[];
+  screenshots?: { ss: IGDBGameArt }[];
   similar_games: number[];
   standalone_expansions?: IGDBGame[] | number[];
   storyline?: string;
@@ -68,6 +68,7 @@ export interface IGDBGameArt extends IGDBGeneric {
   url: string;
   width: number;
   imageId: string;
+  igdbId: number;
   game?: IGDBGame | number;
 }
 

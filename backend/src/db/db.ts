@@ -17,6 +17,7 @@ import * as multiplayerModes from '../infrastructure/igdb/db/schema/multiplayerM
 import * as platformFamilies from '../infrastructure/igdb/db/schema/platformFamilies';
 import * as platformLogos from '../infrastructure/igdb/db/schema/platformLogos';
 import * as platforms from '../infrastructure/igdb/db/schema/platforms';
+import * as screenshots from '../infrastructure/igdb/db/schema/screenshots';
 import * as themes from '../infrastructure/igdb/db/schema/themes';
 import * as websites from '../infrastructure/igdb/db/schema/websites';
 import * as igdbSteamConnect from '../infrastructure/steam/db/schema/igdbSteamConnect';
@@ -40,20 +41,21 @@ export const db = drizzle(client, {
     ...companies,
     ...covers,
     ...franchises,
-    ...games,
     ...gameEngineLogos,
+    ...gameModes,
+    ...games,
+    ...genres,
+    ...igdbSteamConnect,
     ...involvedCompanies,
     ...keywords,
+    ...multiplayerModes,
     ...platformFamilies,
     ...platformLogos,
     ...platforms,
-    ...genres,
-    ...websites,
-    ...themes,
-    ...multiplayerModes,
-    ...gameModes,
-    ...igdbSteamConnect,
+    ...screenshots,
     ...steamUserOwnedGames,
+    ...themes,
+    ...websites,
   },
 });
 

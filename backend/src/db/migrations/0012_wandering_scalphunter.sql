@@ -1,1 +1,0 @@
-CREATE INDEX CONCURRENTLY IF NOT EXISTS "playtime_idx" ON "steam_user_owned_games" USING btree ("playtime" DESC NULLS LAST);
