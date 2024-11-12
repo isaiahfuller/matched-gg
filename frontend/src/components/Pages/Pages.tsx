@@ -4,6 +4,7 @@ import { User } from "../../interfaces";
 import Login from "../Login/Login";
 import Recommendations from "../Recommendations/Recommendations";
 import Settings from "../Settings/Settings";
+import Sync from "../Sync/Sync";
 
 interface PagesProps {
   page: string;
@@ -17,7 +18,7 @@ export default function Pages({ page, user, setUser }: PagesProps) {
     case "previous":
       return <Text>Previously recommended</Text>;
     case "sync":
-      return <Text>Sync your libraries</Text>;
+      return <Sync />;
     case "settings":
       return <Settings user={user} setUser={setUser} />;
     case "signup":

@@ -73,6 +73,7 @@ function App() {
     }
     if (localStorage.getItem("settings")) {
       setPage("settings");
+      fetch("/steam/processLibrary").then((r) => r.json());
     }
   }, [page, isLoggedIn]);
 
@@ -85,6 +86,7 @@ function App() {
     const games = await fetch("/steam/getOwnedGames");
     console.log(await games.json());
   }
+
   if (loading)
     return (
       <Center h={height}>
