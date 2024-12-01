@@ -29,6 +29,14 @@ export class LocalController {
 
   @Post('auth/signup')
   async signup(@Request() req, @Session() session) {
+    if (
+      !req.body ||
+      !req.body.user ||
+      !req.body.user.email ||
+      !req.body.user.name ||
+      !req.body.user.password
+    )
+      throw new BadRequestException('Field(s) missing.');
     const user = await this.localService.signup(req.body.user);
     if (!user) throw new BadRequestException('Registration failed');
     session.user = user;
