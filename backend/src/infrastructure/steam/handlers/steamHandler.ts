@@ -79,7 +79,9 @@ export default class SteamHandler {
         gt(userOwnedGames.playtime, 20),
       with: {
         steam: {
-          columns: {},
+          columns: {
+            igdbId: true,
+          },
           with: {
             igdbGame: {
               columns: {},
@@ -109,11 +111,18 @@ export default class SteamHandler {
       },
     });
     console.log(data);
+    const ids: Set<number> = new Set();
     const games = {};
+    for (const p of data) {
+      if (p.steam && p.steam.igdbId) ids.add(p.steam.igdbId);
+    }
     for (const p of data.filter(
       (p) => p.steam && p.steam.igdbGame && p.steam.igdbGame.similarGames,
     )) {
       for (const g of p.steam!.igdbGame!.similarGames) {
+        if (ids.has(g.sg.igdbId)) {
+          continue;
+        }
         if (!games[g.sg.igdbId]) games[g.sg.igdbId] = { count: 1, game: g.sg };
         else games[g.sg.igdbId].count++;
       }
