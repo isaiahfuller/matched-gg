@@ -1,4 +1,5 @@
 import { setAllConflictUpdateColumns } from '@util/setAllConflictUpdateColumns';
+import { eq } from 'drizzle-orm';
 import { QueryResult } from 'pg';
 import { db } from 'src/db/db';
 
@@ -20,6 +21,13 @@ export class IgdbDbController {
         set: setAllConflictUpdateColumns(table, ['igdbId']),
         target: table.igdbId,
       });
+  }
+
+  public async delete<T extends { igdbId: number }>(
+    data: T,
+    table: any,
+  ): Promise<QueryResult<T[]>> {
+    return this.db.delete(table).where(eq(table.igdbId, data.igdbId));
   }
 
   public async storeManyToMany<T>(

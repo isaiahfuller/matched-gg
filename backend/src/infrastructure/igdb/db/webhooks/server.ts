@@ -9,20 +9,32 @@ const igdbDbController = new IgdbDbController();
 const app = express();
 app.use(express.json());
 
-app.post('/igdb/games/:type', async (req, res) => {
-  const type = req.params.type;
+app.post('/igdb/:endpoint/:type', async (req, res) => {
+  const { endpoint, type } = req.params;
   if (type === 'delete') {
     return;
   }
-  console.log(req.headers['x-secret'], config.authSecrets.jwt);
   if (req.headers['x-secret'] !== config.authSecrets.jwt.replaceAll('+', ' ')) {
     console.log("secret doesn't match");
     return;
   }
-  const data = mapGame(req.body);
-  console.log(data, type, req.headers);
-  igdbDbController.store<Games>([data], gamesTable);
-  res.status(200);
+  if (['create', 'update'].includes(type)) {
+    switch (endpoint) {
+      case 'games':
+        const data = mapGame(req.body);
+        console.log(data, type);
+        igdbDbController.store<Games>(data, gamesTable);
+        res.sendStatus(200);
+    }
+  } else {
+    switch (endpoint) {
+      case 'games':
+        const data = mapGame(req.body);
+        console.log(data, type);
+        igdbDbController.delete<Games>(data, gamesTable);
+        res.sendStatus(200);
+    }
+  }
 });
 
 app.listen(port, () => {

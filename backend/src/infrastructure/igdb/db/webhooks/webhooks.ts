@@ -6,13 +6,6 @@ import { IgdbConfig } from '@config/interfaces';
 import { IgdbFacade } from '../../facade/igdbFacade';
 import { IgdbWebhook } from '../../facade/interfaces';
 
-/**
- * TODO:
- * 1. Add webhooks for each endpoint
- *    a. Blocks similar to seed function
- * 2. Server for consuming webhooks.
- *    a. Express, with routing
- */
 const igdbDbController = new IgdbDbController();
 
 const twitch = new TwitchHandler(
@@ -28,16 +21,6 @@ const webhooks: IgdbWebhook[] = [];
 
 const addWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
-  // const igdbConfig = {
-  //   accessToken: accessToken,
-  //   clientId: config.twitch.clientId,
-  // } as IgdbConfig;
-
-  // const igdb = new IgdbFacade({
-  //   config: igdbConfig,
-  //   logger,
-  // });
-  // console.log(accessToken, config.twitch.clientId);
   const getWebhooks = async (): Promise<void> => {
     const res = await fetch(`https://api.igdb.com/v4/webhooks/`, {
       headers: {
@@ -70,9 +53,9 @@ const addWebhooks = async (): Promise<void> => {
     webhooks.push(webhook[0]);
   };
 
-  // await addWebhook('games', 'create');
-  // await addWebhook('games', 'update');
-  // await addWebhook('games', 'delete');
+  await addWebhook('games', 'create');
+  await addWebhook('games', 'update');
+  await addWebhook('games', 'delete');
 
   //Testing
   const testData = await fetch(
@@ -89,7 +72,6 @@ const addWebhooks = async (): Promise<void> => {
 
 const removeWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
-  console.log(accessToken);
   logger.info(`Removing webhooks`);
   for (const hook of webhooks) {
     logger.info(`Removing hook ${hook.id}`);
@@ -100,7 +82,6 @@ const removeWebhooks = async (): Promise<void> => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    // const ret = await res.json();
   }
 };
 
@@ -113,7 +94,6 @@ const getWebhooks = async (): Promise<void> => {
     },
   });
   const wh = await res.json();
-  // console.log(wh);
   for (const hook of wh) webhooks.push(hook);
 };
 
@@ -121,7 +101,8 @@ async function main() {
   try {
     await getWebhooks();
     await removeWebhooks();
-    // await addWebhooks();
+    await addWebhooks();
+    process.exit(0);
   } catch (error) {
     logger.error(error);
     await removeWebhooks();
