@@ -58,16 +58,16 @@ const addWebhooks = async (): Promise<void> => {
   await addWebhook('games', 'delete');
 
   //Testing
-  const testData = await fetch(
-    `https://api.igdb.com/v4/games/webhooks/test/${123499}?entityId=${81899}`,
-    {
-      method: 'POST',
-      headers: {
-        'Client-ID': config.twitch.clientId,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  );
+  // const testData = await fetch(
+  //   `https://api.igdb.com/v4/games/webhooks/test/${123499}?entityId=${81899}`,
+  //   {
+  //     method: 'POST',
+  //     headers: {
+  //       'Client-ID': config.twitch.clientId,
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //   },
+  // );
 };
 
 const removeWebhooks = async (): Promise<void> => {
@@ -108,18 +108,5 @@ async function main() {
     await removeWebhooks();
   }
 }
-
-// process.on('SIGINT', async () => {
-//   await removeWebhooks();
-//   process.exit(0);
-// });
-// process.on('SIGQUIT', async () => {
-//   await removeWebhooks();
-//   process.exit(0);
-// });
-// process.on('SIGTERM', async () => {
-//   await removeWebhooks();
-//   process.exit(0);
-// });
 
 main();
