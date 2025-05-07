@@ -34,7 +34,13 @@ export class IgdbDbController {
     data: T | T[],
     table: any,
   ): Promise<QueryResult<T[]>> {
-    return this.db.insert(table).values([data].flat()).onConflictDoNothing();
+    return this.db
+      .insert(table)
+      .values([data].flat())
+      .onConflictDoUpdate({
+        set: setAllConflictUpdateColumns(table, ['gameId']),
+        target: [table.gameId, table.resourceId],
+      });
   }
 
   public async storeOwnedSteam(data, table) {

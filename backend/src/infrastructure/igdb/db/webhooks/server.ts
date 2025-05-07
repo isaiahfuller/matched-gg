@@ -24,7 +24,9 @@ import {
   SimilarGames,
 } from '../schema/games';
 import { mapWebsite } from '../map/mapWebsite';
-import { websiteRelations, Websites, websitesTable } from '../schema/websites';
+import { Websites, websitesTable } from '../schema/websites';
+import { Artworks, artworksTable } from '../schema/artworks';
+import { mapArtwork } from '../map/mapArtwork';
 const port = 7331;
 
 const igdbDbController = new IgdbDbController();
@@ -111,6 +113,12 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
         data = mapWebsite(req.body);
         igdbDbController.store<Websites>(data, websitesTable);
         res.sendStatus(200);
+        break;
+      case 'artworks':
+        data = mapArtwork(req.body);
+        igdbDbController.store<Artworks>(data, artworksTable);
+        res.sendStatus(200);
+        break;
     }
   } else {
     switch (endpoint) {
@@ -121,8 +129,14 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
         break;
       case 'websites':
         data = mapWebsite(req.body);
-        igdbDbController.store<Websites>(data, websitesTable);
+        igdbDbController.delete<Websites>(data, websitesTable);
         res.sendStatus(200);
+        break;
+      case 'artworks':
+        data = mapArtwork(req.body);
+        igdbDbController.delete<Artworks>(data, artworksTable);
+        res.sendStatus(200);
+        break;
     }
   }
 });

@@ -1,12 +1,7 @@
 import TwitchHandler from 'src/infrastructure/twitch/handlers/twitchHandler';
-import { IgdbDbController } from '../controller/IgdbDbController';
 import { config } from '@config/config';
 import logger from '@util/logger';
-import { IgdbConfig } from '@config/interfaces';
-import { IgdbFacade } from '../../facade/igdbFacade';
 import { IgdbWebhook } from '../../facade/interfaces';
-
-const igdbDbController = new IgdbDbController();
 
 const twitch = new TwitchHandler(
   {
@@ -53,21 +48,11 @@ const addWebhooks = async (): Promise<void> => {
     webhooks.push(webhook[0]);
   };
 
-  await addWebhook('games', 'create');
-  await addWebhook('games', 'update');
-  await addWebhook('games', 'delete');
-
-  //Testing
-  // const testData = await fetch(
-  //   `https://api.igdb.com/v4/games/webhooks/test/${123499}?entityId=${81899}`,
-  //   {
-  //     method: 'POST',
-  //     headers: {
-  //       'Client-ID': config.twitch.clientId,
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-  //   },
-  // );
+  for (const endpoint of ['games', 'artworks', 'websites']) {
+    await addWebhook(endpoint, 'create');
+    await addWebhook(endpoint, 'update');
+    await addWebhook(endpoint, 'delete');
+  }
 };
 
 const removeWebhooks = async (): Promise<void> => {
