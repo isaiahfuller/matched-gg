@@ -17,7 +17,6 @@ import {
   gamePlatforms,
   Games,
   gameSimilarGames,
-  gameSimilarGamesRelations,
   gamesTable,
   gameThemes,
   GameThemes,
