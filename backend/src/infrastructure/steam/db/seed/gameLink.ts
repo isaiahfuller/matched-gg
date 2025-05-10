@@ -116,22 +116,6 @@ const db = drizzle(client, {
 });
 export const igdbSteamLink = async () => {
   const games: IgdbSteamConnect[] = [];
-  // const sites = await db.query.websitesTable.findMany({
-  //   columns: { url: true },
-  //   where: like(websitesTable.url, 'https://store.steampowered.com/app/%'),
-  //   with: {
-  //     game: {
-  //       columns: {
-  //         igdbId: true,
-  //       },
-  //     },
-  //     type: {
-  //       columns: {
-  //         type: true,
-  //       },
-  //     },
-  //   },
-  // });
   const sites = await db
     .select()
     .from(websitesTable)
@@ -151,26 +135,4 @@ export const igdbSteamLink = async () => {
   chunks.forEach(async (chunk) => {
     await db.insert(igdbSteamConnect).values(chunk).onConflictDoNothing();
   });
-
-  // const games = await db.query.igdbSteamConnect.findMany({
-  //   with: {
-  //     igdbGame: {
-  //       with: {
-  //         websites: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // const games = await db.query.gamesTable.findFirst({
-  //   where: eq(gamesTable.igdbId, 241),
-  //   with: {
-  //     steamId: {
-  //       columns: {
-  //         steamId: true,
-  //       },
-  //     },
-  //     websites: true,
-  //   },
-  // });
-  // console.log(games);
 };
