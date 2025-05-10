@@ -13,7 +13,7 @@
 /**
  * A website type, usually the name of the website
  */
-export interface WebsiteType {
+export interface WebsiteTypeDTO {
   /**
    * Hash of the object
    */

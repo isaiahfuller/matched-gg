@@ -13,7 +13,7 @@
 /**
  * TThe hardware used to run the game or game delivery network
  */
-export interface PlatformType {
+export interface PlatformTypeDTO {
   /**
    * Hash of the object
    */

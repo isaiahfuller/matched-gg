@@ -8,6 +8,13 @@
       "when": 1731439240923,
       "tag": "0000_married_the_hunter",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1746910842263,
+      "tag": "0001_exotic_taskmaster",
+      "breakpoints": true
     }
   ]
 }

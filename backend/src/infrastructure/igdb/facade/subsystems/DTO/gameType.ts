@@ -13,7 +13,7 @@
 /**
  * The type that this game is
  */
-export interface GameType {
+export interface GameTypeDTO {
   /**
    * Hash of the object
    */

@@ -13,7 +13,7 @@
 /**
  * An endpoint to provide definition of all of the current release date statuses.
  */
-export interface ReleaseDateRegion {
+export interface ReleaseDateRegionDTO {
   /**
    * Hash of the object
    */

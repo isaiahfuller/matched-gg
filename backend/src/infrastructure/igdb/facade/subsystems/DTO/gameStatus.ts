@@ -13,7 +13,7 @@
 /**
  * The release status of the game
  */
-export interface GameStatus {
+export interface GameStatusDTO {
   /**
    * Hash of the object
    */

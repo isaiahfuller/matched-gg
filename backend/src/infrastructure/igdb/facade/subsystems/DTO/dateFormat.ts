@@ -13,7 +13,7 @@
 /**
  * The date format
  */
-export interface DateFormat {
+export interface DateFormatDTO {
   /**
    * Hash of the object
    */

@@ -17,14 +17,6 @@ const webhooks: IgdbWebhook[] = [];
 
 const addWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
-  const getWebhooks = async (): Promise<void> => {
-    const res = await fetch(`https://api.igdb.com/v4/webhooks/`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Client-ID': config.twitch.clientId,
-      },
-    });
-  };
 
   const addWebhook = async (
     endpoint: string,
@@ -61,7 +53,7 @@ const removeWebhooks = async (): Promise<void> => {
   logger.info(`Removing webhooks`);
   for (const hook of webhooks) {
     logger.info(`Removing hook ${hook.id}`);
-    const res = await fetch(`https://api.igdb.com/v4/webhooks/${hook.id}`, {
+    await fetch(`https://api.igdb.com/v4/webhooks/${hook.id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Client-ID': config.twitch.clientId,

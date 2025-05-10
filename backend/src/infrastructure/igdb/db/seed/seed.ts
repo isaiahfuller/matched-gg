@@ -11,7 +11,10 @@ import TwitchHandler from '../../../twitch/handlers/twitchHandler';
 import { ArtworkDTO } from '../../facade/subsystems/DTO/artwork';
 import { CompanyDTO } from '../../facade/subsystems/DTO/company';
 import { CoversDTO } from '../../facade/subsystems/DTO/cover';
+import { DateFormatDTO } from '../../facade/subsystems/DTO/dateFormat';
 import { GameModeDTO } from '../../facade/subsystems/DTO/gameMode';
+import { GameStatusDTO } from '../../facade/subsystems/DTO/gameStatus';
+import { GameTypeDTO } from '../../facade/subsystems/DTO/gameType';
 import { GameDTO } from '../../facade/subsystems/DTO/games';
 import { GenreDTO } from '../../facade/subsystems/DTO/genre';
 import { InvolvedCompanyDTO } from '../../facade/subsystems/DTO/involvedCompany';
@@ -20,19 +23,25 @@ import { MultiplayerModeDTO } from '../../facade/subsystems/DTO/multiplayerMode'
 import { PlatformDTO } from '../../facade/subsystems/DTO/platform';
 import { PlatformFamilyDTO } from '../../facade/subsystems/DTO/platformFamily';
 import { PlatformLogoDTO } from '../../facade/subsystems/DTO/platformLogo';
+import { PlatformTypeDTO } from '../../facade/subsystems/DTO/platformType';
 import { PlatformVersionDTO } from '../../facade/subsystems/DTO/platformVersion';
 import { PlatformVersionCompanyDTO } from '../../facade/subsystems/DTO/platformVersionCompany';
 import { PlatformVersionReleaseDateDTO } from '../../facade/subsystems/DTO/platformVersionReleaseDate';
 import { PlatformWebsiteDTO } from '../../facade/subsystems/DTO/platformWebsite';
+import { ReleaseDateRegionDTO } from '../../facade/subsystems/DTO/releaseDateRegion';
 import { ScreenshotDTO } from '../../facade/subsystems/DTO/screenshot';
 import { ThemeDTO } from '../../facade/subsystems/DTO/theme';
 import { WebsiteDTO } from '../../facade/subsystems/DTO/website';
+import { WebsiteTypeDTO } from '../../facade/subsystems/DTO/websiteType';
 import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
 import { IgdbDbController } from '../controller/IgdbDbController';
 import { mapArtwork } from '../map/mapArtwork';
 import { mapCompany } from '../map/mapCompany';
+import { mapDateFormat } from '../map/mapDateFormat';
 import { mapGame } from '../map/mapGame';
 import { mapGameMode } from '../map/mapGameMode';
+import { mapGameStatus } from '../map/mapGameStatus';
+import { mapGameType } from '../map/mapGameType';
 import { mapGenre } from '../map/mapGenre';
 import { mapInvolvedCompany } from '../map/mapInvolvedCompany';
 import { mapKeyword } from '../map/mapKeyword';
@@ -40,17 +49,23 @@ import { mapMultiplayerMode } from '../map/mapMultiplayerMode';
 import { mapPlatform } from '../map/mapPlatform';
 import { mapPlatformFamilies } from '../map/mapPlatformFamily';
 import { mapPlatformLogo } from '../map/mapPlatformLogo';
+import { mapPlatformType } from '../map/mapPlatformType';
 import { mapPlatformVersion } from '../map/mapPlatformVersion';
 import { mapPlatformVersionCompany } from '../map/mapPlatformVersionCompany';
 import { mapPlatformVersionReleaseDate } from '../map/mapPlatformVersionReleaseDate';
 import { mapPlatformWebsite } from '../map/mapPlatformWebsite';
+import { mapReleaseDateRegion } from '../map/mapReleaseDateRegion';
 import { mapScreenshot } from '../map/mapScreenshot';
 import { mapTheme } from '../map/mapTheme';
 import { mapWebsite } from '../map/mapWebsite';
+import { mapWebsiteType } from '../map/mapWebsiteType';
 import { Artworks, artworksTable } from '../schema/artworks';
 import { Companies, companiesTable } from '../schema/companies';
 import { Covers, coversTable } from '../schema/covers';
+import { DateFormats, dateFormatTable } from '../schema/dateFormats';
 import { GameModes, gameModeTable } from '../schema/gameMode';
+import { GameStatuses, gameStatusTable } from '../schema/gameStatus';
+import { GameTypes, gameTypesTable } from '../schema/gameTypes';
 import { Games, gamesTable } from '../schema/games';
 import { Genres, genresTable } from '../schema/genres';
 import {
@@ -67,6 +82,7 @@ import {
   platformFamiliesTable,
 } from '../schema/platformFamilies';
 import { PlatformLogos, platformLogosTable } from '../schema/platformLogos';
+import { PlatformTypes, platformTypesTable } from '../schema/platformTypes';
 import {
   PlatformVersionCompanies,
   platformVersionCompaniesTable,
@@ -84,8 +100,13 @@ import {
   platformWebsitesTable,
 } from '../schema/platformWebsites';
 import { Platforms, platformsTable } from '../schema/platforms';
+import {
+  ReleaseDateRegions,
+  releaseDateRegionsTable,
+} from '../schema/releaseDateRegions';
 import { Screenshots, screenshotsTable } from '../schema/screenshots';
 import { Themes, themesTable } from '../schema/themes';
+import { WebsiteTypes, websiteTypesTable } from '../schema/websiteTypes';
 import { Websites, websitesTable } from '../schema/websites';
 import { processRelations } from './processRelations';
 
@@ -113,7 +134,7 @@ const seed = async (): Promise<void> => {
 
   async function seedResource<DTO extends { id?: number }>(mapping, endpoint) {
     const igdbGames = await igdb.seedResources<DTO>({
-      concurrency: 4,
+      concurrency: 3,
       expanded: false,
       resource: endpoint,
     });
@@ -200,6 +221,27 @@ const seed = async (): Promise<void> => {
             );
           case IgdbResources.SCREENSHOTS:
             return igdbDbController.store<Screenshots>(chunk, screenshotsTable);
+          case IgdbResources.DATE_FORMAT:
+            return igdbDbController.store<DateFormats>(chunk, dateFormatTable);
+          case IgdbResources.GAME_TYPE:
+            return igdbDbController.store<GameTypes>(chunk, gameTypesTable);
+          case IgdbResources.GAME_STATUS:
+            return igdbDbController.store<GameStatuses>(chunk, gameStatusTable);
+          case IgdbResources.PLATFORM_TYPES:
+            return igdbDbController.store<PlatformTypes>(
+              chunk,
+              platformTypesTable,
+            );
+          case IgdbResources.RELEASE_DATE_REGIONS:
+            return igdbDbController.store<ReleaseDateRegions>(
+              chunk,
+              releaseDateRegionsTable,
+            );
+          case IgdbResources.WEBSITE_TYPES:
+            return igdbDbController.store<WebsiteTypes>(
+              chunk,
+              websiteTypesTable,
+            );
           default:
             throw new Error('Unhandled endpoint');
         }
@@ -210,7 +252,21 @@ const seed = async (): Promise<void> => {
 
     logger.info(`${endpoint} inserted`);
   }
-
+  await seedResource<DateFormatDTO>(mapDateFormat, IgdbResources.DATE_FORMAT);
+  await seedResource<GameTypeDTO>(mapGameType, IgdbResources.GAME_TYPE);
+  await seedResource<GameStatusDTO>(mapGameStatus, IgdbResources.GAME_STATUS);
+  await seedResource<PlatformTypeDTO>(
+    mapPlatformType,
+    IgdbResources.PLATFORM_TYPES,
+  );
+  await seedResource<ReleaseDateRegionDTO>(
+    mapReleaseDateRegion,
+    IgdbResources.RELEASE_DATE_REGIONS,
+  );
+  await seedResource<WebsiteTypeDTO>(
+    mapWebsiteType,
+    IgdbResources.WEBSITE_TYPES,
+  );
   await seedResource<GameDTO>(mapGame, IgdbResources.GAMES);
   await seedResource<WebsiteDTO>(mapWebsite, IgdbResources.WEBSITES);
   await seedResource<ArtworkDTO>(mapArtwork, IgdbResources.ARTWORKS);
@@ -262,8 +318,8 @@ async function main() {
     await seed();
     step = 'Relations processing';
     await processRelations();
-    await igdbSteamLink();
     step = 'Extracting Steam IDs';
+    await igdbSteamLink();
     logger.info('Seed complete');
   } catch (error) {
     logger.error(`${step} failed: ${error}`);
