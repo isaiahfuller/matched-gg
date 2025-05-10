@@ -1,6 +1,7 @@
-import TwitchHandler from 'src/infrastructure/twitch/handlers/twitchHandler';
 import { config } from '@config/config';
 import logger from '@util/logger';
+import TwitchHandler from 'src/infrastructure/twitch/handlers/twitchHandler';
+
 import { IgdbWebhook } from '../../facade/interfaces';
 
 const twitch = new TwitchHandler(
@@ -19,25 +20,25 @@ const addWebhooks = async (): Promise<void> => {
   const getWebhooks = async (): Promise<void> => {
     const res = await fetch(`https://api.igdb.com/v4/webhooks/`, {
       headers: {
-        'Client-ID': config.twitch.clientId,
         Authorization: `Bearer ${accessToken}`,
+        'Client-ID': config.twitch.clientId,
       },
     });
   };
 
   const addWebhook = async (
     endpoint: string,
-    type: 'create' | 'update' | 'delete',
+    type: 'create' | 'delete' | 'update',
   ) => {
     logger.info(`Adding webhook ${type} for endpoint ${endpoint}`);
     const res = await fetch(`https://api.igdb.com/v4/${endpoint}/webhooks/`, {
-      method: 'POST',
+      body: `url=${`https://isaiah.moe/igdb/${endpoint}/${type}`}&secret=${config.authSecrets.jwt}&method=${type}`,
       headers: {
-        'Client-ID': config.twitch.clientId,
         Authorization: `Bearer ${accessToken}`,
+        'Client-ID': config.twitch.clientId,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `url=${`https://isaiah.moe/igdb/${endpoint}/${type}`}&secret=${config.authSecrets.jwt}&method=${type}`,
+      method: 'POST',
     });
     const webhook = await res.json();
     if (!Array.isArray(webhook) || !webhook[0].id) {
@@ -61,11 +62,11 @@ const removeWebhooks = async (): Promise<void> => {
   for (const hook of webhooks) {
     logger.info(`Removing hook ${hook.id}`);
     const res = await fetch(`https://api.igdb.com/v4/webhooks/${hook.id}`, {
-      method: 'DELETE',
       headers: {
-        'Client-ID': config.twitch.clientId,
         Authorization: `Bearer ${accessToken}`,
+        'Client-ID': config.twitch.clientId,
       },
+      method: 'DELETE',
     });
   }
 };
@@ -74,8 +75,8 @@ const getWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
   const res = await fetch(`https://api.igdb.com/v4/webhooks/`, {
     headers: {
-      'Client-ID': config.twitch.clientId,
       Authorization: `Bearer ${accessToken}`,
+      'Client-ID': config.twitch.clientId,
     },
   });
   const wh = await res.json();
