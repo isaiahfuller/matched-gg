@@ -1,8 +1,10 @@
 import { config } from '@config/config';
+import { delay } from '@util/delay';
 import logger from '@util/logger';
 import TwitchHandler from 'src/infrastructure/twitch/handlers/twitchHandler';
 
 import { IgdbWebhook } from '../../facade/interfaces';
+import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
 
 const twitch = new TwitchHandler(
   {
@@ -41,10 +43,11 @@ const addWebhooks = async (): Promise<void> => {
     webhooks.push(webhook[0]);
   };
 
-  for (const endpoint of ['games', 'artworks', 'websites']) {
+  for (const endpoint of Object.values(IgdbResources)) {
     await addWebhook(endpoint, 'create');
     await addWebhook(endpoint, 'update');
     await addWebhook(endpoint, 'delete');
+    await delay(1000);
   }
 };
 
@@ -60,6 +63,7 @@ const removeWebhooks = async (): Promise<void> => {
       },
       method: 'DELETE',
     });
+    await delay(250);
   }
 };
 
@@ -80,10 +84,11 @@ async function main() {
     await getWebhooks();
     await removeWebhooks();
     await addWebhooks();
-    process.exit(0);
   } catch (error) {
     logger.error(error);
     await removeWebhooks();
+  } finally {
+    process.exit(0);
   }
 }
 

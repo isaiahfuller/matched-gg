@@ -29,7 +29,6 @@ export enum IgdbResources {
   PLATFORMS = 'platforms',
   RELEASE_DATE_REGIONS = 'release_date_regions',
   SCREENSHOTS = 'screenshots',
-  SIMILAR_GAMES = 'similar_games',
   THEMES = 'themes',
   WEBSITE_TYPES = 'website_types',
   WEBSITES = 'websites',
