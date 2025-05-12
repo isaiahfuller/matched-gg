@@ -1,68 +1,23 @@
 import { relations } from 'drizzle-orm';
-import { bigint, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { ageRatingCDsTable } from './ageRatingContentDescriptions';
+import { ageRatingCategoriesTable } from './ageRatingCategories';
+import { ageRatingCDsTable } from './ageRatingContentDescriptionsv2';
+import { ageRatingOrganizationsTable } from './ageRatingOrganizations';
 import { gamesTable } from './games';
 
-export const AgeRatingCategoryPGEnum = pgEnum('CategoryEnum', [
-  '',
-  'ESRB',
-  'PEGI',
-  'CERO',
-  'USK',
-  'GRAC',
-  'CLASS_IND',
-  'ACB',
-]);
-
-export const RatingPGEnum = pgEnum('RatingEnum', [
-  '',
-  'Seven',
-  'Twelve',
-  'Sixteen',
-  'Eighteen',
-  'RP',
-  'EC',
-  'E',
-  'E10',
-  'T0',
-  'M1',
-  'AO2',
-  'CERO_A3',
-  'CERO_B4',
-  'CERO_C5',
-  'CERO_D6',
-  'CERO_Z7',
-  'USK_08',
-  'USK_69',
-  'USK_120',
-  'USK_161',
-  'USK_182',
-  'GRAC_ALL3',
-  'GRAC_Twelve4',
-  'GRAC_Fifteen5',
-  'GRAC_Eighteen6',
-  'GRAC_TESTING7',
-  'CLASS_IND_L8',
-  'CLASS_IND_Ten9',
-  'CLASS_IND_Twelve0',
-  'CLASS_IND_Fourteen1',
-  'CLASS_IND_Sixteen2',
-  'CLASS_IND_Eighteen3',
-  'ACB_G4',
-  'ACB_PG5',
-  'ACB_M6',
-  'ACB_MA157',
-  'ACB_R188',
-  'ACB_RC9',
-]);
-
 export const ageRatingsTable = pgTable('ageRatings', {
-  category: AgeRatingCategoryPGEnum('category'),
   checksum: text('checksum'),
+  contentDescriptions: bigint('content_descriptions', {
+    mode: 'number',
+  }).array(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
-  rating: RatingPGEnum('rating'),
+  organization: bigint('organization', { mode: 'number' }),
+  ratingCategory: bigint('rating_category', { mode: 'number' }),
+  ratingContentDescriptions: bigint('rating_content_descriptions', {
+    mode: 'number',
+  }).array(),
   ratingCoverUrl: text('url'),
   synopsis: text('synopsis'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -71,8 +26,16 @@ export const ageRatingsTable = pgTable('ageRatings', {
 export const ageRatingRelations = relations(
   ageRatingsTable,
   ({ many, one }) => ({
-    contentDescriptions: many(ageRatingCDsTable),
     gameId: one(gamesTable),
+    organization: one(ageRatingOrganizationsTable, {
+      fields: [ageRatingsTable.organization],
+      references: [ageRatingOrganizationsTable.igdbId],
+    }),
+    ratingCategory: one(ageRatingCategoriesTable, {
+      fields: [ageRatingsTable.ratingCategory],
+      references: [ageRatingCategoriesTable.igdbId],
+    }),
+    ratingContentDescriptions: many(ageRatingCDsTable),
   }),
 );
 

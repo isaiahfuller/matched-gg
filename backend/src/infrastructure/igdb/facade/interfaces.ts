@@ -97,13 +97,13 @@ export interface SeedOptionsDelay extends SeedOptions {
 }
 
 export interface IgdbWebhook {
-  id: string;
-  url: string;
-  category: Number;
-  sub_category: 0 | 1 | 2;
   active: boolean;
   api_key: string;
-  secret: string;
+  category: number;
   created_at: Date;
+  id: string;
+  secret: string;
+  sub_category: 0 | 1 | 2;
   updated_at: Date;
+  url: string;
 }

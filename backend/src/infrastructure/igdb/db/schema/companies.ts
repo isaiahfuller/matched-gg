@@ -1,30 +1,13 @@
 import { relations } from 'drizzle-orm';
-import {
-  bigint,
-  integer,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-} from 'drizzle-orm/pg-core';
+import { bigint, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { companyWebsitesTable } from './companyWebsites';
+import { dateFormatTable } from './dateFormats';
 import { involvedCompaniesTable } from './involvedCompanies';
-
-export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
-  'YYYYMMMMDD',
-  'YYYYMMMM',
-  'YYYY',
-  'YYYYQ1',
-  'YYYYQ2',
-  'YYYYQ3',
-  'YYYYQ4',
-  'TBD',
-]);
 
 export const companiesTable = pgTable('companies', {
   changeDate: timestamp('change_date'),
-  changeDateCategory: CompanyDateCategoryPGEnum('change_date_category'),
+  changeDateFormat: bigint('change_date_format', { mode: 'number' }),
   changedCompanyId: bigint('changed_company_id', { mode: 'number' }),
   checksum: text('checksum'),
   country: integer('country'),
@@ -40,16 +23,24 @@ export const companiesTable = pgTable('companies', {
   published: bigint('published', { mode: 'number' }).array(),
   slug: text('slug'),
   startDate: timestamp('start_date'),
-  startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),
+  startDateFormat: bigint('start_date_format', { mode: 'number' }),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
 
 export const companyRelations = relations(companiesTable, ({ many, one }) => ({
+  changeDateFormat: one(dateFormatTable, {
+    fields: [companiesTable.changeDateFormat],
+    references: [dateFormatTable.igdbId],
+  }),
   involvedCompanies: many(involvedCompaniesTable),
   parent: one(companiesTable, {
     fields: [companiesTable.parent],
     references: [companiesTable.igdbId],
+  }),
+  startDateFormat: one(dateFormatTable, {
+    fields: [companiesTable.startDateFormat],
+    references: [dateFormatTable.igdbId],
   }),
   websites: many(companyWebsitesTable),
 }));

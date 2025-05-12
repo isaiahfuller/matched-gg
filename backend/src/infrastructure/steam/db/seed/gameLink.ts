@@ -1,5 +1,5 @@
 import { chunk } from '@util/chunk';
-import { eq, like } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { client } from 'src/db/db';
 import { artworksTable } from 'src/infrastructure/igdb/db/schema/artworks';
@@ -116,52 +116,23 @@ const db = drizzle(client, {
 });
 export const igdbSteamLink = async () => {
   const games: IgdbSteamConnect[] = [];
-  const sites = await db.query.websitesTable.findMany({
-    columns: { url: true },
-    where:
-      eq(websitesTable.websiteCategory, 'steam') &&
-      like(websitesTable.url, 'https://store.steampowered.com/app/%'),
-    with: {
-      game: {
-        columns: {
-          igdbId: true,
-        },
-      },
-    },
-  });
+  const sites = await db
+    .select()
+    .from(websitesTable)
+    .leftJoin(gamesTable, eq(gamesTable.igdbId, websitesTable.game))
+    .where(eq(websitesTable.type, 13));
   const vals = Object.values(sites);
   for (const e of vals) {
-    const m = e.url?.match(
+    const m = e.websites.url?.match(
       /https:\/\/store\.steampowered\.com\/app\/(\d*)\/?.*/,
     );
     if (m && m[1]) {
-      games.push({ igdbId: e.game!.igdbId, steamId: Number(m[1]) });
+      if (!e.games || !e.games!.igdbId) continue;
+      games.push({ igdbId: e.games!.igdbId, steamId: Number(m[1]) });
     }
   }
   const chunks = chunk(games, 1000);
   chunks.forEach(async (chunk) => {
     await db.insert(igdbSteamConnect).values(chunk).onConflictDoNothing();
   });
-
-  // const games = await db.query.igdbSteamConnect.findMany({
-  //   with: {
-  //     igdbGame: {
-  //       with: {
-  //         websites: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // const games = await db.query.gamesTable.findFirst({
-  //   where: eq(gamesTable.igdbId, 241),
-  //   with: {
-  //     steamId: {
-  //       columns: {
-  //         steamId: true,
-  //       },
-  //     },
-  //     websites: true,
-  //   },
-  // });
-  // console.log(games);
 };

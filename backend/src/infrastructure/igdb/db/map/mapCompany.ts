@@ -1,13 +1,11 @@
 import validateTimestamp from '@util/validateTimestamp';
 
-import { Companies, CompanyDateCategoryPGEnum } from '../schema/companies';
+import { Companies } from '../schema/companies';
 
 export const mapCompany = (company) => {
   const mappedCompany = {
     changeDate: validateTimestamp(company.change_date),
-    changeDateCategory: company.change_date_category
-      ? CompanyDateCategoryPGEnum.enumValues[company.change_date_category]
-      : null,
+    changeDateFormat: company.change_date_format,
     changedCompanyId: company.changed_company_id,
     checksum: company.checksum,
     country: company.country,
@@ -22,9 +20,7 @@ export const mapCompany = (company) => {
     published: company.published,
     slug: company.slug,
     startDate: validateTimestamp(company.start_date),
-    startDateCategory: company.start_date_category
-      ? CompanyDateCategoryPGEnum.enumValues[company.start_date_category]
-      : null,
+    startDateFormat: company.start_date_format,
     updatedAt: new Date(),
     url: company.url,
   } satisfies Companies;

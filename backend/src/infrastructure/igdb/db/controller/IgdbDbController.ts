@@ -6,6 +6,13 @@ import { db } from 'src/db/db';
 export class IgdbDbController {
   private readonly db = db;
 
+  public async delete<T extends { igdbId: number }>(
+    data: T,
+    table: any,
+  ): Promise<QueryResult<T[]>> {
+    return this.db.delete(table).where(eq(table.igdbId, data.igdbId));
+  }
+
   public getConnection() {
     return this.db;
   }
@@ -21,13 +28,6 @@ export class IgdbDbController {
         set: setAllConflictUpdateColumns(table, ['igdbId']),
         target: table.igdbId,
       });
-  }
-
-  public async delete<T extends { igdbId: number }>(
-    data: T,
-    table: any,
-  ): Promise<QueryResult<T[]>> {
-    return this.db.delete(table).where(eq(table.igdbId, data.igdbId));
   }
 
   public async storeManyToMany<T>(

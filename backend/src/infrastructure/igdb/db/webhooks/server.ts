@@ -1,31 +1,32 @@
-import express from 'express';
-import { mapGame } from '../map/mapGame';
 import { config } from '@config/config';
+import express from 'express';
+
 import { IgdbDbController } from '../controller/IgdbDbController';
+import { mapArtwork } from '../map/mapArtwork';
+import { mapGame } from '../map/mapGame';
+import { mapWebsite } from '../map/mapWebsite';
+import { Artworks, artworksTable } from '../schema/artworks';
 import {
   GameFranchises,
-  gameFranchises,
   GameGameModes,
-  gameGameModes,
-  gameGenres,
   GameGenres,
   GameKeywords,
-  gameKeywords,
   GameMultiplayerModes,
-  gameMultiplayerModes,
   GamePlatforms,
-  gamePlatforms,
-  Games,
-  gameSimilarGames,
-  gamesTable,
-  gameThemes,
   GameThemes,
+  Games,
   SimilarGames,
+  gameFranchises,
+  gameGameModes,
+  gameGenres,
+  gameKeywords,
+  gameMultiplayerModes,
+  gamePlatforms,
+  gameSimilarGames,
+  gameThemes,
+  gamesTable,
 } from '../schema/games';
-import { mapWebsite } from '../map/mapWebsite';
 import { Websites, websitesTable } from '../schema/websites';
-import { Artworks, artworksTable } from '../schema/artworks';
-import { mapArtwork } from '../map/mapArtwork';
 const port = 7331;
 
 const igdbDbController = new IgdbDbController();
@@ -144,7 +145,7 @@ function processRelation(data: Games, key: string) {
   if (!data[key] || !data[key].length) return [];
   const res: any = [];
 
-  for (let e of data[key]) {
+  for (const e of data[key]) {
     const newEntry = { gameId: data.igdbId, resourceId: e };
     res.push(newEntry);
   }
