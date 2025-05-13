@@ -95,9 +95,6 @@ app.use(express.json());
 
 app.post('/igdb/:endpoint/:type', async (req, res) => {
   const { endpoint, type } = req.params;
-  if (type === 'delete') {
-    return;
-  }
   if (req.headers['x-secret'] !== config.authSecrets.jwt.replaceAll('+', ' ')) {
     console.log("secret doesn't match");
     return;
@@ -106,10 +103,8 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
   switch (endpoint) {
     case IgdbResources.GAMES:
       data = mapGame(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Games>(data, gamesTable);
-      } else {
-        igdbDbController.store<Games>(data, gamesTable);
+      store<Games>(data, type, gamesTable);
+      if (type !== 'delete') {
         const gameKeywordsRelations = processRelation(data, 'keywords');
         const gameFranchisesRelations = processRelation(data, 'franchises');
         const gamePlatformsRelations = processRelation(data, 'platforms');
@@ -174,206 +169,113 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
       break;
     case IgdbResources.WEBSITES:
       data = mapWebsite(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Websites>(data, websitesTable);
-      } else {
-        igdbDbController.store<Websites>(data, websitesTable);
-      }
+      store<Websites>(data, type, websitesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.ARTWORKS:
       data = mapArtwork(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Artworks>(data, artworksTable);
-      } else {
-        igdbDbController.store<Artworks>(data, artworksTable);
-      }
+      store<Artworks>(data, type, artworksTable);
       res.sendStatus(200);
       break;
     case IgdbResources.COMPANIES:
       data = mapCompany(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Companies>(data, companiesTable);
-      } else {
-        igdbDbController.store<Companies>(data, companiesTable);
-      }
+      store<Companies>(data, type, companiesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.COMPANY_WEBSITES:
       data = mapCompanyWebsite(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<CompanyWebsites>(data, companyWebsitesTable);
-      } else {
-        igdbDbController.store<CompanyWebsites>(data, companyWebsitesTable);
-      }
-      res.sendStatus(200);
+      store<CompanyWebsites>(data, type, companyWebsitesTable);
       break;
     case IgdbResources.COVERS:
       data = mapArtwork(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Covers>(data, coversTable);
-      } else {
-        igdbDbController.store<Covers>(data, coversTable);
-      }
+      store<Covers>(data, type, coversTable);
       res.sendStatus(200);
       break;
     case IgdbResources.FRANCHISES:
       data = mapFranchise(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Franchises>(data, franchisesTable);
-      } else {
-        igdbDbController.store<Franchises>(data, franchisesTable);
-      }
+      store<Franchises>(data, type, franchisesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.GENRES:
       data = mapGenre(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Genres>(data, genresTable);
-      } else {
-        igdbDbController.store<Genres>(data, genresTable);
-      }
+      store<Genres>(data, type, genresTable);
       res.sendStatus(200);
       break;
     case IgdbResources.INVOLVED_COMPANIES:
       data = mapInvolvedCompany(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<InvolvedCompanies>(
-          data,
-          involvedCompaniesTable,
-        );
-      } else {
-        igdbDbController.store<InvolvedCompanies>(data, involvedCompaniesTable);
-      }
+      store<InvolvedCompanies>(data, type, involvedCompaniesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.KEYWORDS:
       data = mapKeyword(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Keywords>(data, keywordsTable);
-      } else {
-        igdbDbController.store<Keywords>(data, keywordsTable);
-      }
+      store<Keywords>(data, type, keywordsTable);
       res.sendStatus(200);
       break;
     case IgdbResources.MULTIPLAYER_MODES:
       data = mapMultiplayerMode(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<MultiplayerModes>(data, multiplayerModesTable);
-      } else {
-        igdbDbController.store<MultiplayerModes>(data, multiplayerModesTable);
-      }
+      store<MultiplayerModes>(data, type, multiplayerModesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.PLATFORM_FAMILIES:
       data = mapPlatformFamilies(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<PlatformFamilies>(data, platformFamiliesTable);
-      } else {
-        igdbDbController.store<PlatformFamilies>(data, platformFamiliesTable);
-      }
+      store<PlatformFamilies>(data, type, platformFamiliesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.PLATFORM_LOGOS:
       data = mapPlatformLogo(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<PlatformLogos>(data, platformLogosTable);
-      } else {
-        igdbDbController.store<PlatformLogos>(data, platformLogosTable);
-      }
+      store<PlatformLogos>(data, type, platformLogosTable);
       res.sendStatus(200);
       break;
     case IgdbResources.PLATFORM_VERSION_COMPANIES:
       data = mapPlatformVersionCompany(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<PlatformVersionCompanies>(
-          data,
-          platformVersionCompaniesTable,
-        );
-      } else {
-        igdbDbController.store<PlatformVersionCompanies>(
-          data,
-          platformVersionCompaniesTable,
-        );
-      }
+      store<PlatformVersionCompanies>(
+        data,
+        type,
+        platformVersionCompaniesTable,
+      );
       res.sendStatus(200);
       break;
     case IgdbResources.PLATFORM_VERSION_RELEASE_DATES:
       data = mapPlatformVersionReleaseDate(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<PlatformVersionReleaseDates>(
-          data,
-          platformVersionReleaseDatesTable,
-        );
-      } else {
-        igdbDbController.store<PlatformVersionReleaseDates>(
-          data,
-          platformVersionReleaseDatesTable,
-        );
-      }
+      store<PlatformVersionReleaseDates>(
+        data,
+        type,
+        platformVersionReleaseDatesTable,
+      );
       res.sendStatus(200);
       break;
     case IgdbResources.PLATFORM_VERSIONS:
       data = mapPlatformVersion(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<PlatformVersions>(data, platformVersionsTable);
-      } else {
-        igdbDbController.store<PlatformVersions>(data, platformVersionsTable);
-      }
+      store<PlatformVersions>(data, type, platformVersionsTable);
       res.sendStatus(200);
       break;
     case IgdbResources.PLATFORM_WEBSITES:
       data = mapPlatformWebsite(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<PlatformWebsites>(data, platformWebsitesTable);
-      } else {
-        igdbDbController.store<PlatformWebsites>(data, platformWebsitesTable);
-      }
-      res.sendStatus(200);
+      store<PlatformWebsites>(data, type, platformWebsitesTable);
       break;
     case IgdbResources.PLATFORMS:
       data = mapPlatform(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Platforms>(data, platformsTable);
-      } else {
-        igdbDbController.store<Platforms>(data, platformsTable);
-      }
+      store<Platforms>(data, type, platformsTable);
       res.sendStatus(200);
       break;
     case IgdbResources.SCREENSHOTS:
       data = mapScreenshot(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Screenshots>(data, screenshotsTable);
-      } else {
-        igdbDbController.store<Screenshots>(data, screenshotsTable);
-      }
+      store<Screenshots>(data, type, screenshotsTable);
       res.sendStatus(200);
       break;
     case IgdbResources.THEMES:
       data = mapTheme(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Themes>(data, themesTable);
-      } else {
-        igdbDbController.store<Themes>(data, themesTable);
-      }
+      store<Themes>(data, type, themesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.WEBSITE_TYPES:
       data = mapWebsiteType(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<WebsiteTypes>(data, websiteTypesTable);
-      } else {
-        igdbDbController.store<WebsiteTypes>(data, websiteTypesTable);
-      }
+      store<WebsiteTypes>(data, type, websiteTypesTable);
       res.sendStatus(200);
       break;
     case IgdbResources.WEBSITES:
       data = mapWebsite(req.body);
-      if (type === 'delete') {
-        igdbDbController.delete<Websites>(data, websitesTable);
-      } else {
-        igdbDbController.store<Websites>(data, websitesTable);
-      }
+      store<Websites>(data, type, websitesTable);
       res.sendStatus(200);
       break;
     default:
@@ -390,6 +292,18 @@ function processRelation(data: Games, key: string) {
     res.push(newEntry);
   }
   return res;
+}
+
+async function store<T extends { igdbId: number }>(
+  data: any,
+  type: string,
+  table,
+) {
+  if (type === 'delete') {
+    igdbDbController.delete<T>(data, table);
+  } else {
+    igdbDbController.store<T>(data, table);
+  }
 }
 
 app.listen(port, () => {
