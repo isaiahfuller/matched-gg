@@ -282,10 +282,12 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
         const m = data.url!.match(
           /https:\/\/store\.steampowered\.com\/app\/(\d*)\/?.*/,
         );
-        db.insert(igdbSteamConnect).values({
-          igdbId: data.game,
-          steamId: m[1],
-        });
+        db.insert(igdbSteamConnect)
+          .values({
+            igdbId: data.game,
+            steamId: m[1],
+          })
+          .onConflictDoNothing();
       }
       res.sendStatus(200);
       break;
