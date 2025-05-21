@@ -98,7 +98,7 @@ export class SteamController {
       this.logger.error(e);
     } finally {
       // TODO: Stop hardcoding the redirect URL
-      res.redirect('http://localhost:5173/');
+      res.redirect(`http://localhost:4467/`);
     }
   }
 

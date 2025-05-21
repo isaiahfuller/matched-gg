@@ -1,5 +1,5 @@
 import { chunk } from '@util/chunk';
-import { eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { client } from 'src/db/db';
 import { artworksTable } from 'src/infrastructure/igdb/db/schema/artworks';
@@ -120,7 +120,12 @@ export const igdbSteamLink = async () => {
     .select()
     .from(websitesTable)
     .leftJoin(gamesTable, eq(gamesTable.igdbId, websitesTable.game))
-    .where(eq(websitesTable.type, 13));
+    .where(
+      and(
+        eq(websitesTable.type, 13),
+        inArray(gamesTable.gameType, [9, 10, 11, 8, 5, 4, 0, 12]),
+      ),
+    );
   const vals = Object.values(sites);
   for (const e of vals) {
     const m = e.websites.url?.match(

@@ -43,6 +43,6 @@ export interface SteamProfile {
   };
 }
 
-export interface SteamAuthResponse {
+export interface SteamAuthResponse extends Request {
   user: SteamProfile;
 }

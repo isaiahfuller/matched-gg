@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, Session } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { GameService } from './games.service';
@@ -17,5 +17,10 @@ export class GamesController {
   async findAll(): Promise<Games[]> {
     console.log('r');
     return await this.gameService.getGames();
+  }
+
+  @Get('getRecommendations')
+  async getRecommendations(@Session() session) {
+    return this.gameService.getTimeRecommendations(session.user.id);
   }
 }
