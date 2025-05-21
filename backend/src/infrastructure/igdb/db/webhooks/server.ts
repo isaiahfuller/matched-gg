@@ -1,5 +1,7 @@
 import { config } from '@config/config';
 import express from 'express';
+import { db } from 'src/db/db';
+import { igdbSteamConnect } from 'src/infrastructure/steam/db/schema/igdbSteamConnect';
 
 import { IgdbResources } from '../../facade/subsystems/enum/IgdbResources';
 import { IgdbDbController } from '../controller/IgdbDbController';
@@ -276,6 +278,15 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
     case IgdbResources.WEBSITES:
       data = mapWebsite(req.body);
       store<Websites>(data, type, websitesTable);
+      if (type !== 'delete' && data.type === 13) {
+        const m = data.url!.match(
+          /https:\/\/store\.steampowered\.com\/app\/(\d*)\/?.*/,
+        );
+        db.insert(igdbSteamConnect).values({
+          igdbId: data.game,
+          steamId: m[1],
+        });
+      }
       res.sendStatus(200);
       break;
     default:
