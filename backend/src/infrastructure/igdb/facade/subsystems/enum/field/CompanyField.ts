@@ -1,6 +1,7 @@
 export enum CompanyField {
   change_date = 'change_date',
   change_date_category = 'change_date_category',
+  change_date_format = 'change_date_format',
   changed_company_id = 'changed_company_id',
   checksum = 'checksum',
   country = 'country',
@@ -15,6 +16,7 @@ export enum CompanyField {
   slug = 'slug',
   start_date = 'start_date',
   start_date_category = 'start_date_category',
+  start_date_format = 'start_date_format',
   updated_at = 'updated_at',
   url = 'url',
   websites = 'websites',

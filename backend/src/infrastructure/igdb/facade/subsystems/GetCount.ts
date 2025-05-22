@@ -1,7 +1,7 @@
 import { Apicalypse } from 'apicalypse';
 import { AxiosResponse } from 'axios';
 
-import { CountDTO } from './DTO/CountDTO';
+import { CountDTO } from './DTO/count';
 import { IgdbResources } from './enum/IgdbResources';
 import { IgdbGetCount } from './interfaces';
 

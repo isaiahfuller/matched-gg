@@ -1,38 +1,41 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+const url = "https://isaiah.moe/gbk";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 4467,
     proxy: {
       "/games": {
-        target: "http://localhost:3000/",
+        target: url,
         changeOrigin: false,
         secure: false,
       },
       "/profile": {
-        target: "http://localhost:3000/",
+        target: url,
         changeOrigin: false,
         secure: false,
       },
       "/verify": {
-        target: "http://localhost:3000/",
+        target: url,
         changeOrigin: false,
         secure: false,
       },
       "/auth": {
-        target: "http://localhost:3000/",
+        target: url,
         changeOrigin: false,
         secure: false,
       },
       "/local": {
-        target: "http://localhost:3000/",
+        target: url,
         changeOrigin: false,
         secure: false,
       },
       "/steam": {
-        target: "http://localhost:3000/",
+        target: url,
         changeOrigin: false,
         secure: false,
       },

@@ -53,6 +53,7 @@ export interface IGDBGame extends IGDBGeneric {
 
 export interface IGDBGeneric {
   id?: number;
+  igdbId?: number;
   name?: string;
   url?: string;
   checksum?: string;
@@ -68,7 +69,8 @@ export interface IGDBGameArt extends IGDBGeneric {
   url: string;
   width: number;
   imageId: string;
-  igdbId: number;
+  igdbId?: number;
+  id?: number;
   game?: IGDBGame | number;
 }
 
@@ -95,7 +97,7 @@ interface IGDBCompany extends IGDBGeneric {
 }
 
 export interface IGDBInvolvedCompany extends IGDBGeneric {
-  id: number;
+  id?: number;
   company: IGDBCompany;
   developer: boolean;
   game: IGDBGame | number;
@@ -169,6 +171,6 @@ export interface User {
   updatedAt: Date;
   name: string;
   email: string;
-  id: number;
+  id?: number;
   steamId: number;
 }

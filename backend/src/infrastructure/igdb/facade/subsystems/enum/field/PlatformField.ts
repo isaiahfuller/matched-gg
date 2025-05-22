@@ -1,7 +1,6 @@
 export enum PlatformField {
   abbreviation = 'abbreviation',
   alternative_name = 'alternative_name',
-  category = 'category',
   checksum = 'checksum',
   created_at = 'created_at',
   generation = 'generation',
@@ -9,6 +8,7 @@ export enum PlatformField {
   name = 'name',
   platform_family = 'platform_family',
   platform_logo = 'platform_logo',
+  platform_type = 'platform_type',
   slug = 'slug',
   summary = 'summary',
   updated_at = 'updated_at',
@@ -27,6 +27,7 @@ export enum ExpandedPlatformField {
   name = 'name',
   platform_family = 'platform_family.*',
   platform_logo = 'platform_logo.*',
+  platform_type = 'platform_type',
   slug = 'slug',
   summary = 'summary',
   updated_at = 'updated_at',

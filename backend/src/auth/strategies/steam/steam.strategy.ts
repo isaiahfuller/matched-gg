@@ -24,9 +24,9 @@ export class SteamStrategy extends PassportStrategy(Strategy<Options>) {
       {
         apiKey: config.steam.apiKey,
         passReqToCallback: true,
-        realm: 'http://localhost:3000/',
+        realm: 'http://localhost:4468/',
         // TODO: Stop hardcoding the return & realm URLs
-        returnUrl: 'http://localhost:3000/steam/auth/return',
+        returnUrl: 'http://localhost:4468/steam/auth/return',
       } satisfies Options,
       (async (user, done) => {
         if (!user || !user.SteamID) done(new UnauthorizedException(), user);

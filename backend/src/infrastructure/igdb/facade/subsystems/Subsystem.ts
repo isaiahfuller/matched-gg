@@ -2,7 +2,7 @@ import { IgdbConfig } from '@config/interfaces';
 import { Apicalypse } from 'apicalypse';
 import igdb from 'igdb-api-node';
 
-import { CountDTO } from './DTO/CountDTO';
+import { CountDTO } from './DTO/count';
 import { IgdbSubsystem } from './interfaces';
 import { IgdbField } from './types';
 import { requestFieldsInterceptor } from './util/requestFieldsInterceptor';

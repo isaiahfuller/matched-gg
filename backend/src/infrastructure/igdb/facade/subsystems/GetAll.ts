@@ -6,6 +6,10 @@ import { IgdbResources } from './enum/IgdbResources';
 import { ArtworkField, ExpandedArtworkField } from './enum/field/ArtworkField';
 import { CompanyField, ExpandedCompanyField } from './enum/field/CompanyField';
 import {
+  DateFormatField,
+  ExpandedDateFormatField,
+} from './enum/field/DateFormatField';
+import {
   ExpandedFranchiseField,
   FranchiseField,
 } from './enum/field/FranchiseField';
@@ -14,6 +18,14 @@ import {
   ExpandedGameModeField,
   GameModeField,
 } from './enum/field/GameModeField';
+import {
+  ExpandedGameStatusField,
+  GameStatusField,
+} from './enum/field/GameStatusField';
+import {
+  ExpandedGameTypeField,
+  GameTypeField,
+} from './enum/field/GameTypeField';
 import { ExpandedGenreField, GenreField } from './enum/field/GenreField';
 import {
   ExpandedInvolvedComanyField,
@@ -37,6 +49,10 @@ import {
   PlatformLogoField,
 } from './enum/field/PlatformLogoField';
 import {
+  ExpandedPlatformTypeField,
+  PlatformTypeField,
+} from './enum/field/PlatformTypeField';
+import {
   ExpandedPlatformVersionCompanyField,
   PlatformVersionCompanyField,
 } from './enum/field/PlatformVersionCompanyField';
@@ -53,11 +69,19 @@ import {
   PlatformWebsiteField,
 } from './enum/field/PlatformWebsiteField';
 import {
+  ExpandedReleaseDateRegionField,
+  ReleaseDateRegionField,
+} from './enum/field/ReleaseDateRegionField';
+import {
   ExpandedScreenshotField,
   ScreenshotField,
 } from './enum/field/ScreenshotField';
 import { ExpandedThemeField, ThemeField } from './enum/field/ThemeField';
 import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
+import {
+  ExpandedWebsiteTypeField,
+  WebsiteTypeField,
+} from './enum/field/WebsiteTypeField';
 import { IGetAll } from './interfaces';
 import { IgdbField } from './types';
 
@@ -162,6 +186,28 @@ export class GetAll extends InterceptorSubsystem implements IGetAll {
         );
       case IgdbResources.GAME_MODES:
         return Object.values(expanded ? ExpandedGameModeField : GameModeField);
+      case IgdbResources.DATE_FORMAT:
+        return Object.values(
+          expanded ? ExpandedDateFormatField : DateFormatField,
+        );
+      case IgdbResources.GAME_TYPE:
+        return Object.values(expanded ? ExpandedGameTypeField : GameTypeField);
+      case IgdbResources.GAME_STATUS:
+        return Object.values(
+          expanded ? ExpandedGameStatusField : GameStatusField,
+        );
+      case IgdbResources.PLATFORM_TYPES:
+        return Object.values(
+          expanded ? ExpandedPlatformTypeField : PlatformTypeField,
+        );
+      case IgdbResources.RELEASE_DATE_REGIONS:
+        return Object.values(
+          expanded ? ExpandedReleaseDateRegionField : ReleaseDateRegionField,
+        );
+      case IgdbResources.WEBSITE_TYPES:
+        return Object.values(
+          expanded ? ExpandedWebsiteTypeField : WebsiteTypeField,
+        );
       default:
         return;
     }

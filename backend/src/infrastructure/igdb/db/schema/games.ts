@@ -3,7 +3,6 @@ import {
   doublePrecision,
   index,
   integer,
-  pgEnum,
   pgTable,
   primaryKey,
   serial,
@@ -25,6 +24,8 @@ import { franchisesTable } from './franchise';
 import { gameEnginesTable } from './gameEngines';
 import { gameLocalizationsTable } from './gameLocalizations';
 import { gameModeTable } from './gameMode';
+import { gameStatusTable } from './gameStatus';
+import { gameTypesTable } from './gameTypes';
 import { gameVideosTable } from './gameVideos';
 import { genresTable } from './genres';
 import { involvedCompaniesTable } from './involvedCompanies';
@@ -38,36 +39,6 @@ import { screenshotsTable } from './screenshots';
 import { themesTable } from './themes';
 import { websitesTable } from './websites';
 
-// declaring enum in database
-export const GameCategoryPGEnum = pgEnum('GameCategoryEnum', [
-  'MAIN_GAME',
-  'DLC_ADDON',
-  'EXPANSION',
-  'BUNDLE',
-  'STANDALONE_EXPANSION',
-  'MOD',
-  'EPISODE',
-  'SEASON',
-  'REMAKE',
-  'REMASTER',
-  'EXPANDED_GAME',
-  'PORT',
-  'FORK',
-  'PACK',
-  'UPDATE',
-]);
-
-export const StatusPGEnum = pgEnum('StatusEnum', [
-  'RELEASED',
-  'ALPHA',
-  'BETA',
-  'EARLY_ACCESS',
-  'OFFLINE',
-  'CANCELLED',
-  'RUMORED',
-  'DELISTED',
-]);
-
 export const gamesTable = pgTable(
   'games',
   {
@@ -77,7 +48,6 @@ export const gamesTable = pgTable(
     alternativeNames: bigint('alternative_names', { mode: 'number' }).array(),
     artworks: bigint('artworks', { mode: 'number' }).array(),
     bundles: bigint('bundles', { mode: 'number' }).array(),
-    category: GameCategoryPGEnum('category'),
     checksum: text('checksum'),
     collections: bigint('collections', { mode: 'number' }).array(),
     cover: bigint('cover', { mode: 'number' }),
@@ -90,10 +60,11 @@ export const gamesTable = pgTable(
     forks: bigint('forks', { mode: 'number' }).array(),
     franchise: bigint('franchise', { mode: 'number' }),
     franchises: bigint('franchises', { mode: 'number' }).array(),
-    gameCategory: GameCategoryPGEnum('game_category'),
     gameEngines: bigint('game_engines', { mode: 'number' }).array(),
     gameLocalizations: bigint('game_localizations', { mode: 'number' }).array(),
     gameModes: bigint('game_modes', { mode: 'number' }).array(),
+    gameStatus: bigint('game_status', { mode: 'number' }),
+    gameType: bigint('game_type', { mode: 'number' }),
     genres: bigint('genres', { mode: 'number' }).array(),
     hypes: integer('hypes'),
     id: serial('game_id').notNull().unique(),
@@ -122,7 +93,6 @@ export const gamesTable = pgTable(
     standaloneExpansions: bigint('standalone_expansions', {
       mode: 'number',
     }).array(),
-    status: StatusPGEnum('status'),
     storyline: text('storyline'),
     summary: text('summary'),
     tags: bigint('tags', { mode: 'number' }).array(),
@@ -168,6 +138,14 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
   gameEngines: many(gameEnginesTable),
   gameLocalizations: many(gameLocalizationsTable),
   gameModes: many(gameGameModes),
+  gameStatus: one(gameStatusTable, {
+    fields: [gamesTable.gameStatus],
+    references: [gameStatusTable.igdbId],
+  }),
+  gameType: one(gameTypesTable, {
+    fields: [gamesTable.gameType],
+    references: [gameTypesTable.igdbId],
+  }),
   genres: many(gameGenres),
   involvedCompanies: many(involvedCompaniesTable),
   keywords: many(gameKeywords),
