@@ -73,11 +73,27 @@ export class GameService {
           with: {
             igdbGame: {
               with: {
-                genres: true,
                 involvedCompanies: true,
                 similarGames: {
                   columns: {},
-                  with: { sg: true },
+                  with: {
+                    sg: {
+                      with: {
+                        genres: {
+                          columns: {},
+                          with: {
+                            genre: true,
+                          },
+                        },
+                        themes: {
+                          columns: {},
+                          with: {
+                            theme: true,
+                          },
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },
