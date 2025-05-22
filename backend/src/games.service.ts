@@ -3,7 +3,7 @@ import { eq, gt } from 'drizzle-orm';
 
 import { DrizzleDB } from './db/db';
 import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
-import { gameTypesTable } from './infrastructure/igdb/db/schema/gameTypes';
+import { Games } from './infrastructure/igdb/db/schema/games';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
 
 @Injectable()
@@ -61,7 +61,6 @@ export class GameService {
       columns: { userId: true },
       where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
     });
-    const types = await this.dbConnection.select().from(gameTypesTable);
     const size = basic.length;
     const userGames = await this.dbConnection.query.userOwnedGames.findMany({
       columns: { userId: true },
@@ -70,25 +69,48 @@ export class GameService {
       where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
       with: {
         steam: {
-          columns: {},
+          columns: { igdbId: true },
           with: {
             igdbGame: {
               with: {
                 genres: true,
                 involvedCompanies: true,
+                similarGames: {
+                  columns: {},
+                  with: { sg: true },
+                },
               },
             },
           },
         },
       },
     });
-    const games: any[] = [];
-    for (const e of userGames) {
-      if (e.steam && e.steam.igdbGame) games.push(e!.steam!.igdbGame!);
+    const ids: Set<number> = new Set();
+    const games = {};
+    for (const p of userGames) {
+      if (p.steam && p.steam.igdbId) ids.add(p.steam.igdbId);
     }
-    console.log(games);
-
-    console.log(types);
-    return games;
+    for (const p of userGames.filter(
+      (p) =>
+        p.steam &&
+        p.steam.igdbGame &&
+        p.steam.igdbGame.similarGames &&
+        p.steam.igdbGame.firstReleaseDate,
+    )) {
+      for (const g of p.steam!.igdbGame!.similarGames) {
+        if (ids.has(g.sg.igdbId)) {
+          continue;
+        }
+        if (!games[g.sg.igdbId]) games[g.sg.igdbId] = { count: 1, game: g.sg };
+        else games[g.sg.igdbId].count++;
+      }
+    }
+    return Object.values<{ count: number; game: Games }>(games)
+      .filter((e) => e.count > 1)
+      .sort(
+        (a, b) =>
+          b.count * ((b.game.ratingCount || 1) / (b.game.rating || 1)) -
+          a.count * ((a.game.ratingCount || 1) / (a.game.rating || 1)),
+      );
   }
 }
