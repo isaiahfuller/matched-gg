@@ -70,7 +70,6 @@ import {
 } from 'src/infrastructure/igdb/db/schema/websites';
 
 import {
-  IgdbSteamConnect,
   igdbSteamConnect,
   igdbSteamRelations,
 } from '../schema/igdbSteamConnect';
@@ -115,7 +114,7 @@ const db = drizzle(client, {
   },
 });
 export const igdbSteamLink = async () => {
-  const games: IgdbSteamConnect[] = [];
+  const games = new Map();
   const sites = await db
     .select()
     .from(websitesTable)
@@ -133,10 +132,10 @@ export const igdbSteamLink = async () => {
     );
     if (m && m[1]) {
       if (!e.games || !e.games!.igdbId) continue;
-      games.push({ igdbId: e.games!.igdbId, steamId: Number(m[1]) });
+      games.set(m[1], { igdbId: e.games!.igdbId, steamId: Number(m[1]) });
     }
   }
-  const chunks = chunk(games, 1000);
+  const chunks = chunk(games.values(), 1000);
   chunks.forEach(async (chunk) => {
     await db.insert(igdbSteamConnect).values(chunk).onConflictDoNothing();
   });
