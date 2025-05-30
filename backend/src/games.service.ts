@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { eq, gt } from 'drizzle-orm';
+import { eq, gt, inArray } from 'drizzle-orm';
 
 import { DrizzleDB } from './db/db';
 import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
-import { Games } from './infrastructure/igdb/db/schema/games';
+import { Games, gamesTable } from './infrastructure/igdb/db/schema/games';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
 
 @Injectable()
@@ -58,41 +58,81 @@ export class GameService {
 
   async getTimeRecommendations(id: number) {
     const basic = await this.dbConnection.query.userOwnedGames.findMany({
-      columns: { userId: true },
-      where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
-    });
-    const size = basic.length;
-    const userGames = await this.dbConnection.query.userOwnedGames.findMany({
-      columns: { userId: true },
-      limit: Math.min(20, size - size * 0.05),
-      orderBy: (userOwnedGames, { desc }) => [desc(userOwnedGames.playtime)],
       where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
       with: {
-        steam: {
-          columns: { igdbId: true },
+        steam: true,
+      },
+    });
+    const size = basic.length;
+    const owned = basic
+      .sort((a: any, b: any) => b.playtime - a.playtime)
+      .slice(0, Math.min(20, size - size * 0.05));
+    console.log(basic);
+    const ownedIgdbIds: number[] = [];
+    for (const game of owned) {
+      if (game && game.steam && game.steam.igdbId)
+        ownedIgdbIds.push(game.steam.igdbId);
+    }
+    //   columns: { steamId: true, userId: true },
+    //   limit: Math.min(20, size - size * 0.05),
+    //   orderBy: (userOwnedGames, { desc }) => [desc(userOwnedGames.playtime)],
+    //   where:
+    //     eq(userOwnedGames.userId, id) &&
+    //     gt(userOwnedGames.playtime, 0) &&
+    //     notInArray(userOwnedGames.steamId, ownedSteamIds),
+    //   with: {
+    //     steam: {
+    //       columns: { igdbId: true },
+    //       with: {
+    //         igdbGame: {
+    //           with: {
+    //             involvedCompanies: true,
+    //             similarGames: {
+    //               columns: {},
+    //               with: {
+    //                 sg: {
+    //                   with: {
+    //                     genres: {
+    //                       columns: {},
+    //                       with: {
+    //                         genre: true,
+    //                       },
+    //                     },
+    //                     themes: {
+    //                       columns: {},
+    //                       with: {
+    //                         theme: true,
+    //                       },
+    //                     },
+    //                   },
+    //                 },
+    //               },
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+    const userGames = await this.dbConnection.query.gamesTable.findMany({
+      where: inArray(gamesTable.igdbId, ownedIgdbIds),
+      with: {
+        involvedCompanies: true,
+        similarGames: {
+          columns: {},
           with: {
-            igdbGame: {
+            sg: {
               with: {
-                involvedCompanies: true,
-                similarGames: {
+                genres: {
                   columns: {},
                   with: {
-                    sg: {
-                      with: {
-                        genres: {
-                          columns: {},
-                          with: {
-                            genre: true,
-                          },
-                        },
-                        themes: {
-                          columns: {},
-                          with: {
-                            theme: true,
-                          },
-                        },
-                      },
-                    },
+                    genre: true,
+                  },
+                },
+                themes: {
+                  columns: {},
+                  with: {
+                    theme: true,
                   },
                 },
               },
@@ -104,16 +144,12 @@ export class GameService {
     const ids: Set<number> = new Set();
     const games = {};
     for (const p of userGames) {
-      if (p.steam && p.steam.igdbId) ids.add(p.steam.igdbId);
+      ids.add(p.igdbId);
     }
     for (const p of userGames.filter(
-      (p) =>
-        p.steam &&
-        p.steam.igdbGame &&
-        p.steam.igdbGame.similarGames &&
-        p.steam.igdbGame.firstReleaseDate,
+      (p) => p.similarGames && p.firstReleaseDate,
     )) {
-      for (const g of p.steam!.igdbGame!.similarGames) {
+      for (const g of p.similarGames) {
         if (ids.has(g.sg.igdbId)) {
           continue;
         }
