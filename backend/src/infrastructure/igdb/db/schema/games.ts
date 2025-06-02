@@ -146,7 +146,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
     fields: [gamesTable.gameType],
     references: [gameTypesTable.igdbId],
   }),
-  genres: many(gameGenres),
+  genresRelation: many(gameGenres),
   involvedCompanies: many(involvedCompaniesTable),
   keywords: many(gameKeywords),
   languageSupports: many(languageSupportsTable),

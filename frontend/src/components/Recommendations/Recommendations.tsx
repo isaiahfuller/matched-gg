@@ -29,12 +29,14 @@ export default function Recommendations() {
 
   useEffect(() => {
     setAccLoading(true);
-    fetch("/steam/getSimilarGames")
+    fetch("/games/getRecommendations")
       .then((r) => r.json())
       .then((r: { game: IGDBGame; type: string; typeText: string }[]) => {
         for (const g of r) {
-          g.type = "company";
-          g.typeText = "qwerty";
+          if(!g.type)
+            g.type = "company";
+          if(!g.typeText)
+            g.typeText = "qwerty";
         }
         console.log(r);
         setGames([...r]);
