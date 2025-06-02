@@ -4,7 +4,7 @@ import { eq, gt, inArray } from 'drizzle-orm';
 
 import { DrizzleDB } from './db/db';
 import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
-import { Games, gamesTable } from './infrastructure/igdb/db/schema/games';
+import { gamesTable } from './infrastructure/igdb/db/schema/games';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
 
 @Injectable()
@@ -130,12 +130,29 @@ export class GameService {
       }
       for (const genre of p.genresRelation) {
         if (!genres[genre.genre.igdbId])
-          genres[genre.genre.igdbId] = { count: 1, genre: genre };
+          genres[genre.genre.igdbId] = { count: 1, genre: genre.genre };
         else genres[genre.genre.igdbId].count++;
       }
     }
+    const sortedGenres = Object.values<any>(genres)
+      .filter((e) => e.count > 1)
+      .sort((a, b) => b.count - a.count);
     const mem = new Map();
-    return Object.values<{ count: number; game: Games }>(games)
+    for (const game of Object.values<{ count: number; game: any }>(games)) {
+      console.log(game.game.igdbId);
+      console.log(game.game.genresRelation);
+      for (let i = 0; i < sortedGenres.length; i++) {
+        for (let j = 0; j < game.game.genres.length; j++) {
+          if (sortedGenres[i].genre.igdbId === game.game.genres[j]) {
+            games[game.game.igdbId].type = 'tag';
+            games[game.game.igdbId].typeText = sortedGenres[i].genre.name;
+            break;
+          }
+        }
+        if (Object.keys(games).includes('type')) break;
+      }
+    }
+    const res = Object.values<{ count: number; game: any }>(games)
       .filter((e) => e.count > 1)
       .sort((a, b) => {
         let resA,
@@ -160,9 +177,8 @@ export class GameService {
             ) * 100;
           mem.set(b.game.igdbId, resB);
         }
-        console.log('A', a.count, resA);
-        console.log('B', b.count, resB);
         return resB - resA;
       });
+    return res;
   }
 }

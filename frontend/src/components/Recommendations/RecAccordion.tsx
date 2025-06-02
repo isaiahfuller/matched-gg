@@ -66,7 +66,8 @@ export default function RecAccordion({
               {" "}
               -{controlHeader}
             </Text>
-            <span className={classes.highlight}>{item.typeText + (item.type === 'tag' ? ' games' : '')}</span>
+            <span className={classes.highlight}>{item.typeText}</span>
+            {(item.type === 'tag' ? <Text c="dimmed" span> games</Text> : '')}
           </Text>
         </AccordionControl>
         <Accordion.Panel>
