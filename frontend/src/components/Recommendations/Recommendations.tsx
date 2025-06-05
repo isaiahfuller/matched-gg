@@ -82,6 +82,7 @@ export default function Recommendations() {
   >([]);
   const [accLoading, setAccLoading] = useState<boolean>(true);
   const [recommended, setRecommended] = useState<RecommendationsResult>();
+  const [offset, setOffset] = useState<number>(0);
 
   useEffect(() => {
     getRecommendations();
@@ -108,16 +109,18 @@ export default function Recommendations() {
           {recommended && recommended.type ? (
             <TimeText recommendations={recommended} />
           ) : null}
-          <RecAccordion recommendations={games.slice(0, 5)} />
+          <RecAccordion recommendations={games.slice(offset, offset + 5)} />
           <Divider p={8} mx="auto" w={64} />
           <Flex direction="row-reverse">
-            <Button
-              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
-              variant="transparent"
-              onClick={getRecommendations}
-            >
-              Get more
-            </Button>
+            {offset + 5 >= games.length ? null : (
+              <Button
+                rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+                variant="transparent"
+                onClick={() => setOffset((prev) => prev + 5)}
+              >
+                Get more
+              </Button>
+            )}
           </Flex>
         </>
       ) : (
