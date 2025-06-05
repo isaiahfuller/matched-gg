@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Loader, Text } from "@mantine/core";
 
 import { User } from "../../interfaces";
 import Login from "../Login/Login";
@@ -23,7 +23,8 @@ export default function Pages({ page, user, setUser }: PagesProps) {
       return <Settings user={user} setUser={setUser} />;
     case "signup":
     case "login":
-    default:
       return <Login initSignup={page === "signup"} />;
+    default:
+      <Loader />;
   }
 }

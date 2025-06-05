@@ -23,7 +23,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Search from "./components/Search/Search";
 import { User } from "./interfaces";
 import { generateSHA256Hash } from "./util/generateSha256Hash";
 import Pages from "./components/Pages/Pages";
@@ -34,48 +33,42 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>(blankUser);
   const [gravatarUrl, setGravatarUrl] = useState("");
-  const [page, setPage] = useState("login");
+  const [page, setPage] = useState("recommendations");
   const [loading, setLoading] = useState(true);
   const { width, height } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
 
   useEffect(() => {
-    setLoading(true);
-    const opt = {
-      method: "POST",
-    };
-    fetch("/verify", opt)
-      .then((r) => {
-        if (![200, 201].includes(r.status)) {
-          throw new Error(r.status + "");
-        }
-        return r.json();
-      })
-      .then((res) => {
-        console.log(res);
-        if (!res || !res.profile || !res.profile.email)
-          throw new Error("No profile received");
-        setIsLoggedIn(true);
-        setUser(res.profile);
-        generateSHA256Hash(res.profile.email).then((hash) => {
-          setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
-        });
-      })
-      .catch(() => {
-        setIsLoggedIn(false);
-        setUser(blankUser);
-      })
-      .finally(() => {
-        setLoading(false);
+    async function onLoad() {
+      setLoading(true);
+      const opt = {
+        method: "POST",
+      };
+      const r = await fetch("/verify", opt);
+      if (![200, 201].includes(r.status)) {
+        throw new Error(r.status + "");
+      }
+      const res = await r.json();
+      setIsLoggedIn(true);
+      if (!res || !res.profile || !res.profile.email) {
+        setPage("login");
+        throw new Error("No profile received");
+      }
+      setUser(res.profile);
+      if (isLoggedIn && page === "login") {
+        setPage("recommendations");
+      }
+      if (localStorage.getItem("settings")) {
+        setPage("settings");
+        fetch("/steam/processLibrary").then((r) => r.json());
+      }
+      setLoading(false);
+      generateSHA256Hash(res.profile.email).then((hash) => {
+        setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
       });
-    if (isLoggedIn && page === "login") {
-      setPage("recommendations");
     }
-    if (localStorage.getItem("settings")) {
-      setPage("settings");
-      fetch("/steam/processLibrary").then((r) => r.json());
-    }
-  }, [page, isLoggedIn]);
+    onLoad();
+  }, [isLoggedIn]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
@@ -206,7 +199,7 @@ function App() {
           </Center>
         ) : (
           <>
-            {["login", "signup", "settings"].includes(page) ? null : <Search />}
+            {/* {["login", "signup", "settings"].includes(page) ? null : <Search />} */}
             <Pages page={page} user={user} setUser={setUser} />
           </>
         )}
