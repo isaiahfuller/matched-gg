@@ -60,12 +60,13 @@ export class GameService {
     const basic = await this.dbConnection.query.userOwnedGames.findMany({
       where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
       with: {
-        steam: true,
+        steam: {
+          with: { igdbGame: true },
+        },
       },
     });
     const size = basic.length;
     const owned = basic.sort((a: any, b: any) => b.playtime - a.playtime);
-    // console.log(basic);
     const ownedIgdbIds: number[] = [];
     for (const game of owned) {
       if (game && game.steam && game.steam.igdbId)
@@ -115,6 +116,7 @@ export class GameService {
     const ids: Set<number> = new Set();
     const games = {};
     const genres = {};
+    const genreIds = new Set();
     for (const p of userGames) {
       ids.add(p.igdbId);
     }
@@ -139,9 +141,8 @@ export class GameService {
       .sort((a, b) => b.count - a.count);
     const mem = new Map();
     for (const game of Object.values<{ count: number; game: any }>(games)) {
-      console.log(game.game.igdbId);
-      console.log(game.game.genresRelation);
       for (let i = 0; i < sortedGenres.length; i++) {
+        if (i < 3) genreIds.add(sortedGenres[i].genre.igdbId);
         for (let j = 0; j < game.game.genres.length; j++) {
           if (sortedGenres[i].genre.igdbId === game.game.genres[j]) {
             games[game.game.igdbId].type = 'tag';
@@ -152,7 +153,18 @@ export class GameService {
         if (Object.keys(games).includes('type')) break;
       }
     }
-    const res = Object.values<{ count: number; game: any }>(games)
+    let totalGenrePlaytime = 0;
+    for (const game of owned.filter((e) => {
+      if (e.steam && e.steam.igdbGame.genres)
+        for (const g of e.steam.igdbGame.genres) {
+          if (genreIds.has(g)) return true;
+        }
+    })) {
+      totalGenrePlaytime += game.playtime ? game.playtime : 0;
+    }
+    const gameRecommendations = Object.values<{ count: number; game: any }>(
+      games,
+    )
       .filter((e) => e.count > 1)
       .sort((a, b) => {
         let resA,
@@ -179,6 +191,20 @@ export class GameService {
         }
         return resB - resA;
       });
+    const res = {
+      games: gameRecommendations,
+      genres: sortedGenres.slice(0, 3),
+      highlights: owned
+        .filter((e) => {
+          if (e && e.steam && e.steam.igdbGame && e.steam.igdbGame.genres)
+            for (const gameGenre of e.steam.igdbGame.genres) {
+              if (genreIds.has(gameGenre)) return true;
+            }
+        })
+        .slice(0, 3),
+      time: totalGenrePlaytime,
+      type: 'time',
+    };
     return res;
   }
 }

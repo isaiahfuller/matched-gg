@@ -174,3 +174,20 @@ export interface User {
   id?: number;
   steamId: number;
 }
+
+export interface RecommendationsResult {
+  games: {
+    game: IGDBGame;
+    type: string;
+    typeText: string;
+  }[];
+  genres: { count: number; genre: IGDBGeneric }[];
+  highlights: {
+    playtime: number;
+    steam: {
+      igdbGame: IGDBGame;
+    };
+  }[];
+  type: string;
+  time: number;
+}

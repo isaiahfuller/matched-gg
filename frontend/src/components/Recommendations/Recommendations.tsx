@@ -9,13 +9,68 @@ import {
   Title,
 } from "@mantine/core";
 import RecAccordion from "./RecAccordion";
-// import { persona3reload, persona4 } from "../../mockGames";
 
 import classes from "./index.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { IGDBGame } from "../../interfaces";
+import { IGDBGame, RecommendationsResult } from "../../interfaces";
+
+function TimeText({
+  recommendations,
+}: {
+  recommendations: RecommendationsResult;
+}) {
+  console.log(recommendations);
+  return (
+    <Stack gap="xl">
+      <Title order={1}>
+        Because you played{" "}
+        {recommendations.highlights.map((e, i) => (
+          <>
+            <a href="#" className={classes.link}>
+              {e.steam.igdbGame.name}
+            </a>
+            {i === recommendations.highlights.length - 2
+              ? ", and "
+              : i !== recommendations.highlights.length - 1
+                ? ", "
+                : null}
+          </>
+        ))}
+        ...
+      </Title>
+      <Title style={{ textAlign: "right" }} order={2} size="h4">
+        You <span style={{ fontStyle: "italic" }}>obviously</span> have a knack
+        for{" "}
+        {recommendations.genres.map((e, i) => (
+          <>
+            <a href="#" className={classes.link}>
+              {e.genre.name}
+            </a>
+            {i === recommendations.highlights.length - 2
+              ? ", and "
+              : i !== recommendations.highlights.length - 1
+                ? ", "
+                : null}
+          </>
+        ))}{" "}
+        games
+      </Title>
+      <Title order={2} size="h4">
+        and we checked your library and saw you have also put{" "}
+        <a href="#" className={classes.link}>
+          {Math.floor(recommendations.time / 60)} hours
+        </a>{" "}
+        into these games overall...
+      </Title>
+      <Divider mx="auto" w={64} />
+      <Title order={2} size="h4">
+        so we recommend these titles:
+      </Title>
+    </Stack>
+  );
+}
 
 export default function Recommendations() {
   const [games, setGames] = useState<
@@ -26,72 +81,32 @@ export default function Recommendations() {
     }[]
   >([]);
   const [accLoading, setAccLoading] = useState<boolean>(true);
+  const [recommended, setRecommended] = useState<RecommendationsResult>();
 
   useEffect(() => {
     setAccLoading(true);
     fetch("/games/getRecommendations")
       .then((r) => r.json())
-      .then((r: { game: IGDBGame; type: string; typeText: string }[]) => {
-        for (const g of r) {
-          if(!g.type)
-            g.type = "company";
-          if(!g.typeText)
-            g.typeText = "qwerty";
+      .then((r: RecommendationsResult) => {
+        if (!r) return;
+        for (const g of r.games) {
+          if (!g.type) g.type = "company";
+          if (!g.typeText) g.typeText = "qwerty";
         }
-        console.log(r);
-        setGames([...r]);
+        setGames([...r.games]);
+        setRecommended(r);
         setAccLoading(false);
       });
   }, []);
 
   return (
     <Container size="sm">
-      <Stack gap="xl">
-        <Title
-          order={1}
-          classNames={{
-            root: classes.title,
-          }}
-        >
-          Because you beat{" "}
-          <a href="#" className={classes.link}>
-            Elden Ring
-          </a>
-          , and{" "}
-          <a href="#" className={classes.link}>
-            Dark Souls
-          </a>
-          ...
-        </Title>
-        <Title style={{ textAlign: "right" }} order={2} size="h4">
-          You <span style={{ fontStyle: "italic" }}>obviously</span> have a
-          knack for{" "}
-          <a href="#" className={classes.link}>
-            souls-like
-          </a>{" "}
-          games
-        </Title>
-        <Title order={2} size="h4">
-          and we checked your library and saw you have also put{" "}
-          <a href="#" className={classes.link}>
-            764 hours
-          </a>{" "}
-          into RPGs overall...
-        </Title>
-        <Divider mx="auto" w={64} />
-        <Title order={2} size="h4">
-          so we recommend these titles:
-        </Title>
-      </Stack>
       {games.length && !accLoading ? (
         <>
-          <RecAccordion
-            // recommendations={[
-            //   { game: persona4, type: "company", typeText: "Sega" },
-            //   { game: persona3reload, type: "tag", typeText: "Role-playing (RPG)" },
-            // ]}
-            recommendations={games.slice(0, 5)}
-          />
+          {recommended && recommended.type ? (
+            <TimeText recommendations={recommended} />
+          ) : null}
+          <RecAccordion recommendations={games.slice(0, 5)} />
           <Divider p={8} mx="auto" w={64} />
           <Flex direction="row-reverse">
             <Button
