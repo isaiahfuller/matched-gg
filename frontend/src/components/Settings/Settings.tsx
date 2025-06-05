@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   Container,
+  PasswordInput,
   SimpleGrid,
   Stack,
   Text,
@@ -80,13 +81,13 @@ export default function Settings({ user }: SettingsProps) {
                 key={form.key("changePassword")}
                 {...form.getInputProps("changePassword", { type: "checkbox" })}
               />
-              <TextInput
+              <PasswordInput
                 key={form.key("password")}
                 {...form.getInputProps("password")}
                 disabled={!form.getValues().changePassword}
               />
               <Text size="sm">Verify password: </Text>
-              <TextInput
+              <PasswordInput
                 key={form.key("verify")}
                 {...form.getInputProps("verify")}
               />
