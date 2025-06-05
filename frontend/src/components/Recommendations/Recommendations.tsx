@@ -84,20 +84,22 @@ export default function Recommendations() {
   const [recommended, setRecommended] = useState<RecommendationsResult>();
 
   useEffect(() => {
-    setAccLoading(true);
-    fetch("/games/getRecommendations")
-      .then((r) => r.json())
-      .then((r: RecommendationsResult) => {
-        if (!r) return;
-        for (const g of r.games) {
-          if (!g.type) g.type = "company";
-          if (!g.typeText) g.typeText = "qwerty";
-        }
-        setGames([...r.games]);
-        setRecommended(r);
-        setAccLoading(false);
-      });
+    getRecommendations();
   }, []);
+
+  async function getRecommendations() {
+    setAccLoading(true);
+    const r = await fetch("/games/getRecommendations");
+    const recs: RecommendationsResult = await r.json();
+    if (!recs) return;
+    for (const g of recs.games) {
+      if (!g.type) g.type = "company";
+      if (!g.typeText) g.typeText = "qwerty";
+    }
+    setGames([...recs.games]);
+    setRecommended(recs);
+    setAccLoading(false);
+  }
 
   return (
     <Container size="sm">
@@ -112,6 +114,7 @@ export default function Recommendations() {
             <Button
               rightSection={<FontAwesomeIcon icon={faChevronRight} />}
               variant="transparent"
+              onClick={getRecommendations}
             >
               Get more
             </Button>
