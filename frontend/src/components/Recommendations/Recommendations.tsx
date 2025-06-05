@@ -15,7 +15,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { IGDBGame, RecommendationsResult } from "../../interfaces";
-import { useViewportSize } from "@mantine/hooks";
 
 function TimeText({
   recommendations,
@@ -83,7 +82,6 @@ export default function Recommendations() {
   >([]);
   const [accLoading, setAccLoading] = useState<boolean>(true);
   const [recommended, setRecommended] = useState<RecommendationsResult>();
-  const { height } = useViewportSize();
 
   useEffect(() => {
     setAccLoading(true);
