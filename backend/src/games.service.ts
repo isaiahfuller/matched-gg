@@ -72,11 +72,9 @@ export class GameService {
       if (game && game.steam && game.steam.igdbId)
         ownedIgdbIds.push(game.steam.igdbId);
     }
+    const numGames = Math.min(20, size - size * 0.05);
     const userGames = await this.dbConnection.query.gamesTable.findMany({
-      where: inArray(
-        gamesTable.igdbId,
-        ownedIgdbIds.slice(0, Math.min(20, size - size * 0.05)),
-      ),
+      where: inArray(gamesTable.igdbId, ownedIgdbIds.slice(0, numGames)),
       with: {
         genresRelation: {
           columns: {},
@@ -113,14 +111,23 @@ export class GameService {
         },
       },
     });
+    const selectedGames: any[] = [];
+    const usedIdx = new Set<number>();
+    for (let i = 0; usedIdx.size < 3; i++) {
+      const num = Math.floor(Math.random() * (numGames - 0 + 1));
+      usedIdx.add(num);
+    }
+    for (const i of [...usedIdx]) {
+      if (userGames[i]) selectedGames.push(userGames[i]);
+    }
     const ids: Set<number> = new Set();
     const games = {};
     const genres = {};
     const genreIds = new Set();
-    for (const p of userGames) {
+    for (const p of selectedGames) {
       ids.add(p.igdbId);
     }
-    for (const p of userGames.filter(
+    for (const p of selectedGames.filter(
       (p) => p.similarGames && p.firstReleaseDate,
     )) {
       for (const g of p.similarGames) {
@@ -136,9 +143,9 @@ export class GameService {
         else genres[genre.genre.igdbId].count++;
       }
     }
-    const sortedGenres = Object.values<any>(genres)
-      .filter((e) => e.count > 1)
-      .sort((a, b) => b.count - a.count);
+    const sortedGenres = Object.values<any>(genres).sort(
+      (a, b) => b.count - a.count,
+    );
     const mem = new Map();
     for (const game of Object.values<{ count: number; game: any }>(games)) {
       for (let i = 0; i < sortedGenres.length; i++) {
@@ -164,33 +171,31 @@ export class GameService {
     }
     const gameRecommendations = Object.values<{ count: number; game: any }>(
       games,
-    )
-      .filter((e) => e.count > 1)
-      .sort((a, b) => {
-        let resA,
-          resB = 0;
-        if (mem.has(a.game.igdbId)) {
-          resA = mem.get(a.game.igdbId);
-        } else {
-          resA =
-            ciLowerBound(
-              a.game.rating || 1,
-              (a.game.ratingCount || 1) * a.count,
-            ) * 100;
-          mem.set(a.game.igdbId, resA);
-        }
-        if (mem.has(b.game.igdbId)) {
-          resB = mem.get(b.game.igdbId);
-        } else {
-          resB =
-            ciLowerBound(
-              b.game.rating || 1,
-              (b.game.ratingCount || 1) * b.count,
-            ) * 100;
-          mem.set(b.game.igdbId, resB);
-        }
-        return resB - resA;
-      });
+    ).sort((a, b) => {
+      let resA,
+        resB = 0;
+      if (mem.has(a.game.igdbId)) {
+        resA = mem.get(a.game.igdbId);
+      } else {
+        resA =
+          ciLowerBound(
+            a.game.rating || 1,
+            (a.game.ratingCount || 1) * a.count,
+          ) * 100;
+        mem.set(a.game.igdbId, resA);
+      }
+      if (mem.has(b.game.igdbId)) {
+        resB = mem.get(b.game.igdbId);
+      } else {
+        resB =
+          ciLowerBound(
+            b.game.rating || 1,
+            (b.game.ratingCount || 1) * b.count,
+          ) * 100;
+        mem.set(b.game.igdbId, resB);
+      }
+      return resB - resA;
+    });
     const res = {
       games: gameRecommendations,
       genres: sortedGenres.slice(0, 3),

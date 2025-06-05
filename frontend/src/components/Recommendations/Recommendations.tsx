@@ -13,7 +13,7 @@ import RecAccordion from "./RecAccordion";
 import classes from "./index.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IGDBGame, RecommendationsResult } from "../../interfaces";
 
 function TimeText({
@@ -27,7 +27,7 @@ function TimeText({
       <Title order={1}>
         Because you played{" "}
         {recommendations.highlights.map((e, i) => (
-          <>
+          <React.Fragment key={i}>
             <a href="#" className={classes.link}>
               {e.steam.igdbGame.name}
             </a>
@@ -36,7 +36,7 @@ function TimeText({
               : i !== recommendations.highlights.length - 1
                 ? ", "
                 : null}
-          </>
+          </React.Fragment>
         ))}
         ...
       </Title>
@@ -44,7 +44,7 @@ function TimeText({
         You <span style={{ fontStyle: "italic" }}>obviously</span> have a knack
         for{" "}
         {recommendations.genres.map((e, i) => (
-          <>
+          <React.Fragment key={i}>
             <a href="#" className={classes.link}>
               {e.genre.name}
             </a>
@@ -53,7 +53,7 @@ function TimeText({
               : i !== recommendations.highlights.length - 1
                 ? ", "
                 : null}
-          </>
+          </React.Fragment>
         ))}{" "}
         games
       </Title>
