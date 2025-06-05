@@ -1,4 +1,4 @@
-import { Loader, Text } from "@mantine/core";
+import { Center, Loader, Text } from "@mantine/core";
 
 import { User } from "../../interfaces";
 import Login from "../Login/Login";
@@ -25,6 +25,8 @@ export default function Pages({ page, user, setUser }: PagesProps) {
     case "login":
       return <Login initSignup={page === "signup"} />;
     default:
-      <Loader />;
+      <Center className="centered">
+        <Loader />
+      </Center>;
   }
 }

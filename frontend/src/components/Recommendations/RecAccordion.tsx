@@ -8,7 +8,7 @@ import {
   Divider,
 } from "@mantine/core";
 import { IGDBGame, IGDBGameArt } from "../../interfaces";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import classes from "./index.module.css";
 import { useViewportSize } from "@mantine/hooks";
 
@@ -39,7 +39,12 @@ export default function RecAccordion({
   }[];
 }) {
   const [screenIdx, setScreenIdx] = useState<number>(0);
+  const [value, setValue] = useState<string | null>(null);
   const { width } = useViewportSize();
+
+  useEffect(() => {
+    setValue(recommendations[0].game.name || null);
+  }, [recommendations]);
 
   const items = recommendations.map((item) => {
     let controlHeader = "";
@@ -67,7 +72,14 @@ export default function RecAccordion({
               -{controlHeader}
             </Text>
             <span className={classes.highlight}>{item.typeText}</span>
-            {(item.type === 'tag' ? <Text c="dimmed" span> games</Text> : '')}
+            {item.type === "tag" ? (
+              <Text c="dimmed" span>
+                {" "}
+                games
+              </Text>
+            ) : (
+              ""
+            )}
           </Text>
         </AccordionControl>
         <Accordion.Panel>
@@ -119,7 +131,8 @@ export default function RecAccordion({
   if (recommendations)
     return (
       <Accordion
-        defaultValue={recommendations[0].game.name!}
+        value={value}
+        onChange={setValue}
         classNames={{ chevron: classes.chevron }}
         chevronPosition="left"
         variant="filled"

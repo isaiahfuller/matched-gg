@@ -35,7 +35,7 @@ function App() {
   const [gravatarUrl, setGravatarUrl] = useState("");
   const [page, setPage] = useState("recommendations");
   const [loading, setLoading] = useState(true);
-  const { width, height } = useViewportSize();
+  const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
 
   useEffect(() => {
@@ -55,9 +55,6 @@ function App() {
         throw new Error("No profile received");
       }
       setUser(res.profile);
-      if (isLoggedIn && page === "login") {
-        setPage("recommendations");
-      }
       if (localStorage.getItem("settings")) {
         setPage("settings");
         fetch("/steam/processLibrary").then((r) => r.json());
@@ -69,6 +66,12 @@ function App() {
     }
     onLoad();
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn && page === "login") {
+      setPage("recommendations");
+    }
+  }, [isLoggedIn, page]);
 
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
@@ -194,7 +197,7 @@ function App() {
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
         {loading ? (
-          <Center h={height}>
+          <Center className="centered">
             <Loader />
           </Center>
         ) : (
