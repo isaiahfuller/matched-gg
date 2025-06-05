@@ -37,9 +37,14 @@ export default function Settings({ user }: SettingsProps) {
     },
     validate: {
       email: matches(emailRegex, "Invalid email"),
-      password: matches(passwordRegex, "Invalid password"),
+      password: (value: string): string | null =>
+        passwordRegex.test(value) || !form.getValues().changePassword
+          ? null
+          : "Invalid password",
       verify: (value: string): string | null =>
-        value === form.getValues().password ? null : "Passwords do not match",
+        value === form.getValues().password || !form.getValues().changePassword
+          ? null
+          : "Passwords do not match",
     },
   });
 
