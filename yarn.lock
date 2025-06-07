@@ -1393,10 +1393,9 @@ __metadata:
     express-session: "npm:^1.18.0"
     igdb-api-node: "npm:^5.0.2"
     jest: "npm:^29.7.0"
-    modern-passport-steam: "npm:^1.1.4"
     passport: "npm:^0.7.0"
     passport-local: "npm:^1.0.0"
-    passport-steam: "npm:^1.0.18"
+    passport-steam-openid: "npm:^1.1.5"
     pg: "npm:^8.13.0"
     pino: "npm:^9.1.0"
     pino-pretty: "npm:^11.0.0"
@@ -2175,23 +2174,6 @@ __metadata:
   bin:
     opencollective: bin/opencollective.js
   checksum: 10c0/540268687af3289ff107585484d42201b404cdbb98b3a512487c12a6b180a8f0e1df0d701df47d3d9e0d5c0f6eb3252d80535562aedca9edf52cf7fd17ae4601
-  languageName: node
-  linkType: hard
-
-"@passport-next/passport-openid@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@passport-next/passport-openid@npm:1.0.0"
-  dependencies:
-    "@passport-next/passport-strategy": "npm:1.x.x"
-    openid: "npm:2.x.x"
-  checksum: 10c0/a7ab95d5042c7cd7689422418422d5db2861ec01bed85f26dc9ba8840f82a7278af2ea0f484d5bd40ad3dde1147b0dd3201ecfe8facd803fb836edbe9de27902
-  languageName: node
-  linkType: hard
-
-"@passport-next/passport-strategy@npm:1.x.x":
-  version: 1.1.0
-  resolution: "@passport-next/passport-strategy@npm:1.1.0"
-  checksum: 10c0/3c6dd6d4db959f27ddafdb1de8b333859550071d9e11bf52c11d95c94ede5394f2db8928b7fd69c7d5a96a9658436162e60f026118836f8021a7b2c48c4b5402
   languageName: node
   linkType: hard
 
@@ -3688,7 +3670,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.0, axios@npm:^1.6.8":
+"axios@npm:^1.4.0":
+  version: 1.9.0
+  resolution: "axios@npm:1.9.0"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/9371a56886c2e43e4ff5647b5c2c3c046ed0a3d13482ef1d0135b994a628c41fbad459796f101c655e62f0c161d03883454474d2e435b2e021b1924d9f24994c
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.6.8":
   version: 1.6.8
   resolution: "axios@npm:1.6.8"
   dependencies:
@@ -8321,16 +8314,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"modern-passport-steam@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "modern-passport-steam@npm:1.1.4"
-  dependencies:
-    passport-strategy: "npm:^1.0.0"
-    steamid: "npm:^2.0.0"
-  checksum: 10c0/0d378deeb045cfdd725b355238d307c749dcbe607fcd16601735aa5f78dadd8aac0081c9fee7c169b6d6ad855b37ec92501fed6ebab114a1c5dcfad880be4934
-  languageName: node
-  linkType: hard
-
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -8624,16 +8607,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openid@npm:2.x.x":
-  version: 2.0.12
-  resolution: "openid@npm:2.0.12"
-  dependencies:
-    axios: "npm:^1.6.0"
-    qs: "npm:^6.5.2"
-  checksum: 10c0/ca789556ea323e71f87ffd88d762b8470c6a3f5d8bec83b815ad684515aea6a5f53d8fd5b8870c25ffe24a2ed1f02ec96bf475614998b67f819888249196ba4c
-  languageName: node
-  linkType: hard
-
 "optionator@npm:^0.9.3":
   version: 0.9.3
   resolution: "optionator@npm:0.9.3"
@@ -8761,20 +8734,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-steam@npm:^1.0.18":
-  version: 1.0.18
-  resolution: "passport-steam@npm:1.0.18"
+"passport-steam-openid@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "passport-steam-openid@npm:1.1.5"
   dependencies:
-    "@passport-next/passport-openid": "npm:^1.0.0"
-    steam-web: "npm:0.4.0"
-  checksum: 10c0/e4ab30b425c75d969d6cc90ad0264a11c094dad1a203e202aac1b72324e3c0086f0e39460c5138cdd644405316b24dfb07bf19fbe6050d880ab3f84a4b077072
+    axios: "npm:^1.4.0"
+    passport: "npm:^0.6.0"
+  checksum: 10c0/de23bc92245dde3ecb020399a5168f22e5498a4cdbe7305e33182ed45fa1118cbc79d87ec494c384c55ef372d49bb35695ed56b21b2a984995a5201477ebfb81
   languageName: node
   linkType: hard
 
-"passport-strategy@npm:1.x.x, passport-strategy@npm:^1.0.0":
+"passport-strategy@npm:1.x.x":
   version: 1.0.0
   resolution: "passport-strategy@npm:1.0.0"
   checksum: 10c0/cf4cd32e1bf2538a239651581292fbb91ccc83973cde47089f00d2014c24bed63d3e65af21da8ddef649a8896e089eb9c3ac9ca639f36c797654ae9ee4ed65e1
+  languageName: node
+  linkType: hard
+
+"passport@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "passport@npm:0.6.0"
+  dependencies:
+    passport-strategy: "npm:1.x.x"
+    pause: "npm:0.0.1"
+    utils-merge: "npm:^1.0.1"
+  checksum: 10c0/1d8651a4a1a72b84ea08c498cff9cfc209aebfe18baed4cf93292ded3f8e30a04e30b404fdfce39dfb6aa7247e205f1df43fbfd7bc7c1a67a600884359d46ee6
   languageName: node
   linkType: hard
 
@@ -9378,7 +9362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.1.0, qs@npm:^6.11.0, qs@npm:^6.5.2":
+"qs@npm:^6.11.0":
   version: 6.12.0
   resolution: "qs@npm:6.12.0"
   dependencies:
@@ -10374,22 +10358,6 @@ __metadata:
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
   checksum: 10c0/34378b207a1620a24804ce8b5d230fea0c279f00b18a7209646d5d47e419d1cc23e7cbf33a25a1e51ac38973dc2ac2e1e9c647a8e481ef365f77668d72becfd0
-  languageName: node
-  linkType: hard
-
-"steam-web@npm:0.4.0":
-  version: 0.4.0
-  resolution: "steam-web@npm:0.4.0"
-  dependencies:
-    qs: "npm:^6.1.0"
-  checksum: 10c0/c9de4ac834315dbc9156c031b355315d4ea6a2fd1dfbe552c73bbb2cfc7befc7b7822fb24578ea55422baba034697cc9f58eb0e08e36438e481d89ae95c40523
-  languageName: node
-  linkType: hard
-
-"steamid@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "steamid@npm:2.1.0"
-  checksum: 10c0/758ca47d5fcdcbc0ffcfcc8443ef34c89286a46dda077a43f8f5a69c3d4fc4d16d4a4ab310bf0a3a96269d3c87e322fc1ec874494e6038e469b1198af47dcd70
   languageName: node
   linkType: hard
 

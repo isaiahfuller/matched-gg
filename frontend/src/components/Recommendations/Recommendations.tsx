@@ -21,7 +21,6 @@ function TimeText({
 }: {
   recommendations: RecommendationsResult;
 }) {
-  console.log(recommendations);
   return (
     <Stack gap="xl">
       <Title order={1}>
@@ -97,6 +96,7 @@ export default function Recommendations() {
       if (!g.type) g.type = "company";
       if (!g.typeText) g.typeText = "qwerty";
     }
+    console.log(recs);
     setGames([...recs.games]);
     setRecommended(recs);
     setAccLoading(false);

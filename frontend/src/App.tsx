@@ -33,7 +33,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>(blankUser);
   const [gravatarUrl, setGravatarUrl] = useState("");
-  const [page, setPage] = useState("recommendations");
+  const [page, setPage] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
@@ -44,31 +44,38 @@ function App() {
       const opt = {
         method: "POST",
       };
-      const r = await fetch("/verify", opt);
-      if (![200, 201].includes(r.status)) {
-        throw new Error(r.status + "");
-      }
-      const res = await r.json();
-      setIsLoggedIn(true);
-      if (!res || !res.profile || !res.profile.email) {
+      try {
+        const r = await fetch("/verify", opt);
+        if (![200, 201].includes(r.status)) {
+          throw new Error(r.status + "");
+        }
+        const res = await r.json();
+        console.log(res);
+        setIsLoggedIn(true);
+        if (!res || !res.profile || !res.profile.email) {
+          setPage("login");
+          throw new Error("No profile received");
+        }
+        setUser(res.profile);
+        if (localStorage.getItem("settings")) {
+          setPage("settings");
+          fetch("/steam/processLibrary").then((r) => r.json());
+        }
+        setLoading(false);
+        generateSHA256Hash(res.profile.email).then((hash) => {
+          setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
+        });
+      } catch (e) {
+        setIsLoggedIn(false);
         setPage("login");
-        throw new Error("No profile received");
+        setLoading(false);
       }
-      setUser(res.profile);
-      if (localStorage.getItem("settings")) {
-        setPage("settings");
-        fetch("/steam/processLibrary").then((r) => r.json());
-      }
-      setLoading(false);
-      generateSHA256Hash(res.profile.email).then((hash) => {
-        setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
-      });
     }
     onLoad();
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
-    if (isLoggedIn && page === "login") {
+    if (isLoggedIn && ["login", ""].includes(page)) {
       setPage("recommendations");
     }
   }, [isLoggedIn, page]);

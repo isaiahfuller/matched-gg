@@ -2,8 +2,6 @@ import { config } from '@config/config';
 import {
   Controller,
   Get,
-  HttpCode,
-  HttpStatus,
   Logger,
   Post,
   Req,
@@ -46,13 +44,31 @@ export class SteamController {
     return games;
   }
 
-  @UseGuards(AuthGuard('steam'))
-  @Get('auth') // TODO: Change to Post when front-end is implemented
-  @HttpCode(HttpStatus.OK)
-  /**
-   * @remarks this is never called due to the authguard sending user to the return route
-   */
-  login() {}
+  @UseGuards(AuthGuard('steam-openid'))
+  @Get('auth')
+  async login(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
+    try {
+      if (!session.user) {
+        const user = await this.usersService.findBySteamId(req.user.steamid);
+        if (!user) throw new UnauthorizedException('Steam account not linked');
+        delete user.password;
+        session.user = user;
+        this.logger.log(`User ${user.id} logged in`);
+      } else if (session.user) {
+        await this.usersService.createSteam(session.user, req.user);
+        const user = await this.usersService.findById(session.user.id);
+        if (!user) throw new UnauthorizedException('Not logged in');
+        delete user.password;
+        session.user = user;
+        this.logger.log(`User ${user.id} linked Steam account`);
+      }
+    } catch (e) {
+      this.logger.error(e);
+    } finally {
+      // TODO: Stop hardcoding the redirect URL
+      res.redirect(`http://localhost:4467/`);
+    }
+  }
 
   @Get('getOwnedGames')
   async ownedGames(@Session() session) {
@@ -72,34 +88,6 @@ export class SteamController {
     }
     const games = await this.steamHandler.syncAccount(session);
     return games;
-  }
-
-  @UseGuards(AuthGuard('steam'))
-  @Get('auth/return')
-  async return(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
-    try {
-      if (!session.user) {
-        const user = await this.usersService.findBySteamId(
-          req.user.profile.steamid,
-        );
-        if (!user) throw new UnauthorizedException('Steam account not linked');
-        delete user.password;
-        session.user = user;
-        this.logger.log(`User ${user.id} logged in`);
-      } else if (session.user) {
-        await this.usersService.createSteam(session.user, req.user);
-        const user = await this.usersService.findById(session.user.id);
-        if (!user) throw new UnauthorizedException('Not logged in');
-        delete user.password;
-        session.user = user;
-        this.logger.log(`User ${user.id} linked Steam account`);
-      }
-    } catch (e) {
-      this.logger.error(e);
-    } finally {
-      // TODO: Stop hardcoding the redirect URL
-      res.redirect(`http://localhost:4467/`);
-    }
   }
 
   @Post('valid')

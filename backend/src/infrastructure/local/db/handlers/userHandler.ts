@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { SteamProfile } from 'src/auth/providers/steam/types';
+import { SteamOpenIdUserProfile } from 'passport-steam-openid';
 import { client } from 'src/db/db';
 
 import { steamProfiles, steamProfilesRelations } from '../schema/steamProfiles';
@@ -24,14 +24,14 @@ export default class UserHandler {
     });
   }
 
-  async addSteamProfile(user, profile: SteamProfile) {
+  async addSteamProfile(user, profile: SteamOpenIdUserProfile) {
     const newProfile = await this.db
       .insert(steamProfiles)
       .values({
-        avatar: profile.profile.avatarhash,
-        name: profile.profile.personaname,
-        steamId: profile.profile.steamid,
-        url: profile.profile.profileurl,
+        avatar: profile.avatarhash,
+        name: profile.personaname,
+        steamId: profile.steamid,
+        url: profile.profileurl,
         userId: user.id,
       })
       .returning();
