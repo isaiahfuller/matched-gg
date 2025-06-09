@@ -83,7 +83,7 @@ export class SteamController {
       throw new UnauthorizedException('No Steam account linked');
     }
     const games = await this.steamHandler.getOwnedGames(
-      session.user.steam.steamId,
+      session.user.steam.steamid,
     );
     return games.games;
   }
