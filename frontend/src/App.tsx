@@ -24,7 +24,6 @@ import {
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { User } from "./interfaces";
-import { generateSHA256Hash } from "./util/generateSha256Hash";
 import Pages from "./components/Pages/Pages";
 import { UserButton } from "./components/elements/UserButton";
 import { blankUser } from "./constants";
@@ -32,7 +31,6 @@ import { blankUser } from "./constants";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>(blankUser);
-  const [gravatarUrl, setGravatarUrl] = useState("");
   const [page, setPage] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const { width } = useViewportSize();
@@ -52,7 +50,7 @@ function App() {
         const res = await r.json();
         console.log(res);
         setIsLoggedIn(true);
-        if (!res || !res.profile || !res.profile.email) {
+        if (!res || !res.profile || !res.profile.id) {
           setPage("login");
           throw new Error("No profile received");
         }
@@ -62,9 +60,6 @@ function App() {
           fetch("/steam/processLibrary").then((r) => r.json());
         }
         setLoading(false);
-        generateSHA256Hash(res.profile.email).then((hash) => {
-          setGravatarUrl(`https://gravatar.com/avatar/${hash}`);
-        });
       } catch (e) {
         setIsLoggedIn(false);
         setPage("login");
@@ -163,9 +158,7 @@ function App() {
                     <UserButton
                       name={user.name}
                       email={user.email}
-                      image={
-                        gravatarUrl ? gravatarUrl : "https://placehold.co/36"
-                      }
+                      image={"https://placehold.co/36"}
                       width={width < 768 ? width - 28 : 222}
                     />
                   )}

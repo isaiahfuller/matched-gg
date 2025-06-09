@@ -14,14 +14,23 @@ export default class UserHandler {
     });
   }
 
-  async addNewUser({ email, name, password }: Users) {
-    return this.db.insert(users).values({ email, name, password }).returning({
-      createdAt: users.createdAt,
-      email: users.email,
-      id: users.id,
-      name: users.name,
-      updatedAt: users.updatedAt,
-    });
+  async addNewUser({ email, name, password, steamId }: Users) {
+    return this.db
+      .insert(users)
+      .values({
+        email: email || null,
+        name,
+        password: password || null,
+        steamId: steamId || null,
+      })
+      .returning({
+        createdAt: users.createdAt,
+        email: users.email,
+        id: users.id,
+        name: users.name,
+        steamId: users.steamId,
+        updatedAt: users.updatedAt,
+      });
   }
 
   async addSteamProfile(user, profile: SteamOpenIdUserProfile) {
@@ -40,7 +49,6 @@ export default class UserHandler {
       .set({ steamId: newProfile[0].steamId })
       .where(eq(users.id, user.id))
       .returning({
-        email: users.email,
         name: users.name,
       });
   }

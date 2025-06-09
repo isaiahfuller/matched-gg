@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { SteamOpenIdUserProfile } from 'passport-steam-openid';
 import UserHandler from 'src/infrastructure/local/db/handlers/userHandler';
 import { Users } from 'src/infrastructure/local/db/schema/users';
 
@@ -12,6 +13,11 @@ export class UsersService {
     this.userHandler = new UserHandler();
   }
 
+  async addSteam(user, profile) {
+    const newUser = await this.userHandler.addSteamProfile(user, profile);
+    return newUser;
+  }
+
   async create({ email, name, password }: Users) {
     const newUser = await this.userHandler.addNewUser({
       email,
@@ -21,8 +27,12 @@ export class UsersService {
     return newUser;
   }
 
-  async createSteam(user, profile) {
-    const newUser = await this.userHandler.addSteamProfile(user, profile);
+  async createSteam(user: SteamOpenIdUserProfile) {
+    const newUser = await this.userHandler.addNewUser({
+      name: user.personaname,
+      steamId: user.steamid,
+    });
+    await this.addSteam(newUser, user);
     return newUser;
   }
 
