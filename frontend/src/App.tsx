@@ -116,7 +116,7 @@ function App() {
           ) : null}
           <Stack h="100%" justify="center" p={8}>
             <NavLink
-              disabled={["login", "signup"].includes(page)}
+              disabled={!isLoggedIn || loading}
               href="#"
               label="Recommendations"
               onClick={(e) => handleClick(e, "recommendations")}
@@ -125,7 +125,7 @@ function App() {
               active={page === "recommendations"}
             />
             <NavLink
-              disabled={["login", "signup"].includes(page)}
+              disabled={!isLoggedIn || loading}
               href="#"
               label="Previously recommended"
               onClick={(e) => handleClick(e, "previous")}
@@ -134,7 +134,7 @@ function App() {
               active={page === "previous"}
             />
             <NavLink
-              disabled={["login", "signup"].includes(page)}
+              disabled={!isLoggedIn || loading}
               href="#"
               label="Sync your libraries"
               onClick={(e) => handleClick(e, "sync")}
@@ -148,7 +148,7 @@ function App() {
             {isLoggedIn ? (
               <Menu
                 position={width < 768 ? "top" : "left-end"}
-                disabled={page === "login" ? true : false}
+                disabled={!isLoggedIn || loading}
                 offset={28}
               >
                 <Menu.Target>
@@ -186,7 +186,7 @@ function App() {
               </Menu>
             ) : (
               <NavLink
-                disabled={["login", "signup"].includes(page)}
+                disabled={!isLoggedIn || loading}
                 href="/steam/auth"
                 label="Logged out"
                 leftSection={<FontAwesomeIcon icon={faUser} />}
