@@ -11,12 +11,10 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-const STEAM_AVATAR_URL = "https://avatars.steamstatic.com/";
-
 interface SteamProfile {
   avatar: string;
   createdAt: string;
-  name: string;
+  personaname: string;
   url: string;
 }
 
@@ -53,11 +51,8 @@ export default function Sync() {
           <Flex align="center" justify="space-between">
             <Flex align="center" gap={4}>
               <FontAwesomeIcon icon={faSteam} size="xl" />
-              <Avatar
-                src={`${STEAM_AVATAR_URL}/${steam.avatar}.jpg`}
-                radius={0}
-              />
-              <Text span>{steam.name}</Text>
+              <Avatar src={`${steam.avatar}`} radius={0} />
+              <Text span>{steam.personaname}</Text>
             </Flex>
             <Flex align="center" gap={4}>
               <Text span hidden={syncLoading}>
