@@ -53,6 +53,8 @@ export class SteamController {
         if (!user) {
           const newUser = await this.usersService.createSteam(req.user);
           session.user = newUser[0];
+          session.user.steam = req.user;
+          await this.processLibrary(session);
           this.logger.log(`User ${newUser.id} logged in`);
           // throw new UnauthorizedException('Steam account not linked');
         } else {
