@@ -110,7 +110,6 @@ export default class SteamHandler {
         },
       },
     });
-    console.log(data);
     const ids: Set<number> = new Set();
     const games = {};
     for (const p of data) {

@@ -15,7 +15,6 @@ export class GamesController {
 
   @Get('getGames')
   async findAll(): Promise<Games[]> {
-    console.log('r');
     return await this.gameService.getGames();
   }
 

@@ -56,7 +56,6 @@ export class SteamController {
           session.user.steam = req.user;
           await this.processLibrary(session);
           this.logger.log(`User ${newUser.id} logged in`);
-          // throw new UnauthorizedException('Steam account not linked');
         } else {
           delete user.password;
           session.user = user;
