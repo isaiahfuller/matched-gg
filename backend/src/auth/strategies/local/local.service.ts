@@ -19,11 +19,11 @@ export class LocalService {
   ) {}
 
   async signup(user: Users) {
-    const existing = await this.usersService.findOne(user.email);
+    const existing = await this.usersService.findOne(user.email!);
     if (existing) throw new BadRequestException('User already exists');
-    if (!user.email.match(emailRegex))
+    if (!user.email || !user.email.match(emailRegex))
       throw new BadRequestException('Invalid email');
-    if (!user.password.match(passwordRegex))
+    if (!user.password || !user.password.match(passwordRegex))
       throw new BadRequestException('Invalid password');
     const hashedPassword = await bcrypt.hash(user.password, 10);
     const res = await this.usersService.create({
