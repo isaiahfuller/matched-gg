@@ -65,6 +65,9 @@ export class GameService {
         },
       },
     });
+    if (!basic.length) {
+      return null;
+    }
     const size = basic.length;
     const owned = basic.sort((a: any, b: any) => b.playtime - a.playtime);
     const ownedIgdbIds: number[] = [];

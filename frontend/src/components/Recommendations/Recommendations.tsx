@@ -89,19 +89,33 @@ export default function Recommendations() {
 
   async function getRecommendations() {
     setAccLoading(true);
-    const r = await fetch("/games/getRecommendations");
-    const recs: RecommendationsResult = await r.json();
-    if (!recs) return;
-    for (const g of recs.games) {
-      if (!g.type) g.type = "company";
-      if (!g.typeText) g.typeText = "qwerty";
+    try {
+      const r = await fetch("/games/getRecommendations");
+      const recs: RecommendationsResult = await r.json();
+      if (!recs) return;
+      for (const g of recs.games) {
+        if (!g.type) g.type = "company";
+        if (!g.typeText) g.typeText = "qwerty";
+      }
+      console.log(recs);
+      setGames([...recs.games]);
+      setRecommended(recs);
+      setAccLoading(false);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setAccLoading(false);
     }
-    console.log(recs);
-    setGames([...recs.games]);
-    setRecommended(recs);
-    setAccLoading(false);
   }
-
+  if (!games.length && !accLoading) {
+    return (
+      <Center className="centered">
+        <Title order={1} size="h4">
+          No games in library! Link your accounts in <a>Account Settings</a>
+        </Title>
+      </Center>
+    );
+  }
   return (
     <Container size="sm">
       {games.length && !accLoading ? (
