@@ -5,12 +5,12 @@ import { steamProfiles } from './steamProfiles';
 
 export const users = pgTable('users', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  email: text('email').notNull().unique(),
+  email: text('email').unique(),
   id: integer('user_id')
     .primaryKey()
     .generatedAlwaysAsIdentity({ startWith: 1000 }),
   name: text('name').notNull(),
-  password: text('password').notNull(),
+  password: text('password'),
   steamId: text('steam_id'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });

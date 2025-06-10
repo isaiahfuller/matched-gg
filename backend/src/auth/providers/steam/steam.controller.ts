@@ -50,12 +50,19 @@ export class SteamController {
     try {
       if (!session.user) {
         const user = await this.usersService.findBySteamId(req.user.steamid);
-        if (!user) throw new UnauthorizedException('Steam account not linked');
-        delete user.password;
-        session.user = user;
-        this.logger.log(`User ${user.id} logged in`);
+        if (!user) {
+          const newUser = await this.usersService.createSteam(req.user);
+          session.user = newUser[0];
+          session.user.steam = req.user;
+          await this.processLibrary(session);
+          this.logger.log(`User ${newUser.id} logged in`);
+        } else {
+          delete user.password;
+          session.user = user;
+          this.logger.log(`User ${user.id} logged in`);
+        }
       } else if (session.user) {
-        await this.usersService.createSteam(session.user, req.user);
+        await this.usersService.addSteam(session.user, req.user);
         const user = await this.usersService.findById(session.user.id);
         if (!user) throw new UnauthorizedException('Not logged in');
         delete user.password;
@@ -76,7 +83,7 @@ export class SteamController {
       throw new UnauthorizedException('No Steam account linked');
     }
     const games = await this.steamHandler.getOwnedGames(
-      session.user.steam.steamId,
+      session.user.steam.steamid,
     );
     return games.games;
   }
