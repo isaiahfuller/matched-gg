@@ -6,9 +6,8 @@ This repository is a monorepo containing both the frontend and backend component
 
 ### Stack
 
-Frontend - React, Vite, TailwindCSS, Mantine
+Frontend - React, Vite, Mantine
 Backend - NestJS, Drizzle, PostgreSQL, Powered by IGDB
-Landing - Astro, TailwindCSS
 
 ![G4MR Marquee](README/images/g4mr_marquee.png)
 
@@ -28,7 +27,6 @@ Landing - Astro, TailwindCSS
 
    ```bash
    corepack enable
-   yarn set version stable
    yarn
    ```
 
@@ -37,12 +35,30 @@ Landing - Astro, TailwindCSS
 1. From the root directory:
 
    ```bash
-   docker-compose up -d
+   docker compose up -d
    yarn backend:migrate
    yarn backend:seed
    ```
 
    This will create the database, run migrations, and seed the database with initial data.
+
+### Receiving updated data:
+
+1. From the root directory:
+
+   ```bash
+   yarn webhooks
+   ```
+
+   This will start an Express server that listens for data changes from IGDB.
+
+2. From the root directory:
+
+   ```bash
+   yarn webhooks:add
+   ```
+
+   This will register webhooks with IGDB.
 
 ### Running the application:
 
@@ -76,10 +92,4 @@ If you'd like to install **only** the depedencies for a specific component and t
 
    This will build the frontend of the application and output the build files to the `frontend/dist` directory.
 
-2. From the root directory:
-
-   ```bash
-   yarn run build:landing
-   ```
-
-3. The backend runs on node and does not require a build step.
+2. The backend runs on node and does not require a build step.
