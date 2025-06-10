@@ -2,7 +2,7 @@
 
 **G4MR** is a powerful, proprietary recommendation engine designed to help gamers discover their next favorite title.
 
-This repository is a monorepo containing both the frontend and backend components of the web application. The frontend is built with React and Vite, while the backend is built with NestJS. The landing page is a static site running on Astro.
+This repository is a monorepo containing both the frontend and backend components of the web application. The frontend is built with React and Vite, while the backend is built with NestJS.
 
 ### Stack
 
