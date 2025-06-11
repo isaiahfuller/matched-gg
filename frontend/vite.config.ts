@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const url = "https://isaiah.moe/gbk";
+const url = "http://localhost:4468";
 
 // https://vitejs.dev/config/
 export default defineConfig({

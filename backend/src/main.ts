@@ -1,6 +1,6 @@
 import { config } from '@config/config';
+import { ConsoleLogger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
 import passport from 'passport';
@@ -9,10 +9,12 @@ import { createClient } from 'redis';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const adapter = new ExpressAdapter();
-  adapter.set('trust proxy', 1);
-
-  const app = await NestFactory.create(AppModule, adapter);
+  const app = await NestFactory.create(AppModule, {
+    logger: new ConsoleLogger({
+      logLevels: ['log', 'fatal', 'error', 'warn', 'debug'],
+      timestamp: true,
+    }),
+  });
 
   const redisClient = createClient({
     url: `redis://:${config.redis.password}@localhost:${config.redis.port}`,
