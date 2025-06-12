@@ -18,6 +18,11 @@ export class GamesController {
     return await this.gameService.getGames();
   }
 
+  @Get('getPreviousRecommendations')
+  async getPreviousRecommendations(@Session() session) {
+    return this.gameService.getPreviousRecommendations(session.user.id);
+  }
+
   @Get('getRecommendations')
   async getRecommendations(@Session() session) {
     return this.gameService.getTimeRecommendations(session.user.id);

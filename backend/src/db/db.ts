@@ -2,6 +2,7 @@ import { config } from '@config/config';
 import logger from '@util/logger';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Client } from 'pg';
+import * as gameRecommendations from 'src/infrastructure/local/db/schema/gameRecommendations';
 
 import * as artworks from '../infrastructure/igdb/db/schema/artworks';
 import * as companies from '../infrastructure/igdb/db/schema/companies';
@@ -44,6 +45,7 @@ export const db = drizzle(client, {
     ...gameEngineLogos,
     ...gameModes,
     ...games,
+    ...gameRecommendations,
     ...genres,
     ...igdbSteamConnect,
     ...involvedCompanies,
