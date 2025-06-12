@@ -15,6 +15,5 @@ export const mapOwnedGame = (game, uid) => {
     updatedAt: new Date(),
     userId: uid,
   } satisfies UserOwnedGames;
-  console.log(mapped);
   return mapped;
 };
