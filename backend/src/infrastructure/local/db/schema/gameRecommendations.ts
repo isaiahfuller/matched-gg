@@ -37,3 +37,5 @@ export const gameRecommendationsRelations = relations(
     }),
   }),
 );
+
+export type GameRecommendation = typeof gameRecommendations.$inferInsert;
