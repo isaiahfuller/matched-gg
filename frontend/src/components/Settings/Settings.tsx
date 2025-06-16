@@ -1,9 +1,8 @@
-import { faSteam } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
+  Center,
   Checkbox,
-  Container,
+  Paper,
   PasswordInput,
   SimpleGrid,
   Stack,
@@ -23,7 +22,7 @@ interface SettingsProps {
 }
 
 export default function Settings({ user }: SettingsProps) {
-  const { width } = useViewportSize();
+  const { width, height } = useViewportSize();
   const form = useForm({
     mode: "controlled",
     initialValues: {
@@ -55,10 +54,12 @@ export default function Settings({ user }: SettingsProps) {
   }, []);
 
   return (
-    <Container>
-      <Stack>
-        <>
-          <Title>Account Settings</Title>
+    <Center h={height * 0.9}>
+      <Paper shadow="xs" px={24} py={18} withBorder>
+        <Stack>
+          <Title order={1} size="h2" lh={2}>
+            Account Settings
+          </Title>
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <SimpleGrid cols={width < 768 ? 1 : 2}>
               <Checkbox
@@ -102,22 +103,8 @@ export default function Settings({ user }: SettingsProps) {
               </Button>
             </SimpleGrid>
           </form>
-        </>
-        <>
-          <Title>Connect Accounts</Title>
-          <SimpleGrid cols={width < 768 ? 1 : 2}>
-            <Text>
-              <FontAwesomeIcon icon={faSteam} /> Steam
-            </Text>
-            <a
-              href="steam/auth"
-              onClick={() => localStorage.setItem("settings", "s")}
-            >
-              <Button variant="light">Connect</Button>
-            </a>
-          </SimpleGrid>
-        </>
-      </Stack>
-    </Container>
+        </Stack>
+      </Paper>
+    </Center>
   );
 }

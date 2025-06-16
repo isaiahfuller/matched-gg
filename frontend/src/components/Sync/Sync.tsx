@@ -4,11 +4,16 @@ import {
   Avatar,
   Button,
   Center,
-  Container,
+  Divider,
   Flex,
+  Group,
   Loader,
+  Paper,
+  Stack,
   Text,
+  Title,
 } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 
 interface SteamProfile {
@@ -19,6 +24,7 @@ interface SteamProfile {
 }
 
 export default function Sync() {
+  const { height } = useViewportSize();
   const [syncLoading, setSyncLoading] = useState<boolean>(false);
   const [steam, setSteam] = useState<SteamProfile>();
   const [steamCount, setSteamCount] = useState<number>(-1);
@@ -47,32 +53,63 @@ export default function Sync() {
     <Loader p={24} />
   </Center>;
   return (
-    <Container maw="66%">
-      <Flex align="center" justify="space-between">
-        <Flex align="center" gap={4}>
-          <FontAwesomeIcon icon={faSteam} size="xl" />
-          <Avatar
-            src={`https://avatars.steamstatic.com/${steam.avatar}.jpg`}
-            radius={0}
+    <Center h={height * 0.9}>
+      <Paper shadow="xs" px={24} py={18} withBorder>
+        <Title order={1} size="h2" lh={2}>
+          Link your accounts
+        </Title>
+        <Title order={2} size="h5" lh={2}>
+          For login and libraries
+        </Title>
+        <Stack>
+          <Divider
+            label={
+              <>
+                <Text>
+                  <FontAwesomeIcon icon={faSteam} size="xl" /> Steam
+                </Text>
+              </>
+            }
+            labelPosition="left"
           />
-          <Text span>{steam.name}</Text>
-        </Flex>
-        <Flex align="center" gap={4}>
-          <Text span hidden={syncLoading || steamCount === -1}>
-            {steamCount} games
-          </Text>
-          {steamCount !== -1 ? null : (
-            <Button
-              variant="outline"
-              onClick={processSteamLibrary}
-              loading={syncLoading}
-              disabled={steamCount !== -1}
-            >
-              Sync
-            </Button>
-          )}
-        </Flex>
-      </Flex>
-    </Container>
+          <Flex justify="space-between">
+            <a href={steam.url} target="_blank">
+              {steam ? (
+                <Group>
+                  <Avatar
+                    src={`https://avatars.steamstatic.com/${steam.avatar}.jpg`}
+                    radius={0}
+                  />
+                  <Text>{steam.name}</Text>
+                </Group>
+              ) : (
+                "Not connected"
+              )}
+            </a>{" "}
+            <Text span hidden={syncLoading || steamCount === -1}>
+              {steamCount} games
+            </Text>
+            {steamCount !== -1 ? null : (
+              <Button
+                variant="outline"
+                onClick={processSteamLibrary}
+                loading={syncLoading}
+                disabled={steamCount !== -1}
+              >
+                Sync
+              </Button>
+            )}
+            {steam ? null : (
+              <a
+                href="steam/auth"
+                onClick={() => localStorage.setItem("sync", "s")}
+              >
+                <Button variant="outline">Link</Button>
+              </a>
+            )}
+          </Flex>
+        </Stack>
+      </Paper>
+    </Center>
   );
 }

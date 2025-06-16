@@ -56,8 +56,8 @@ function App() {
           throw new Error("No profile received");
         }
         setUser(res.profile);
-        if (localStorage.getItem("settings")) {
-          setPage("settings");
+        if (localStorage.getItem("sync")) {
+          setPage("sync");
           fetch("/steam/processLibrary").then((r) => r.json());
         }
         setLoading(false);
@@ -203,7 +203,9 @@ function App() {
           </Center>
         ) : (
           <>
-            {["login", "signup", "settings"].includes(page) ? null : <Search />}
+            {["login", "signup", "settings", "sync"].includes(page) ? null : (
+              <Search />
+            )}
             <Pages page={page} user={user} setUser={setUser} />
           </>
         )}
