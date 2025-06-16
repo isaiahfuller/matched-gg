@@ -159,7 +159,11 @@ function App() {
                     <UserButton
                       name={user.name}
                       email={user.email}
-                      image={"https://placehold.co/36"}
+                      image={
+                        user.steam
+                          ? `https://avatars.steamstatic.com/${user.steam.avatar}.jpg`
+                          : "https://placehold.co/36"
+                      }
                       width={width < 768 ? width - 28 : 222}
                     />
                   )}

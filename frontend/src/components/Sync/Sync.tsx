@@ -15,13 +15,7 @@ import {
 } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-
-interface SteamProfile {
-  avatar: string;
-  createdAt: string;
-  name: string;
-  url: string;
-}
+import { SteamProfile } from "../../interfaces";
 
 export default function Sync() {
   const { height } = useViewportSize();
@@ -72,7 +66,7 @@ export default function Sync() {
             }
             labelPosition="left"
           />
-          <Flex justify="space-between">
+          <Flex justify="space-between" align="center">
             <a href={steam.url} target="_blank">
               {steam ? (
                 <Group>

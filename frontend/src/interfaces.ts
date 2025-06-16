@@ -172,7 +172,15 @@ export interface User {
   name: string;
   email: string;
   id?: number;
-  steamId: number;
+  steamId?: number;
+  steam?: SteamProfile;
+}
+
+export interface SteamProfile {
+  avatar: string;
+  createdAt: string;
+  name: string;
+  url: string;
 }
 
 export interface RecommendationsResult {
