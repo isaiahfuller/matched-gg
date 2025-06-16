@@ -43,7 +43,7 @@ export default function Sync() {
     return library;
   }
   if (!steam) return;
-  <Center>
+  <Center className="centered">
     <Loader p={24} />
   </Center>;
   return (
