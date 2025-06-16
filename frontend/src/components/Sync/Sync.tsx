@@ -42,10 +42,12 @@ export default function Sync() {
     setSyncLoading(false);
     return library;
   }
-  if (!steam) return;
-  <Center className="centered">
-    <Loader p={24} />
-  </Center>;
+  if (!steam)
+    return (
+      <Center className="centered">
+        <Loader p={24} />
+      </Center>
+    );
   return (
     <Center h={height * 0.9}>
       <Paper shadow="xs" px={24} py={18} withBorder>
