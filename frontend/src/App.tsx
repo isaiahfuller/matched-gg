@@ -81,11 +81,6 @@ function App() {
     setPage(idx);
   }
 
-  async function getGames() {
-    const games = await fetch("/steam/getOwnedGames");
-    console.log(await games.json());
-  }
-
   return (
     <AppShell
       navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
@@ -169,18 +164,11 @@ function App() {
                   )}
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item onClick={getGames}>owned</Menu.Item>
-                  <Menu.Label>Actions</Menu.Label>
                   <Menu.Item
                     leftSection={<FontAwesomeIcon icon={faUser} />}
                     onClick={() => setPage("settings")}
                   >
                     Account Settings
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
-                  >
-                    Change Account
                   </Menu.Item>
                   <Menu.Item
                     leftSection={<FontAwesomeIcon icon={faRightFromBracket} />}
