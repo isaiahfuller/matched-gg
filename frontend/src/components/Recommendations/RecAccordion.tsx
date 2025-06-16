@@ -34,8 +34,8 @@ export default function RecAccordion({
 }: {
   recommendations: {
     game: IGDBGame;
-    type: "company" | "tag" | "wildcard" | string;
-    typeText: string;
+    type?: "company" | "tag" | "wildcard" | string | null;
+    typeText?: string | null;
   }[];
 }) {
   const [screenIdx, setScreenIdx] = useState<number>(0);
@@ -48,17 +48,19 @@ export default function RecAccordion({
 
   const items = recommendations.map((item) => {
     let controlHeader = "";
-    switch (item.type) {
-      case "company":
-        controlHeader = ` Because you enjoy titles from `;
-        break;
-      case "tag":
-        controlHeader = ` We recommend this because you enjoy `;
-        break;
-      case "wildcard":
-        controlHeader = ` This is our `;
-        break;
-    }
+    if (item.type)
+      switch (item.type) {
+        case "company":
+          controlHeader = ` Because you enjoy titles from `;
+          break;
+        case "tag":
+          controlHeader = ` We recommend this because you enjoy `;
+          break;
+        case "wildcard":
+          controlHeader = ` This is our `;
+          break;
+      }
+    else controlHeader = "";
     const rating = item.game.rating ? Math.floor(item.game.rating) : null;
     return (
       <Accordion.Item key={item.game.id} value={item.game.name!}>
@@ -67,18 +69,23 @@ export default function RecAccordion({
             <Text fw={700} span>
               {item.game.name!}
             </Text>
-            <Text c="dimmed" span>
-              {" "}
-              -{controlHeader}
-            </Text>
-            <span className={classes.highlight}>{item.typeText}</span>
-            {item.type === "tag" ? (
-              <Text c="dimmed" span>
-                {" "}
-                games
-              </Text>
-            ) : (
-              ""
+
+            {!item.type ? null : (
+              <>
+                <Text c="dimmed" span>
+                  {" "}
+                  -{controlHeader}
+                </Text>
+                <span className={classes.highlight}>{item.typeText}</span>
+                {item.type === "tag" ? (
+                  <Text c="dimmed" span>
+                    {" "}
+                    games
+                  </Text>
+                ) : (
+                  ""
+                )}
+              </>
             )}
           </Text>
         </AccordionControl>

@@ -134,7 +134,7 @@ export default class SteamHandler {
     if (!session || !session.user || !session.user.steam) {
       throw new UnauthorizedException('No Steam account linked');
     }
-    const data = await this.getOwnedGames(session.user.steam.steamid);
+    const data = await this.getOwnedGames(session.user.steam.steamId);
     const games = data.games.map((game) => mapOwnedGame(game, session.user.id));
     const chunks = chunk(games, 1000);
     chunks.forEach((chunk) => {

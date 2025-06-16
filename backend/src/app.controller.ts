@@ -43,6 +43,8 @@ export class AppController {
         email: session.user.email,
         id: session.user.id,
         name: session.user.name,
+        steam: session.user.steam || null,
+        steamId: session.user.steamId || null,
       },
       valid: true,
     };

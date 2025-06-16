@@ -1,10 +1,11 @@
-import { Center, Loader, Text } from "@mantine/core";
+import { Center, Loader } from "@mantine/core";
 
 import { User } from "../../interfaces";
 import Login from "../Login/Login";
 import Recommendations from "../Recommendations/Recommendations";
 import Settings from "../Settings/Settings";
 import Sync from "../Sync/Sync";
+import PreviousRecommendations from "../Recommendations/PreviousRecommendations";
 
 interface PagesProps {
   page: string;
@@ -16,7 +17,7 @@ export default function Pages({ page, user, setUser }: PagesProps) {
     case "recommendations":
       return <Recommendations />;
     case "previous":
-      return <Text>Previously recommended</Text>;
+      return <PreviousRecommendations />;
     case "sync":
       return <Sync />;
     case "settings":

@@ -5,16 +5,20 @@ import { eq, gt, inArray } from 'drizzle-orm';
 import { DrizzleDB } from './db/db';
 import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
 import { gamesTable } from './infrastructure/igdb/db/schema/games';
+import RecommendationHandler from './infrastructure/local/db/handlers/recommendationHandler';
+import { GameRecommendation } from './infrastructure/local/db/schema/gameRecommendations';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
 
 @Injectable()
 export class GameService {
   db: IgdbDbController;
   dbConnection: DrizzleDB;
+  recommendationHandler: RecommendationHandler;
 
   constructor() {
     this.db = new IgdbDbController();
     this.dbConnection = this.db.getConnection();
+    this.recommendationHandler = new RecommendationHandler();
   }
 
   async getGames(page = 0, size = 100) {
@@ -55,6 +59,9 @@ export class GameService {
         },
       },
     });
+  }
+  async getPreviousRecommendations(id: number) {
+    return await this.recommendationHandler.getRecommendations(id);
   }
   async getTimeRecommendations(id: number) {
     const basic = await this.dbConnection.query.userOwnedGames.findMany({
@@ -199,6 +206,7 @@ export class GameService {
       }
       return resB - resA;
     });
+    this.mapRecommendations(id, gameRecommendations);
     const res = {
       games: gameRecommendations,
       genres: sortedGenres.slice(0, 3),
@@ -214,5 +222,16 @@ export class GameService {
       type: 'time',
     };
     return res;
+  }
+  async mapRecommendations(id, games) {
+    const res: GameRecommendation[] = [];
+    for (const g of games.reverse()) {
+      res.push({
+        gameId: g.game.igdbId,
+        updatedAt: new Date(),
+        userId: id,
+      });
+    }
+    return await this.recommendationHandler.addRecommendations(res);
   }
 }
