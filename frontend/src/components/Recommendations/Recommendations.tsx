@@ -91,6 +91,7 @@ export default function Recommendations() {
     setAccLoading(true);
     try {
       const r = await fetch("/games/getRecommendations");
+      console.log(r);
       const recs: RecommendationsResult = await r.json();
       if (!recs) return;
       for (const g of recs.games) {

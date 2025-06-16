@@ -5,6 +5,7 @@ import {
   Divider,
   Flex,
   Loader,
+  Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import RecAccordion from "./RecAccordion";
@@ -31,6 +32,14 @@ export default function PreviousRecommendations() {
     return (
       <Center className="centered">
         <Loader />
+      </Center>
+    );
+  if (!games || !games.length)
+    return (
+      <Center className="centered">
+        <Title order={1} size="h4">
+          No recommendations yet!
+        </Title>
       </Center>
     );
   return (
