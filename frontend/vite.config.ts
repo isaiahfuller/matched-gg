@@ -24,6 +24,11 @@ export default defineConfig({
         changeOrigin: false,
         secure: false,
       },
+      "/logout": {
+        target: url,
+        changeOrigin: false,
+        secure: false,
+      },
       "/auth": {
         target: url,
         changeOrigin: false,

@@ -3,7 +3,6 @@ import {
   Get,
   Logger,
   Post,
-  Request,
   Session,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -31,8 +30,8 @@ export class AppController {
   }
 
   @Get('logout')
-  async logout(@Request() req) {
-    this.authService.logout(req.user.sub);
+  async logout(@Session() session) {
+    session.destroy();
   }
 
   @Post('verify')

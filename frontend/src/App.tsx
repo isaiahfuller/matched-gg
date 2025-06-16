@@ -80,6 +80,10 @@ function App() {
     e.preventDefault();
     setPage(idx);
   }
+  async function logOut() {
+    await fetch("/logout");
+    window.location.reload();
+  }
 
   return (
     <AppShell
@@ -172,6 +176,7 @@ function App() {
                   </Menu.Item>
                   <Menu.Item
                     leftSection={<FontAwesomeIcon icon={faRightFromBracket} />}
+                    onClick={logOut}
                   >
                     Logout
                   </Menu.Item>
