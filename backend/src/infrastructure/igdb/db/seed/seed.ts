@@ -110,6 +110,9 @@ import { WebsiteTypes, websiteTypesTable } from '../schema/websiteTypes';
 import { Websites, websitesTable } from '../schema/websites';
 import { processRelations } from './processRelations';
 
+/**
+ * Gets data from IGDB, adds it to the database
+ */
 const seed = async (): Promise<void> => {
   const igdbDbController = new IgdbDbController();
 
@@ -132,6 +135,12 @@ const seed = async (): Promise<void> => {
     logger,
   });
 
+  /**
+   * Get data for given endpoint from IGDB, add it to the database
+   * @param mapping - Map function for the schema
+   * @param endpoint - Name of the IGDB endpoint
+   * @typeParam DTO - Database schema's type
+   */
   async function seedResource<DTO extends { id?: number }>(mapping, endpoint) {
     const igdbGames = await igdb.seedResources<DTO>({
       concurrency: 3,
@@ -312,6 +321,9 @@ const seed = async (): Promise<void> => {
   await seedResource<ScreenshotDTO>(mapScreenshot, IgdbResources.SCREENSHOTS);
 };
 
+/**
+ * Runs {@link seed}, {@link processRelations}, and {@link igdbSteamLink}
+ */
 async function main() {
   let step = 'Seed';
   try {
