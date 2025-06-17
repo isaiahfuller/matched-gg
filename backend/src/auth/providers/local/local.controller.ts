@@ -19,6 +19,12 @@ export class LocalController {
     private readonly authService: AuthService,
   ) {}
 
+  /**
+   *
+   * @param req - http request
+   * @param session - session
+   * @returns Session data with account data
+   */
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
   async login(@Request() req, @Session() session) {
@@ -27,6 +33,12 @@ export class LocalController {
     return session.user;
   }
 
+  /**
+   *
+   * @param req - http request
+   * @param session - session
+   * @returns Session data with newly registered account data
+   */
   @Post('auth/signup')
   async signup(@Request() req, @Session() session) {
     if (

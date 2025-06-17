@@ -4,6 +4,7 @@ const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommen
 const eslintPluginPrettier = require('eslint-plugin-prettier');
 const perfectionistRecommended = require('eslint-plugin-perfectionist/configs/recommended-natural');
 const perfectionist = require('eslint-plugin-perfectionist');
+const tsdoc = require('eslint-plugin-tsdoc')
 
 module.exports = tseslint.config({
   extends: [
@@ -27,6 +28,7 @@ module.exports = tseslint.config({
     '@typescript-eslint/eslint-plugin': tsplugin,
     perfectionist: perfectionist,
     prettier: eslintPluginPrettier,
+    'eslint-plugin-tsdoc': tsdoc
   },
   ignores: ['**/eslint.config.js', 'dist/**/*'],
   rules: {
@@ -39,6 +41,7 @@ module.exports = tseslint.config({
         'partition-by-comment': true,
       },
     ],
+    "eslint-plugin-tsdoc/syntax": 'warn',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',

@@ -13,16 +13,30 @@ export class GamesController {
     private readonly gameService: GameService,
   ) {}
 
+  /**
+   *
+   * @returns The first 100 games in the database
+   */
   @Get('getGames')
   async findAll(): Promise<Games[]> {
     return await this.gameService.getGames();
   }
 
+  /**
+   *
+   * @param session - Logged in user session
+   * @returns User's previous game recommendations
+   */
   @Get('getPreviousRecommendations')
   async getPreviousRecommendations(@Session() session) {
     return this.gameService.getPreviousRecommendations(session.user.id);
   }
 
+  /**
+   *
+   * @param session - Logged in user session
+   * @returns New recommendations for user
+   */
   @Get('getRecommendations')
   async getRecommendations(@Session() session) {
     return this.gameService.getTimeRecommendations(session.user.id);

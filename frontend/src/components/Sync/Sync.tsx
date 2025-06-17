@@ -79,15 +79,15 @@ export default function Sync() {
                 "Not connected"
               )}
             </a>{" "}
-            <Text span hidden={syncLoading || steamCount === -1}>
+            <Text span hidden={syncLoading || !steamCount || steamCount === -1}>
               {steamCount} games
             </Text>
-            {steamCount !== -1 ? null : (
+            {steamCount > -1 ? null : (
               <Button
                 variant="outline"
                 onClick={processSteamLibrary}
                 loading={syncLoading}
-                disabled={steamCount !== -1}
+                disabled={steamCount > -1}
               >
                 Sync
               </Button>
