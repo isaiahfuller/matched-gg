@@ -321,9 +321,6 @@ const seed = async (): Promise<void> => {
   await seedResource<ScreenshotDTO>(mapScreenshot, IgdbResources.SCREENSHOTS);
 };
 
-/**
- * Runs {@link seed}, {@link processRelations}, and {@link igdbSteamLink}
- */
 async function main() {
   let step = 'Seed';
   try {

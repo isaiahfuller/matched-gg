@@ -95,6 +95,9 @@ const igdbDbController = new IgdbDbController();
 const app = express();
 app.use(express.json());
 
+/**
+ * Accepts data from IGDB into the database
+ */
 app.post('/igdb/:endpoint/:type', async (req, res) => {
   const { endpoint, type } = req.params;
   if (req.headers['x-secret'] !== config.authSecrets.jwt.replaceAll('+', ' ')) {
@@ -296,6 +299,12 @@ app.post('/igdb/:endpoint/:type', async (req, res) => {
   }
 });
 
+/**
+ * Handles many-to-many relationships from the games table
+ * @param data - The game to be processed
+ * @param key - The other table to be processed
+ * @returns An object with game and resource ids
+ */
 function processRelation(data: Games, key: string) {
   if (!data[key] || !data[key].length) return [];
   const res: any = [];
@@ -307,6 +316,13 @@ function processRelation(data: Games, key: string) {
   return res;
 }
 
+/**
+ *
+ * @param data - Data from endpoint to be added
+ * @param type - 'create', 'update', or 'delete'
+ * @param table - Database table to insert data into (or delete from)
+ * @typeParam T - Database schema's type
+ */
 async function store<T extends { igdbId: number }>(
   data: any,
   type: string,
