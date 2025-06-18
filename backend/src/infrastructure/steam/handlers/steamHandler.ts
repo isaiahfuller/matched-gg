@@ -24,9 +24,11 @@ export default class SteamHandler {
 
   /**
    *
-   * @param steamId
-   * @param appid
-   * @returns
+   * @param steamId - User's Steam id
+   * @param appid - Game's app id
+   * @returns User's achievements for the given game
+   *
+   * @deprecated Doesn't currently have a use
    */
   public async getGameAchievements(steamId, appid) {
     if (!steamId) {
@@ -45,10 +47,19 @@ export default class SteamHandler {
 
     return achievements;
   }
+
   /**
+   * Gets a user's owned games from Steam
    *
-   * @param steamId
+   * @param steamId - User's Steam id
    * @returns The user's owned games, with playtime and last played timestamp
+   *
+   * @throws {@link NoIdError}
+   * Thrown if the Steam id is invalid
+   *
+   * @remarks
+   * Steam has a habit of throwing seemingly random 429s. Not sure how to handle that atm.
+   *
    */
   public async getOwnedGames(steamId) {
     if (!steamId) {
@@ -66,6 +77,18 @@ export default class SteamHandler {
     }
     return data;
   }
+
+  /**
+   * Gets recommended games for a user based on how often they appear in IGDB's similar games field
+   *
+   * @param session - User's session
+   * @returns An array of games
+   *
+   * @throws {@link UnauthorizedException}
+   * Thrown if the session doesn't contain Steam data
+   *
+   * @deprecated Currently replaced by {@link getTimeRecommendations}
+   */
   public async getSimilarGames(session) {
     if (!session || !session.user || !session.user.steam) {
       throw new UnauthorizedException('No Steam account linked');
@@ -130,6 +153,12 @@ export default class SteamHandler {
       (a, b) => b.count - a.count,
     );
   }
+
+  /**
+   * Gets a user's owned games and saves them to the database
+   * @param session - User's session
+   * @returns User's owned games on Steam, mapped for the database
+   */
   public async syncAccount(session) {
     if (!session || !session.user || !session.user.steam) {
       throw new UnauthorizedException('No Steam account linked');

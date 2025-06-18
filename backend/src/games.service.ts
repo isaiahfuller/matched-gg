@@ -20,7 +20,17 @@ export class GameService {
     this.dbConnection = this.db.getConnection();
     this.recommendationHandler = new RecommendationHandler();
   }
-
+  /**
+   *
+   * Gets a set of games.
+   *
+   * @remarks
+   * This has low utility and was made for testing. There are no filters, just offset and size.
+   *
+   * @param page - Which page of results to get, default = 0
+   * @param size - Page size, default = 100
+   * @returns An array of games with multiple relations enabled
+   */
   async getGames(page = 0, size = 100) {
     return await this.dbConnection.query.gamesTable.findMany({
       limit: size,
@@ -60,9 +70,20 @@ export class GameService {
       },
     });
   }
+  /**
+   *
+   * @param id - User id
+   * @returns Previously shown game recommendations for the given user
+   */
   async getPreviousRecommendations(id: number) {
     return await this.recommendationHandler.getRecommendations(id);
   }
+
+  /**
+   *
+   * @param id - User id
+   * @returns Game recommendations for a user based on their most played games
+   */
   async getTimeRecommendations(id: number) {
     const basic = await this.dbConnection.query.userOwnedGames.findMany({
       where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),

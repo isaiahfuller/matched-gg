@@ -9,7 +9,7 @@ export enum UrlProtocol {
 /**
  * Validates a URL using the Zod library.
  *
- * @param {string} url - The URL to validate.
+ * @param url - The URL to validate.
  * @returns The validated URL.
  * @example validateUrl('https://www.example.com')
  */

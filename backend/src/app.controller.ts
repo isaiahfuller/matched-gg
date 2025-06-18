@@ -18,22 +18,31 @@ export class AppController {
     private readonly authService: AuthService,
   ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
+  /**
+   *
+   * @param session - User's session
+   * @returns User data
+   */
   @Post('profile')
   getProfile(@Session() session) {
     const send = { ...session.user };
     return send;
   }
 
+  /**
+   * Delete's user session
+   * @param session - User's session
+   */
   @Get('logout')
   async logout(@Session() session) {
     session.destroy();
   }
 
+  /**
+   * Checks user's session for user data and returns it if present
+   * @param session - User's session
+   * @returns User data
+   */
   @Post('verify')
   async verify(@Session() session) {
     if (!session.user) throw new UnauthorizedException('Not signed in');

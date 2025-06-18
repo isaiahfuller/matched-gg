@@ -17,9 +17,17 @@ const twitch = new TwitchHandler(
 
 const webhooks: IgdbWebhook[] = [];
 
+/**
+ * Registers webhooks with IGDB
+ */
 const addWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
 
+  /**
+   * Send request to register individual webhook
+   * @param endpoint - IGDB data endpoint for webhook
+   * @param type - 'create', 'update', or 'delete'
+   */
   const addWebhook = async (
     endpoint: string,
     type: 'create' | 'delete' | 'update',
@@ -51,6 +59,9 @@ const addWebhooks = async (): Promise<void> => {
   }
 };
 
+/**
+ * Sends request to unregister webhooks
+ */
 const removeWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
   logger.info(`Removing webhooks`);
@@ -67,6 +78,9 @@ const removeWebhooks = async (): Promise<void> => {
   }
 };
 
+/**
+ * Gets all currently registered webhooks
+ */
 const getWebhooks = async (): Promise<void> => {
   const accessToken = (await twitch.connect()).access_token;
   const res = await fetch(`https://api.igdb.com/v4/webhooks/`, {

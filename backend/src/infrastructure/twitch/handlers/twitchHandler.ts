@@ -107,7 +107,7 @@ class TwitchHandler implements TwitchHandlerInterface {
   // TODO: Create a type for the return value
   /**
    * Retrieves the connection status and endpoint of the Twitch handler.
-   * @returns {object} The connection status and endpoint.
+   * @returns The connection status and endpoint.
    */
   getConnectionStatus(): object {
     return {
