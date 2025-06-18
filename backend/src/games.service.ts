@@ -2,24 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { ciLowerBound } from '@util/ciLowerBound';
 import { eq, gt, inArray } from 'drizzle-orm';
 
-import { DrizzleDB } from './db/db';
-import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
+import { db } from './db/db';
 import { gamesTable } from './infrastructure/igdb/db/schema/games';
+import { genresTable } from './infrastructure/igdb/db/schema/genres';
 import RecommendationHandler from './infrastructure/local/db/handlers/recommendationHandler';
 import { mapRecommendations } from './infrastructure/local/db/map/mapRecommendations';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
 
 @Injectable()
 export class GameService {
-  db: IgdbDbController;
-  dbConnection: DrizzleDB;
   recommendationHandler: RecommendationHandler;
 
   constructor() {
-    this.db = new IgdbDbController();
-    this.dbConnection = this.db.getConnection();
     this.recommendationHandler = new RecommendationHandler();
   }
+
   /**
    *
    * Gets a set of games.
@@ -32,7 +29,7 @@ export class GameService {
    * @returns An array of games with multiple relations enabled
    */
   async getGames(page = 0, size = 100) {
-    return await this.dbConnection.query.gamesTable.findMany({
+    return await db.query.gamesTable.findMany({
       limit: size,
       offset: page * size,
       with: {
@@ -70,6 +67,21 @@ export class GameService {
       },
     });
   }
+
+  /**
+   * Gets the users owned games
+   * @param id - User id
+   * @param relations - Object with drizzle relations
+   * @returns User's owned games
+   */
+  async getOwnedGames(id: number, relations = {}) {
+    const games = await db.query.userOwnedGames.findMany({
+      where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
+      with: relations,
+    });
+    return games;
+  }
+
   /**
    *
    * @param id - User id
@@ -85,7 +97,7 @@ export class GameService {
    * @returns Game recommendations for a user based on their most played games
    */
   async getTimeRecommendations(id: number) {
-    const basic = await this.dbConnection.query.userOwnedGames.findMany({
+    const basic = await db.query.userOwnedGames.findMany({
       where: eq(userOwnedGames.userId, id) && gt(userOwnedGames.playtime, 0),
       with: {
         steam: {
@@ -104,7 +116,7 @@ export class GameService {
         ownedIgdbIds.push(game.steam.igdbId);
     }
     const numGames = Math.min(20, size - size * 0.05);
-    const userGames = await this.dbConnection.query.gamesTable.findMany({
+    const userGames = await db.query.gamesTable.findMany({
       where: inArray(gamesTable.igdbId, ownedIgdbIds.slice(0, numGames)),
       with: {
         genresRelation: {
@@ -146,10 +158,9 @@ export class GameService {
     const usedIdx = new Set<number>();
     for (let i = 0; usedIdx.size < 3; i++) {
       const num = Math.floor(Math.random() * (numGames - 0 + 1));
+      if (usedIdx.has(num)) continue;
       usedIdx.add(num);
-    }
-    for (const i of [...usedIdx]) {
-      if (userGames[i]) selectedGames.push(userGames[i]);
+      if (userGames[num]) selectedGames.push(userGames[num]);
     }
     const ids: Set<number> = new Set();
     const games = {};
@@ -244,5 +255,40 @@ export class GameService {
       type: 'time',
     };
     return res;
+  }
+
+  /**
+   * Get the user's most played genres
+   * @param id - User id
+   * @param numGenres - Number of genres to return
+   * @param numGames - Number of games to process, sorted by playtime
+   */
+  async getTopGenres(id: number, numGenres: number = 0, numGames: number = 0) {
+    const games: any = await this.getOwnedGames(id, {
+      steam: { with: { igdbGame: true } },
+    });
+    const sortedGames = games
+      .sort((a, b) => b.playtime - a.playtime)
+      .slice(0, numGames || games.length);
+    const mappedGenres = new Map();
+    for (const game of sortedGames) {
+      if (!game.steam || !game.steam.igdbGame || !game.steam.igdbGame.genres)
+        continue;
+      const curr = game.steam.igdbGame.genres;
+      for (const genre of curr) {
+        if (mappedGenres.has(genre)) {
+          mappedGenres.set(genre, mappedGenres.get(genre) + 1);
+        } else {
+          mappedGenres.set(genre, 1);
+        }
+      }
+    }
+    const genreIds = [...mappedGenres.keys()]
+      .sort((a, b) => mappedGenres.get(b) - mappedGenres.get(a))
+      .slice(0, numGenres || mappedGenres.size);
+    const genres = await db.query.genresTable.findMany({
+      where: inArray(genresTable.igdbId, genreIds),
+    });
+    return genres;
   }
 }

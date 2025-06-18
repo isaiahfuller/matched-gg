@@ -16,13 +16,13 @@ export const userOwnedGames = pgTable(
   {
     createdAt: timestamp('created_at').notNull().defaultNow(),
     lastPlayed: timestamp('last_played'),
-    playtime: integer('playtime'),
+    playtime: integer('playtime').notNull(),
     playtimeDeck: integer('playtime_deck'),
     playtimeDisconnected: integer('playtime_disconnected'),
     playtimeLinux: integer('playtime_linux'),
     playtimeMac: integer('playtime_mac'),
     playtimeWindows: integer('playtime_windows'),
-    steamId: bigint('steam_id', { mode: 'number' }),
+    steamId: bigint('steam_id', { mode: 'number' }).notNull(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     userId: integer('user_id')
       .notNull()

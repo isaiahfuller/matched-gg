@@ -5,7 +5,7 @@ import { UserOwnedGames } from '../schema/steamUserOwnedGames';
 export const mapOwnedGame = (game, uid) => {
   const mapped = {
     lastPlayed: validateTimestamp(game.rtime_last_played),
-    playtime: game.playtime_forever,
+    playtime: game.playtime_forever || 0,
     playtimeDeck: game.playtime_deck_forever,
     playtimeDisconnected: game.playtime_disconnected,
     playtimeLinux: game.playtime_linux_forever,
