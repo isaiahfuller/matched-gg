@@ -1,8 +1,6 @@
 /**
  * Enum that represents the [IGDB](https://www.igdb.com/) resources that can be requested
- * @enum
  */
-// TODO: Add more resources as needed
 export enum IgdbResources {
   ARTWORKS = 'artworks',
   COMPANIES = 'companies',

@@ -28,6 +28,14 @@ export class SteamController {
     private readonly usersService: UsersService,
   ) {}
 
+  /**
+   *
+   * @param session - User's session
+   * @param req - http request
+   * @param res - http response
+   * @returns User's achievement status for a specific game
+   * @deprecated Currently not being used
+   */
   @Post('gameAchievements')
   async achivements(@Session() session, @Req() req, @Res() res) {
     const achivements = await this.steamHandler.getGameAchievements(
@@ -38,12 +46,23 @@ export class SteamController {
     return achivements;
   }
 
+  /**
+   *
+   * @param session - User's session
+   * @returns Games similar to the user's, ordered by number of appearances.
+   */
   @Get('getSimilarGames')
   async getSimilarGames(@Session() session) {
     const games = this.steamHandler.getSimilarGames(session);
     return games;
   }
 
+  /**
+   * Once user logs in with Steam, links account, creates account, or logs in to account.
+   * @param session - User's session
+   * @param req - http request, with data from {@link SteamOpenIdUserProfile}
+   * @param res - http response
+   */
   @UseGuards(AuthGuard('steam-openid'))
   @Get('auth')
   async login(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
@@ -77,6 +96,11 @@ export class SteamController {
     }
   }
 
+  /**
+   *
+   * @param session - User's session
+   * @returns The user's owned games, with playtime and last played timestamp
+   */
   @Get('getOwnedGames')
   async ownedGames(@Session() session) {
     if (!session.user || !session.user.steam) {
@@ -88,6 +112,11 @@ export class SteamController {
     return games.games;
   }
 
+  /**
+   *
+   * @param session - User's session
+   * @returns User's owned games on Steam, mapped for the database
+   */
   @Get('processLibrary')
   async processLibrary(@Session() session) {
     if (!session.user || !session.user.steam) {
@@ -97,6 +126,11 @@ export class SteamController {
     return games;
   }
 
+  /**
+   *
+   * @param session - User's session
+   * @returns Steam account info
+   */
   @Post('valid')
   async validate(@Session() session) {
     if (!('providers' in session) || !('steam' in session.providers)) {

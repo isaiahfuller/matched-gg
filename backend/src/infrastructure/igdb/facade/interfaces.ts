@@ -48,14 +48,14 @@ export interface IgdbFacadeConstructor {
 export interface SeedOptions {
   /**
    * Whether to expand the game fields.
-   * @default true
+   * @defaultValue true
    */
   expanded?: boolean | true;
   /**
    * The limit of games to retrieve per request.
    * defaults to the maximum of 500.
    *
-   * @default 500
+   * @defaultValue 500
    */
   limit?: 500 | number;
   /**

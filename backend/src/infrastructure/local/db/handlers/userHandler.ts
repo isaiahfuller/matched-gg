@@ -14,6 +14,11 @@ export default class UserHandler {
     });
   }
 
+  /**
+   * Creates a user account with email, name, and password
+   * @param user - User data
+   * @returns New user account
+   */
   async addNewUser({ email, name, password, steamId }: Users) {
     return this.db
       .insert(users)
@@ -33,6 +38,12 @@ export default class UserHandler {
       });
   }
 
+  /**
+   *
+   * @param user - User data
+   * @param profile - Steam profile data
+   * @returns Steam profile data
+   */
   async addSteamProfile(user, profile: SteamOpenIdUserProfile) {
     const newProfile = await this.db
       .insert(steamProfiles)
@@ -53,6 +64,11 @@ export default class UserHandler {
       });
   }
 
+  /**
+   *
+   * @param email - User's email
+   * @returns Deleted user's info
+   */
   async deleteUser(email) {
     await this.db.delete(users).where(eq(users.email, email)).returning({
       email: users.email,
@@ -61,6 +77,11 @@ export default class UserHandler {
     });
   }
 
+  /**
+   *
+   * @param id - User id
+   * @returns User account info
+   */
   async findById(uid: number) {
     const result = await this.db.query.users.findFirst({
       where: (users, { eq }) => eq(users.id, uid),
@@ -71,6 +92,11 @@ export default class UserHandler {
     return result;
   }
 
+  /**
+   *
+   * @param id - User Steam id
+   * @returns User account info
+   */
   async findBySteamId(steamId: number) {
     const result = await this.db.query.users.findFirst({
       where: (users, { eq }) => eq(users.steamId, steamId),
@@ -82,6 +108,11 @@ export default class UserHandler {
     return result;
   }
 
+  /**
+   *
+   * @param email - User email address
+   * @returns User account, null if email doesn't match
+   */
   async findOneByEmail(userEmail: string) {
     const result = await this.db.query.users.findFirst({
       where: (users, { eq }) => eq(users.email, userEmail),
@@ -93,6 +124,11 @@ export default class UserHandler {
     return result;
   }
 
+  /**
+   *
+   * @param user - Changed user info
+   * @returns The updated user info
+   */
   async updateUser({ email = null, id, name = null, password = null }) {
     const updatedUser: Users | any = {};
     if (name) updatedUser.name = name;

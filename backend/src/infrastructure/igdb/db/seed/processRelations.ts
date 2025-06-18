@@ -8,10 +8,19 @@ interface RelationItem {
   gameId: number | string;
   resourceId: number | string;
 }
+
+/**
+ * Handles the many-to-many relations in the database
+ */
 export const processRelations = async () => {
   const igdbDbController = new IgdbDbController();
   const db = igdbDbController.getConnection();
 
+  /**
+   *
+   * @param resource - The column in the games table to pull from
+   * @param schema - The relation to process
+   */
   async function processRelation<T extends RelationItem>(resource, schema) {
     const resourceArray: T[] = [];
     const columns = {
@@ -74,20 +83,4 @@ export const processRelations = async () => {
     'screenshots',
     gamesSchema.gameScreenshots,
   );
-
-  // const tg = await db.query.userOwnedGames.findMany({
-  //   // columns: {},
-  //   // limit: 10,
-  //   with: {
-  //     steam: {
-  //       with: {
-  //         igdbGame: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // // console.log(tg, tg[0]);
-  // for (const g of tg) {
-  //   console.log(g);
-  // }
 };

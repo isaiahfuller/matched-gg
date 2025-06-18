@@ -13,10 +13,23 @@ export class IgdbDbController {
     return this.db.delete(table).where(eq(table.igdbId, data.igdbId));
   }
 
+  /**
+   *
+   * @returns Drizzle instance
+   * @deprecated
+   * This is imported from another file, and doesn't need to be retrieved from here
+   */
   public getConnection() {
     return this.db;
   }
 
+  /**
+   *
+   * @param data - Data to be stored
+   * @param table - Table to store data to
+   * @typeParam T - Type of the table
+   * @returns
+   */
   public async store<T extends { igdbId: number }>(
     data: T | T[],
     table: any,
@@ -30,6 +43,10 @@ export class IgdbDbController {
       });
   }
 
+  /**
+   *
+   * @see {@link store}
+   */
   public async storeManyToMany<T>(
     data: T | T[],
     table: any,
@@ -43,6 +60,10 @@ export class IgdbDbController {
       });
   }
 
+  /**
+   *
+   * @see {@link store}
+   */
   public async storeOwnedSteam(data, table) {
     console.log(table, data);
     return this.db
