@@ -20,7 +20,7 @@ export class AppController {
 
   /**
    *
-   * @param session User's session
+   * @param session - User's session
    * @returns User data
    */
   @Post('profile')
@@ -40,7 +40,7 @@ export class AppController {
 
   /**
    * Checks user's session for user data and returns it if present
-   * @param session User's session
+   * @param session - User's session
    * @returns User data
    */
   @Post('verify')

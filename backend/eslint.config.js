@@ -30,7 +30,7 @@ module.exports = tseslint.config({
     prettier: eslintPluginPrettier,
     'eslint-plugin-tsdoc': tsdoc
   },
-  ignores: ['**/eslint.config.js', 'dist/**/*'],
+  ignores: ['**/eslint.config.js', 'dist/**/*', '**/DTO/*'],
   rules: {
     'perfectionist/sort-enums': [
       'error',
