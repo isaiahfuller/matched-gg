@@ -6,7 +6,7 @@ import { DrizzleDB } from './db/db';
 import { IgdbDbController } from './infrastructure/igdb/db/controller/IgdbDbController';
 import { gamesTable } from './infrastructure/igdb/db/schema/games';
 import RecommendationHandler from './infrastructure/local/db/handlers/recommendationHandler';
-import { GameRecommendation } from './infrastructure/local/db/schema/gameRecommendations';
+import { mapRecommendations } from './infrastructure/local/db/map/mapRecommendations';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
 
 @Injectable()
@@ -206,7 +206,8 @@ export class GameService {
       }
       return resB - resA;
     });
-    this.mapRecommendations(id, gameRecommendations);
+    const mappedRecommendations = mapRecommendations(id, gameRecommendations);
+    await this.recommendationHandler.addRecommendations(mappedRecommendations);
     const res = {
       games: gameRecommendations,
       genres: sortedGenres.slice(0, 3),
@@ -222,16 +223,5 @@ export class GameService {
       type: 'time',
     };
     return res;
-  }
-  async mapRecommendations(id, games) {
-    const res: GameRecommendation[] = [];
-    for (const g of games.reverse()) {
-      res.push({
-        gameId: g.game.igdbId,
-        updatedAt: new Date(),
-        userId: id,
-      });
-    }
-    return await this.recommendationHandler.addRecommendations(res);
   }
 }
