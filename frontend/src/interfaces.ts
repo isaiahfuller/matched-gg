@@ -189,7 +189,7 @@ export interface RecommendationsResult {
     type: string;
     typeText: string;
   }[];
-  genres: { count: number; genre: IGDBGeneric }[];
+  genres: IGDBGeneric[];
   highlights: {
     playtime: number;
     steam: {

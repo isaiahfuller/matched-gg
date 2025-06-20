@@ -45,7 +45,7 @@ function TimeText({
         {recommendations.genres.map((e, i) => (
           <React.Fragment key={i}>
             <a href="#" className={classes.link}>
-              {e.genre.name}
+              {e.name}
             </a>
             {i === recommendations.highlights.length - 2
               ? ", and "

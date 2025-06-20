@@ -41,9 +41,4 @@ export class GamesController {
   async getRecommendations(@Session() session) {
     return this.gameService.getTimeRecommendations(session.user.id);
   }
-
-  @Get('test')
-  async getRecommendationsTesting(@Session() session) {
-    return this.gameService.getTopGenres(session.user.id, 3, 0);
-  }
 }
