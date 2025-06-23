@@ -72,8 +72,11 @@ export default function Sync() {
             <a href={steam.url} target="_blank">
               {steam ? (
                 <Group>
-                  <Avatar src={`${steam.avatar}`} radius={0} />
-                  <Text>{steam.personaname}</Text>
+                  <Avatar
+                    src={`https://avatars.steamstatic.com/${steam.avatar}.jpg`}
+                    radius={0}
+                  />
+                  <Text>{steam.name}</Text>
                 </Group>
               ) : (
                 "Not connected"

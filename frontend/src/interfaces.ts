@@ -179,7 +179,7 @@ export interface User {
 export interface SteamProfile {
   avatar: string;
   createdAt: string;
-  personaname: string;
+  name: string;
   url: string;
 }
 
@@ -189,7 +189,7 @@ export interface RecommendationsResult {
     type: string;
     typeText: string;
   }[];
-  genres: { count: number; genre: IGDBGeneric }[];
+  genres: IGDBGeneric[];
   highlights: {
     playtime: number;
     steam: {

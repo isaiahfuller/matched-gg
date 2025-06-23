@@ -108,8 +108,10 @@ export const gamesTable = pgTable(
   },
   (table) => {
     return {
+      genresIdx: index('genres_idx').on(table.genres),
       nameIdx: index('name_idx').on(table.name),
       slugIdx: index('slug_idx').on(table.slug),
+      themesIdx: index('themes_idx').on(table.themes),
       uniqueIgdbIdIdx: uniqueIndex('igdb_id_idx').on(table.igdbId),
     };
   },
@@ -168,7 +170,7 @@ export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
     fields: [gamesTable.igdbId],
     references: [igdbSteamConnect.igdbId],
   }),
-  themes: many(gameThemes),
+  themesRelation: many(gameThemes),
   versionParent: one(gamesTable, {
     fields: [gamesTable.versionParent],
     references: [gamesTable.igdbId],
