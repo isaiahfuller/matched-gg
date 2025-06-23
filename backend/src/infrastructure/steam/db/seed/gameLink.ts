@@ -122,7 +122,7 @@ export const igdbSteamLink = async () => {
     .where(
       and(
         eq(websitesTable.type, 13),
-        inArray(gamesTable.gameType, [9, 10, 11, 8, 5, 4, 0, 12]),
+        inArray(gamesTable.gameType, [9, 10, 11, 8, 5, 4, 0, 12, 3]),
       ),
     );
   const vals = Object.values(sites);

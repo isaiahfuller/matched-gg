@@ -1,6 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ciLowerBound } from '@util/ciLowerBound';
-import { and, arrayOverlaps, eq, gt, inArray, notInArray } from 'drizzle-orm';
+import {
+  and,
+  arrayOverlaps,
+  eq,
+  gt,
+  inArray,
+  isNotNull,
+  lt,
+  notInArray,
+} from 'drizzle-orm';
 
 import { db } from './db/db';
 import { gamesTable } from './infrastructure/igdb/db/schema/games';
@@ -101,7 +110,7 @@ export class GameService {
     //Get owned games
     const ownedGames: any = await this.getOwnedGames(id, {
       steam: {
-        with: { igdbGame: true },
+        with: { igdbGame: { with: { parentGame: true } } },
       },
     });
 
@@ -126,8 +135,27 @@ export class GameService {
     for (const game of ownedGames) {
       if (!game.steam || !game.steam.igdbGame) continue;
       ownedIgdbIds.add(game.steam.igdbGame.igdbId);
-      if (game.steam.igdbGame.parentGame)
-        ownedIgdbIds.add(game.steam.igdbGame.parentGame);
+      if (game.steam.igdbGame.parentGame) {
+        const parentGame = game.steam.igdbGame.parentGame;
+        ownedIgdbIds.add(parentGame.igdbId);
+        if (parentGame.ports) parentGame.ports.map((e) => ownedIgdbIds.add(e));
+        if (parentGame.bundles)
+          parentGame.bundles.map((e) => ownedIgdbIds.add(e));
+        if (parentGame.remasters)
+          parentGame.remasters.map((e) => ownedIgdbIds.add(e));
+        if (parentGame.expandedGames)
+          parentGame.expandedGames.map((e) => ownedIgdbIds.add(e));
+      }
+      if (game.steam.igdbGame.versionParent)
+        ownedIgdbIds.add(game.steam.igdbGame.versionParent);
+      if (game.steam.igdbGame.ports)
+        game.steam.igdbGame.ports.map((e) => ownedIgdbIds.add(e));
+      if (game.steam.igdbGame.bundles)
+        game.steam.igdbGame.bundles.map((e) => ownedIgdbIds.add(e));
+      if (game.steam.igdbGame.remasters)
+        game.steam.igdbGame.remasters.map((e) => ownedIgdbIds.add(e));
+      if (game.steam.igdbGame.expandedGames)
+        game.steam.igdbGame.expandedGames.map((e) => ownedIgdbIds.add(e));
       if (game.steam.igdbGame.genres) {
         for (const gameGenre of game.steam.igdbGame.genres) {
           const tempPlaytime = genrePlaytime;
@@ -149,6 +177,8 @@ export class GameService {
         arrayOverlaps(gamesTable.themes, [...themeIds]),
         notInArray(gamesTable.gameType, [14, 7, 1, 3, 2, 6]),
         notInArray(gamesTable.igdbId, [...ownedIgdbIds]),
+        isNotNull(gamesTable.firstReleaseDate),
+        lt(gamesTable.firstReleaseDate, new Date()),
       ),
       with: {
         cover: true,
