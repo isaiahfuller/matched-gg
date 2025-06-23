@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ciLowerBound } from '@util/ciLowerBound';
-import { and, arrayOverlaps, eq, gt, inArray } from 'drizzle-orm';
+import { and, arrayOverlaps, eq, gt, inArray, notInArray } from 'drizzle-orm';
 
 import { db } from './db/db';
 import { gamesTable } from './infrastructure/igdb/db/schema/games';
@@ -126,6 +126,8 @@ export class GameService {
     for (const game of ownedGames) {
       if (!game.steam || !game.steam.igdbGame) continue;
       ownedIgdbIds.add(game.steam.igdbGame.igdbId);
+      if (game.steam.igdbGame.parentGame)
+        ownedIgdbIds.add(game.steam.igdbGame.parentGame);
       if (game.steam.igdbGame.genres) {
         for (const gameGenre of game.steam.igdbGame.genres) {
           const tempPlaytime = genrePlaytime;
@@ -145,9 +147,15 @@ export class GameService {
       where: and(
         arrayOverlaps(gamesTable.genres, [...genreIds]),
         arrayOverlaps(gamesTable.themes, [...themeIds]),
+        notInArray(gamesTable.gameType, [14, 7, 1, 3, 2, 6]),
+        notInArray(gamesTable.igdbId, [...ownedIgdbIds]),
       ),
       with: {
         cover: true,
+        genresRelation: {
+          columns: {},
+          with: { genre: true },
+        },
         screenshots: {
           columns: {},
           with: { ss: true },
@@ -215,12 +223,12 @@ export class GameService {
     const gameRecommendations = new Array(filteredGames.length);
     for (let i = 0; i < filteredGames.length; i++) {
       gameRecommendations[i] = { game: filteredGames[i] };
-      if (filteredGames[i].themes)
-        for (const gameTheme of filteredGames[i].themesRelation) {
-          for (const topTheme of [...themeIds]) {
-            if (gameTheme.theme.igdbId === topTheme) {
+      if (filteredGames[i].genres)
+        for (const gameGenre of filteredGames[i].genresRelation) {
+          for (const topGenre of [...genreIds]) {
+            if (gameGenre.genre.igdbId === topGenre) {
               gameRecommendations[i].type = 'tag';
-              gameRecommendations[i].typeText = gameTheme.theme.name;
+              gameRecommendations[i].typeText = gameGenre.genre.name;
             }
           }
         }

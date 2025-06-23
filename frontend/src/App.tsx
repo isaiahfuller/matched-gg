@@ -160,7 +160,7 @@ function App() {
                       email={user.email}
                       image={
                         user.steam
-                          ? `${user.steam.avatar}`
+                          ? `https://avatars.steamstatic.com/${user.steam.avatar}.jpg`
                           : "https://placehold.co/36"
                       }
                       width={width < 768 ? width - 28 : 222}

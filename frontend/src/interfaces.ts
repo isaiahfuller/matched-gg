@@ -179,7 +179,7 @@ export interface User {
 export interface SteamProfile {
   avatar: string;
   createdAt: string;
-  personaname: string;
+  name: string;
   url: string;
 }
 
