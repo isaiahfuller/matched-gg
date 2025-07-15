@@ -12,7 +12,10 @@ import RecAccordion from "./RecAccordion";
 
 import classes from "./index.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { IGDBGame, RecommendationsResult } from "../../interfaces";
 
@@ -126,16 +129,23 @@ export default function Recommendations() {
           ) : null}
           <RecAccordion recommendations={games.slice(offset, offset + 5)} />
           <Divider p={8} mx="auto" w={64} />
-          <Flex direction="row-reverse">
-            {offset + 5 >= games.length ? null : (
-              <Button
-                rightSection={<FontAwesomeIcon icon={faChevronRight} />}
-                variant="transparent"
-                onClick={() => setOffset((prev) => prev + 5)}
-              >
-                Get more
-              </Button>
-            )}
+          <Flex direction="row" justify="space-between">
+            <Button
+              leftSection={<FontAwesomeIcon icon={faChevronLeft} />}
+              variant="transparent"
+              onClick={() => setOffset((prev) => prev - 5)}
+              disabled={offset - 5 <= 0}
+            >
+              Previous
+            </Button>
+            <Button
+              rightSection={<FontAwesomeIcon icon={faChevronRight} />}
+              variant="transparent"
+              onClick={() => setOffset((prev) => prev + 5)}
+              disabled={offset + 5 >= games.length}
+            >
+              Next
+            </Button>
           </Flex>
         </>
       ) : (

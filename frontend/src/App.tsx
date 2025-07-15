@@ -27,7 +27,7 @@ import { User } from "./interfaces";
 import Pages from "./components/Pages/Pages";
 import { UserButton } from "./components/elements/UserButton";
 import { blankUser } from "./constants";
-import Search from "./components/Search/Search";
+// import Search from "./components/Search/Search";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -200,9 +200,9 @@ function App() {
           </Center>
         ) : (
           <>
-            {["login", "signup", "settings", "sync"].includes(page) ? null : (
+            {/* {["login", "signup", "settings", "sync"].includes(page) ? null : (
               <Search />
-            )}
+            )} */}
             <Pages page={page} user={user} setUser={setUser} />
           </>
         )}
