@@ -52,7 +52,7 @@ function App() {
         console.log(res);
         setIsLoggedIn(true);
         if (!res || !res.profile || !res.profile.id) {
-          setPage("login");
+          setPage("recommendations");
           throw new Error("No profile received");
         }
         setUser(res.profile);
@@ -63,7 +63,7 @@ function App() {
         setLoading(false);
       } catch (e) {
         setIsLoggedIn(false);
-        setPage("login");
+        setPage("recommendations");
         setLoading(false);
       }
     }
@@ -184,9 +184,9 @@ function App() {
               </Menu>
             ) : (
               <NavLink
-                disabled={!isLoggedIn || loading}
+                disabled={loading}
                 href="/steam/auth"
-                label="Logged out"
+                label="Sign in"
                 leftSection={<FontAwesomeIcon icon={faUser} />}
               />
             )}

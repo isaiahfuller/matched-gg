@@ -124,8 +124,21 @@ export default function Recommendations() {
     <Container size="sm">
       {games.length && !accLoading ? (
         <>
-          {recommended && recommended.type ? (
+          {recommended && recommended.type && recommended.type !== "top" ? (
             <TimeText recommendations={recommended} />
+          ) : null}
+          {recommended && recommended.type && recommended.type === "top" ? (
+            <Stack>
+              <Title order={1}>Welcome to Matched!</Title>
+              <Title order={2}>
+                Log in with Steam to get personalized recommendations
+              </Title>
+              <Divider mx="auto" w={64} />
+              <Title order={3} size="h4">
+                Here are some recommendations based on the popular games to get
+                you started:
+              </Title>
+            </Stack>
           ) : null}
           <RecAccordion recommendations={games.slice(offset, offset + 5)} />
           <Divider p={8} mx="auto" w={64} />

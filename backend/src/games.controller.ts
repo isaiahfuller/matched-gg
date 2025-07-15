@@ -39,6 +39,8 @@ export class GamesController {
    */
   @Get('getRecommendations')
   async getRecommendations(@Session() session) {
-    return this.gameService.getTimeRecommendations(session.user.id);
+    if (session && session.user && session.user.id)
+      return this.gameService.getTimeRecommendations(session.user.id);
+    else return this.gameService.topGameRecommendations();
   }
 }
