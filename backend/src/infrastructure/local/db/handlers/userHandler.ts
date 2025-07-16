@@ -66,14 +66,12 @@ export default class UserHandler {
 
   /**
    *
-   * @param email - User's email
+   * @param id - User's id
    * @returns Deleted user's info
    */
-  async deleteUser(email) {
-    await this.db.delete(users).where(eq(users.email, email)).returning({
-      email: users.email,
-      name: users.name,
-      password: users.password,
+  async deleteUser(id) {
+    return await this.db.delete(users).where(eq(users.id, id)).returning({
+      id: users.id,
     });
   }
 

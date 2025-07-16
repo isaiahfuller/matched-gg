@@ -57,11 +57,11 @@ export class UsersService {
 
   /**
    *
-   * @param email - User's email
+   * @param id - User's id
    * @returns Deleted user's info
    */
-  async delete(email) {
-    const res = await this.userHandler.deleteUser(email);
+  async delete(id) {
+    const res = await this.userHandler.deleteUser(id);
     return res;
   }
 

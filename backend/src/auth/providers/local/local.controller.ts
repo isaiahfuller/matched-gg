@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Controller,
+  Delete,
   Logger,
   Post,
   Request,
@@ -18,6 +19,17 @@ export class LocalController {
     private localService: LocalService,
     private readonly authService: AuthService,
   ) {}
+
+  @Delete('auth/delete')
+  async deleteAccount(@Session() session) {
+    if (!session.user) throw new BadRequestException('No user logged in');
+    const user = await this.localService.deleteAccount(session.user.id);
+    if (!user) throw new BadRequestException('Account deletion failed');
+    session.user = null;
+    this.logger.log(`User ${user.id} deleted`);
+    session.destroy();
+    return { message: 'Account deleted successfully' };
+  }
 
   /**
    *

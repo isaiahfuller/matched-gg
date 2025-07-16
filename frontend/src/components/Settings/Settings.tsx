@@ -1,24 +1,23 @@
 import { Button, Center, Paper, Stack, Text, Title } from "@mantine/core";
-import { User } from "../../interfaces";
 import { useViewportSize } from "@mantine/hooks";
 
-interface SettingsProps {
-  user: User;
-  setUser?: (arg: User) => void;
-}
-
-export default function Settings({ user }: SettingsProps) {
+export default function Settings() {
   const { height } = useViewportSize();
-  // Handler for deleting the account
-  const handleDeleteAccount = () => {
-    // TODO: Implement actual delete logic (API call, confirmation, etc.)
+  const handleDeleteAccount = async () => {
     if (
       window.confirm(
         "Are you sure you want to delete your account? This action cannot be undone."
       )
     ) {
-      console.log("Account deletion requested for:", user.email);
-      // Place API call or logic here
+      const res = await fetch("/local/auth/delete", {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        alert("Account deleted successfully.");
+        window.location.href = "/";
+      } else {
+        alert("Failed to delete account. Please try again later.");
+      }
     }
   };
 

@@ -200,10 +200,7 @@ function App() {
           </Center>
         ) : (
           <>
-            {/* {["login", "signup", "settings", "sync"].includes(page) ? null : (
-              <Search />
-            )} */}
-            <Pages page={page} user={user} setUser={setUser} />
+            <Pages page={page} />
           </>
         )}
       </AppShell.Main>

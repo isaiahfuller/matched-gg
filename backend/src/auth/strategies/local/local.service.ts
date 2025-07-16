@@ -21,6 +21,12 @@ export class LocalService {
     private authService: AuthService,
   ) {}
 
+  async deleteAccount(id: number) {
+    const user = await this.usersService.delete(id);
+    if (!user) throw new BadRequestException('Account deletion failed');
+    return user;
+  }
+
   /**
    * Checks for an existing account with the same email, creates new account if one isn't found
    * @param user - New user name, email, password
