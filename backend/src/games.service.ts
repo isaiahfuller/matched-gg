@@ -438,8 +438,14 @@ export class GameService {
       topThemes,
     );
 
+    const games = gameRecommendations.map((game) => ({
+      ...game,
+      type: 'top',
+      typeText: null,
+    }));
+
     return {
-      games: gameRecommendations,
+      games: games,
       genres: [...topGenres],
       highlights: [],
       time: 0,

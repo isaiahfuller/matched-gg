@@ -34,7 +34,7 @@ export default function RecAccordion({
 }: {
   recommendations: {
     game: IGDBGame;
-    type?: "company" | "tag" | "wildcard" | string | null;
+    type?: "company" | "tag" | "wildcard" | "top" | string | null;
     typeText?: string | null;
   }[];
 }) {
@@ -70,7 +70,7 @@ export default function RecAccordion({
               {item.game.name!}
             </Text>
 
-            {!item.type ? null : (
+            {!item.type || item.type === "top" ? null : (
               <>
                 <Text c="dimmed" span>
                   {" "}
@@ -108,12 +108,14 @@ export default function RecAccordion({
                   pl={width < 1000 ? 0 : 8}
                   pt={width < 1000 ? 8 : 0}
                 >
-                  <Image
-                    src={getScreenUrl(
-                      item.game.screenshots[screenIdx].ss.imageId,
-                      "screenshot_med"
-                    )}
-                  />
+                  {item.game.screenshots[screenIdx].ss ? (
+                    <Image
+                      src={getScreenUrl(
+                        item.game.screenshots[screenIdx].ss.imageId,
+                        "screenshot_med"
+                      )}
+                    />
+                  ) : null}
                   <Divider mx="auto" w={64} />
                   <Flex wrap="nowrap" justify="space-between">
                     {item.game.screenshots.slice(0, 4).map((e, i) => (

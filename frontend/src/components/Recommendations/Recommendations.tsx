@@ -97,10 +97,6 @@ export default function Recommendations() {
       console.log(r);
       const recs: RecommendationsResult = await r.json();
       if (!recs) return;
-      for (const g of recs.games) {
-        if (!g.type) g.type = "company";
-        if (!g.typeText) g.typeText = "qwerty";
-      }
       console.log(recs);
       setGames([...recs.games]);
       setRecommended(recs);
@@ -135,8 +131,8 @@ export default function Recommendations() {
               </Title>
               <Divider mx="auto" w={64} />
               <Title order={3} size="h4">
-                Here are some recommendations based on the popular games to get
-                you started:
+                Here are some recommendations based on popular games to get you
+                started:
               </Title>
             </Stack>
           ) : null}
