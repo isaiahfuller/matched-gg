@@ -177,10 +177,10 @@ export interface User {
 }
 
 export interface SteamProfile {
-  avatar: string;
+  avatarhash: string;
   createdAt: string;
-  name: string;
-  url: string;
+  personaname: string;
+  profileurl: string;
 }
 
 export interface RecommendationsResult {

@@ -18,7 +18,7 @@ export const users = pgTable('users', {
 export const usersRelations = relations(users, ({ one }) => ({
   steam: one(steamProfiles, {
     fields: [users.steamId],
-    references: [steamProfiles.steamId],
+    references: [steamProfiles.steamid],
   }),
 }));
 

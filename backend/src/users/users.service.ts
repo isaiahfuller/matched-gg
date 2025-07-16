@@ -51,7 +51,7 @@ export class UsersService {
       name: user.personaname,
       steamId: user.steamid,
     });
-    await this.addSteam(newUser, user);
+    await this.addSteam(newUser[0], user);
     return newUser;
   }
 

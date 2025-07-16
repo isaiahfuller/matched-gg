@@ -48,16 +48,16 @@ export default class UserHandler {
     const newProfile = await this.db
       .insert(steamProfiles)
       .values({
-        avatar: profile.avatarhash,
-        name: profile.personaname,
-        steamId: profile.steamid,
-        url: profile.profileurl,
+        avatarhash: profile.avatarhash,
+        personaname: profile.personaname,
+        profileurl: profile.profileurl,
+        steamid: profile.steamid,
         userId: user.id,
       })
       .returning();
     return this.db
       .update(users)
-      .set({ steamId: newProfile[0].steamId })
+      .set({ steamId: newProfile[0].steamid })
       .where(eq(users.id, user.id))
       .returning({
         name: users.name,

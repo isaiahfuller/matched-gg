@@ -4,12 +4,12 @@ import { date, integer, pgTable, text } from 'drizzle-orm/pg-core';
 import { users } from './users';
 
 export const steamProfiles = pgTable('steam_profiles', {
-  avatar: text('avatar'),
+  avatarhash: text('avatar'),
   createdAt: date('created_at').defaultNow(),
-  name: text('name'),
-  steamId: text('steam_id').primaryKey().notNull(),
+  personaname: text('name'),
+  profileurl: text('url'),
+  steamid: text('steam_id').primaryKey().notNull(),
   updatedAt: date('updated_at').defaultNow(),
-  url: text('url'),
   userId: integer('user_id').references(() => users.id, {
     onDelete: 'cascade',
   }),

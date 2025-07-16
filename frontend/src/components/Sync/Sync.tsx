@@ -69,14 +69,14 @@ export default function Sync() {
             labelPosition="left"
           />
           <Flex justify="space-between" align="center">
-            <a href={steam.url} target="_blank">
+            <a href={steam.profileurl} target="_blank">
               {steam ? (
                 <Group>
                   <Avatar
-                    src={`https://avatars.steamstatic.com/${steam.avatar}.jpg`}
+                    src={`https://avatars.steamstatic.com/${steam.avatarhash}.jpg`}
                     radius={0}
                   />
-                  <Text>{steam.name}</Text>
+                  <Text>{steam.personaname}</Text>
                 </Group>
               ) : (
                 "Not connected"

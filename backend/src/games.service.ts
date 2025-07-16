@@ -252,7 +252,6 @@ export class GameService {
     const genres = await db.query[`${key}Table`].findMany({
       where: inArray(table.igdbId, genreIds),
     });
-    console.log(genrePlaytime, mappedGenres);
     const mem = new Map();
     return genres.sort((a, b) => {
       let resA,
