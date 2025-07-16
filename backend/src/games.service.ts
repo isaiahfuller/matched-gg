@@ -293,6 +293,7 @@ export class GameService {
     // Get similar games from db
     const igdbGames = await db.query.gamesTable.findMany({
       where: and(
+        arrayOverlaps(gamesTable.platforms, [3, 6, 13, 14, 82]),
         arrayOverlaps(gamesTable.genres, [...genreIds]),
         arrayOverlaps(gamesTable.themes, [...themeIds]),
         notInArray(gamesTable.gameType, [14, 7, 1, 3, 2, 6]),

@@ -118,16 +118,18 @@ export default function RecAccordion({
                   ) : null}
                   <Divider mx="auto" w={64} />
                   <Flex wrap="nowrap" justify="space-between">
-                    {item.game.screenshots.slice(0, 4).map((e, i) => (
-                      <img
-                        key={e.ss.igdbId}
-                        src={getScreenUrl(e.ss.imageId, "micro")}
-                        style={{
-                          objectFit: "contain",
-                        }}
-                        onClick={() => setScreenIdx(i)}
-                      />
-                    ))}
+                    {item.game.screenshots.slice(0, 4).map((e, i) => {
+                      return e.ss ? (
+                        <img
+                          key={e.ss.igdbId}
+                          src={getScreenUrl(e.ss.imageId, "micro")}
+                          style={{
+                            objectFit: "contain",
+                          }}
+                          onClick={() => setScreenIdx(i)}
+                        />
+                      ) : null;
+                    })}
                   </Flex>
                 </Stack>
               ) : null}
