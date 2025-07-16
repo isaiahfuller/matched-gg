@@ -143,7 +143,7 @@ export default function Recommendations() {
               leftSection={<FontAwesomeIcon icon={faChevronLeft} />}
               variant="transparent"
               onClick={() => setOffset((prev) => prev - 5)}
-              disabled={offset - 5 <= 0}
+              disabled={offset - 5 < 0}
             >
               Previous
             </Button>
