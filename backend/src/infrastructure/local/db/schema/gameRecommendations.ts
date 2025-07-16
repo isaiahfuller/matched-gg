@@ -19,7 +19,7 @@ export const gameRecommendations = pgTable(
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     userId: integer('user_id')
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: 'cascade' }),
   },
   (table) => ({ pk: primaryKey({ columns: [table.userId, table.gameId] }) }),
 );

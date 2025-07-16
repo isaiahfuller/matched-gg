@@ -26,7 +26,7 @@ export const userOwnedGames = pgTable(
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     userId: integer('user_id')
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: 'cascade' }),
   },
   (t) => ({
     playtimeIdx: index('playtime_idx').on(t.playtime.desc()),

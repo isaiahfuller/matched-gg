@@ -10,7 +10,9 @@ export const steamProfiles = pgTable('steam_profiles', {
   steamId: text('steam_id').primaryKey().notNull(),
   updatedAt: date('updated_at').defaultNow(),
   url: text('url'),
-  userId: integer('user_id').references(() => users.id),
+  userId: integer('user_id').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
 });
 
 export const steamProfilesRelations = relations(steamProfiles, ({ one }) => ({
