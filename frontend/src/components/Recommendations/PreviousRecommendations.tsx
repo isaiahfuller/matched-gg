@@ -47,6 +47,9 @@ export default function PreviousRecommendations() {
     );
   return (
     <Container>
+      <Title order={1} size="h2">
+        Previous Recommendations
+      </Title>
       <RecAccordion recommendations={games.slice(offset, offset + 10)} />
       <Divider p={8} mx="auto" w={64} />{" "}
       <Flex direction="row" justify="space-between">

@@ -9,6 +9,12 @@ import PreviousRecommendations from "../Recommendations/PreviousRecommendations"
 interface PagesProps {
   page: string;
 }
+
+/**
+ * Returns the rendered component based on the provided page.
+ * @param props - Props for the Pages component.
+ * @returns JSX.Element - The rendered component.
+ */
 export default function Pages({ page }: PagesProps) {
   switch (page) {
     case "recommendations":

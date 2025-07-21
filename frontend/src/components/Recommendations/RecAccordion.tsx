@@ -12,6 +12,16 @@ import { ReactElement, useEffect, useState } from "react";
 import classes from "./index.module.css";
 import { useViewportSize } from "@mantine/hooks";
 
+/**
+ * This function constructs a URL for accessing screen shots or cover art from IGDB.
+ *
+ * @param id - The ID of the image to fetch.
+ * @param size - The desired size of the image. Valid options are:
+ *   "cover_small", "screenshot_med", "cover_big", "logo_med",
+ *   "screenshot_big", "screenshot_huge", "thumb", "micro",
+ *   "720p", and "1080p".
+ * @returns The URL to access the image.
+ */
 function getScreenUrl(
   id: string,
   size:
@@ -24,7 +34,7 @@ function getScreenUrl(
     | "thumb"
     | "micro"
     | "720p"
-    | "1080p"
+    | "1080p",
 ) {
   return `https://images.igdb.com/igdb/image/upload/t_${size}/${id}.jpg`;
 }
@@ -42,6 +52,9 @@ export default function RecAccordion({
   const [value, setValue] = useState<string | null>(null);
   const { width } = useViewportSize();
 
+  /**
+   * Sets the initial value of the accordion.
+   */
   useEffect(() => {
     setValue(recommendations[0].game.name || null);
   }, [recommendations]);
@@ -112,7 +125,7 @@ export default function RecAccordion({
                     <Image
                       src={getScreenUrl(
                         item.game.screenshots[screenIdx].ss.imageId,
-                        "screenshot_med"
+                        "screenshot_med",
                       )}
                     />
                   ) : null}
@@ -153,6 +166,12 @@ export default function RecAccordion({
     );
 }
 
+/**
+ * AccordionControl component displays a control for an accordion item.
+ * The icon is displayed as an image, and the children are displayed as a control.
+ * @param icon - The icon to display.
+ * @param children - The children to display.
+ */
 function AccordionControl({
   icon,
   children,

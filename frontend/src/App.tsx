@@ -27,8 +27,12 @@ import { User } from "./interfaces";
 import Pages from "./components/Pages/Pages";
 import { UserButton } from "./components/elements/UserButton";
 import { blankUser } from "./constants";
-// import Search from "./components/Search/Search";
 
+/**
+ * Returns the rendered component based on the provided page.
+ * @param props - Props for the Pages component.
+ * @returns JSX.Element - The rendered component.
+ */
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>(blankUser);
@@ -37,6 +41,7 @@ function App() {
   const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
 
+  // Initialize user data
   useEffect(() => {
     async function onLoad() {
       setLoading(true);
@@ -62,6 +67,7 @@ function App() {
         }
         setLoading(false);
       } catch (e) {
+        // Default to recommendations
         setIsLoggedIn(false);
         setPage("recommendations");
         setLoading(false);
@@ -70,16 +76,28 @@ function App() {
     onLoad();
   }, []);
 
+  /**
+   * Redirect to default page if user is logged in.
+   */
   useEffect(() => {
     if (isLoggedIn && ["login", ""].includes(page)) {
       setPage("recommendations");
     }
   }, [isLoggedIn, page]);
 
+  /**
+   * Sets page to the given index.
+   * @param e - Event object
+   * @param idx - Index of the page to navigate to
+   */
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
     setPage(idx);
   }
+
+  /**
+   * Logs user out and reloads
+   */
   async function logOut() {
     await fetch("/logout");
     window.location.reload();
