@@ -1,7 +1,7 @@
 import { Apicalypse } from 'apicalypse';
 import igdb from 'igdb-api-node';
 
-import { GameDTO } from './DTO/GameDTO';
+import { GameDTO } from './DTO/games';
 import { GetAll } from './GetAll';
 import { IgdbResources } from './enum/IgdbResources';
 

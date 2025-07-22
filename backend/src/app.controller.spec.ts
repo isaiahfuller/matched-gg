@@ -35,8 +35,11 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return session', () => {
+      const mockSession = { user: { email: 'test@example.com', id: 1000 } };
+      expect(appController.getProfile(mockSession)).toStrictEqual(
+        mockSession.user,
+      );
     });
   });
 });
