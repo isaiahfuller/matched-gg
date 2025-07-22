@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request as ExpressRequest } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalService } from 'src/auth/strategies/local/local.service';
 
@@ -21,7 +22,7 @@ export class LocalController {
   ) {}
 
   @Delete('auth/delete')
-  async deleteAccount(@Session() session) {
+  async deleteAccount(@Session() session: any) {
     if (!session.user) throw new BadRequestException('No user logged in');
     const user = await this.localService.deleteAccount(session.user.id);
     if (!user) throw new BadRequestException('Account deletion failed');
@@ -39,7 +40,7 @@ export class LocalController {
    */
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
-  async login(@Request() req, @Session() session) {
+  async login(@Request() req: ExpressRequest, @Session() session: any) {
     session.user = req.user;
     this.logger.log(`User ${session.user.id} logged in`);
     return session.user;
@@ -52,7 +53,7 @@ export class LocalController {
    * @returns Session data with newly registered account data
    */
   @Post('auth/signup')
-  async signup(@Request() req, @Session() session) {
+  async signup(@Request() req: ExpressRequest, @Session() session: any) {
     if (
       !req.body ||
       !req.body.user ||

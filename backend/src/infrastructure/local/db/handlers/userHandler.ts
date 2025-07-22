@@ -44,7 +44,10 @@ export default class UserHandler {
    * @param profile - Steam profile data
    * @returns Steam profile data
    */
-  async addSteamProfile(user, profile: SteamOpenIdUserProfile) {
+  async addSteamProfile(
+    user: { id: number } & Users,
+    profile: SteamOpenIdUserProfile,
+  ) {
     const newProfile = await this.db
       .insert(steamProfiles)
       .values({
@@ -69,7 +72,7 @@ export default class UserHandler {
    * @param id - User's id
    * @returns Deleted user's info
    */
-  async deleteUser(id) {
+  async deleteUser(id: number) {
     return await this.db.delete(users).where(eq(users.id, id)).returning({
       id: users.id,
     });
@@ -82,7 +85,7 @@ export default class UserHandler {
    */
   async findById(uid: number) {
     const result = await this.db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.id, uid),
+      where: (users: { id: number } & Users, { eq }) => eq(users.id, uid),
       with: {
         steam: true,
       },

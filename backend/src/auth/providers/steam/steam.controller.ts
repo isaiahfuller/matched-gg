@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Response as ExpressResponse } from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import SteamHandler from 'src/infrastructure/steam/handlers/steamHandler';
 import { UsersService } from 'src/users/users.service';
@@ -29,35 +30,6 @@ export class SteamController {
   ) {}
 
   /**
-   *
-   * @param session - User's session
-   * @param req - http request
-   * @param res - http response
-   * @returns User's achievement status for a specific game
-   * @deprecated Currently not being used
-   */
-  @Post('gameAchievements')
-  async achivements(@Session() session, @Req() req, @Res() res) {
-    const achivements = await this.steamHandler.getGameAchievements(
-      session.providers.steam.steamid,
-      req.body.appid,
-    );
-    res.send(achivements);
-    return achivements;
-  }
-
-  /**
-   *
-   * @param session - User's session
-   * @returns Games similar to the user's, ordered by number of appearances.
-   */
-  @Get('getSimilarGames')
-  async getSimilarGames(@Session() session) {
-    const games = this.steamHandler.getSimilarGames(session);
-    return games;
-  }
-
-  /**
    * Once user logs in with Steam, links account, creates account, or logs in to account.
    * @param session - User's session
    * @param req - http request, with data from {@link SteamOpenIdUserProfile}
@@ -65,7 +37,11 @@ export class SteamController {
    */
   @UseGuards(AuthGuard('steam-openid'))
   @Get('auth')
-  async login(@Session() session, @Req() req: SteamAuthResponse, @Res() res) {
+  async login(
+    @Session() session: any,
+    @Req() req: SteamAuthResponse,
+    @Res() res: ExpressResponse,
+  ) {
     try {
       if (!session.user) {
         const user = await this.usersService.findBySteamId(req.user.steamid);
@@ -102,7 +78,7 @@ export class SteamController {
    * @returns The user's owned games, with playtime and last played timestamp
    */
   @Get('getOwnedGames')
-  async ownedGames(@Session() session) {
+  async ownedGames(@Session() session: any) {
     if (!session.user || !session.user.steam) {
       throw new UnauthorizedException('No Steam account linked');
     }
@@ -118,7 +94,7 @@ export class SteamController {
    * @returns User's owned games on Steam, mapped for the database
    */
   @Get('processLibrary')
-  async processLibrary(@Session() session) {
+  async processLibrary(@Session() session: any) {
     if (!session.user || !session.user.steam) {
       throw new UnauthorizedException('No Steam account linked');
     }
@@ -132,7 +108,7 @@ export class SteamController {
    * @returns Steam account info
    */
   @Post('valid')
-  async validate(@Session() session) {
+  async validate(@Session() session: any) {
     if (!('providers' in session) || !('steam' in session.providers)) {
       throw new UnauthorizedException({ error: 'Steam not logged in.' });
     }

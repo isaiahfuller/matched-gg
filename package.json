@@ -20,5 +20,9 @@
     "start:frontend": "yarn --cwd frontend start",
     "build": "yarn --cwd frontend build"
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/passport-local": "^1.0.38"
+  }
 }

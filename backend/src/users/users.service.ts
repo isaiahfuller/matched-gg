@@ -22,7 +22,10 @@ export class UsersService {
    * @param profile - Steam profile data
    * @returns Steam profile data
    */
-  async addSteam(user, profile) {
+  async addSteam(
+    user: { id: number } & Users,
+    profile: SteamOpenIdUserProfile,
+  ) {
     const newUser = await this.userHandler.addSteamProfile(user, profile);
     return newUser;
   }

@@ -24,7 +24,7 @@ export class GamesController {
    * @returns User's previous game recommendations
    */
   @Get('getPreviousRecommendations')
-  async getPreviousRecommendations(@Session() session) {
+  async getPreviousRecommendations(@Session() session: any) {
     return this.gameService.getPreviousRecommendations(session.user.id);
   }
 
@@ -34,7 +34,7 @@ export class GamesController {
    * @returns New recommendations for user
    */
   @Get('getRecommendations')
-  async getRecommendations(@Session() session) {
+  async getRecommendations(@Session() session: any) {
     if (session && session.user && session.user.id)
       return this.gameService.getTimeRecommendations(session.user.id);
     else return this.gameService.topGameRecommendations();

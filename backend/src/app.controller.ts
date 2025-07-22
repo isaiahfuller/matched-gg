@@ -20,7 +20,7 @@ export class AppController {
    * @returns User data
    */
   @Post('profile')
-  getProfile(@Session() session) {
+  getProfile(@Session() session: any) {
     const send = { ...session.user };
     return send;
   }
@@ -30,7 +30,7 @@ export class AppController {
    * @param session - User's session
    */
   @Get('logout')
-  async logout(@Session() session) {
+  async logout(@Session() session: any) {
     session.destroy();
   }
 
@@ -40,7 +40,7 @@ export class AppController {
    * @returns User data
    */
   @Post('verify')
-  async verify(@Session() session) {
+  async verify(@Session() session: any) {
     if (!session.user) throw new UnauthorizedException('Not signed in');
     return {
       profile: {

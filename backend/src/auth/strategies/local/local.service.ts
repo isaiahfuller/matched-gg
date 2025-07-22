@@ -54,7 +54,7 @@ export class LocalService {
    * @returns User data if password matches, null if email not found or password doesn't match
    *
    * @deprecated
-   * Currently, not all accounts will have an email/password
+   * Currently, accounts will not have an email/password.
    */
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
