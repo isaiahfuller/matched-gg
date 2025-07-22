@@ -217,6 +217,7 @@ export class GameService {
       },
     });
     this.topGames = games;
+    return games;
   }
 
   /**

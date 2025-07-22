@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { LocalController } from './auth/providers/local/local.controller';
 import { SteamController } from './auth/providers/steam/steam.controller';
@@ -19,6 +18,6 @@ import { UsersService } from './users/users.service';
     LocalController,
   ],
   imports: [AuthModule, SteamModule, LocalModule],
-  providers: [AppService, UsersService, GameService],
+  providers: [UsersService, GameService],
 })
 export class AppModule {}

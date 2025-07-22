@@ -1,6 +1,5 @@
 import { Controller, Get, Logger, Session } from '@nestjs/common';
 
-import { AppService } from './app.service';
 import { GameService } from './games.service';
 import { Games } from './infrastructure/igdb/db/schema/games';
 
@@ -8,10 +7,7 @@ import { Games } from './infrastructure/igdb/db/schema/games';
 export class GamesController {
   private readonly logger = new Logger('GameController');
 
-  constructor(
-    private readonly appService: AppService,
-    private readonly gameService: GameService,
-  ) {}
+  constructor(private readonly gameService: GameService) {}
 
   /**
    *

@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { AppService } from './app.service';
 import { GamesController } from './games.controller';
 import { GameService } from './games.service';
 
@@ -12,7 +11,6 @@ describe('GamesController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [GamesController],
       providers: [
-        AppService,
         {
           provide: GameService,
           useValue: {
@@ -32,12 +30,6 @@ describe('GamesController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
-  // describe('findAll', () => {
-  //   it('should return an array of games', async () => {
-  //     expect(await controller.findAll()).toBeDefined();
-  //   });
-  // });
 
   describe('getPreviousRecommendations', () => {
     it('should return previous recommendations for a user', async () => {
