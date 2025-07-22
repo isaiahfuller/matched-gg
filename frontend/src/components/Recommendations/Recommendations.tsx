@@ -19,6 +19,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { IGDBGame, RecommendationsResult } from "../../interfaces";
 
+/**
+ * Generates header text based on the recommendations.
+ * @param props - The props for the component.
+ * @returns
+ */
 function TimeText({
   recommendations,
 }: {
@@ -74,6 +79,9 @@ function TimeText({
   );
 }
 
+/**
+ * Gets recommendations for the user from the server.
+ */
 export default function Recommendations() {
   const [games, setGames] = useState<
     {
