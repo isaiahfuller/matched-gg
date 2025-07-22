@@ -6,6 +6,12 @@ const url = "http://localhost:4468";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    include: ["**/*.test.tsx"],
+    setupFiles: ["./src/setupTests.ts"],
+    environment: "jsdom",
+    globals: true,
+  },
   server: {
     port: 4467,
     proxy: {

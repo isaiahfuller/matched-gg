@@ -22,12 +22,16 @@ export default function PreviousRecommendations() {
   const [offset, setOffset] = useState<number>(0);
   useEffect(() => {
     async function getRecommendations() {
-      const r = await fetch("/games/getPreviousRecommendations");
-      const data = await r.json();
-      console.log(data);
-      setGames(data);
-      setLoading(false);
-      return data;
+      try {
+        const r = await fetch("/games/getPreviousRecommendations");
+        const data = await r.json();
+        console.log(data);
+        setGames(data);
+        setLoading(false);
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
     }
     getRecommendations();
   }, []);

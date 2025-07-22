@@ -24,13 +24,17 @@ export default function Sync() {
   const [steamCount, setSteamCount] = useState<number>(-1);
 
   useEffect(() => {
-    fetch("profile", {
-      method: "POST",
-    })
-      .then((r) => r.json())
-      .then((r) => {
-        setSteam(r.steam);
-      });
+    try {
+      fetch("profile", {
+        method: "POST",
+      })
+        .then((r) => r.json())
+        .then((r) => {
+          setSteam(r.steam);
+        });
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   async function processSteamLibrary() {
