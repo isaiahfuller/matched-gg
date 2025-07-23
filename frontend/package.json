@@ -16,12 +16,12 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@mantine/carousel": "^8.0.2",
-    "@mantine/charts": "^8.0.2",
-    "@mantine/colors-generator": "^8.0.2",
-    "@mantine/core": "^8.0.2",
-    "@mantine/form": "^8.0.2",
-    "@mantine/hooks": "^8.0.2",
+    "@mantine/carousel": "^8.2.1",
+    "@mantine/charts": "^8.2.1",
+    "@mantine/colors-generator": "^8.2.1",
+    "@mantine/core": "^8.2.1",
+    "@mantine/form": "^8.2.1",
+    "@mantine/hooks": "^8.2.1",
     "chroma-js": "^3.1.1",
     "embla-carousel": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
@@ -48,7 +48,7 @@
     "postcss-simple-vars": "^7.0.1",
     "recharts": "^2.15.3",
     "typescript": "^5.4.3",
-    "vite": "^5.2.6",
+    "vite": "^7.0.5",
     "vitest": "^3.2.4"
   }
 }

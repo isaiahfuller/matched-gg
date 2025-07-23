@@ -16,11 +16,13 @@ import {
 import { useViewportSize } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { SteamProfile } from "../../interfaces";
+import { processSteamLibrary } from "../../util/processSteamLibrary";
 
 export default function Sync() {
   const { height } = useViewportSize();
   const [syncLoading, setSyncLoading] = useState<boolean>(false);
   const [steam, setSteam] = useState<SteamProfile>();
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
   const [steamCount, setSteamCount] = useState<number>(-1);
 
   useEffect(() => {
@@ -34,19 +36,12 @@ export default function Sync() {
         });
     } catch (error) {
       console.error(error);
+    } finally {
+      setPageLoading(false);
     }
   }, []);
 
-  async function processSteamLibrary() {
-    setSyncLoading(true);
-    const res = await fetch("/steam/processLibrary");
-    const library = await res.json();
-    console.log(library);
-    setSteamCount(library.length);
-    setSyncLoading(false);
-    return library;
-  }
-  if (!steam)
+  if (pageLoading)
     return (
       <Center className="centered">
         <Loader p={24} />
@@ -73,26 +68,26 @@ export default function Sync() {
             labelPosition="left"
           />
           <Flex justify="space-between" align="center">
-            <a href={steam.profileurl} target="_blank">
-              {steam ? (
-                <Group>
-                  <Avatar
-                    src={`https://avatars.steamstatic.com/${steam.avatarhash}.jpg`}
-                    radius={0}
-                  />
-                  <Text>{steam.personaname}</Text>
-                </Group>
-              ) : (
-                "Not connected"
-              )}
-            </a>{" "}
+            {steam ? (
+              <Group>
+                <Avatar
+                  src={`https://avatars.steamstatic.com/${steam.avatarhash}.jpg`}
+                  radius={0}
+                />
+                <Text>{steam.personaname}</Text>
+              </Group>
+            ) : (
+              "Not connected"
+            )}
             <Text span hidden={syncLoading || !steamCount || steamCount === -1}>
               {steamCount} games
             </Text>
             {steamCount > -1 ? null : (
               <Button
                 variant="outline"
-                onClick={processSteamLibrary}
+                onClick={() =>
+                  processSteamLibrary(setSyncLoading, setSteamCount)
+                }
                 loading={syncLoading}
                 disabled={steamCount > -1}
               >
