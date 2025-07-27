@@ -7,7 +7,7 @@ interface GameHoverProps {
 }
 
 export default function GameHover({ game }: GameHoverProps) {
-  const coverSrc = `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.image_id}.jpg`;
+  const coverSrc = `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover?.imageId}.jpg`;
   return (
     <Box maw={650}>
       <Flex justify="center">

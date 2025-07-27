@@ -35,7 +35,7 @@ export interface IGDBGame extends IGDBGeneric {
   release_dates: IGDBDate[] | number[];
   remakes?: IGDBGame[] | number[];
   remasters?: IGDBGame[] | number[];
-  screenshots?: IGDBGameArt[];
+  screenshots?: { ss: IGDBGameArt }[];
   similar_games: number[];
   standalone_expansions?: IGDBGame[] | number[];
   storyline?: string;
@@ -48,11 +48,12 @@ export interface IGDBGame extends IGDBGeneric {
   updated_at: Date | number;
   videos?: IGDBVideo[] | number[];
   websites?: IGDBWebsite[] | number[];
-  year?: number
+  year?: number;
 }
 
 export interface IGDBGeneric {
   id?: number;
+  igdbId?: number;
   name?: string;
   url?: string;
   checksum?: string;
@@ -67,7 +68,9 @@ export interface IGDBGameArt extends IGDBGeneric {
   height: number;
   url: string;
   width: number;
-  image_id: string;
+  imageId: string;
+  igdbId?: number;
+  id?: number;
   game?: IGDBGame | number;
 }
 
@@ -94,7 +97,7 @@ interface IGDBCompany extends IGDBGeneric {
 }
 
 export interface IGDBInvolvedCompany extends IGDBGeneric {
-  id: number;
+  id?: number;
   company: IGDBCompany;
   developer: boolean;
   game: IGDBGame | number;
@@ -156,4 +159,43 @@ enum WebsiteEnum {
   epicgames = 16,
   gog = 17,
   discord = 18,
+}
+
+export interface Tokens {
+  access_token: string;
+  refresh_token: string;
+}
+
+export interface User {
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  email: string;
+  id?: number;
+  steamId?: number;
+  steam?: SteamProfile;
+}
+
+export interface SteamProfile {
+  avatarhash: string;
+  createdAt: string;
+  personaname: string;
+  profileurl: string;
+}
+
+export interface RecommendationsResult {
+  games: {
+    game: IGDBGame;
+    type: string;
+    typeText: string;
+  }[];
+  genres: IGDBGeneric[];
+  highlights: {
+    playtime: number;
+    steam: {
+      igdbGame: IGDBGame;
+    };
+  }[];
+  type: string;
+  time: number;
 }

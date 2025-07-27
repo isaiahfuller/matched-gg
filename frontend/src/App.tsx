@@ -1,8 +1,6 @@
-import { forwardRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppShell,
-  Avatar,
-  Box,
   Burger,
   Center,
   Divider,
@@ -13,7 +11,7 @@ import {
   NavLink,
   Stack,
   Text,
-  UnstyledButton,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import logo from "./assets/logo.svg";
@@ -25,92 +23,84 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Recommendations from "./components/Recommendations/Recommendations";
-import Login from "./components/Login/Login";
-import Search from "./components/Search/Search";
+import { User } from "./interfaces";
+import Pages from "./components/Pages/Pages";
+import { UserButton } from "./components/elements/UserButton";
+import { blankUser } from "./constants";
 
-function Pages({ page }: { page: number }) {
-  switch (page) {
-    case 1:
-      return <Recommendations />;
-    case 2:
-      return <Text>Previously recommended</Text>;
-    case 3:
-      return <Text>Sync your libraries</Text>;
-    default:
-      return <Login />;
-  }
-}
-interface UserButtonProps extends React.ComponentPropsWithoutRef<"button"> {
-  image: string;
-  name: string;
-  email: string;
-  width: number;
-  icon?: React.ReactNode;
-}
-const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
-  ({ image, name, email, width, icon, ...others }: UserButtonProps, ref) => (
-    <UnstyledButton
-      ref={ref}
-      style={{
-        color: "var(--mantine-color-text)",
-        borderRadius: "var(--mantine-radius-sm)",
-      }}
-      {...others}
-      py={16}
-      w={width}
-    >
-      <Flex justify="space-between" align="center">
-        <Avatar src={image} radius="xl" />
-
-        <Box style={{ flex: 1 }} px={8} w={75}>
-          <Text size="sm" fw={500} truncate="end">
-            {name}
-          </Text>
-
-          <Text c="dimmed" size="xs" truncate="end">
-            {email}
-          </Text>
-        </Box>
-
-        {icon || <FontAwesomeIcon icon={faChevronRight} size="sm" />}
-      </Flex>
-    </UnstyledButton>
-  )
-);
-
+/**
+ * Returns the rendered component based on the provided page.
+ * @param props - Props for the Pages component.
+ * @returns JSX.Element - The rendered component.
+ */
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [page, setPage] = useState(0);
-  const [_profile, setProfile] = useState(null);
+  const [user, setUser] = useState<User>(blankUser);
+  const [page, setPage] = useState<string>("");
+  const [loading, setLoading] = useState(true);
   const { width } = useViewportSize();
   const [opened, { toggle }] = useDisclosure();
 
+  // Initialize user data
   useEffect(() => {
-    fetch("steam/valid", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-        if ("steamid" in res) {
-          setProfile(res);
-          localStorage.setItem("steam-profile", JSON.stringify(res));
-          setIsLoggedIn(true);
-          setPage(1);
+    async function onLoad() {
+      setLoading(true);
+      const opt = {
+        method: "POST",
+      };
+      try {
+        const r = await fetch("/verify", opt);
+        if (![200, 201].includes(r.status)) {
+          throw new Error(r.status + "");
         }
-      });
+        const res = await r.json();
+        console.log(res);
+        setIsLoggedIn(true);
+        if (!res || !res.profile || !res.profile.id) {
+          setPage("recommendations");
+          throw new Error("No profile received");
+        }
+        setUser(res.profile);
+        if (localStorage.getItem("sync")) {
+          setPage("sync");
+          fetch("/steam/processLibrary").then((r) => r.json());
+        }
+        setLoading(false);
+      } catch (e) {
+        // Default to recommendations
+        setIsLoggedIn(false);
+        setPage("recommendations");
+        setLoading(false);
+      }
+    }
+    onLoad();
   }, []);
 
-  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: number) {
+  /**
+   * Redirect to default page if user is logged in.
+   */
+  useEffect(() => {
+    if (isLoggedIn && ["login", ""].includes(page)) {
+      setPage("recommendations");
+    }
+  }, [isLoggedIn, page]);
+
+  /**
+   * Sets page to the given index.
+   * @param e - Event object
+   * @param idx - Index of the page to navigate to
+   */
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, idx: string) {
     e.preventDefault();
     setPage(idx);
   }
 
-  async function getGames() {
-    const games = await fetch("/steam/getOwnedGames");
-    console.log(await games.json());
+  /**
+   * Logs user out and reloads
+   */
+  async function logOut() {
+    await fetch("/logout");
+    window.location.reload();
   }
 
   return (
@@ -144,31 +134,31 @@ function App() {
           ) : null}
           <Stack h="100%" justify="center" p={8}>
             <NavLink
-              disabled={page === 0 ? true : false}
+              disabled={!isLoggedIn || loading}
               href="#"
               label="Recommendations"
-              onClick={(e) => handleClick(e, 1)}
+              onClick={(e) => handleClick(e, "recommendations")}
               rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faGamepad} />}
-              active={page === 1}
+              active={page === "recommendations"}
             />
             <NavLink
-              disabled={page === 0 ? true : false}
+              disabled={!isLoggedIn || loading}
               href="#"
               label="Previously recommended"
-              onClick={(e) => handleClick(e, 2)}
+              onClick={(e) => handleClick(e, "previous")}
               rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faThumbsUp} />}
-              active={page === 2}
+              active={page === "previous"}
             />
             <NavLink
-              disabled={page === 0 ? true : false}
+              disabled={!isLoggedIn || loading}
               href="#"
               label="Sync your libraries"
-              onClick={(e) => handleClick(e, 3)}
+              onClick={(e) => handleClick(e, "sync")}
               rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
               leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
-              active={page === 3}
+              active={page === "sync"}
             />
           </Stack>
           <Divider />
@@ -176,27 +166,35 @@ function App() {
             {isLoggedIn ? (
               <Menu
                 position={width < 768 ? "top" : "left-end"}
-                disabled={page === 0 ? true : false}
+                disabled={!isLoggedIn || loading}
                 offset={28}
               >
                 <Menu.Target>
-                  <UserButton
-                    name="Place Holder"
-                    email="placeholder@example.com"
-                    image="https://placehold.co/36"
-                    width={width < 768 ? width - 28 : 222}
-                  />
+                  {!user || !user.name.length ? (
+                    <Loader />
+                  ) : (
+                    <UserButton
+                      name={user.name}
+                      email={user.email}
+                      image={
+                        user.steam
+                          ? `https://avatars.steamstatic.com/${user.steam.avatarhash}.jpg`
+                          : "https://placehold.co/36"
+                      }
+                      width={width < 768 ? width - 28 : 222}
+                    />
+                  )}
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item onClick={getGames}>owned</Menu.Item>
-                  <Menu.Label>Actions</Menu.Label>
                   <Menu.Item
-                    leftSection={<FontAwesomeIcon icon={faArrowsRotate} />}
+                    leftSection={<FontAwesomeIcon icon={faUser} />}
+                    onClick={() => setPage("settings")}
                   >
-                    Change Account
+                    Account Settings
                   </Menu.Item>
                   <Menu.Item
                     leftSection={<FontAwesomeIcon icon={faRightFromBracket} />}
+                    onClick={logOut}
                   >
                     Logout
                   </Menu.Item>
@@ -204,9 +202,9 @@ function App() {
               </Menu>
             ) : (
               <NavLink
-                disabled={page === 0 ? true : false}
+                disabled={loading}
                 href="/steam/auth"
-                label="Logged out"
+                label="Sign in"
                 leftSection={<FontAwesomeIcon icon={faUser} />}
               />
             )}
@@ -214,8 +212,15 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main bg="rgb(16, 17, 19)">
-        {page !== 0 ? <Search /> : null}
-        <Pages page={page} />
+        {loading ? (
+          <Center className="centered">
+            <Loader />
+          </Center>
+        ) : (
+          <>
+            <Pages page={page} />
+          </>
+        )}
       </AppShell.Main>
     </AppShell>
   );

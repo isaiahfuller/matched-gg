@@ -3,46 +3,41 @@ import {
   doublePrecision,
   index,
   integer,
-  pgEnum,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
+  unique,
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm/relations';
+import { igdbSteamConnect } from 'src/infrastructure/steam/db/schema/igdbSteamConnect';
 
-import { coverTable } from './artworks';
+import { ageRatingsTable } from './ageRatings';
+import { alternativeNamesTable } from './alternativeNames';
+import { artworksTable } from './artworks';
+import { collectionsTable } from './collections';
+import { coversTable } from './covers';
+import { externalGamesTable } from './externalGame';
 import { franchisesTable } from './franchise';
-
-// declaring enum in database
-export const GameCategoryPGEnum = pgEnum('GameCategoryEnum', [
-  'MAIN_GAME',
-  'DLC_ADDON',
-  'EXPANSION',
-  'BUNDLE',
-  'STANDALONE_EXPANSION',
-  'MOD',
-  'EPISODE',
-  'SEASON',
-  'REMAKE',
-  'REMASTER',
-  'EXPANDED_GAME',
-  'PORT',
-  'FORK',
-  'PACK',
-  'UPDATE',
-]);
-
-export const StatusPGEnum = pgEnum('StatusEnum', [
-  'RELEASED',
-  'ALPHA',
-  'BETA',
-  'EARLY_ACCESS',
-  'OFFLINE',
-  'CANCELLED',
-  'RUMORED',
-  'DELISTED',
-]);
+import { gameEnginesTable } from './gameEngines';
+import { gameLocalizationsTable } from './gameLocalizations';
+import { gameModeTable } from './gameMode';
+import { gameStatusTable } from './gameStatus';
+import { gameTypesTable } from './gameTypes';
+import { gameVideosTable } from './gameVideos';
+import { genresTable } from './genres';
+import { involvedCompaniesTable } from './involvedCompanies';
+import { keywordsTable } from './keywords';
+import { languageSupportsTable } from './languageSupport';
+import { multiplayerModesTable } from './multiplayerModes';
+import { platformsTable } from './platforms';
+import { playerPerspectivesTable } from './playerPerspectives';
+import { releaseDatesTable } from './releaseDates';
+import { screenshotsTable } from './screenshots';
+import { themesTable } from './themes';
+import { websitesTable } from './websites';
 
 export const gamesTable = pgTable(
   'games',
@@ -53,12 +48,9 @@ export const gamesTable = pgTable(
     alternativeNames: bigint('alternative_names', { mode: 'number' }).array(),
     artworks: bigint('artworks', { mode: 'number' }).array(),
     bundles: bigint('bundles', { mode: 'number' }).array(),
-    category: GameCategoryPGEnum('category'),
     checksum: text('checksum'),
     collections: bigint('collections', { mode: 'number' }).array(),
-    cover: bigint('cover', { mode: 'number' }).references(
-      () => coverTable.igdbId,
-    ),
+    cover: bigint('cover', { mode: 'number' }),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     dlcs: bigint('dlcs', { mode: 'number' }).array(),
     expandedGames: bigint('expanded_games', { mode: 'number' }).array(),
@@ -66,14 +58,13 @@ export const gamesTable = pgTable(
     externalGames: bigint('external_games', { mode: 'number' }).array(),
     firstReleaseDate: timestamp('first_release_date'),
     forks: bigint('forks', { mode: 'number' }).array(),
-    franchise: bigint('franchise', { mode: 'number' }).references(
-      () => franchisesTable.igdbId,
-    ),
+    franchise: bigint('franchise', { mode: 'number' }),
     franchises: bigint('franchises', { mode: 'number' }).array(),
-    gameCategory: GameCategoryPGEnum('game_category'),
     gameEngines: bigint('game_engines', { mode: 'number' }).array(),
     gameLocalizations: bigint('game_localizations', { mode: 'number' }).array(),
     gameModes: bigint('game_modes', { mode: 'number' }).array(),
+    gameStatus: bigint('game_status', { mode: 'number' }),
+    gameType: bigint('game_type', { mode: 'number' }),
     genres: bigint('genres', { mode: 'number' }).array(),
     hypes: integer('hypes'),
     id: serial('game_id').notNull().unique(),
@@ -85,9 +76,7 @@ export const gamesTable = pgTable(
     languageSupports: bigint('language_supports', { mode: 'number' }).array(),
     multiplayerModes: bigint('multiplayer_modes', { mode: 'number' }).array(),
     name: text('name').notNull(),
-    parentGame: bigint('parent_game', { mode: 'number' }).references(
-      () => gamesTable.igdbId,
-    ),
+    parentGame: bigint('parent_game', { mode: 'number' }),
     platforms: bigint('platforms', { mode: 'number' }).array(),
     playerPerspectives: bigint('player_perspectives', {
       mode: 'number',
@@ -104,7 +93,6 @@ export const gamesTable = pgTable(
     standaloneExpansions: bigint('standalone_expansions', {
       mode: 'number',
     }).array(),
-    status: StatusPGEnum('status'),
     storyline: text('storyline'),
     summary: text('summary'),
     tags: bigint('tags', { mode: 'number' }).array(),
@@ -113,20 +101,308 @@ export const gamesTable = pgTable(
     totalRatingCount: integer('total_rating_count'),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     url: text('url'),
-    versionParent: bigint('version_parent', { mode: 'number' }).references(
-      () => gamesTable.igdbId,
-    ),
+    versionParent: bigint('version_parent', { mode: 'number' }),
     versionTitle: text('version_title'),
     videos: bigint('videos', { mode: 'number' }).array(),
     websites: bigint('websites', { mode: 'number' }).array(),
   },
   (table) => {
     return {
+      genresIdx: index('genres_idx').on(table.genres),
       nameIdx: index('name_idx').on(table.name),
       slugIdx: index('slug_idx').on(table.slug),
+      themesIdx: index('themes_idx').on(table.themes),
       uniqueIgdbIdIdx: uniqueIndex('igdb_id_idx').on(table.igdbId),
     };
   },
 );
 
+export const gamesRelations = relations(gamesTable, ({ many, one }) => ({
+  ageRatings: many(ageRatingsTable),
+  alternativeNames: many(alternativeNamesTable),
+  artworks: many(artworksTable),
+  bundles: many(gamesTable),
+  collections: many(collectionsTable),
+  cover: one(coversTable, {
+    fields: [gamesTable.cover],
+    references: [coversTable.igdbId],
+  }),
+  dlcs: many(gamesTable),
+  expanded_games: many(gamesTable),
+  expansions: many(gamesTable),
+  externalGames: many(externalGamesTable),
+  forks: many(gamesTable),
+  franchise: one(franchisesTable, {
+    fields: [gamesTable.franchise],
+    references: [franchisesTable.igdbId],
+  }),
+  franchises: many(gameFranchises),
+  gameEngines: many(gameEnginesTable),
+  gameLocalizations: many(gameLocalizationsTable),
+  gameModes: many(gameGameModes),
+  gameStatus: one(gameStatusTable, {
+    fields: [gamesTable.gameStatus],
+    references: [gameStatusTable.igdbId],
+  }),
+  gameType: one(gameTypesTable, {
+    fields: [gamesTable.gameType],
+    references: [gameTypesTable.igdbId],
+  }),
+  genresRelation: many(gameGenres),
+  involvedCompanies: many(involvedCompaniesTable),
+  keywords: many(gameKeywords),
+  languageSupports: many(languageSupportsTable),
+  multiplayerModes: many(gameMultiplayerModes),
+  parentGame: one(gamesTable, {
+    fields: [gamesTable.parentGame],
+    references: [gamesTable.igdbId],
+  }),
+  platforms: many(gamePlatforms),
+  playerPerspectives: many(playerPerspectivesTable),
+  ports: many(gamesTable),
+  releaseDates: many(releaseDatesTable),
+  remakes: many(gamesTable),
+  remasters: many(gamesTable),
+  screenshots: many(gameScreenshots),
+  similarGames: many(gameSimilarGames, { relationName: 'parentGame' }),
+  standaloneExpansions: many(gamesTable),
+  steamId: one(igdbSteamConnect, {
+    fields: [gamesTable.igdbId],
+    references: [igdbSteamConnect.igdbId],
+  }),
+  themesRelation: many(gameThemes),
+  versionParent: one(gamesTable, {
+    fields: [gamesTable.versionParent],
+    references: [gamesTable.igdbId],
+  }),
+  videos: many(gameVideosTable),
+  websites: many(websitesTable),
+}));
+
+export const gameKeywords = pgTable(
+  'game_keywords',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('keyword_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameKeywordsRelations = relations(gameKeywords, ({ one }) => ({
+  g: one(gamesTable, {
+    fields: [gameKeywords.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  kw: one(keywordsTable, {
+    fields: [gameKeywords.resourceId],
+    references: [keywordsTable.igdbId],
+  }),
+}));
+
+export const gameFranchises = pgTable(
+  'game_franchises',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('franchise_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameFranchisesRelations = relations(gameFranchises, ({ one }) => ({
+  f: one(franchisesTable, {
+    fields: [gameFranchises.resourceId],
+    references: [franchisesTable.igdbId],
+  }),
+  g: one(gamesTable, {
+    fields: [gameFranchises.gameId],
+    references: [gamesTable.igdbId],
+  }),
+}));
+
+export const gamePlatforms = pgTable(
+  'game_platforms',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('platform_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gamePlatformsRelations = relations(gamePlatforms, ({ one }) => ({
+  g: one(gamesTable, {
+    fields: [gamePlatforms.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  p: one(platformsTable, {
+    fields: [gamePlatforms.resourceId],
+    references: [platformsTable.igdbId],
+  }),
+}));
+
+export const gameGenres = pgTable(
+  'game_genres',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('genre_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameGenresRelations = relations(gameGenres, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gameGenres.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  genre: one(genresTable, {
+    fields: [gameGenres.resourceId],
+    references: [genresTable.igdbId],
+  }),
+}));
+
+export const gameScreenshots = pgTable(
+  'game_screenshots',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('screenshot_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameScreenshotsRelations = relations(
+  gameScreenshots,
+  ({ one }) => ({
+    g: one(gamesTable, {
+      fields: [gameScreenshots.gameId],
+      references: [gamesTable.igdbId],
+    }),
+    ss: one(screenshotsTable, {
+      fields: [gameScreenshots.resourceId],
+      references: [screenshotsTable.igdbId],
+    }),
+  }),
+);
+
+export const gameThemes = pgTable(
+  'game_themes',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('theme_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameThemesRelations = relations(gameThemes, ({ one }) => ({
+  game: one(gamesTable, {
+    fields: [gameThemes.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  theme: one(themesTable, {
+    fields: [gameThemes.resourceId],
+    references: [themesTable.igdbId],
+  }),
+}));
+
+export const gameMultiplayerModes = pgTable(
+  'game_multiplayer_modes',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('multiplayer_mode_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameMultiplayerModesRelations = relations(
+  gameMultiplayerModes,
+  ({ one }) => ({
+    g: one(gamesTable, {
+      fields: [gameMultiplayerModes.gameId],
+      references: [gamesTable.igdbId],
+    }),
+    mm: one(multiplayerModesTable, {
+      fields: [gameMultiplayerModes.resourceId],
+      references: [multiplayerModesTable.igdbId],
+    }),
+  }),
+);
+
+export const gameGameModes = pgTable(
+  'game_game_modes',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('game_mode_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameGameModesRelations = relations(gameGameModes, ({ one }) => ({
+  g: one(gamesTable, {
+    fields: [gameGameModes.gameId],
+    references: [gamesTable.igdbId],
+  }),
+  gm: one(gameModeTable, {
+    fields: [gameGameModes.resourceId],
+    references: [gameModeTable.igdbId],
+  }),
+}));
+
+export const gameSimilarGames = pgTable(
+  'game_similar_games',
+  {
+    gameId: bigint('game_id', { mode: 'number' }).notNull(),
+    resourceId: bigint('similar_game_id', { mode: 'number' }).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.gameId, t.resourceId] }),
+    unq: unique().on(t.resourceId, t.gameId),
+  }),
+);
+
+export const gameSimilarGamesRelations = relations(
+  gameSimilarGames,
+  ({ one }) => ({
+    pg: one(gamesTable, {
+      fields: [gameSimilarGames.gameId],
+      references: [gamesTable.igdbId],
+      relationName: 'parentGame',
+    }),
+    sg: one(gamesTable, {
+      fields: [gameSimilarGames.resourceId],
+      references: [gamesTable.igdbId],
+      relationName: 'similarGame',
+    }),
+  }),
+);
+
 export type Games = typeof gamesTable.$inferInsert;
+export type GameKeywords = typeof gameKeywords.$inferInsert;
+export type GameFranchises = typeof gameFranchises.$inferInsert;
+export type GamePlatforms = typeof gamePlatforms.$inferInsert;
+export type GameGenres = typeof gameGenres.$inferInsert;
+export type GameThemes = typeof gameThemes.$inferInsert;
+export type GameMultiplayerModes = typeof gameMultiplayerModes.$inferInsert;
+export type GameGameModes = typeof gameGameModes.$inferInsert;
+export type SimilarGames = typeof gameSimilarGames.$inferInsert;

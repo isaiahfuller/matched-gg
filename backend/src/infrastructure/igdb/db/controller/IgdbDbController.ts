@@ -1,59 +1,77 @@
+import { setAllConflictUpdateColumns } from '@util/setAllConflictUpdateColumns';
+import { eq } from 'drizzle-orm';
 import { QueryResult } from 'pg';
 import { db } from 'src/db/db';
-
-import * as artworksSchema from '../schema/artworks';
-import * as gamesSchema from '../schema/games';
-import * as websitesSchema from '../schema/websites';
-import { setAllConflictUpdateColumns } from '../util/setAllConflictUpdateColumns';
 
 export class IgdbDbController {
   private readonly db = db;
 
-  public async getConnection() {
+  public async delete<T extends { igdbId: number }>(
+    data: T,
+    table: any,
+  ): Promise<QueryResult<T[]>> {
+    return this.db.delete(table).where(eq(table.igdbId, data.igdbId));
+  }
+
+  /**
+   *
+   * @returns Drizzle instance
+   * @deprecated
+   * This is imported from another file, and doesn't need to be retrieved from here
+   */
+  public getConnection() {
     return this.db;
   }
 
-  public async storeArtworks(
-    artworks: artworksSchema.Artworks | artworksSchema.Artworks[],
-  ): Promise<QueryResult<artworksSchema.Artworks[]>> {
-    return await this.db
-      .insert(artworksSchema.artworksTable)
-      .values([artworks].flat())
+  /**
+   *
+   * @param data - Data to be stored
+   * @param table - Table to store data to
+   * @typeParam T - Type of the table
+   * @returns
+   */
+  public async store<T extends { igdbId: number }>(
+    data: T | T[],
+    table: any,
+  ): Promise<QueryResult<T[]>> {
+    return this.db
+      .insert(table)
+      .values([data].flat())
       .onConflictDoUpdate({
-        set: setAllConflictUpdateColumns(artworksSchema.artworksTable, [
-          'imageId',
-        ]),
-        target: artworksSchema.artworksTable.imageId,
+        set: setAllConflictUpdateColumns(table, ['igdbId']),
+        target: table.igdbId,
       });
   }
 
-  public async storeGames(
-    games: gamesSchema.Games | gamesSchema.Games[],
-  ): Promise<QueryResult<gamesSchema.Games[]>> {
-    return await this.db
-      .insert(gamesSchema.gamesTable)
-      .values([games].flat())
+  /**
+   *
+   * @see {@link store}
+   */
+  public async storeManyToMany<T>(
+    data: T | T[],
+    table: any,
+  ): Promise<QueryResult<T[]>> {
+    return this.db
+      .insert(table)
+      .values([data].flat())
       .onConflictDoUpdate({
-        set: setAllConflictUpdateColumns(gamesSchema.gamesTable, [
-          'createdAt',
-          'igdbId',
-          'id',
-        ]),
-        target: gamesSchema.gamesTable.igdbId,
+        set: setAllConflictUpdateColumns(table, ['gameId']),
+        target: [table.gameId, table.resourceId],
       });
   }
 
-  public async storeWebsites(
-    websites: websitesSchema.Websites | websitesSchema.Websites[],
-  ): Promise<QueryResult<websitesSchema.Websites[]>> {
-    return await this.db
-      .insert(websitesSchema.websitesTable)
-      .values([websites].flat())
+  /**
+   *
+   * @see {@link store}
+   */
+  public async storeOwnedSteam(data, table) {
+    console.log(table, data);
+    return this.db
+      .insert(table)
+      .values([data].flat())
       .onConflictDoUpdate({
-        set: setAllConflictUpdateColumns(websitesSchema.websitesTable, [
-          'igdbId',
-        ]),
-        target: websitesSchema.websitesTable.igdbId,
+        set: setAllConflictUpdateColumns(table, ['userId', 'steamId']),
+        target: [table.userId, table.steamId],
       });
   }
 }

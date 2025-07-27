@@ -28,6 +28,8 @@ const requiredVars: string[] = [
   'TWITCH_CLIENT_ID',
   'TWITCH_CLIENT_SECRET',
   'STEAM_API_KEY',
+  'JWT_SECRET',
+  'JWT_REFRESH_SECRET',
 ];
 
 const optionalVars: string[] = ['PINO_LEVEL', 'PINO_NAME', 'PINO_ENABLED'];
@@ -35,6 +37,13 @@ const optionalVars: string[] = ['PINO_LEVEL', 'PINO_NAME', 'PINO_ENABLED'];
 validateEnvVars(requiredVars, optionalVars);
 
 export const config: Config = {
+  authSecrets: {
+    jwt: process.env.JWT_SECRET || 'CvvXIB5KI4LG3FJ6B2LOHZcbe2rO1hYT7Glj',
+    jwtRefresh:
+      process.env.JWT_REFRESH_SECRET ||
+      '68VkEyljO0tF8LIAbHGY15Xk6HsvvK6uZkMneBr9Jjxo5',
+    session: process.env.SESSION_SECRET || 'uV2GckuLeRSeLGH9vtx4',
+  },
   db: {
     database: process.env.DB_NAME || 'postgres',
     host: process.env.DB_HOST || 'localhost',
@@ -52,7 +61,6 @@ export const config: Config = {
     password: process.env.REDIS_PASSWORD || 'redis',
     port: Number(process.env.REDIS_PORT) || 6379,
   },
-  sessionSecret: process.env.SESSION_SECRET || 'uV2GckuLeRSeLGH9vtx4',
   steam: {
     apiKey: process.env.STEAM_API_KEY || '',
   },

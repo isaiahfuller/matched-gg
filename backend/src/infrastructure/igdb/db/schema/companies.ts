@@ -1,29 +1,14 @@
-import {
-  bigint,
-  integer,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-} from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import { bigint, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const CompanyDateCategoryPGEnum = pgEnum('CompanyDateCategoryEnum', [
-  'YYYYMMMMDD',
-  'YYYYMMMM',
-  'YYYY',
-  'YYYYQ1',
-  'YYYYQ2',
-  'YYYYQ3',
-  'YYYYQ4',
-  'TBD',
-]);
+import { companyWebsitesTable } from './companyWebsites';
+import { dateFormatTable } from './dateFormats';
+import { involvedCompaniesTable } from './involvedCompanies';
 
 export const companiesTable = pgTable('companies', {
   changeDate: timestamp('change_date'),
-  changeDateCategory: CompanyDateCategoryPGEnum('change_date_category'),
-  changedCompanyId: bigint('changed_company_id', { mode: 'number' }).references(
-    () => companiesTable.igdbId,
-  ),
+  changeDateFormat: bigint('change_date_format', { mode: 'number' }),
+  changedCompanyId: bigint('changed_company_id', { mode: 'number' }),
   checksum: text('checksum'),
   country: integer('country'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
@@ -32,16 +17,32 @@ export const companiesTable = pgTable('companies', {
   igdbCreatedAt: timestamp('igdb_created_at'),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   igdbUpdatedAt: timestamp('igdb_updated_at'),
+  logo: bigint('logo', { mode: 'number' }),
   name: text('name'),
-  parent: bigint('parent', { mode: 'number' }).references(
-    () => companiesTable.igdbId,
-  ),
+  parent: bigint('parent', { mode: 'number' }),
   published: bigint('published', { mode: 'number' }).array(),
   slug: text('slug'),
-  start_date: timestamp('start_date'),
-  startDateCategory: CompanyDateCategoryPGEnum('start_date_category'),
+  startDate: timestamp('start_date'),
+  startDateFormat: bigint('start_date_format', { mode: 'number' }),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
+
+export const companyRelations = relations(companiesTable, ({ many, one }) => ({
+  changeDateFormat: one(dateFormatTable, {
+    fields: [companiesTable.changeDateFormat],
+    references: [dateFormatTable.igdbId],
+  }),
+  involvedCompanies: many(involvedCompaniesTable),
+  parent: one(companiesTable, {
+    fields: [companiesTable.parent],
+    references: [companiesTable.igdbId],
+  }),
+  startDateFormat: one(dateFormatTable, {
+    fields: [companiesTable.startDateFormat],
+    references: [dateFormatTable.igdbId],
+  }),
+  websites: many(companyWebsitesTable),
+}));
 
 export type Companies = typeof companiesTable.$inferInsert;

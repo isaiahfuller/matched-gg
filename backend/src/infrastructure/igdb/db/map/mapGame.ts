@@ -1,4 +1,4 @@
-import { GameCategoryPGEnum, Games, StatusPGEnum } from '../schema/games';
+import { Games } from '../schema/games';
 
 export const mapGame = (game) => {
   const mappedGame = {
@@ -18,17 +18,14 @@ export const mapGame = (game) => {
     firstReleaseDate: game.first_release_date
       ? new Date(game.first_release_date * 1000)
       : null,
-    follows: game.follows,
     forks: game.forks,
     franchise: game.franchise,
     franchises: game.franchises,
-    gameCategory:
-      game.category === undefined
-        ? null
-        : GameCategoryPGEnum.enumValues[game.category],
     gameEngines: game.game_engines,
     gameLocalizations: game.game_localizations,
     gameModes: game.game_modes,
+    gameStatus: game.game_status,
+    gameType: game.game_type,
     genres: game.genres,
     hypes: game.hypes,
     igdbCreatedAt: game.created_at ? new Date(game.created_at * 1000) : null,
@@ -52,12 +49,6 @@ export const mapGame = (game) => {
     similarGames: game.similar_games,
     slug: game.slug,
     standaloneExpansions: game.standalone_expansions,
-    status:
-      game.status === undefined
-        ? null
-        : StatusPGEnum.enumValues[
-            game.status > 0 ? game.status - 1 : game.status // This is beacuse the enum skips 1 and starts at 0 for some reason (IGDB weirdness)
-          ],
     storyline: game.storyline,
     summary: game.summary,
     tags: game.tags,

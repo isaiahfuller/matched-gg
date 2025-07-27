@@ -1,4 +1,7 @@
+import { relations } from 'drizzle-orm';
 import { bigint, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+
+import { gamesTable } from './games';
 
 export const franchisesTable = pgTable('franchises', {
   checksum: text('checksum'),
@@ -12,5 +15,9 @@ export const franchisesTable = pgTable('franchises', {
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   url: text('url'),
 });
+
+export const franchiseRelations = relations(franchisesTable, ({ many }) => ({
+  games: many(gamesTable),
+}));
 
 export type Franchises = typeof franchisesTable.$inferInsert;

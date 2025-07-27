@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { generateColors } from "@mantine/colors-generator";
 import { createTheme, MantineProvider, virtualColor } from "@mantine/core";
@@ -21,9 +20,7 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <MantineProvider theme={theme} defaultColorScheme="dark">
-      <App />
-    </MantineProvider>
-  </React.StrictMode>
+  <MantineProvider theme={theme} defaultColorScheme="dark">
+    <App />
+  </MantineProvider>
 );

@@ -10,7 +10,7 @@ export enum ScreenshotField {
   width = 'width',
 }
 
-export enum ExpandedArtworkField {
+export enum ExpandedScreenshotField {
   alpha_channel = 'alpha_channel',
   animated = 'animated',
   checksum = 'checksum',

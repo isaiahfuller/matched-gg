@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -15,23 +16,33 @@ export const multiplayerModesTable = pgTable('multiplayerModes', {
   checksum: text('checksum'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   dropIn: boolean('dropin').notNull(),
-  game: bigint('game', { mode: 'number' })
-    .notNull()
-    .references(() => gamesTable.igdbId),
+  game: bigint('game', { mode: 'number' }).notNull(),
   igdbId: bigint('igdb_id', { mode: 'number' }).primaryKey(),
   lanCoop: boolean('lancoop').notNull(),
   offlineCoop: boolean('offlinecoop').notNull(),
-  offlineCoopMax: integer('offlinecoopmax').notNull(),
-  offlineMax: integer('offlinemax').notNull(),
+  offlineCoopMax: integer('offlinecoopmax'),
+  offlineMax: integer('offlinemax'),
   onlineCoop: boolean('onlinecoop').notNull(),
-  onlineCoopMax: integer('onlinecoopmax').notNull(),
-  onlineMax: integer('onlinemax').notNull(),
-  platform: bigint('platform', { mode: 'number' })
-    .notNull()
-    .references(() => platformsTable.igdbId),
+  onlineCoopMax: integer('onlinecoopmax'),
+  onlineMax: integer('onlinemax'),
+  platform: bigint('platform', { mode: 'number' }),
   splitscreen: boolean('splitscreen').notNull(),
-  splitscreenOnline: boolean('splitscreenonline').notNull(),
+  splitscreenOnline: boolean('splitscreenonline'),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
+
+export const multiplayerModesRelations = relations(
+  multiplayerModesTable,
+  ({ one }) => ({
+    game: one(gamesTable, {
+      fields: [multiplayerModesTable.game],
+      references: [gamesTable.igdbId],
+    }),
+    platform: one(platformsTable, {
+      fields: [multiplayerModesTable.platform],
+      references: [platformsTable.igdbId],
+    }),
+  }),
+);
 
 export type MultiplayerModes = typeof multiplayerModesTable.$inferInsert;

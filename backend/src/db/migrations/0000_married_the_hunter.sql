@@ -1,0 +1,982 @@
+CREATE TYPE "public"."AgeRatingCDCategoryEnum" AS ENUM('', 'ESRB_alcohol_reference', 'ESRB_animated_blood', 'ESRB_blood', 'ESRB_blood_and gore', 'ESRB_cartoon_violence', 'ESRB_comic_mischief', 'ESRB_crude_humor', 'ESRB_drug_reference', 'ESRB_fantasy_violence', 'ESRB_intense_violence', 'ESRB_language', 'ESRB_lyrics', 'ESRB_mature_humor', 'ESRB_nudity', 'ESRB_partial_nudity', 'ESRB_real_gambling', 'ESRB_sexual_content', 'ESRB_sexual_themes', 'ESRB_sexual_violence', 'ESRB_simulated_gambling', 'ESRB_strong_language', 'ESRB_strong_lyrics', 'ESRB_strong_sexual content', 'ESRB_suggestive_themes', 'ESRB_tobacco_reference', 'ESRB_use_of alcohol', 'ESRB_use_of drugs', 'ESRB_use_of tobacco', 'ESRB_violence', 'ESRB_violent_references', 'ESRB_animated_violence', 'ESRB_mild_language', 'ESRB_mild_violence', 'ESRB_use_of drugs and alcohol', 'ESRB_drug_and alcohol reference', 'ESRB_mild_suggestive themes', 'ESRB_mild_cartoon violence', 'ESRB_mild_blood', 'ESRB_realistic_blood and gore', 'ESRB_realistic_violence', 'ESRB_alcohol_and tobacco reference', 'ESRB_mature_sexual themes', 'ESRB_mild_animated violence', 'ESRB_mild_sexual themes', 'ESRB_use_of alcohol and tobacco', 'ESRB_animated_blood and gore', 'ESRB_mild_fantasy violence', 'ESRB_mild_lyrics', 'ESRB_realistic_blood', 'PEGI_violence', 'PEGI_sex', 'PEGI_drugs', 'PEGI_fear', 'PEGI_discrimination', 'PEGI_bad_language', 'PEGI_gambling', 'PEGI_online_gameplay', 'PEGI_in_game_purchases', 'CERO_love', 'CERO_sexual_content', 'CERO_violence', 'CERO_horror', 'CERO_drinking_smoking', 'CERO_gambling', 'CERO_crime', 'CERO_controlled_substances', 'CERO_languages_and others', 'GRAC_sexuality', 'GRAC_violence', 'GRAC_fear_horror_threatening', 'GRAC_language', 'GRAC_alcohol_tobacco_drug', 'GRAC_crime_anti_social', 'GRAC_gambling', 'CLASS_IND_violencia', 'CLASS_IND_violencia_extrema', 'CLASS_IND_conteudo_sexual', 'CLASS_IND_nudez', 'CLASS_IND_sexo', 'CLASS_IND_sexo_explicito', 'CLASS_IND_drogas', 'CLASS_IND_drogas_licitas', 'CLASS_IND_drogas_ilicitas', 'CLASS_IND_linguagem_impropria', 'CLASS_IND_atos_criminosos');--> statement-breakpoint
+CREATE TYPE "public"."CategoryEnum" AS ENUM('', 'ESRB', 'PEGI', 'CERO', 'USK', 'GRAC', 'CLASS_IND', 'ACB');--> statement-breakpoint
+CREATE TYPE "public"."RatingEnum" AS ENUM('', 'Seven', 'Twelve', 'Sixteen', 'Eighteen', 'RP', 'EC', 'E', 'E10', 'T0', 'M1', 'AO2', 'CERO_A3', 'CERO_B4', 'CERO_C5', 'CERO_D6', 'CERO_Z7', 'USK_08', 'USK_69', 'USK_120', 'USK_161', 'USK_182', 'GRAC_ALL3', 'GRAC_Twelve4', 'GRAC_Fifteen5', 'GRAC_Eighteen6', 'GRAC_TESTING7', 'CLASS_IND_L8', 'CLASS_IND_Ten9', 'CLASS_IND_Twelve0', 'CLASS_IND_Fourteen1', 'CLASS_IND_Sixteen2', 'CLASS_IND_Eighteen3', 'ACB_G4', 'ACB_PG5', 'ACB_M6', 'ACB_MA157', 'ACB_R188', 'ACB_RC9');--> statement-breakpoint
+CREATE TYPE "public"."CollectionTypeEnum" AS ENUM('', 'MEMBER', 'SPINOFF');--> statement-breakpoint
+CREATE TYPE "public"."CompanyDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');--> statement-breakpoint
+CREATE TYPE "public"."ExternalGameMediaEnum" AS ENUM('', 'DIGITAL', 'PHYSICAL');--> statement-breakpoint
+CREATE TYPE "public"."GameCategoryEnum" AS ENUM('MAIN_GAME', 'DLC_ADDON', 'EXPANSION', 'BUNDLE', 'STANDALONE_EXPANSION', 'MOD', 'EPISODE', 'SEASON', 'REMAKE', 'REMASTER', 'EXPANDED_GAME', 'PORT', 'FORK', 'PACK', 'UPDATE');--> statement-breakpoint
+CREATE TYPE "public"."StatusEnum" AS ENUM('RELEASED', 'ALPHA', 'BETA', 'EARLY_ACCESS', 'OFFLINE', 'CANCELLED', 'RUMORED', 'DELISTED');--> statement-breakpoint
+CREATE TYPE "public"."GameVersionFeatureEnum" AS ENUM('boolean', 'description');--> statement-breakpoint
+CREATE TYPE "public"."GameVersionFeatureValueIncludedFeatureEnum" AS ENUM('NOT_INCLUDED', 'INCLUDED', 'PRE_ORDER_ONLY');--> statement-breakpoint
+CREATE TYPE "public"."PlatformCategoryEnum" AS ENUM('console', 'arcade', 'platform', 'operating_system', 'portable_console', 'computer');--> statement-breakpoint
+CREATE TYPE "public"."PlatformVersionReleaseDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');--> statement-breakpoint
+CREATE TYPE "public"."PlatformVersionReleaseDateRegionEnum" AS ENUM('europe', 'north_america', 'australia', 'new_zealand', 'japan', 'china', 'asia', 'worldwide', 'korea', 'brazil');--> statement-breakpoint
+CREATE TYPE "public"."PlatformWebsiteCategoryEnum" AS ENUM('official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'discord', 'google_plus', 'tumblr', 'linkedin', 'pinterest', 'soundcloud');--> statement-breakpoint
+CREATE TYPE "public"."PopularitySourceEnum" AS ENUM('igdb');--> statement-breakpoint
+CREATE TYPE "public"."ReleaseDateCategoryEnum" AS ENUM('YYYYMMMMDD', 'YYYYMMMM', 'YYYY', 'YYYYQ1', 'YYYYQ2', 'YYYYQ3', 'YYYYQ4', 'TBD');--> statement-breakpoint
+CREATE TYPE "public"."ReleaseDateRegionEnum" AS ENUM('europe', 'north_america', 'australia', 'new_zealand', 'japan', 'china', 'asia', 'worldwide', 'korea', 'brazil');--> statement-breakpoint
+CREATE TYPE "public"."WebsiteCategoryEnum" AS ENUM('blank1', 'official', 'wikia', 'wikipedia', 'facebook', 'twitter', 'twitch', 'blank2', 'instagram', 'youtube', 'iphone', 'ipad', 'android', 'steam', 'reddit', 'itch', 'epicgames', 'gog', 'discord');--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "age_rating_content_descriptions" (
+	"age_rating_content_descriptions_category" "AgeRatingCDCategoryEnum",
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "ageRatings" (
+	"category" "CategoryEnum",
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"rating" "RatingEnum",
+	"url" text,
+	"synopsis" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "alternativeNames" (
+	"checksum" text,
+	"comment" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"name" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "artworks" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "collectionMemberships" (
+	"checksum" text,
+	"game" bigint,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"type" "CollectionTypeEnum",
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "collections" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "companies" (
+	"change_date" timestamp,
+	"change_date_category" "CompanyDateCategoryEnum",
+	"changed_company_id" bigint,
+	"checksum" text,
+	"country" integer,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text,
+	"developed" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"logo" bigint,
+	"name" text,
+	"parent" bigint,
+	"published" bigint[],
+	"slug" text,
+	"start_date" timestamp,
+	"start_date_category" "CompanyDateCategoryEnum",
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "companyLogos" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"height" integer,
+	"igdb_id" integer,
+	"image_id" text PRIMARY KEY NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "companyWebsites" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"trusted" boolean,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"category" "WebsiteCategoryEnum"
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "covers" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"game_localization" bigint,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "eventLogos" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"event" bigint,
+	"height" integer,
+	"igdb_created_at" timestamp,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "eventNetworks" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"event" bigint,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"network_type" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "events" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text,
+	"end_time" timestamp,
+	"games" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"live_stream_url" text,
+	"name" text NOT NULL,
+	"slug" text,
+	"start_time" timestamp,
+	"time_zone" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"videos" bigint[]
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "externalGames" (
+	"category" integer,
+	"checksum" text,
+	"countries" integer[],
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"media" "ExternalGameMediaEnum",
+	"name" text,
+	"platform" bigint,
+	"uid" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"year" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "franchises" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameEngineLogos" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameEngines" (
+	"checksum" text,
+	"companies" bigint[],
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"logo" bigint,
+	"name" text NOT NULL,
+	"platforms" bigint[],
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameLocalizations" (
+	"checksum" text,
+	"cover" bigint,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"region" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameModes" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_franchises" (
+	"game_id" bigint NOT NULL,
+	"franchise_id" bigint NOT NULL,
+	CONSTRAINT "game_franchises_game_id_franchise_id_pk" PRIMARY KEY("game_id","franchise_id"),
+	CONSTRAINT "game_franchises_franchise_id_game_id_unique" UNIQUE("franchise_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_game_modes" (
+	"game_id" bigint NOT NULL,
+	"game_mode_id" bigint NOT NULL,
+	CONSTRAINT "game_game_modes_game_id_game_mode_id_pk" PRIMARY KEY("game_id","game_mode_id"),
+	CONSTRAINT "game_game_modes_game_mode_id_game_id_unique" UNIQUE("game_mode_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_genres" (
+	"game_id" bigint NOT NULL,
+	"genre_id" bigint NOT NULL,
+	CONSTRAINT "game_genres_game_id_genre_id_pk" PRIMARY KEY("game_id","genre_id"),
+	CONSTRAINT "game_genres_genre_id_game_id_unique" UNIQUE("genre_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_keywords" (
+	"game_id" bigint NOT NULL,
+	"keyword_id" bigint NOT NULL,
+	CONSTRAINT "game_keywords_game_id_keyword_id_pk" PRIMARY KEY("game_id","keyword_id"),
+	CONSTRAINT "game_keywords_keyword_id_game_id_unique" UNIQUE("keyword_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_multiplayer_modes" (
+	"game_id" bigint NOT NULL,
+	"multiplayer_mode_id" bigint NOT NULL,
+	CONSTRAINT "game_multiplayer_modes_game_id_multiplayer_mode_id_pk" PRIMARY KEY("game_id","multiplayer_mode_id"),
+	CONSTRAINT "game_multiplayer_modes_multiplayer_mode_id_game_id_unique" UNIQUE("multiplayer_mode_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_platforms" (
+	"game_id" bigint NOT NULL,
+	"platform_id" bigint NOT NULL,
+	CONSTRAINT "game_platforms_game_id_platform_id_pk" PRIMARY KEY("game_id","platform_id"),
+	CONSTRAINT "game_platforms_platform_id_game_id_unique" UNIQUE("platform_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_screenshots" (
+	"game_id" bigint NOT NULL,
+	"screenshot_id" bigint NOT NULL,
+	CONSTRAINT "game_screenshots_game_id_screenshot_id_pk" PRIMARY KEY("game_id","screenshot_id"),
+	CONSTRAINT "game_screenshots_screenshot_id_game_id_unique" UNIQUE("screenshot_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_similar_games" (
+	"game_id" bigint NOT NULL,
+	"similar_game_id" bigint NOT NULL,
+	CONSTRAINT "game_similar_games_game_id_similar_game_id_pk" PRIMARY KEY("game_id","similar_game_id"),
+	CONSTRAINT "game_similar_games_similar_game_id_game_id_unique" UNIQUE("similar_game_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "game_themes" (
+	"game_id" bigint NOT NULL,
+	"theme_id" bigint NOT NULL,
+	CONSTRAINT "game_themes_game_id_theme_id_pk" PRIMARY KEY("game_id","theme_id"),
+	CONSTRAINT "game_themes_theme_id_game_id_unique" UNIQUE("theme_id","game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "games" (
+	"age_ratings" bigint[],
+	"aggregated_rating" double precision,
+	"aggregated_rating_count" integer,
+	"alternative_names" bigint[],
+	"artworks" bigint[],
+	"bundles" bigint[],
+	"category" "GameCategoryEnum",
+	"checksum" text,
+	"collections" bigint[],
+	"cover" bigint,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"dlcs" bigint[],
+	"expanded_games" bigint[],
+	"expansions" bigint[],
+	"external_games" bigint[],
+	"first_release_date" timestamp,
+	"forks" bigint[],
+	"franchise" bigint,
+	"franchises" bigint[],
+	"game_category" "GameCategoryEnum",
+	"game_engines" bigint[],
+	"game_localizations" bigint[],
+	"game_modes" bigint[],
+	"genres" bigint[],
+	"hypes" integer,
+	"game_id" serial NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"involved_companies" bigint[],
+	"keywords" bigint[],
+	"language_supports" bigint[],
+	"multiplayer_modes" bigint[],
+	"name" text NOT NULL,
+	"parent_game" bigint,
+	"platforms" bigint[],
+	"player_perspectives" bigint[],
+	"ports" bigint[],
+	"rating" double precision,
+	"rating_count" integer,
+	"release_dates" bigint[],
+	"remakes" bigint[],
+	"remasters" bigint[],
+	"screenshots" bigint[],
+	"similar_games" bigint[],
+	"slug" text,
+	"standalone_expansions" bigint[],
+	"status" "StatusEnum",
+	"storyline" text,
+	"summary" text,
+	"tags" bigint[],
+	"themes" bigint[],
+	"total_rating" double precision,
+	"total_rating_count" integer,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"version_parent" bigint,
+	"version_title" text,
+	"videos" bigint[],
+	"websites" bigint[],
+	CONSTRAINT "games_game_id_unique" UNIQUE("game_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameVersionFeatures" (
+	"category" "GameVersionFeatureEnum" NOT NULL,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text NOT NULL,
+	"igdb_id" serial NOT NULL,
+	"position" integer,
+	"title" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"values" bigint[],
+	CONSTRAINT "gameVersionFeatures_igdb_id_unique" UNIQUE("igdb_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameVersionFeatureValues" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint NOT NULL,
+	"game_feature" bigint,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"included_feature" "GameVersionFeatureValueIncludedFeatureEnum",
+	"note" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameVersions" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"features" bigint[],
+	"game" bigint,
+	"games" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gameVideos" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "genres" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "involvedCompanies" (
+	"checksum" text,
+	"company" bigint,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"developer" boolean,
+	"game" bigint,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"porting" boolean,
+	"publisher" boolean,
+	"supporting" boolean,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "keywords" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "languages" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"locale" text,
+	"name" text NOT NULL,
+	"native_name" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "languageSupports" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"language" bigint,
+	"language_support_type" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "languageSupportTypes" (
+	"checksum" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "multiplayerModes" (
+	"campaigncoop" boolean NOT NULL,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"dropin" boolean NOT NULL,
+	"game" bigint NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"lancoop" boolean NOT NULL,
+	"offlinecoop" boolean NOT NULL,
+	"offlinecoopmax" integer,
+	"offlinemax" integer,
+	"onlinecoop" boolean NOT NULL,
+	"onlinecoopmax" integer,
+	"onlinemax" integer,
+	"platform" bigint,
+	"splitscreen" boolean NOT NULL,
+	"splitscreenonline" boolean,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "networkTypes" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"event_networks" bigint[],
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platformFamilies" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platformLogos" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platforms" (
+	"abbreviation" text,
+	"alternative_name" text,
+	"category" "PlatformCategoryEnum",
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"generation" integer,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"platform_family" bigint,
+	"platform_logo" bigint,
+	"slug" text,
+	"summary" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"versions" bigint[],
+	"websites" bigint[]
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platformVersionCompanies" (
+	"checksum" text,
+	"comment" text,
+	"company" bigint,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"developer" boolean,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"manufacturer" boolean,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platformVersionReleaseDates" (
+	"category" "PlatformVersionReleaseDateCategoryEnum",
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"date" timestamp,
+	"human" text,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"m" integer,
+	"platform_version" bigint,
+	"region" "PlatformVersionReleaseDateRegionEnum",
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"y" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platformVersions" (
+	"checksum" text,
+	"companies" bigint[],
+	"connectivity" text,
+	"cpu" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"graphics" text,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"main_manufacturer" bigint,
+	"media" text,
+	"memory" text,
+	"name" text NOT NULL,
+	"os" text,
+	"output" text,
+	"platform_logo" bigint,
+	"platform_version_release_dates" bigint[],
+	"resolutions" text,
+	"slug" text,
+	"sound" text,
+	"storage" text,
+	"summary" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "platformWebsites" (
+	"category" "PlatformWebsiteCategoryEnum",
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"trusted" boolean,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "playerPerspectives" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "popularityPrimitives" (
+	"calculated_at" timestamp,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game_id" bigint,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"popularity_source" "PopularitySourceEnum",
+	"popularity_type" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"value" numeric
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "popularityTypes" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"popularity_source" "PopularitySourceEnum",
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "regions" (
+	"category" text,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"identifier" text,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "releaseDates" (
+	"category" "ReleaseDateCategoryEnum",
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"date" timestamp,
+	"game" bigint,
+	"human" text,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"m" integer,
+	"platform" bigint,
+	"region" "ReleaseDateRegionEnum",
+	"status" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"y" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "releaseDateStatuses" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"description" text,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "screenshots" (
+	"alpha_channel" boolean,
+	"animated" boolean,
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"height" integer,
+	"igdb_id" integer PRIMARY KEY NOT NULL,
+	"image_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"width" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "themes" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_created_at" timestamp,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"igdb_updated_at" timestamp,
+	"name" text NOT NULL,
+	"slug" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "websites" (
+	"checksum" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"game" bigint,
+	"igdb_id" bigint PRIMARY KEY NOT NULL,
+	"trusted" boolean,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"url" text,
+	"category" "WebsiteCategoryEnum"
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "steam_profiles" (
+	"avatar" text,
+	"created_at" date DEFAULT now(),
+	"name" text,
+	"steam_id" text PRIMARY KEY NOT NULL,
+	"updated_at" date DEFAULT now(),
+	"url" text,
+	"user_id" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "users" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"email" text NOT NULL,
+	"user_id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "users_user_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1000 CACHE 1),
+	"name" text NOT NULL,
+	"password" text NOT NULL,
+	"steam_id" text,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "users_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "igdb_steam_connect" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"igdb_id" bigint NOT NULL,
+	"steam_id" bigint PRIMARY KEY NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "steam_user_owned_games" (
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"last_played" timestamp,
+	"playtime" integer,
+	"playtime_deck" integer,
+	"playtime_disconnected" integer,
+	"playtime_linux" integer,
+	"playtime_mac" integer,
+	"playtime_windows" integer,
+	"steam_id" bigint,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"user_id" integer NOT NULL,
+	CONSTRAINT "steam_user_owned_games_steam_id_user_id_unique" UNIQUE("steam_id","user_id")
+);
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "alternativeNames" ADD CONSTRAINT "alternativeNames_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "collectionMemberships" ADD CONSTRAINT "collectionMemberships_game_collections_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."collections"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "collectionMemberships" ADD CONSTRAINT "collectionMemberships_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "eventLogos" ADD CONSTRAINT "eventLogos_event_events_igdb_id_fk" FOREIGN KEY ("event") REFERENCES "public"."events"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "eventNetworks" ADD CONSTRAINT "eventNetworks_event_events_igdb_id_fk" FOREIGN KEY ("event") REFERENCES "public"."events"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "eventNetworks" ADD CONSTRAINT "eventNetworks_network_type_networkTypes_igdb_id_fk" FOREIGN KEY ("network_type") REFERENCES "public"."networkTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "externalGames" ADD CONSTRAINT "externalGames_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "externalGames" ADD CONSTRAINT "externalGames_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameEngines" ADD CONSTRAINT "gameEngines_logo_gameEngineLogos_igdb_id_fk" FOREIGN KEY ("logo") REFERENCES "public"."gameEngineLogos"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameLocalizations" ADD CONSTRAINT "gameLocalizations_cover_covers_igdb_id_fk" FOREIGN KEY ("cover") REFERENCES "public"."covers"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameLocalizations" ADD CONSTRAINT "gameLocalizations_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameLocalizations" ADD CONSTRAINT "gameLocalizations_region_regions_igdb_id_fk" FOREIGN KEY ("region") REFERENCES "public"."regions"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameVersionFeatureValues" ADD CONSTRAINT "gameVersionFeatureValues_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameVersionFeatureValues" ADD CONSTRAINT "gameVersionFeatureValues_game_feature_gameVersionFeatures_igdb_id_fk" FOREIGN KEY ("game_feature") REFERENCES "public"."gameVersionFeatures"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameVersions" ADD CONSTRAINT "gameVersions_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "gameVideos" ADD CONSTRAINT "gameVideos_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_language_languages_igdb_id_fk" FOREIGN KEY ("language") REFERENCES "public"."languages"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "languageSupports" ADD CONSTRAINT "languageSupports_language_support_type_languageSupportTypes_igdb_id_fk" FOREIGN KEY ("language_support_type") REFERENCES "public"."languageSupportTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "popularityPrimitives" ADD CONSTRAINT "popularityPrimitives_game_id_games_igdb_id_fk" FOREIGN KEY ("game_id") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "popularityPrimitives" ADD CONSTRAINT "popularityPrimitives_popularity_type_popularityTypes_igdb_id_fk" FOREIGN KEY ("popularity_type") REFERENCES "public"."popularityTypes"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "releaseDates" ADD CONSTRAINT "releaseDates_game_games_igdb_id_fk" FOREIGN KEY ("game") REFERENCES "public"."games"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "releaseDates" ADD CONSTRAINT "releaseDates_platform_platforms_igdb_id_fk" FOREIGN KEY ("platform") REFERENCES "public"."platforms"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "releaseDates" ADD CONSTRAINT "releaseDates_status_releaseDateStatuses_igdb_id_fk" FOREIGN KEY ("status") REFERENCES "public"."releaseDateStatuses"("igdb_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "steam_profiles" ADD CONSTRAINT "steam_profiles_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "steam_user_owned_games" ADD CONSTRAINT "steam_user_owned_games_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "igdb_uid_idx" ON "externalGames" USING btree ("uid");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "externalGames" USING btree ("url");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "name_idx" ON "games" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "slug_idx" ON "games" USING btree ("slug");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "igdb_id_idx" ON "games" USING btree ("igdb_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "website_url_idx" ON "websites" USING btree ("url");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "playtime_idx" ON "steam_user_owned_games" USING btree ("playtime" DESC NULLS LAST);

@@ -10,15 +10,21 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "yarn workspaces foreach -Api run dev",
-    "lint": "yarn workspaces foreach -Api run lint",
-    "test": "yarn workspaces foreach -Api run test",
-    "start:backend": "yarn --cwd backend start",
+    "backend:generate": "yarn --cwd backend drizzle-kit generate",
     "backend:migrate": "yarn --cwd backend migrate",
     "backend:seed": "yarn --cwd backend seed",
-    "generate": "yarn --cwd backend drizzle-kit generate",
+    "build": "yarn --cwd frontend build",
+    "dev": "yarn workspaces foreach -Api run dev",
+    "lint": "yarn workspaces foreach -Api run lint",
+    "start:backend": "yarn --cwd backend start",
     "start:frontend": "yarn --cwd frontend start",
-    "build": "yarn --cwd frontend build"
+    "test": "yarn workspaces foreach -Api run test",
+    "webhooks": "yarn --cwd backend webhooks:server",
+    "webhooks:add": "yarn --cwd backend webhooks"
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/passport-local": "^1.0.38"
+  }
 }

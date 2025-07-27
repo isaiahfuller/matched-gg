@@ -1,4 +1,5 @@
 import { config } from '@config/config';
+import { ConsoleLogger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
@@ -8,7 +9,12 @@ import { createClient } from 'redis';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: new ConsoleLogger({
+      logLevels: ['log', 'fatal', 'error', 'warn', 'debug'],
+      timestamp: true,
+    }),
+  });
 
   const redisClient = createClient({
     url: `redis://:${config.redis.password}@localhost:${config.redis.port}`,
@@ -23,7 +29,7 @@ async function bootstrap() {
     session({
       resave: false,
       saveUninitialized: false,
-      secret: config.sessionSecret,
+      secret: config.authSecrets.session,
       store: redisStore,
     }),
   );

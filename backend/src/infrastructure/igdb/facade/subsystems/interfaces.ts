@@ -1,7 +1,7 @@
 import { Apicalypse, RequestAllConfig } from 'apicalypse';
 
-import { CountDTO } from './DTO/CountDTO';
-import { GameDTO } from './DTO/GameDTO';
+import { CountDTO } from './DTO/count';
+import { GameDTO } from './DTO/games';
 import { IgdbResources } from './enum/IgdbResources';
 import { GameField } from './enum/field/GameField';
 

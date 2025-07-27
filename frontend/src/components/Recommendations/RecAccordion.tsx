@@ -8,10 +8,20 @@ import {
   Divider,
 } from "@mantine/core";
 import { IGDBGame, IGDBGameArt } from "../../interfaces";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import classes from "./index.module.css";
 import { useViewportSize } from "@mantine/hooks";
 
+/**
+ * This function constructs a URL for accessing screen shots or cover art from IGDB.
+ *
+ * @param id - The ID of the image to fetch.
+ * @param size - The desired size of the image. Valid options are:
+ *   "cover_small", "screenshot_med", "cover_big", "logo_med",
+ *   "screenshot_big", "screenshot_huge", "thumb", "micro",
+ *   "720p", and "1080p".
+ * @returns The URL to access the image.
+ */
 function getScreenUrl(
   id: string,
   size:
@@ -24,7 +34,7 @@ function getScreenUrl(
     | "thumb"
     | "micro"
     | "720p"
-    | "1080p"
+    | "1080p",
 ) {
   return `https://images.igdb.com/igdb/image/upload/t_${size}/${id}.jpg`;
 }
@@ -34,26 +44,36 @@ export default function RecAccordion({
 }: {
   recommendations: {
     game: IGDBGame;
-    type: "company" | "tag" | "wildcard" | string;
-    typeText: string;
+    type?: "company" | "tag" | "wildcard" | "top" | string | null;
+    typeText?: string | null;
   }[];
 }) {
   const [screenIdx, setScreenIdx] = useState<number>(0);
+  const [value, setValue] = useState<string | null>(null);
   const { width } = useViewportSize();
+
+  /**
+   * Sets the initial value of the accordion.
+   */
+  useEffect(() => {
+    setValue(recommendations[0].game.name || null);
+  }, [recommendations]);
 
   const items = recommendations.map((item) => {
     let controlHeader = "";
-    switch (item.type) {
-      case "company":
-        controlHeader = ` Because you enjoy titles from `;
-        break;
-      case "tag":
-        controlHeader = ` We recommend this because you enjoy `;
-        break;
-      case "wildcard":
-        controlHeader = ` This is our `;
-        break;
-    }
+    if (item.type)
+      switch (item.type) {
+        case "company":
+          controlHeader = ` Because you enjoy titles from `;
+          break;
+        case "tag":
+          controlHeader = ` We recommend this because you enjoy `;
+          break;
+        case "wildcard":
+          controlHeader = ` This is our `;
+          break;
+      }
+    else controlHeader = "";
     const rating = item.game.rating ? Math.floor(item.game.rating) : null;
     return (
       <Accordion.Item key={item.game.id} value={item.game.name!}>
@@ -62,11 +82,24 @@ export default function RecAccordion({
             <Text fw={700} span>
               {item.game.name!}
             </Text>
-            <Text c="dimmed" span>
-              {" "}
-              -{controlHeader}
-            </Text>
-            <span className={classes.highlight}>{item.typeText}</span>
+
+            {!item.type || item.type === "top" ? null : (
+              <>
+                <Text c="dimmed" span>
+                  {" "}
+                  -{controlHeader}
+                </Text>
+                <span className={classes.highlight}>{item.typeText}</span>
+                {item.type === "tag" ? (
+                  <Text c="dimmed" span>
+                    {" "}
+                    games
+                  </Text>
+                ) : (
+                  ""
+                )}
+              </>
+            )}
           </Text>
         </AccordionControl>
         <Accordion.Panel>
@@ -82,30 +115,34 @@ export default function RecAccordion({
             ) : null}
             <Flex direction={width < 1000 ? "column" : "row"}>
               <Text>{item.game.summary}</Text>
-              {item.game.screenshots ? (
+              {item.game.screenshots && item.game.screenshots.length ? (
                 <Stack
                   miw="40%"
                   pl={width < 1000 ? 0 : 8}
                   pt={width < 1000 ? 8 : 0}
                 >
-                  <Image
-                    src={getScreenUrl(
-                      item.game.screenshots[screenIdx].image_id,
-                      "screenshot_med"
-                    )}
-                  />
+                  {item.game.screenshots[screenIdx].ss ? (
+                    <Image
+                      src={getScreenUrl(
+                        item.game.screenshots[screenIdx].ss.imageId,
+                        "screenshot_med",
+                      )}
+                    />
+                  ) : null}
                   <Divider mx="auto" w={64} />
                   <Flex wrap="nowrap" justify="space-between">
-                    {item.game.screenshots.slice(0, 4).map((e, i) => (
-                      <img
-                        key={e.id}
-                        src={getScreenUrl(e.image_id, "micro")}
-                        style={{
-                          objectFit: "contain",
-                        }}
-                        onClick={() => setScreenIdx(i)}
-                      />
-                    ))}
+                    {item.game.screenshots.slice(0, 4).map((e, i) => {
+                      return e.ss ? (
+                        <img
+                          key={e.ss.igdbId}
+                          src={getScreenUrl(e.ss.imageId, "micro")}
+                          style={{
+                            objectFit: "contain",
+                          }}
+                          onClick={() => setScreenIdx(i)}
+                        />
+                      ) : null;
+                    })}
                   </Flex>
                 </Stack>
               ) : null}
@@ -115,18 +152,26 @@ export default function RecAccordion({
       </Accordion.Item>
     );
   });
-  return (
-    <Accordion
-      defaultValue={recommendations[0].game.name!}
-      classNames={{ chevron: classes.chevron }}
-      chevronPosition="left"
-      variant="filled"
-    >
-      {items}
-    </Accordion>
-  );
+  if (recommendations)
+    return (
+      <Accordion
+        value={value}
+        onChange={setValue}
+        classNames={{ chevron: classes.chevron }}
+        chevronPosition="left"
+        variant="filled"
+      >
+        {items}
+      </Accordion>
+    );
 }
 
+/**
+ * AccordionControl component displays a control for an accordion item.
+ * The icon is displayed as an image, and the children are displayed as a control.
+ * @param icon - The icon to display.
+ * @param children - The children to display.
+ */
 function AccordionControl({
   icon,
   children,
@@ -137,12 +182,9 @@ function AccordionControl({
   return (
     <Center>
       <Accordion.Control>{children}</Accordion.Control>
-      <Image
-        src={getScreenUrl(icon["image_id"], "micro")}
-        w={35}
-        h={35}
-        m={4}
-      />
+      {icon ? (
+        <Image src={getScreenUrl(icon.imageId, "micro")} w={35} h={35} m={4} />
+      ) : null}
     </Center>
   );
 }

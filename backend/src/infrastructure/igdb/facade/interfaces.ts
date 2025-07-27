@@ -48,14 +48,14 @@ export interface IgdbFacadeConstructor {
 export interface SeedOptions {
   /**
    * Whether to expand the game fields.
-   * @default true
+   * @defaultValue true
    */
   expanded?: boolean | true;
   /**
    * The limit of games to retrieve per request.
    * defaults to the maximum of 500.
    *
-   * @default 500
+   * @defaultValue 500
    */
   limit?: 500 | number;
   /**
@@ -94,4 +94,16 @@ export interface SeedOptionsDelay extends SeedOptions {
    * The delay in milliseconds between requests.
    */
   delay?: number | undefined;
+}
+
+export interface IgdbWebhook {
+  active: boolean;
+  api_key: string;
+  category: number;
+  created_at: Date;
+  id: string;
+  secret: string;
+  sub_category: 0 | 1 | 2;
+  updated_at: Date;
+  url: string;
 }

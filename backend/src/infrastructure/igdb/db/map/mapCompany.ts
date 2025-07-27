@@ -1,31 +1,28 @@
+import validateTimestamp from '@util/validateTimestamp';
+
 import { Companies } from '../schema/companies';
 
 export const mapCompany = (company) => {
   const mappedCompany = {
-    changeDate: company.change_date,
-    changeDateCategory: company.change_date_category,
+    changeDate: validateTimestamp(company.change_date),
+    changeDateFormat: company.change_date_format,
     changedCompanyId: company.changed_company_id,
     checksum: company.checksum,
     country: company.country,
     description: company.description,
     developed: company.developed,
-    igdbCreatedAt: company.created_at
-      ? new Date(company.created_at * 1000)
-      : null,
+    igdbCreatedAt: validateTimestamp(company.created_at),
     igdbId: company.id,
-    igdbUpdatedAt: company.updated_at
-      ? new Date(company.updated_at * 1000)
-      : null,
+    igdbUpdatedAt: validateTimestamp(company.updated_at),
     logo: company.logo,
     name: company.name,
     parent: company.parent,
     published: company.published,
     slug: company.slug,
-    startDate: company.start_date,
-    startDateCategory: company.start_date_category,
+    startDate: validateTimestamp(company.start_date),
+    startDateFormat: company.start_date_format,
     updatedAt: new Date(),
     url: company.url,
-    websites: company.websites,
   } satisfies Companies;
   return mappedCompany;
 };

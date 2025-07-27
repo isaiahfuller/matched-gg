@@ -46,12 +46,18 @@ export interface SteamConfig {
   apiKey: string;
 }
 
+export interface AuthSecrets {
+  jwt: string;
+  jwtRefresh: string;
+  session: string;
+}
+
 export interface Config {
+  authSecrets: AuthSecrets;
   db: DbConfig;
   pinoOptions: PinoOptions;
   port: number;
   redis: RedisConfig;
-  sessionSecret: string;
   steam: SteamConfig;
   twitch: TwitchConfig;
 }

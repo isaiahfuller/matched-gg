@@ -39,7 +39,7 @@ export default function GamePageHeader({ game }: GamePageHeaderProps) {
   return (
     <Box py={8}>
       <BackgroundImage
-        src={`${IGDBImageUrlBase}/t_screenshot_big/${(game.artworks as IGDBGameArt[])[0].image_id}.jpg`}
+        src={`${IGDBImageUrlBase}/t_screenshot_big/${(game.artworks as IGDBGameArt[])[0].imageId}.jpg`}
         radius="sm"
       >
         <Paper bg={rgba(colorScheme === "light" ? "#ffffff" : "#000000", 0.6)} shadow="xs" withBorder>
@@ -49,7 +49,7 @@ export default function GamePageHeader({ game }: GamePageHeaderProps) {
               w="auto"
               fit="contain"
               radius="sm"
-              src={`${IGDBImageUrlBase}/t_cover_big/${(game.cover as IGDBGameArt)!.image_id}.jpg`}
+              src={`${IGDBImageUrlBase}/t_cover_big/${(game.cover as IGDBGameArt)!.imageId}.jpg`}
             />
             <Stack p={8} style={{ flexGrow: "1" }}>
               <Title>{game.name}</Title>

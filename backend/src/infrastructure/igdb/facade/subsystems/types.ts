@@ -1,6 +1,6 @@
-import { ArtworkDTO } from './DTO/ArtworkDTO';
-import { GameDTO } from './DTO/GameDTO';
-import { WebsiteDTO } from './DTO/WebsiteDTO';
+import { ArtworkDTO } from './DTO/artwork';
+import { GameDTO } from './DTO/games';
+import { WebsiteDTO } from './DTO/website';
 import { ArtworkField, ExpandedArtworkField } from './enum/field/ArtworkField';
 import { ExpandedGameField, GameField } from './enum/field/GameField';
 import { ExpandedWebsiteField, WebsiteField } from './enum/field/WebsiteField';
