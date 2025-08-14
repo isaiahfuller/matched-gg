@@ -43,8 +43,10 @@ export default function Login({ initSignup }: LoginProps) {
     },
 
     validate: {
-      email: (value) => (emailRegex.test(value) ? null : "Invalid email"),
-      name: (value) => (value.length > 2 || !signup ? null : "Invalid name"),
+      email: (value: string) =>
+        emailRegex.test(value) ? null : "Invalid email",
+      name: (value: string) =>
+        value.length > 2 || !signup ? null : "Invalid name",
       password: matches(passwordRegex, "Invalid password"),
       passwordConfirm: (value: string): string | null =>
         value === form.getValues().password || !signup
