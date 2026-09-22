@@ -49,6 +49,27 @@ permanently removes that data. Existing database volumes retain their original d
 credentials; editing `.env` does not change credentials stored in PostgreSQL.
 Rebuild with `docker compose up --build -d` after source changes.
 
+### Optional Cloudflare Tunnel
+
+The `cloudflared` service is excluded from normal startup. To enable it, create a
+[remotely managed Cloudflare Tunnel](https://developers.cloudflare.com/tunnel/get-started/)
+and set `CLOUDFLARE_TUNNEL_TOKEN` in `.env` to its connector token.
+Configure the tunnel's public hostname to use HTTP service `http://webhooks:7331`,
+then set `PUBLIC_URL` in `.env` to that hostname's HTTPS origin (for example,
+`https://hooks.example.com`) so IGDB registration uses the public callback URL.
+`PUBLIC_URL` is also used for Steam authentication; a webhook-only hostname is
+intended for running the receiver, not browser sign-in.
+
+```bash
+docker compose --profile tunnel up --build -d cloudflared
+docker compose logs -f cloudflared
+```
+
+This starts the tunnel, webhook receiver, database, and migrations. The tunnel
+connects over the Compose network and needs no additional published ports.
+Register the IGDB webhooks separately using the command below once the tunnel is running.
+To stop just the tunnel, run `docker compose stop cloudflared`.
+
 ### Populate game data
 
 The initial database contains the schema but no game catalog. With valid Twitch/IGDB
