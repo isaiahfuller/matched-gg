@@ -4,9 +4,9 @@ import { index, json, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 export const sessions = pgTable(
   'sessions',
   {
-    sid: varchar('sid').primaryKey(),
-    sess: json('sess').notNull(),
     expire: timestamp('expire', { precision: 6 }).notNull(),
+    sess: json('sess').notNull(),
+    sid: varchar('sid').primaryKey(),
   },
   (table) => ({ expireIndex: index('sessions_expire_idx').on(table.expire) }),
 );

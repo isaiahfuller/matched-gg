@@ -15,7 +15,10 @@ const twitch = new TwitchHandler(
   logger,
 );
 
-const publicUrl = (process.env.PUBLIC_URL || 'http://localhost:4467').replace(/\/+$/, '');
+const publicUrl = (process.env.PUBLIC_URL || 'http://localhost:4467').replace(
+  /\/+$/,
+  '',
+);
 const webhooks: IgdbWebhook[] = [];
 
 /**
@@ -36,9 +39,9 @@ const addWebhooks = async (): Promise<void> => {
     logger.info(`Adding webhook ${type} for endpoint ${endpoint}`);
     const res = await fetch(`https://api.igdb.com/v4/${endpoint}/webhooks/`, {
       body: new URLSearchParams({
-        url: `${publicUrl}/igdb/${endpoint}/${type}`,
-        secret: config.authSecrets.jwt,
         method: type,
+        secret: config.authSecrets.jwt,
+        url: `${publicUrl}/igdb/${endpoint}/${type}`,
       }),
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -82,7 +85,9 @@ const removeWebhooks = async (): Promise<void> => {
       method: 'DELETE',
     });
     if (!res.ok) {
-      throw new Error(`Removing webhook ${hook.id} failed (HTTP ${res.status})`);
+      throw new Error(
+        `Removing webhook ${hook.id} failed (HTTP ${res.status})`,
+      );
     }
     await delay(250);
   }
@@ -110,8 +115,10 @@ const getWebhooks = async (): Promise<void> => {
 async function main() {
   try {
     const callbackUrl = new URL(publicUrl);
-    if (['localhost', '127.0.0.1', '[::1]'].includes(callbackUrl.hostname)) {
-      throw new Error('Set PUBLIC_URL to the public webhook origin before registering');
+    if (['[::1]', '127.0.0.1', 'localhost'].includes(callbackUrl.hostname)) {
+      throw new Error(
+        'Set PUBLIC_URL to the public webhook origin before registering',
+      );
     }
     await getWebhooks();
     await removeWebhooks();

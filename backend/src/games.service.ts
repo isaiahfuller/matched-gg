@@ -397,7 +397,9 @@ export class GameService {
     }
 
     // Get top game IGDB ids
-    const topGameIds = this.topGames.filter((game) => game.igdbGame).map((game) => game.igdbGame.igdbId);
+    const topGameIds = this.topGames
+      .filter((game) => game.igdbGame)
+      .map((game) => game.igdbGame.igdbId);
 
     // Get genres and themes from top games
     const genreIds = new Set<number>();

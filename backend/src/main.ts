@@ -18,10 +18,10 @@ async function bootstrap() {
   const PostgresStore = connectPgSimple(session);
   const sessionStore = new PostgresStore({
     conObject: config.db,
-    tableName: 'sessions',
     createTableIfMissing: false,
-    ttl: 86400,
     pruneSessionInterval: 900,
+    tableName: 'sessions',
+    ttl: 86400,
   });
 
   app.use(
@@ -34,7 +34,7 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
-  console.log(config.port)
+  console.log(config.port);
   await app.listen(config.port);
 }
 bootstrap();
