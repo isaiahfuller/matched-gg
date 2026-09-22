@@ -336,4 +336,5 @@ async function main() {
   }
 }
 
-main();
+// End the one-off job after all writes finish, despite open clients or timers.
+main().then(() => process.exit(0));

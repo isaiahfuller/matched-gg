@@ -27,8 +27,7 @@ export class SteamStrategy extends PassportStrategy(
       {
         apiKey: config.steam.apiKey,
         profile: true,
-        // TODO: Stop hardcoding the return & realm URLs
-        returnURL: 'http://localhost:4468/steam/auth/',
+        returnURL: `${process.env.PUBLIC_URL || 'http://localhost:4467'}/steam/auth/`,
       } satisfies SteamOpenIdStrategyOptionsWithProfile,
       (async (
         req: Request,

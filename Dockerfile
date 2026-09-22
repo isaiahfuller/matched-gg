@@ -1,46 +1,36 @@
-FROM node:20-alpine AS base
-WORKDIR /usr/src/app
-ENV NODE_ENV=production
-RUN corepack enable
-
-COPY package.json yarn.lock .yarnrc.yml* ./
+# syntax=docker/dockerfile:1
+FROM node:22-bookworm-slim AS dependencies
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ \
+    && rm -rf /var/lib/apt/lists/* \
+    && corepack enable
+COPY package.json yarn.lock .yarnrc.yml ./
 COPY backend/package.json ./backend/
 COPY frontend/package.json ./frontend/
-
-RUN yarn install
-
-# --- Stage 2: Builder Stage ---
-FROM base AS builder
-WORKDIR /usr/src/app
-
-# Copy the rest of the monorepo source files
-COPY . .
-
-# Build the specific workspace application (if compilation is required)
-RUN ls -la node_modules/dotenv || echo "DOTENV IS MISSING FROM CONTAINER RUNTIME!"
-RUN yarn --cwd backend drizzle-kit generate
-RUN yarn build
-
-
-# --- Stage 3: Runner Stage ---
-FROM node:20-alpine AS runner
-WORKDIR /usr/src/app
-ENV NODE_ENV=production
-RUN corepack enable
-
-COPY --from=builder /usr/src/app/.yarnrc.yml* ./
-COPY --from=builder /usr/src/app/.yarn/ ./.yarn/
-COPY --from=builder /usr/src/app/package.json ./
-COPY --from=builder /usr/src/app/yarn.lock ./
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/backend ./backend
-COPY --from=builder /usr/src/app/frontend ./frontend
-
 RUN yarn install --immutable
-# RUN yarn build
 
-EXPOSE 3000
-EXPOSE 7331
-EXPOSE 4468
+FROM dependencies AS backend-build
+COPY backend ./backend
+RUN yarn workspace @g4mr/backend build
 
-CMD ["yarn", "start:prod"]
+FROM dependencies AS frontend-build
+COPY frontend ./frontend
+RUN yarn workspace @g4mr/frontend build
+
+# Serve the built SPA and proxy same-origin API requests.
+FROM nginx:stable-alpine AS frontend
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=frontend-build /app/frontend/dist /usr/share/nginx/html
+EXPOSE 80
+
+FROM node:22-bookworm-slim AS backend
+ENV NODE_ENV=production
+WORKDIR /app
+COPY --from=backend-build --chown=node:node /app/node_modules ./node_modules
+COPY --from=backend-build --chown=node:node /app/backend ./backend
+WORKDIR /app/backend
+# Resolve TypeScript aliases in emitted JavaScript, including src/* imports.
+ENV TS_NODE_BASEURL=./dist
+USER node
+EXPOSE 3000 7331
+CMD ["node", "-r", "tsconfig-paths/register", "dist/src/main.js"]

@@ -1,7 +1,7 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
-const url = "http://backend:4468";
+const url = process.env.API_PROXY_TARGET || "http://localhost:4468";
 
 // https://vitejs.dev/config/
 export default defineConfig({

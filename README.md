@@ -15,81 +15,100 @@ Backend - NestJS, Drizzle, PostgreSQL, Powered by IGDB
 - Node.js
 - nvm (optional)
 
-### Getting Started
+### Run with Docker
 
-1. Clone this repository:
+Install Docker Engine / Docker Desktop with Docker Compose, then from the repository root:
 
-   ```bash
-   git clone https://github.com/isaiahfuller/g4mr.git
-   ```
+```bash
+cp .env.example .env
+# Edit .env with your Twitch/IGDB and Steam credentials and random auth secrets.
+docker compose up --build -d
+```
 
-2. Install dependencies within the project's root directory:
+If `.env` already exists, retain it and add any missing settings from `.env.example`.
+Open http://localhost:4467. The frontend serves compiled assets through Nginx and
+proxies API requests to the backend. PostgreSQL must pass its health check,
+and the migration service must finish successfully, before the backend starts.
+Existing checked-in migrations run at startup; image builds do not generate migrations.
 
-   ```bash
-   corepack enable
-   yarn
-   ```
+`FRONTEND_PORT` controls the browser port; `PORT` controls the direct API port
+(default 4468). Set `PUBLIC_URL` to the browser-visible origin when changing the
+frontend port or hostname so Steam authentication returns to the same session.
+Compose overrides database host and internal ports; local `.env` values
+can remain `localhost`. The database host port binds only to loopback.
+Use strong database, JWT, and session secrets for a shared deployment.
 
-### Preparing the database:
+```bash
+docker compose ps
+docker compose logs -f backend migrate
+docker compose down
+```
 
-1. From the root directory:
+Database data and login sessions persist in the PostgreSQL named volume after `down`. `docker compose down -v`
+permanently removes that data. Existing database volumes retain their original database
+credentials; editing `.env` does not change credentials stored in PostgreSQL.
+Rebuild with `docker compose up --build -d` after source changes.
 
-   ```bash
-   docker compose up -d
-   yarn backend:migrate
-   yarn backend:seed
-   ```
+### Populate game data
 
-   This will create the database, run migrations, and seed the database with initial data.
+The initial database contains the schema but no game catalog. With valid Twitch/IGDB
+and Steam credentials, run the existing seed job explicitly:
 
-### Receiving updated data:
+```bash
+docker compose --profile seed run --build --rm seed
+```
 
-1. From the root directory:
+The `seed` service is excluded from normal startup and waits for migrations to finish.
+The command above runs it once and removes the job container afterward.
 
-   ```bash
-   yarn webhooks
-   ```
+### IGDB webhooks
 
-   This will start an Express server that listens for data changes from IGDB.
+The webhook receiver starts with the rest of the stack on port 7331. Webhook registration is separate: review the
+public callback URL and secret in
+`backend/src/infrastructure/igdb/db/webhooks/webhooks.ts` before registering with IGDB.
+The callback must be reachable by IGDB at `PUBLIC_URL/igdb/...`. The registration
+service is excluded from normal startup and starts the receiver as a dependency.
+The existing script replaces registered IGDB webhooks. To run it once:
 
-2. From the root directory:
+```bash
+docker compose --profile register-webhooks run --build --rm register-webhooks
+```
 
-   ```bash
-   yarn webhooks:add
-   ```
+### Local development
 
-   This will register webhooks with IGDB.
+Use Node.js 22 and the pinned Yarn version via Corepack:
 
-### Running the application:
+```bash
+corepack enable
+yarn install --immutable
+docker compose up -d db
+yarn backend:migrate
+yarn dev
+```
 
-1. From the root directory:
+Keep local `DB_HOST` set to `localhost`, and `PORT=4468`.
+Vite proxies API requests to `http://localhost:4468`; set `API_PROXY_TARGET` in the
+shell to override that target. Stop containerized frontend/backend services before
+running local servers on the same ports.
 
-   ```bash
-   yarn dev
-   ```
+```bash
+yarn build                       # Build both workspaces
+yarn workspace @g4mr/frontend build
+yarn workspace @g4mr/backend build
+```
 
-### Running individual components:
+The Dockerfile provides separate `frontend` and `backend` targets. The backend
+runs as the unprivileged Node user and retains the tools used by the existing
+migration/seed jobs. Environment files, local dependencies, and build output
+are excluded from the Docker build context.
 
-If you'd like to install **only** the depedencies for a specific component and then run it, you can do so by navigating to the component's directory and running the following commands:
+### Session storage
 
-1. To run any of the components, you can use the `yarn workspaces focus` command to install the dependencies for that component and then run the component:
+Login sessions are stored in PostgreSQL's `sessions` table, created by migration
+`0009_postgres_sessions`. Sessions expire after 24 hours of inactivity, with
+expired rows cleaned up approximately every 15 minutes while the backend runs.
+Browser-session cookie behavior is unchanged. The store uses `connect-pg-simple`.
 
-   ```bash
-   yarn workspaces focus @g4mr/<WORKSPACE_NAME>
-   cd <WORKSPACE_NAME>
-   yarn run dev
-   ```
-
-   Replace `<WORKSPACE_NAME>` with the workspace you want to build i.e. `frontend`, `backend`, or `landing`.
-
-### Building the application:
-
-1. From the root directory:
-
-   ```bash
-   yarn run build:frontend
-   ```
-
-   This will build the frontend of the application and output the build files to the `frontend/dist` directory.
-
-2. The backend runs on node and does not require a build step.
+When upgrading from Redis, users must sign in again. Run
+`docker compose up --build -d --remove-orphans` to apply migrations and remove
+the old Redis container. Its old volume is left intact; no Redis settings are needed.

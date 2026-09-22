@@ -15,6 +15,7 @@ const twitch = new TwitchHandler(
   logger,
 );
 
+const publicUrl = (process.env.PUBLIC_URL || 'http://localhost:4467').replace(/\/+$/, '');
 const webhooks: IgdbWebhook[] = [];
 
 /**
@@ -34,7 +35,11 @@ const addWebhooks = async (): Promise<void> => {
   ) => {
     logger.info(`Adding webhook ${type} for endpoint ${endpoint}`);
     const res = await fetch(`https://api.igdb.com/v4/${endpoint}/webhooks/`, {
-      body: `url=${`https://isaiah.moe/igdb/${endpoint}/${type}`}&secret=${config.authSecrets.jwt}&method=${type}`,
+      body: new URLSearchParams({
+        url: `${publicUrl}/igdb/${endpoint}/${type}`,
+        secret: config.authSecrets.jwt,
+        method: type,
+      }),
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Client-ID': config.twitch.clientId,
