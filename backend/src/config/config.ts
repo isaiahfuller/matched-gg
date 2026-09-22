@@ -24,6 +24,9 @@ const requiredVars: string[] = [
   'DB_USER',
   'DB_PASSWORD',
   'DB_PORT',
+  'REDIS_HOST',
+  'REDIS_PASSWORD',
+  'REDIS_PORT',
   'TWITCH_API_URL',
   'TWITCH_CLIENT_ID',
   'TWITCH_CLIENT_SECRET',
@@ -58,6 +61,7 @@ export const config: Config = {
   },
   port: Number(process.env.PORT) || 3000,
   redis: {
+    host: process.env.REDIS_HOST || 'localhost',
     password: process.env.REDIS_PASSWORD || 'redis',
     port: Number(process.env.REDIS_PORT) || 6379,
   },

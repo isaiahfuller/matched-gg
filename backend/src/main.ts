@@ -17,7 +17,7 @@ async function bootstrap() {
   });
 
   const redisClient = createClient({
-    url: `redis://:${config.redis.password}@localhost:${config.redis.port}`,
+    url: `redis://:${config.redis.password}@${config.redis.host}:${config.redis.port}`,
   });
   redisClient.connect().catch(console.error);
   const redisStore = new RedisStore({
@@ -35,6 +35,7 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
+  console.log(config.port)
   await app.listen(config.port);
 }
 bootstrap();

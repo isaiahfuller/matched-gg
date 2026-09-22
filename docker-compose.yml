@@ -1,21 +1,107 @@
-version: "3.8"
 services:
   db:
+    container_name: postgres
     image: postgres:16.2
     restart: always
     environment:
-      POSTGRES_USER: g4mr
-      POSTGRES_PASSWORD: g4mr
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: postgres
     volumes:
-      - ./data/pgsql:/var/lib/postgresql/data
+      - matched_db:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
+    networks:
+      - matched_network
+      
   redis:
+    container_name: redis
     image: redis:alpine
     restart: always
     ports:
-      - 6379:6379
+      - ${REDIS_PORT}:6379
     command: redis-server --save 60 1 --loglevel warning --requirepass g4mr
     volumes:
-      - ./data/redis:/data
+      - matched_redis:/data
+    networks:
+      - matched_network
+
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4467:4467
+    command: sh -c "cd frontend && yarn exec vite --host"
+    networks:
+      - matched_network
+
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    command: sh -c "yarn backend:migrate && yarn exec node backend/dist/src/main"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_PORT: ${REDIS_PORT}
+      PORT: ${PORT}
+      TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID}
+      TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET}
+      TWITCH_API_URL: ${TWITCH_API_URL}
+      PINO_ENABLED: ${PINO_ENABLED}
+      STEAM_API_KEY: ${STEAM_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    depends_on:
+      - redis
+      - db
+    networks:
+      - matched_network
+
+  webhooks:
+    container_name: webhooks
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7331:7331
+    command: sh -c "yarn exec node backend/dist/src/infrastructure/igdb/db/webhooks/webhooks & yarn exec node backend/dist/src/infrastructure/igdb/db/webhooks/server & wait"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_PORT: ${REDIS_PORT}
+      PORT: ${PORT}
+      TWITCH_CLIENT_ID: ${TWITCH_CLIENT_ID}
+      TWITCH_CLIENT_SECRET: ${TWITCH_CLIENT_SECRET}
+      TWITCH_API_URL: ${TWITCH_API_URL}
+      PINO_ENABLED: ${PINO_ENABLED}
+      STEAM_API_KEY: ${STEAM_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    depends_on:
+      - redis
+      - db
+      - backend
+    networks:
+      - matched_network
+    
+networks:
+  matched_network:
+    driver: bridge
+
+volumes:
+  matched_db:
+  matched_redis:
