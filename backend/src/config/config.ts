@@ -57,10 +57,6 @@ export const config: Config = {
     name: process.env.PINO_NAME || 'logger',
   },
   port: Number(process.env.PORT) || 3000,
-  redis: {
-    password: process.env.REDIS_PASSWORD || 'redis',
-    port: Number(process.env.REDIS_PORT) || 6379,
-  },
   steam: {
     apiKey: process.env.STEAM_API_KEY || '',
   },

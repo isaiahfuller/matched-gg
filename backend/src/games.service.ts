@@ -125,12 +125,14 @@ export class GameService {
     const themes = await this.getTopTag(id, 'themes', themesTable);
     const genreIds = new Set<number>();
     const themeIds = new Set<number>();
-    while (genreIds.size < 3) {
-      genreIds.add(genres[rndm(0, Math.min(genres.length, 10))].igdbId);
+    const genreCandidates = genres.slice(0, 10);
+    while (genreIds.size < 3 && genreCandidates.length > 0) {
+      const i = rndm(0, genreCandidates.length - 1);
+      genreIds.add(genreCandidates.splice(i, 1)[0].igdbId);
     }
-    for (let i = 0; i < 10; i++) {
-      if (themes[i].igdbId === 1) continue;
-      themeIds.add(themes[i].igdbId);
+    for (const theme of themes.slice(0, 10)) {
+      if (theme.igdbId === 1) continue;
+      themeIds.add(theme.igdbId);
     }
 
     // Get playtime of genres
@@ -290,6 +292,8 @@ export class GameService {
     genreIds: Set<number>,
     themeIds: Set<number>,
   ) {
+    if (genreIds.size === 0 || themeIds.size === 0) return [];
+
     // Get similar games from db
     const igdbGames = await db.query.gamesTable.findMany({
       where: and(
@@ -393,7 +397,9 @@ export class GameService {
     }
 
     // Get top game IGDB ids
-    const topGameIds = this.topGames.map((game) => game.igdbGame.igdbId);
+    const topGameIds = this.topGames
+      .filter((game) => game.igdbGame)
+      .map((game) => game.igdbGame.igdbId);
 
     // Get genres and themes from top games
     const genreIds = new Set<number>();
@@ -424,13 +430,15 @@ export class GameService {
     const sortedThemeIds = [...themeCount.entries()].sort(
       (a, b) => b[1] - a[1],
     );
-    while (topGenres.size < 3 && sortedGenreIds.length > 0) {
-      const i = rndm(0, Math.min(sortedGenreIds.length - 1, 9));
-      topGenres.add(sortedGenreIds[i][0]);
+    const genreCandidates = sortedGenreIds.slice(0, 10);
+    const themeCandidates = sortedThemeIds.slice(0, 26);
+    while (topGenres.size < 3 && genreCandidates.length > 0) {
+      const i = rndm(0, genreCandidates.length - 1);
+      topGenres.add(genreCandidates.splice(i, 1)[0][0]);
     }
-    while (topThemes.size < 10 && sortedThemeIds.length > 0) {
-      const i = rndm(0, Math.min(sortedThemeIds.length - 1, 25));
-      topThemes.add(sortedThemeIds[i][0]);
+    while (topThemes.size < 10 && themeCandidates.length > 0) {
+      const i = rndm(0, themeCandidates.length - 1);
+      topThemes.add(themeCandidates.splice(i, 1)[0][0]);
     }
 
     const gameRecommendations = await this.recommendationDb(

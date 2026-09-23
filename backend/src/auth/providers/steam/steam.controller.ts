@@ -67,8 +67,7 @@ export class SteamController {
     } catch (e) {
       this.logger.error(e);
     } finally {
-      // TODO: Stop hardcoding the redirect URL
-      res.redirect(`http://localhost:4467/`);
+      res.redirect(`${process.env.PUBLIC_URL || 'http://localhost:4467'}/`);
     }
   }
 

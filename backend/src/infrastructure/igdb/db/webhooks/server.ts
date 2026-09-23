@@ -94,14 +94,19 @@ const port = 7331;
 const igdbDbController = new IgdbDbController();
 const app = express();
 app.use(express.json());
-
+app.get('/', (req, res) => {
+  res.send('IGDB Webhook Server');
+});
+app.get('/igdb', (req, res) => {
+  res.send('IGDB Webhook Server');
+});
 /**
  * Accepts data from IGDB into the database
  */
 app.post('/igdb/:endpoint/:type', async (req, res) => {
   const { endpoint, type } = req.params;
-  if (req.headers['x-secret'] !== config.authSecrets.jwt.replaceAll('+', ' ')) {
-    console.log("secret doesn't match");
+  if (req.headers['x-secret'] !== config.authSecrets.jwt) {
+    res.sendStatus(401);
     return;
   }
   let data;

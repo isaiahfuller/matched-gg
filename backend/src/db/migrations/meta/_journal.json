@@ -64,6 +64,13 @@
       "when": 1752687891904,
       "tag": "0008_open_red_shift",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790109887308,
+      "tag": "0009_postgres_sessions",
+      "breakpoints": true
     }
   ]
 }

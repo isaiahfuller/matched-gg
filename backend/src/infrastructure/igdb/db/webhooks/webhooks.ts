@@ -15,6 +15,10 @@ const twitch = new TwitchHandler(
   logger,
 );
 
+const publicUrl = (process.env.PUBLIC_URL || 'http://localhost:4467').replace(
+  /\/+$/,
+  '',
+);
 const webhooks: IgdbWebhook[] = [];
 
 /**
@@ -34,7 +38,11 @@ const addWebhooks = async (): Promise<void> => {
   ) => {
     logger.info(`Adding webhook ${type} for endpoint ${endpoint}`);
     const res = await fetch(`https://api.igdb.com/v4/${endpoint}/webhooks/`, {
-      body: `url=${`https://isaiah.moe/igdb/${endpoint}/${type}`}&secret=${config.authSecrets.jwt}&method=${type}`,
+      body: new URLSearchParams({
+        method: type,
+        secret: config.authSecrets.jwt,
+        url: `${publicUrl}/igdb/${endpoint}/${type}`,
+      }),
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Client-ID': config.twitch.clientId,
@@ -42,13 +50,15 @@ const addWebhooks = async (): Promise<void> => {
       },
       method: 'POST',
     });
-    const webhook = await res.json();
-    if (!Array.isArray(webhook) || !webhook[0].id) {
-      logger.error(`Adding webhook ${endpoint}/${type} failed`);
-      return;
+    const response = await res.json();
+    const webhook = Array.isArray(response) ? response[0] : response;
+    if (!res.ok || !webhook?.id) {
+      throw new Error(
+        `Adding webhook ${endpoint}/${type} failed (HTTP ${res.status})`,
+      );
     }
-    logger.info(`Webhook id ${webhook[0].id} added.`);
-    webhooks.push(webhook[0]);
+    logger.info(`Webhook id ${webhook.id} added.`);
+    webhooks.push(webhook);
   };
 
   for (const endpoint of Object.values(IgdbResources)) {
@@ -67,15 +77,21 @@ const removeWebhooks = async (): Promise<void> => {
   logger.info(`Removing webhooks`);
   for (const hook of webhooks) {
     logger.info(`Removing hook ${hook.id}`);
-    await fetch(`https://api.igdb.com/v4/webhooks/${hook.id}`, {
+    const res = await fetch(`https://api.igdb.com/v4/webhooks/${hook.id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Client-ID': config.twitch.clientId,
       },
       method: 'DELETE',
     });
+    if (!res.ok) {
+      throw new Error(
+        `Removing webhook ${hook.id} failed (HTTP ${res.status})`,
+      );
+    }
     await delay(250);
   }
+  webhooks.length = 0;
 };
 
 /**
@@ -90,19 +106,28 @@ const getWebhooks = async (): Promise<void> => {
     },
   });
   const wh = await res.json();
+  if (!res.ok || !Array.isArray(wh)) {
+    throw new Error(`Listing webhooks failed (HTTP ${res.status})`);
+  }
   for (const hook of wh) webhooks.push(hook);
 };
 
 async function main() {
   try {
+    const callbackUrl = new URL(publicUrl);
+    if (['[::1]', '127.0.0.1', 'localhost'].includes(callbackUrl.hostname)) {
+      throw new Error(
+        'Set PUBLIC_URL to the public webhook origin before registering',
+      );
+    }
     await getWebhooks();
     await removeWebhooks();
     await addWebhooks();
   } catch (error) {
     logger.error(error);
-    await removeWebhooks();
+    process.exitCode = 1;
   } finally {
-    process.exit(0);
+    twitch.stopTokenValidationInterval();
   }
 }
 

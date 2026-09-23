@@ -1,21 +1,105 @@
-version: "3.8"
+x-backend: &backend
+  build:
+    context: .
+    target: backend
+  env_file: .env
+  environment:
+    DB_HOST: db
+    DB_PORT: 5432
+    PORT: 3000
+    PUBLIC_URL: ${PUBLIC_URL:-http://localhost:4467}
+  init: true
+
 services:
   db:
-    image: postgres:16.2
-    restart: always
+    image: postgres:16
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: g4mr
-      POSTGRES_PASSWORD: g4mr
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      POSTGRES_DB: ${DB_NAME:-postgres}
     volumes:
-      - ./data/pgsql:/var/lib/postgresql/data
+      - matched_db:/var/lib/postgresql/data
     ports:
-      - 5432:5432
-  redis:
-    image: redis:alpine
-    restart: always
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  migrate:
+    <<: *backend
+    command: [node, -r, tsconfig-paths/register, dist/src/db/migrate.js]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  backend:
+    <<: *backend
+    restart: unless-stopped
     ports:
-      - 6379:6379
-    command: redis-server --save 60 1 --loglevel warning --requirepass g4mr
-    volumes:
-      - ./data/redis:/data
+      - "127.0.0.1:${PORT:-4468}:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, node, -e, "const s=require('net').connect(3000,'127.0.0.1',()=>{s.end();process.exit(0)});s.on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-4467}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    profiles: [tunnel]
+    restart: unless-stopped
+    command: [tunnel, --no-autoupdate, run]
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on:
+      webhooks:
+        condition: service_started
+
+  # The receiver runs by default; IGDB registration is a separate manual action.
+  webhooks:
+    <<: *backend
+    restart: unless-stopped
+    command: [node, -r, tsconfig-paths/register, dist/src/infrastructure/igdb/db/webhooks/server.js]
+    ports:
+      - "7331:7331"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  register-webhooks:
+    <<: *backend
+    profiles: [register-webhooks]
+    restart: "no"
+    command: [node, -r, tsconfig-paths/register, dist/src/infrastructure/igdb/db/webhooks/webhooks.js]
+    depends_on:
+      webhooks:
+        condition: service_started
+
+  seed:
+    <<: *backend
+    profiles: [seed]
+    restart: "no"
+    command: [node, -r, tsconfig-paths/register, dist/src/infrastructure/igdb/db/seed/seed.js]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  matched_db:
