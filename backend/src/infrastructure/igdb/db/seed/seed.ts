@@ -165,7 +165,7 @@ const seed = async (): Promise<void> => {
 
     logger.info({ chunks: chunks.length }, `${endpoint} chunked`);
 
-    chunks.forEach(async (chunk) => {
+    await Promise.all(chunks.map(async (chunk) => {
       try {
         switch (endpoint) {
           case IgdbResources.ARTWORKS:
@@ -256,8 +256,9 @@ const seed = async (): Promise<void> => {
         }
       } catch (error) {
         logger.error(`Error inserting ${endpoint}: ${error}`);
+        throw error;
       }
-    });
+    }));
 
     logger.info(`${endpoint} inserted`);
   }

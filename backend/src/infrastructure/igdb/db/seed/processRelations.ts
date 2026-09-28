@@ -42,9 +42,9 @@ export const processRelations = async () => {
       }
     }
     const chunks = chunk(resourceArray, 1000);
-    chunks.forEach(async (chunk) => {
+    for (const chunk of chunks) {
       await igdbDbController.storeManyToMany<T>(chunk, schema);
-    });
+    }
   }
 
   await processRelation<gamesSchema.GameKeywords>(
