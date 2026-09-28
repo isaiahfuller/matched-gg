@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Session } from '@nestjs/common';
+import { Controller, Get, Logger, Session, UnauthorizedException } from '@nestjs/common';
 
 import { GameService } from './games.service';
 import { Games } from './infrastructure/igdb/db/schema/games';
@@ -8,6 +8,12 @@ export class GamesController {
   private readonly logger = new Logger('GameController');
 
   constructor(private readonly gameService: GameService) {}
+
+  @Get('stats')
+  async getStats(@Session() session: any) {
+    if (!session?.user?.id) throw new UnauthorizedException();
+    return this.gameService.getUserStats(session.user.id);
+  }
 
   /**
    *

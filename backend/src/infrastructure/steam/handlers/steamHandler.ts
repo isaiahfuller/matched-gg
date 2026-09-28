@@ -2,11 +2,12 @@ import { SteamConfig } from '@config/interfaces';
 import { UnauthorizedException } from '@nestjs/common';
 import { chunk } from '@util/chunk';
 import axios from 'axios';
-import { eq, gt } from 'drizzle-orm';
+import { eq, gt, inArray } from 'drizzle-orm';
 import { IgdbDbController } from 'src/infrastructure/igdb/db/controller/IgdbDbController';
 
 import { mapOwnedGame } from '../db/map/mapOwnedGame';
 import { userOwnedGames } from '../db/schema/steamUserOwnedGames';
+import { igdbSteamConnect } from '../db/schema/igdbSteamConnect';
 import buildSteamUrl from '../util/buildSteamUrl';
 import { SteamOwnedGames } from './interfaces';
 
@@ -67,13 +68,29 @@ export default class SteamHandler {
     }
     const method = 'IPlayerService/GetOwnedGames';
     const url = buildSteamUrl(method, {
-      include_played_free_games: true,
+      include_appinfo: 1,
+      include_played_free_games: 1,
       steamid: steamId,
     });
     const response = await axios.get(url);
     const data: SteamOwnedGames = response.data.response;
+    if (data.game_count === 0) {
+      return { ...data, games: [] };
+    }
     if (!('games' in data)) {
       throw new Error('Steam ID was invalid.');
+    }
+    const missingNames = data.games.filter((game) => !game.name?.trim());
+    if (missingNames.length > 0) {
+      const matches = await this.dbController.getConnection().query.igdbSteamConnect.findMany({
+        where: inArray(igdbSteamConnect.steamId, missingNames.map((game) => Number(game.appid))),
+        with: { igdbGame: { columns: { name: true } } },
+      });
+      const names = new Map(matches.map((match) => [match.steamId, match.igdbGame?.name]));
+      data.games = data.games.map((game) => ({
+        ...game,
+        name: game.name?.trim() || names.get(Number(game.appid)) || undefined,
+      }));
     }
     return data;
   }
