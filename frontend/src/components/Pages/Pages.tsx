@@ -5,6 +5,8 @@ import Recommendations from "../Recommendations/Recommendations";
 import Settings from "../Settings/Settings";
 import Sync from "../Sync/Sync";
 import PreviousRecommendations from "../Recommendations/PreviousRecommendations";
+import Library from "../Library/Library";
+import Stats from "../Stats/Stats";
 
 interface PagesProps {
   page: string;
@@ -17,6 +19,10 @@ interface PagesProps {
  */
 export default function Pages({ page }: PagesProps) {
   switch (page) {
+    case "stats":
+      return <Stats />;
+    case "library":
+      return <Library />;
     case "recommendations":
       return <Recommendations />;
     case "previous":

@@ -20,9 +20,57 @@ import RecommendationHandler from './infrastructure/local/db/handlers/recommenda
 import { mapRecommendations } from './infrastructure/local/db/map/mapRecommendations';
 import { igdbSteamConnect } from './infrastructure/steam/db/schema/igdbSteamConnect';
 import { userOwnedGames } from './infrastructure/steam/db/schema/steamUserOwnedGames';
+import { buildUserStats } from './util/userStats';
+import { keywordsTable } from './infrastructure/igdb/db/schema/keywords';
+import SteamHandler from './infrastructure/steam/handlers/steamHandler';
+import { config } from '@config/config';
+import { users } from './infrastructure/local/db/schema/users';
 
 @Injectable()
 export class GameService {
+  async getUserStats(id: number) {
+    const games = await db.query.userOwnedGames.findMany({
+      where: eq(userOwnedGames.userId, id),
+      with: {
+        steam: { with: { igdbGame: { with: {
+          genresRelation: { with: { genre: true } },
+          themesRelation: { with: { theme: true } },
+        } } } },
+      },
+    });
+    const keywordIds = [...new Set(games.flatMap((game) => game.steam?.igdbGame?.keywords ?? []))];
+    const keywords = keywordIds.length ? await db.query.keywordsTable.findMany({
+      where: inArray(keywordsTable.igdbId, keywordIds),
+    }) : [];
+    const keywordById = new Map(keywords.map((keyword) => [keyword.igdbId, keyword]));
+    const steamNames = new Map<number, string>();
+    if (games.some((game) => !game.steam?.igdbGame?.name)) {
+      const user = await db.query.users.findFirst({
+        where: eq(users.id, id),
+        columns: { steamId: true },
+      });
+      if (user?.steamId) {
+        // Keep synced stats available if Steam is temporarily unavailable.
+        try {
+          const library = await new SteamHandler(config).getOwnedGames(user.steamId);
+          for (const game of library.games) {
+            if (game.name) steamNames.set(Number(game.appid), game.name);
+          }
+        } catch {
+          // Existing IGDB names and ID fallbacks remain available offline.
+        }
+      }
+    }
+    return buildUserStats(games.map((game) => ({
+      steamId: game.steamId,
+      playtime: game.playtime,
+      name: steamNames.get(game.steamId) || game.steam?.igdbGame?.name || `Steam game ${game.steamId}`,
+      matched: Boolean(game.steam?.igdbGame),
+      genres: game.steam?.igdbGame?.genresRelation.map((entry) => entry.genre) ?? [],
+      themes: game.steam?.igdbGame?.themesRelation.map((entry) => entry.theme) ?? [],
+      tags: game.steam?.igdbGame?.keywords?.map((keywordId) => keywordById.get(keywordId) ?? null) ?? [],
+    })));
+  }
   recommendationHandler: RecommendationHandler;
   topGames: any[] = [];
   topGamesInterval: NodeJS.Timeout | null = null;

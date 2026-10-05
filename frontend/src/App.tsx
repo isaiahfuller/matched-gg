@@ -17,6 +17,7 @@ import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import logo from "./assets/logo.svg";
 import {
   faArrowsRotate,
+  faChartSimple,
   faChevronRight,
   faGamepad,
   faRightFromBracket,
@@ -133,6 +134,24 @@ function App() {
             </Center>
           ) : null}
           <Stack h="100%" justify="center" p={8}>
+            <NavLink
+              disabled={!isLoggedIn || loading}
+              href="#"
+              label="Your stats"
+              onClick={(e) => handleClick(e, "stats")}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
+              leftSection={<FontAwesomeIcon icon={faChartSimple} />}
+              active={page === "stats"}
+            />
+            <NavLink
+              disabled={!isLoggedIn || loading}
+              href="#"
+              label="Your library"
+              onClick={(e) => handleClick(e, "library")}
+              rightSection={<FontAwesomeIcon icon={faChevronRight} size="sm" />}
+              leftSection={<FontAwesomeIcon icon={faGamepad} />}
+              active={page === "library"}
+            />
             <NavLink
               disabled={!isLoggedIn || loading}
               href="#"
