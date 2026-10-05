@@ -27,6 +27,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    networks:
+      - imf
 
   migrate:
     <<: *backend
@@ -34,6 +36,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - imf
 
   backend:
     <<: *backend
@@ -49,6 +53,8 @@ services:
       timeout: 5s
       retries: 12
       start_period: 20s
+    networks:
+      - imf
 
   frontend:
     build:
@@ -60,6 +66,8 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    networks:
+      - imf
 
   cloudflared:
     image: cloudflare/cloudflared:latest
@@ -71,6 +79,8 @@ services:
     depends_on:
       webhooks:
         condition: service_started
+    networks:
+      - imf
 
   # The receiver runs by default; IGDB registration is a separate manual action.
   webhooks:
@@ -82,6 +92,8 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
+    networks:
+      - imf
 
   register-webhooks:
     <<: *backend
@@ -103,3 +115,8 @@ services:
 
 volumes:
   matched_db:
+
+networks:
+  imf:
+    name: "imf"
+    external: true

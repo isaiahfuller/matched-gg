@@ -165,7 +165,15 @@ const seed = async (): Promise<void> => {
 
     logger.info({ chunks: chunks.length }, `${endpoint} chunked`);
 
-    await Promise.all(chunks.map(async (chunk) => {
+    for (const [index, chunk] of chunks.entries()) {
+      await insertChunk(chunk);
+      logger.info(
+        { batch: index + 1, batches: chunks.length },
+        `${endpoint} batch inserted`,
+      );
+    }
+
+    async function insertChunk(chunk) {
       try {
         switch (endpoint) {
           case IgdbResources.ARTWORKS:
@@ -258,7 +266,7 @@ const seed = async (): Promise<void> => {
         logger.error(`Error inserting ${endpoint}: ${error}`);
         throw error;
       }
-    }));
+    }
 
     logger.info(`${endpoint} inserted`);
   }
